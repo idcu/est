@@ -2,9 +2,12 @@ package ltd.idcu.est.collection.impl;
 
 import ltd.idcu.est.collection.api.Collection;
 import ltd.idcu.est.utils.format.json.JsonUtils;
+import ltd.idcu.est.utils.format.yaml.YamlUtils;
+import ltd.idcu.est.utils.format.xml.XmlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -59,14 +62,60 @@ public final class CollectionFactory {
         if (yaml == null || yaml.trim().isEmpty()) {
             return new DefaultCollection<>();
         }
-        throw new UnsupportedOperationException("fromYaml will be implemented in format conversion phase");
+        List<Map<String, Object>> documents = YamlUtils.parseDocuments(yaml);
+        if (documents.isEmpty()) {
+            Map<String, Object> parsed = YamlUtils.parse(yaml);
+            if (parsed.isEmpty()) {
+                return new DefaultCollection<>();
+            }
+            List<Object> result = new ArrayList<>();
+            result.add(parsed);
+            return new DefaultCollection<>(result);
+        }
+        return new DefaultCollection<>(new ArrayList<>(documents));
     }
 
     public static Collection<Object> fromXml(String xml) {
         if (xml == null || xml.trim().isEmpty()) {
             return new DefaultCollection<>();
         }
-        throw new UnsupportedOperationException("fromXml will be implemented in format conversion phase");
+        XmlUtils.XmlNode root = XmlUtils.parse(xml);
+        if (root == null) {
+            return new DefaultCollection<>();
+        }
+        List<Object> result = new ArrayList<>();
+        for (XmlUtils.XmlNode child : root.getChildren()) {
+            result.add(xmlNodeToObject(child));
+        }
+        return new DefaultCollection<>(result);
+    }
+
+    private static Object xmlNodeToObject(XmlUtils.XmlNode node) {
+        if (node.hasTextContent() && !node.hasChildren()) {
+            return node.getTextContent();
+        }
+        Map<String, Object> map = new java.util.LinkedHashMap<>();
+        if (node.hasTextContent()) {
+            map.put("_text", node.getTextContent());
+        }
+        for (Map.Entry<String, String> attr : node.getAttributes().entrySet()) {
+            map.put("@" + attr.getKey(), attr.getValue());
+        }
+        Map<String, List<Object>> childrenByName = new java.util.LinkedHashMap<>();
+        for (XmlUtils.XmlNode child : node.getChildren()) {
+            String childName = child.getName();
+            childrenByName.computeIfAbsent(childName, k -> new ArrayList<>())
+                    .add(xmlNodeToObject(child));
+        }
+        for (Map.Entry<String, List<Object>> entry : childrenByName.entrySet()) {
+            List<Object> values = entry.getValue();
+            if (values.size() == 1) {
+                map.put(entry.getKey(), values.get(0));
+            } else {
+                map.put(entry.getKey(), values);
+            }
+        }
+        return map;
     }
 
     public static Collection<Integer> range(int start, int end) {

@@ -190,7 +190,7 @@ mvn clean install -DskipTests
 - [ ] 阶段二：Collection模块实现
   - [x] Collection 接口定义 - Collection、Collector、Pair、Collections 工厂类
   - [x] 链式调用功能实现 - DefaultCollection、SingletonCollection、CollectionFactory
-  - [ ] 格式转换功能实现
+  - [x] 格式转换功能实现 - toJson、toYaml、toXml、fromJson、fromYaml、fromXml
   - [ ] 单元测试
 - [ ] 阶段三：功能模块实现
 - [ ] 阶段四：插件与Web模块实现
