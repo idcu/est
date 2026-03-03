@@ -207,7 +207,10 @@ mvn clean install -DskipTests
     - [x] 内存数据 - MemoryRepository、MemoryTransactionManager、MemoryQuery、MemoryOrm、MemoryData工厂类
     - [x] JDBC数据 - DefaultConnectionPool、JdbcTransactionManager、JdbcQuery、JdbcRepository、JdbcOrm、JdbcData工厂类
     - [x] Redis数据 - DefaultRedisClient、RedisRepository、RedisOrm、RedisData工厂类（零依赖Socket实现）
-  - [ ] 安全系统（基础、JWT）
+  - [x] 安全系统（基础、JWT）
+    - [x] 安全接口 - User、Role、Permission、Authentication、Authorization、Crypto、PasswordEncoder、SecurityContext、UserDetailsService、TokenProvider、Token
+    - [x] 基础安全 - DefaultUser、DefaultRole、DefaultPermission、DefaultAuthentication、DefaultAuthorization、BasicCrypto、BCryptPasswordEncoder、InMemoryUserDetailsService、BasicAuthenticationProvider、BasicTokenProvider、BasicSecurity工厂类
+    - [x] JWT安全 - JwtTokenProvider（零依赖实现）、JwtAuthenticationProvider、JwtSecurityContext、JwtSecurity工厂类
   - [ ] 消息系统（本地、AMQP）
   - [ ] 监控系统（JVM、系统）
   - [ ] 调度系统（Cron、固定间隔）

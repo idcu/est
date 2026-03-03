@@ -20,6 +20,10 @@
             <groupId>ltd.idcu</groupId>
             <artifactId>est-features-security-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-security-basic</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
