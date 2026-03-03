@@ -186,7 +186,7 @@ mvn clean install -DskipTests
   - [x] 递进式项目结构搭建
   - [x] 核心模块 - Container、Config、Module、Lifecycle 接口与实现
   - [x] 设计模式模块 - Singleton、Factory、Builder、Adapter、Decorator、Proxy、Observer、Strategy、Command 接口与实现
-  - [ ] 基础工具模块
+  - [x] 基础工具模块 - StringUtils、DateUtils、AssertUtils、ClassUtils、FileUtils、IOUtils、ResourceUtils、PathUtils、JsonUtils、YamlUtils、XmlUtils
 - [ ] 阶段二：Collection模块实现
 - [ ] 阶段三：功能模块实现
 - [ ] 阶段四：插件与Web模块实现
