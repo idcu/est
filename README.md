@@ -165,7 +165,7 @@ mvn clean install -DskipTests
 | est-features-logging | 日志功能，控制台日志、文件日志 |
 | est-features-data | 数据功能，JDBC、内存、Redis数据访问 |
 | est-features-security | 安全功能，基础认证、JWT认证 |
-| est-features-messaging | 消息功能，本地消息、AMQP消息 |
+| est-features-messaging | 消息功能，本地消息、AMQP消息、MQTT消息 |
 | est-features-monitor | 监控功能，JVM监控、系统监控 |
 | est-features-scheduler | 调度功能，Cron调度、固定间隔调度 |
 | est-plugin | 插件系统，插件加载、管理 |
@@ -211,7 +211,11 @@ mvn clean install -DskipTests
     - [x] 安全接口 - User、Role、Permission、Authentication、Authorization、Crypto、PasswordEncoder、SecurityContext、UserDetailsService、TokenProvider、Token
     - [x] 基础安全 - DefaultUser、DefaultRole、DefaultPermission、DefaultAuthentication、DefaultAuthorization、BasicCrypto、BCryptPasswordEncoder、InMemoryUserDetailsService、BasicAuthenticationProvider、BasicTokenProvider、BasicSecurity工厂类
     - [x] JWT安全 - JwtTokenProvider（零依赖实现）、JwtAuthenticationProvider、JwtSecurityContext、JwtSecurity工厂类
-  - [ ] 消息系统（本地、AMQP）
+  - [x] 消息系统（本地、AMQP、MQTT）
+    - [x] 消息接口 - Message、MessageProducer、MessageConsumer、MessageQueue、MessageTopic、QueueConfig、MessageStats、MessagingConfig
+    - [x] 本地消息 - LocalMessageQueue、LocalMessageTopic、LocalMessageProducer、LocalMessageConsumer、LocalMessageBroker、LocalMessages工厂类
+    - [x] AMQP消息 - AmqpConnection（零依赖Socket实现）、AmqpMessageQueue、AmqpMessageProducer、AmqpMessageConsumer、AmqpMessages工厂类
+    - [x] MQTT消息 - MqttConnection（零依赖Socket实现）、MqttMessageProducer、MqttMessageConsumer、MqttMessages工厂类
   - [ ] 监控系统（JVM、系统）
   - [ ] 调度系统（Cron、固定间隔）
 - [ ] 阶段四：插件与Web模块实现
