@@ -11,6 +11,7 @@ public class DefaultContainer implements Container {
     
     private final Map<Class<?>, Supplier<?>> registrations = new ConcurrentHashMap<>();
     private final Map<Class<?>, Object> instances = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Object> cachedInstances = new ConcurrentHashMap<>();
     
     @Override
     public <T> void register(Class<T> type, Class<? extends T> implementation) {
@@ -24,6 +25,7 @@ public class DefaultContainer implements Container {
                 throw new RuntimeException("Failed to create instance of " + implementation.getName(), e);
             }
         });
+        cachedInstances.remove(type);
     }
     
     @Override
@@ -33,6 +35,7 @@ public class DefaultContainer implements Container {
         }
         instances.put(type, instance);
         registrations.put(type, () -> instance);
+        cachedInstances.remove(type);
     }
     
     @Override
@@ -41,6 +44,7 @@ public class DefaultContainer implements Container {
             throw new IllegalArgumentException("Type and supplier cannot be null");
         }
         registrations.put(type, supplier);
+        cachedInstances.remove(type);
     }
     
     @Override
@@ -55,12 +59,19 @@ public class DefaultContainer implements Container {
             return (T) instance;
         }
         
+        Object cached = cachedInstances.get(type);
+        if (cached != null) {
+            return (T) cached;
+        }
+        
         Supplier<?> supplier = registrations.get(type);
         if (supplier == null) {
             throw new IllegalStateException("No registration found for type: " + type.getName());
         }
         
-        return (T) supplier.get();
+        T newInstance = (T) supplier.get();
+        cachedInstances.put(type, newInstance);
+        return newInstance;
     }
     
     @Override
@@ -75,12 +86,19 @@ public class DefaultContainer implements Container {
             return Optional.of((T) instance);
         }
         
+        Object cached = cachedInstances.get(type);
+        if (cached != null) {
+            return Optional.of((T) cached);
+        }
+        
         Supplier<?> supplier = registrations.get(type);
         if (supplier == null) {
             return Optional.empty();
         }
         
-        return Optional.of((T) supplier.get());
+        T newInstance = (T) supplier.get();
+        cachedInstances.put(type, newInstance);
+        return Optional.of(newInstance);
     }
     
     @Override
@@ -92,5 +110,6 @@ public class DefaultContainer implements Container {
     public void clear() {
         registrations.clear();
         instances.clear();
+        cachedInstances.clear();
     }
 }

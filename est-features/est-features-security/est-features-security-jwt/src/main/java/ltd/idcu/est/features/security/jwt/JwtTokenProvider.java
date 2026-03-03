@@ -208,7 +208,29 @@ public class JwtTokenProvider implements TokenProvider {
         Token t = validatedToken.get();
         invalidate(token);
         
-        return t.getSubject();
+        User user = new User() {
+            @Override
+            public String getId() {
+                return (String) t.getClaim("user_id");
+            }
+
+            @Override
+            public String getUsername() {
+                return t.getSubject();
+            }
+
+            @Override
+            public Set<String> getRoles() {
+                return t.getRoles();
+            }
+
+            @Override
+            public Set<String> getPermissions() {
+                return t.getPermissions();
+            }
+        };
+        
+        return generateToken(user);
     }
     
     @Override

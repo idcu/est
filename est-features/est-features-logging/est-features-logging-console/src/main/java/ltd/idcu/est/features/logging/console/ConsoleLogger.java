@@ -182,7 +182,19 @@ public class ConsoleLogger implements Logger {
         if (args == null || args.length == 0) {
             return format;
         }
-        return String.format(format.replace("{}", "%s"), args);
+        String formatted = format;
+        if (formatted.contains("{}")) {
+            for (Object arg : args) {
+                formatted = formatted.replaceFirst("\\{\\}", arg != null ? arg.toString() : "null");
+            }
+        } else if (formatted.contains("%")) {
+            try {
+                formatted = String.format(formatted, args);
+            } catch (Exception e) {
+                formatted = format + " [Format error: " + e.getMessage() + "]";
+            }
+        }
+        return formatted;
     }
     
     public void close() {

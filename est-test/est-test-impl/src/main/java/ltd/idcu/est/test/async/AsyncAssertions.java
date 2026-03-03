@@ -53,12 +53,12 @@ public final class AsyncAssertions {
         await(timeout).untilNotNull(supplier);
     }
 
-    public static void atMost(Duration timeout) {
-        await(timeout);
+    public static AwaitBuilder atMost(Duration timeout) {
+        return await(timeout);
     }
 
-    public static void pollInterval(Duration interval) {
-        await(DEFAULT_TIMEOUT).pollInterval(interval);
+    public static AwaitBuilder pollInterval(Duration interval) {
+        return await(DEFAULT_TIMEOUT).pollInterval(interval);
     }
 
     public static class AwaitBuilder {
