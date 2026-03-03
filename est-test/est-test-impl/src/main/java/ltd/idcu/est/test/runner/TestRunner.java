@@ -5,12 +5,15 @@ import ltd.idcu.est.test.result.TestResult;
 import ltd.idcu.est.test.result.TestReporter;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestRunner {
 
     private final TestReporter reporter;
+    private final TestScanner scanner;
+    private final TestExecutor executor;
 
     public TestRunner() {
         this(new TestReporter());
@@ -18,131 +21,86 @@ public class TestRunner {
 
     public TestRunner(TestReporter reporter) {
         this.reporter = reporter;
+        this.scanner = new TestScanner();
+        this.executor = new TestExecutor(reporter);
     }
 
     public TestResult runClass(Class<?> testClass) {
-        long startTime = System.currentTimeMillis();
-        List<Method> testMethods = findTestMethods(testClass);
-        List<Method> beforeEachMethods = findMethodsWithAnnotation(testClass, BeforeEach.class);
-        List<Method> afterEachMethods = findMethodsWithAnnotation(testClass, AfterEach.class);
-        List<Method> beforeAllMethods = findMethodsWithAnnotation(testClass, BeforeAll.class);
-        List<Method> afterAllMethods = findMethodsWithAnnotation(testClass, AfterAll.class);
+        return executor.execute(testClass);
+    }
 
-        int passed = 0;
-        int failed = 0;
-        int skipped = 0;
-        List<Throwable> failures = new ArrayList<>();
+    public List<TestResult> runClasses(Class<?>... testClasses) {
+        List<TestResult> results = new ArrayList<>();
+        for (Class<?> testClass : testClasses) {
+            if (scanner.isTestClass(testClass)) {
+                results.add(runClass(testClass));
+            }
+        }
+        reporter.printSummary(results);
+        return results;
+    }
 
-        String className = getDisplayName(testClass);
-        reporter.reportClassStart(className);
+    public List<TestResult> runPackage(String packageName) throws Exception {
+        List<Class<?>> testClasses = scanner.scanPackageForTests(packageName);
+        List<TestResult> results = new ArrayList<>();
 
-        Object instance = null;
-        try {
-            instance = testClass.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            reporter.reportError("Failed to instantiate test class: " + e.getMessage());
-            return new TestResult(testClass.getName(), 0, testMethods.size(), 0, failures);
+        for (Class<?> testClass : testClasses) {
+            results.add(runClass(testClass));
         }
 
+        reporter.printSummary(results);
+        return results;
+    }
+
+    public boolean runPackageAndExit(String packageName) {
         try {
-            for (Method beforeAllMethod : beforeAllMethods) {
-                beforeAllMethod.setAccessible(true);
-                beforeAllMethod.invoke(null);
-            }
+            List<TestResult> results = runPackage(packageName);
+            return isAllTestsPassed(results);
         } catch (Exception e) {
-            reporter.reportError("BeforeAll failed: " + e.getMessage());
+            reporter.reportError("Failed to run tests: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean runClassesAndExit(Class<?>... testClasses) {
+        List<TestResult> results = runClasses(testClasses);
+        return isAllTestsPassed(results);
+    }
+
+    private boolean isAllTestsPassed(List<TestResult> results) {
+        for (TestResult result : results) {
+            if (!result.isSuccessful()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) throws Exception {
+        if (args.length == 0) {
+            System.out.println("Usage: TestRunner <test-class-name> [test-class-name...]");
+            System.out.println("   or: TestRunner --package <package-name>");
+            System.exit(1);
         }
 
-        for (Method testMethod : testMethods) {
-            if (testMethod.isAnnotationPresent(Disabled.class)) {
-                skipped++;
-                reporter.reportTestSkipped(getDisplayName(testMethod));
-                continue;
-            }
+        TestRunner runner = new TestRunner();
+        boolean success;
 
-            String methodName = getDisplayName(testMethod);
-            reporter.reportTestStart(methodName);
-            long testStartTime = System.currentTimeMillis();
-
-            try {
-                for (Method beforeEachMethod : beforeEachMethods) {
-                    beforeEachMethod.setAccessible(true);
-                    beforeEachMethod.invoke(instance);
+        if (args[0].equals("--package") && args.length > 1) {
+            success = runner.runPackageAndExit(args[1]);
+        } else {
+            List<Class<?>> testClasses = new ArrayList<>();
+            for (String className : args) {
+                try {
+                    Class<?> clazz = Class.forName(className);
+                    testClasses.add(clazz);
+                } catch (ClassNotFoundException e) {
+                    System.err.println("Class not found: " + className);
                 }
-
-                testMethod.setAccessible(true);
-                testMethod.invoke(instance);
-
-                for (Method afterEachMethod : afterEachMethods) {
-                    afterEachMethod.setAccessible(true);
-                    afterEachMethod.invoke(instance);
-                }
-
-                long duration = System.currentTimeMillis() - testStartTime;
-                passed++;
-                reporter.reportTestPassed(methodName, duration);
-
-            } catch (Throwable t) {
-                long duration = System.currentTimeMillis() - testStartTime;
-                Throwable cause = t.getCause() != null ? t.getCause() : t;
-                failed++;
-                failures.add(cause);
-                reporter.reportTestFailed(methodName, cause, duration);
             }
+            success = runner.runClassesAndExit(testClasses.toArray(new Class<?>[0]));
         }
 
-        try {
-            for (Method afterAllMethod : afterAllMethods) {
-                afterAllMethod.setAccessible(true);
-                afterAllMethod.invoke(null);
-            }
-        } catch (Exception e) {
-            reporter.reportError("AfterAll failed: " + e.getMessage());
-        }
-
-        long totalDuration = System.currentTimeMillis() - startTime;
-        reporter.reportClassEnd(className, passed, failed, skipped, totalDuration);
-
-        return new TestResult(testClass.getName(), passed, failed, skipped, failures);
-    }
-
-    private List<Method> findTestMethods(Class<?> testClass) {
-        List<Method> testMethods = new ArrayList<>();
-        for (Method method : testClass.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(Test.class)) {
-                testMethods.add(method);
-            }
-        }
-        return testMethods;
-    }
-
-    private List<Method> findMethodsWithAnnotation(Class<?> testClass, Class<? extends java.lang.annotation.Annotation> annotation) {
-        List<Method> methods = new ArrayList<>();
-        for (Method method : testClass.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(annotation)) {
-                methods.add(method);
-            }
-        }
-        return methods;
-    }
-
-    private String getDisplayName(Class<?> testClass) {
-        if (testClass.isAnnotationPresent(DisplayName.class)) {
-            return testClass.getAnnotation(DisplayName.class).value();
-        }
-        return testClass.getSimpleName();
-    }
-
-    private String getDisplayName(Method method) {
-        if (method.isAnnotationPresent(DisplayName.class)) {
-            return method.getAnnotation(DisplayName.class).value();
-        }
-        if (method.isAnnotationPresent(Test.class)) {
-            String displayName = method.getAnnotation(Test.class).displayName();
-            if (!displayName.isEmpty()) {
-                return displayName;
-            }
-        }
-        return method.getName();
+        System.exit(success ? 0 : 1);
     }
 }

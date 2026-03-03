@@ -238,13 +238,13 @@ mvn clean install -DskipTests
     - [x] 调度接口 - Scheduler、Task、TaskState、ScheduleConfig、ScheduleType、ScheduleResult、SchedulerStats、SchedulerException、TaskListener
     - [x] Cron调度 - CronExpression（零依赖实现）、CronTask、CronScheduler、CronSchedulers工厂类
     - [x] 固定间隔调度 - FixedRateTask、FixedRateScheduler、FixedRateSchedulers工厂类（支持固定速率和固定延迟）
-  - [ ] 测试框架（零依赖实现）
+  - [x] 测试框架（零依赖实现）
     - [x] 测试接口 - @Test、@BeforeEach、@AfterEach、@BeforeAll、@AfterAll、@DisplayName、@Disabled
     - [x] 断言类 - assertEquals、assertTrue、assertNull、assertThrows、assertTimeout
     - [x] 参数化测试 - @ParameterizedTest、@ValueSource、@CsvSource、@MethodSource
-    - [ ] 测试运行器 - TestRunner、TestScanner、TestExecutor
-    - [ ] Mock支持 - @Mock、mock()、when().thenReturn()、verify()
-    - [ ] 异步测试 - AsyncAssertions.await()、until()
+    - [x] 测试运行器 - TestRunner、TestScanner、TestExecutor
+    - [x] Mock支持 - @Mock、mock()、when().thenReturn()、verify()
+    - [x] 异步测试 - AsyncAssertions.await()、until()
 - [ ] 阶段四：插件与Web模块实现
 - [ ] 阶段五：示例和文档
 - [ ] 阶段六：发布和维护
