@@ -246,6 +246,7 @@ mvn clean install -DskipTests
     - [x] Mock支持 - @Mock、mock()、when().thenReturn()、verify()
     - [x] 异步测试 - AsyncAssertions.await()、until()
 - [ ] 阶段四：插件与Web模块实现
+  - [x] 插件接口 - Plugin、PluginManager、PluginState、PluginInfo、PluginStats、PluginListener、PluginLoader、PluginConfig、PluginException、PluginContext、AbstractPlugin
 - [ ] 阶段五：示例和文档
 - [ ] 阶段六：发布和维护
 
