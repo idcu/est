@@ -196,7 +196,9 @@ mvn clean install -DskipTests
     - [x] 内存缓存 - MemoryCache、LruCacheStrategy、Caches工厂类
     - [x] 文件缓存 - FileCache、FileCaches工厂类
     - [x] Redis缓存 - RedisClient（零依赖Socket实现）、RedisCache、RedisCaches工厂类
-  - [ ] 事件系统（本地、异步）
+  - [x] 事件系统 - EventBus接口、Event、EventListener、EventConfig、EventStats
+    - [x] 本地事件 - LocalEventBus、LocalEvents工厂类
+    - [x] 异步事件 - AsyncEventBus、AsyncEvents工厂类（支持虚拟线程）
   - [ ] 日志系统（控制台、文件）
   - [ ] 数据系统（JDBC、内存、Redis）
   - [ ] 安全系统（基础、JWT）
