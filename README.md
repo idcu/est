@@ -182,7 +182,11 @@ mvn clean install -DskipTests
 
 ## 开发计划
 
-- [x] 阶段一：基础架构搭建（已完成：递进式项目结构搭建）
+- [x] 阶段一：基础架构搭建
+  - [x] 递进式项目结构搭建
+  - [x] 核心模块 - Container、Config、Module、Lifecycle 接口与实现
+  - [ ] 设计模式模块
+  - [ ] 基础工具模块
 - [ ] 阶段二：Collection模块实现
 - [ ] 阶段三：功能模块实现
 - [ ] 阶段四：插件与Web模块实现
