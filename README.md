@@ -220,7 +220,10 @@ mvn clean install -DskipTests
     - [x] 监控接口 - Metrics、HealthCheck、HealthStatus、HealthCheckResult、Metric、MonitorException
     - [x] JVM监控 - JvmMetrics（内存、线程、类加载、GC、CPU）、JvmHealthCheck、JvmMonitor单例
     - [x] 系统监控 - SystemMetrics（OS、CPU、内存、交换区、磁盘）、SystemHealthCheck、SystemMonitor单例
-  - [ ] 调度系统（Cron、固定间隔）
+  - [x] 调度系统（Cron、固定间隔）
+    - [x] 调度接口 - Scheduler、Task、TaskState、ScheduleConfig、ScheduleType、ScheduleResult、SchedulerStats、SchedulerException、TaskListener
+    - [x] Cron调度 - CronExpression（零依赖实现）、CronTask、CronScheduler、CronSchedulers工厂类
+    - [x] 固定间隔调度 - FixedRateTask、FixedRateScheduler、FixedRateSchedulers工厂类（支持固定速率和固定延迟）
 - [ ] 阶段四：插件与Web模块实现
 - [ ] 阶段五：示例和文档
 - [ ] 阶段六：发布和维护
