@@ -188,6 +188,10 @@ mvn clean install -DskipTests
   - [x] 设计模式模块 - Singleton、Factory、Builder、Adapter、Decorator、Proxy、Observer、Strategy、Command 接口与实现
   - [x] 基础工具模块 - StringUtils、DateUtils、AssertUtils、ClassUtils、FileUtils、IOUtils、ResourceUtils、PathUtils、JsonUtils、YamlUtils、XmlUtils
 - [ ] 阶段二：Collection模块实现
+  - [x] Collection 接口定义 - Collection、Collector、Pair、Collections 工厂类
+  - [ ] 链式调用功能实现
+  - [ ] 格式转换功能实现
+  - [ ] 单元测试
 - [ ] 阶段三：功能模块实现
 - [ ] 阶段四：插件与Web模块实现
 - [ ] 阶段五：示例和文档
