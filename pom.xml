@@ -34,6 +34,7 @@
         <module>est-core</module>
         <module>est-patterns</module>
         <module>est-utils</module>
+        <module>est-test</module>
         <module>est-collection</module>
         <module>est-features</module>
         <module>est-plugin</module>
@@ -91,6 +92,16 @@
             <dependency>
                 <groupId>ltd.idcu</groupId>
                 <artifactId>est-utils-format-xml</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-test-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-test-impl</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

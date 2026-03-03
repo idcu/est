@@ -26,9 +26,6 @@ est/
 ├── est-core/                              # 核心模块
 │   ├── est-core-api/                      # 核心接口
 │   └── est-core-impl/                     # 核心实现
-├── est-collection/                        # Collection模块
-│   ├── est-collection-api/                # Collection接口
-│   └── est-collection-impl/               # Collection实现
 ├── est-patterns/                          # 设计模式模块
 │   ├── est-patterns-api/                  # 设计模式接口
 │   └── est-patterns-impl/                 # 设计模式实现
@@ -39,6 +36,12 @@ est/
 │       ├── est-utils-format-json/         # JSON格式化
 │       ├── est-utils-format-yaml/         # YAML格式化
 │       └── est-utils-format-xml/          # XML格式化
+├── est-test/                              # 测试模块
+│   ├── est-test-api/                      # 测试接口（注解、断言）
+│   └── est-test-impl/                     # 测试实现（运行器、报告器）
+├── est-collection/                        # Collection模块
+│   ├── est-collection-api/                # Collection接口
+│   └── est-collection-impl/               # Collection实现
 ├── est-features/                          # 功能模块
 │   ├── est-features-cache/                # 缓存功能
 │   ├── est-features-event/                # 事件功能
@@ -75,12 +78,22 @@ est/
 ├─────────────────────────────────────────────────────────────────┤
 │                     est-collection (集合层)                       │
 ├─────────────────────────────────────────────────────────────────┤
+│                         est-test (测试层)                         │
+├─────────────────────────────────────────────────────────────────┤
 │                        est-utils (工具层)                         │
 ├─────────────────────────────────────────────────────────────────┤
 │                      est-patterns (模式层)                        │
 ├─────────────────────────────────────────────────────────────────┤
 │                        est-core (核心层)                          │
 └─────────────────────────────────────────────────────────────────┘
+```
+
+### 模块依赖关系
+
+```
+est-test-api  ─────────────────────────────────────────────────────►  零依赖
+      │
+      └──► est-test-impl ──► est-utils-common (复用 AssertUtils)
 ```
 
 ## 快速开始
@@ -157,9 +170,10 @@ mvn clean install -DskipTests
 | 模块 | 说明 |
 |------|------|
 | est-core | 核心接口与实现，依赖注入容器、配置管理、模块管理、生命周期 |
-| est-collection | Collection接口与实现，链式数据处理、格式转换 |
 | est-patterns | 设计模式接口与实现，创建型、结构型、行为型模式 |
 | est-utils | 工具类，字符串、日期、IO、格式化等 |
+| est-test | 测试框架，注解、断言、测试运行器、Mock支持、参数化测试 |
+| est-collection | Collection接口与实现，链式数据处理、格式转换 |
 | est-features-cache | 缓存功能，内存缓存、文件缓存、Redis缓存 |
 | est-features-event | 事件功能，本地事件、异步事件 |
 | est-features-logging | 日志功能，控制台日志、文件日志 |
@@ -175,10 +189,10 @@ mvn clean install -DskipTests
 
 | 类型 | 数量 |
 |------|------|
-| 顶层模块 | 8 |
-| 二级模块 | 25 |
+| 顶层模块 | 9 |
+| 二级模块 | 27 |
 | 三级模块 | 30 |
-| **总计** | **63** |
+| **总计** | **66** |
 
 ## 开发计划
 
@@ -224,6 +238,13 @@ mvn clean install -DskipTests
     - [x] 调度接口 - Scheduler、Task、TaskState、ScheduleConfig、ScheduleType、ScheduleResult、SchedulerStats、SchedulerException、TaskListener
     - [x] Cron调度 - CronExpression（零依赖实现）、CronTask、CronScheduler、CronSchedulers工厂类
     - [x] 固定间隔调度 - FixedRateTask、FixedRateScheduler、FixedRateSchedulers工厂类（支持固定速率和固定延迟）
+  - [ ] 测试框架（零依赖实现）
+    - [ ] 测试接口 - @Test、@BeforeEach、@AfterEach、@BeforeAll、@AfterAll、@DisplayName、@Disabled
+    - [ ] 断言类 - assertEquals、assertTrue、assertNull、assertThrows、assertTimeout
+    - [ ] 参数化测试 - @ParameterizedTest、@ValueSource、@CsvSource、@MethodSource
+    - [ ] 测试运行器 - TestRunner、TestScanner、TestExecutor
+    - [ ] Mock支持 - @Mock、mock()、when().thenReturn()、verify()
+    - [ ] 异步测试 - AsyncAssertions.await()、until()
 - [ ] 阶段四：插件与Web模块实现
 - [ ] 阶段五：示例和文档
 - [ ] 阶段六：发布和维护
