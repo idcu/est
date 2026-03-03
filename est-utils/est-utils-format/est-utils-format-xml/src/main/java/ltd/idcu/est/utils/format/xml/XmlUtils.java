@@ -107,13 +107,29 @@ public final class XmlUtils {
         if (str == null) {
             return null;
         }
-        return str.replace("&lt;", "<")
+        String result = str.replace("&lt;", "<")
                 .replace("&gt;", ">")
                 .replace("&amp;", "&")
                 .replace("&quot;", "\"")
-                .replace("&apos;", "'")
-                .replaceAll("&#(\\d+);", m -> String.valueOf((char) Integer.parseInt(m.group(1))))
-                .replaceAll("&#x([0-9a-fA-F]+);", m -> String.valueOf((char) Integer.parseInt(m.group(1), 16)));
+                .replace("&apos;", "'");
+        
+        java.util.regex.Pattern decimalPattern = java.util.regex.Pattern.compile("&#(\\d+);");
+        java.util.regex.Matcher decimalMatcher = decimalPattern.matcher(result);
+        StringBuffer sb1 = new StringBuffer();
+        while (decimalMatcher.find()) {
+            decimalMatcher.appendReplacement(sb1, String.valueOf((char) Integer.parseInt(decimalMatcher.group(1))));
+        }
+        decimalMatcher.appendTail(sb1);
+        
+        java.util.regex.Pattern hexPattern = java.util.regex.Pattern.compile("&#x([0-9a-fA-F]+);");
+        java.util.regex.Matcher hexMatcher = hexPattern.matcher(sb1.toString());
+        StringBuffer sb2 = new StringBuffer();
+        while (hexMatcher.find()) {
+            hexMatcher.appendReplacement(sb2, String.valueOf((char) Integer.parseInt(hexMatcher.group(1), 16)));
+        }
+        hexMatcher.appendTail(sb2);
+        
+        return sb2.toString();
     }
 
     public static boolean isValidXml(String xml) {

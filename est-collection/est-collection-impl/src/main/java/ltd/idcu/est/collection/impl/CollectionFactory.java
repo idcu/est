@@ -1,0 +1,138 @@
+package ltd.idcu.est.collection.impl;
+
+import ltd.idcu.est.collection.api.Collection;
+import ltd.idcu.est.utils.format.json.JsonUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+public final class CollectionFactory {
+
+    private CollectionFactory() {
+    }
+
+    public static <T> Collection<T> fromIterable(Iterable<T> iterable) {
+        if (iterable == null) {
+            return new DefaultCollection<>();
+        }
+        if (iterable instanceof Collection) {
+            @SuppressWarnings("unchecked")
+            Collection<T> collection = (Collection<T>) iterable;
+            return collection;
+        }
+        return new DefaultCollection<>(iterable);
+    }
+
+    public static <T> Collection<T> fromStream(Stream<T> stream) {
+        if (stream == null) {
+            return new DefaultCollection<>();
+        }
+        List<T> list = stream.toList();
+        return new DefaultCollection<>(list);
+    }
+
+    public static <T> Collection<T> singleton(T element) {
+        return new SingletonCollection<>(element);
+    }
+
+    public static Collection<String> fromJson(String json) {
+        if (json == null || json.trim().isEmpty()) {
+            return new DefaultCollection<>();
+        }
+        Object parsed = JsonUtils.parse(json);
+        if (parsed instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<String> list = (List<String>) parsed;
+            List<String> result = new ArrayList<>();
+            for (Object item : list) {
+                result.add(item != null ? String.valueOf(item) : null);
+            }
+            return new DefaultCollection<>(result);
+        }
+        return new DefaultCollection<>();
+    }
+
+    public static Collection<Object> fromYaml(String yaml) {
+        if (yaml == null || yaml.trim().isEmpty()) {
+            return new DefaultCollection<>();
+        }
+        throw new UnsupportedOperationException("fromYaml will be implemented in format conversion phase");
+    }
+
+    public static Collection<Object> fromXml(String xml) {
+        if (xml == null || xml.trim().isEmpty()) {
+            return new DefaultCollection<>();
+        }
+        throw new UnsupportedOperationException("fromXml will be implemented in format conversion phase");
+    }
+
+    public static Collection<Integer> range(int start, int end) {
+        return range(start, end, 1);
+    }
+
+    public static Collection<Integer> range(int start, int end, int step) {
+        if (step <= 0) {
+            throw new IllegalArgumentException("Step must be positive");
+        }
+        List<Integer> list = new ArrayList<>();
+        if (start < end) {
+            for (int i = start; i < end; i += step) {
+                list.add(i);
+            }
+        } else if (start > end) {
+            for (int i = start; i > end; i -= step) {
+                list.add(i);
+            }
+        }
+        return new DefaultCollection<>(list);
+    }
+
+    public static Collection<Long> range(long start, long end) {
+        return range(start, end, 1L);
+    }
+
+    public static Collection<Long> range(long start, long end, long step) {
+        if (step <= 0) {
+            throw new IllegalArgumentException("Step must be positive");
+        }
+        List<Long> list = new ArrayList<>();
+        if (start < end) {
+            for (long i = start; i < end; i += step) {
+                list.add(i);
+            }
+        } else if (start > end) {
+            for (long i = start; i > end; i -= step) {
+                list.add(i);
+            }
+        }
+        return new DefaultCollection<>(list);
+    }
+
+    public static <T> Collection<T> generate(int count, Supplier<T> supplier) {
+        if (count <= 0) {
+            return new DefaultCollection<>();
+        }
+        List<T> list = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            list.add(supplier.get());
+        }
+        return new DefaultCollection<>(list);
+    }
+
+    public static <T> Collection<T> repeat(T element, int times) {
+        if (times <= 0) {
+            return new DefaultCollection<>();
+        }
+        if (times == 1) {
+            return new SingletonCollection<>(element);
+        }
+        List<T> list = new ArrayList<>(times);
+        for (int i = 0; i < times; i++) {
+            list.add(element);
+        }
+        return new DefaultCollection<>(list);
+    }
+}

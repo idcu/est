@@ -2,6 +2,7 @@ package ltd.idcu.est.collection.api;
 
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Stream;
 
 public interface Collection<T> extends Iterable<T> {
 
@@ -220,6 +221,6 @@ public interface Collection<T> extends Iterable<T> {
     Stream<T> parallelStream();
 
     static <T> Collection<T> empty() {
-        return Collections.emptyList();
+        return Collections.empty();
     }
 }

@@ -1,12 +1,44 @@
 package ltd.idcu.est.collection.api;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Stream;
 
 public final class Collections {
 
+    private static volatile CollectionProvider provider;
+
     private Collections() {
+    }
+
+    public interface CollectionProvider {
+        <T> Collection<T> fromIterable(Iterable<T> iterable);
+        <T> Collection<T> fromStream(Stream<T> stream);
+        <T> Collection<T> singleton(T element);
+        Collection<String> fromJson(String json);
+        Collection<Object> fromYaml(String yaml);
+        Collection<Object> fromXml(String xml);
+        Collection<Integer> range(int start, int end, int step);
+        Collection<Long> range(long start, long end, long step);
+        <T> Collection<T> generate(int count, java.util.function.Supplier<T> supplier);
+        <T> Collection<T> repeat(T element, int times);
+    }
+
+    public static void setProvider(CollectionProvider provider) {
+        Collections.provider = provider;
+    }
+
+    public static CollectionProvider getProvider() {
+        return provider;
+    }
+
+    private static CollectionProvider requireProvider() {
+        CollectionProvider p = provider;
+        if (p == null) {
+            throw new IllegalStateException("CollectionProvider not initialized. " +
+                "Please add est-collection-impl dependency and call Collections.setProvider() " +
+                "or use ltd.idcu.est.collection.impl.CollectionFactory directly.");
+        }
+        return p;
     }
 
     @SuppressWarnings("unchecked")
@@ -18,11 +50,11 @@ public final class Collections {
     }
 
     public static <T> Collection<T> fromIterable(Iterable<T> iterable) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return requireProvider().fromIterable(iterable);
     }
 
     public static <T> Collection<T> fromStream(Stream<T> stream) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return requireProvider().fromStream(stream);
     }
 
     @SuppressWarnings("unchecked")
@@ -31,19 +63,19 @@ public final class Collections {
     }
 
     public static <T> Collection<T> singleton(T element) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return requireProvider().singleton(element);
     }
 
     public static Collection<String> fromJson(String json) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return requireProvider().fromJson(json);
     }
 
     public static Collection<Object> fromYaml(String yaml) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return requireProvider().fromYaml(yaml);
     }
 
     public static Collection<Object> fromXml(String xml) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return requireProvider().fromXml(xml);
     }
 
     public static <T> Collection<T> fromArray(T[] array) {
@@ -75,27 +107,27 @@ public final class Collections {
     }
 
     public static Collection<Integer> range(int start, int end) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return range(start, end, 1);
     }
 
     public static Collection<Integer> range(int start, int end, int step) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return requireProvider().range(start, end, step);
     }
 
     public static Collection<Long> range(long start, long end) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return range(start, end, 1L);
     }
 
     public static Collection<Long> range(long start, long end, long step) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return requireProvider().range(start, end, step);
     }
 
     public static <T> Collection<T> generate(int count, java.util.function.Supplier<T> supplier) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return requireProvider().generate(count, supplier);
     }
 
     public static <T> Collection<T> repeat(T element, int times) {
-        throw new UnsupportedOperationException("This method should be implemented in est-collection-impl module");
+        return requireProvider().repeat(element, times);
     }
 
     private static final class EmptyCollection<T> implements Collection<T> {
@@ -574,28 +606,28 @@ public final class Collections {
         }
 
         @Override
-        public java.util.List<java.util.List<T>> chunked(int size) {
-            return java.util.Collections.emptyList();
+        public Collection<java.util.List<T>> chunked(int size) {
+            return empty();
         }
 
         @Override
-        public java.util.List<java.util.List<T>> chunked(int size, boolean allowPartial) {
-            return java.util.Collections.emptyList();
+        public Collection<java.util.List<T>> chunked(int size, boolean allowPartial) {
+            return empty();
         }
 
         @Override
-        public java.util.List<java.util.List<T>> windowed(int size) {
-            return java.util.Collections.emptyList();
+        public Collection<java.util.List<T>> windowed(int size) {
+            return empty();
         }
 
         @Override
-        public java.util.List<java.util.List<T>> windowed(int size, int step) {
-            return java.util.Collections.emptyList();
+        public Collection<java.util.List<T>> windowed(int size, int step) {
+            return empty();
         }
 
         @Override
-        public java.util.List<java.util.List<T>> windowed(int size, int step, boolean partialWindows) {
-            return java.util.Collections.emptyList();
+        public Collection<java.util.List<T>> windowed(int size, int step, boolean partialWindows) {
+            return empty();
         }
 
         @Override
