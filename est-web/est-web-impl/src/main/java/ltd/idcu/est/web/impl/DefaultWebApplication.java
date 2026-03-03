@@ -135,17 +135,44 @@ public class DefaultWebApplication implements WebApplication {
 
     @Override
     public void enableCors() {
-        // 实现CORS启用逻辑
+        addMiddleware(new DefaultCorsMiddleware());
     }
 
     @Override
     public void enableCors(CorsMiddleware corsMiddleware) {
-        // 实现CORS启用逻辑
+        addMiddleware(corsMiddleware);
     }
 
     @Override
     public void enableCors(Map<String, Object> options) {
-        // 实现CORS启用逻辑
+        DefaultCorsMiddleware corsMiddleware = new DefaultCorsMiddleware();
+        
+        // 处理配置选项
+        if (options.containsKey("allowedOrigins")) {
+            corsMiddleware.setAllowedOrigins((List<String>) options.get("allowedOrigins"));
+        }
+        
+        if (options.containsKey("allowedMethods")) {
+            corsMiddleware.setAllowedMethods((List<String>) options.get("allowedMethods"));
+        }
+        
+        if (options.containsKey("allowedHeaders")) {
+            corsMiddleware.setAllowedHeaders((List<String>) options.get("allowedHeaders"));
+        }
+        
+        if (options.containsKey("exposedHeaders")) {
+            corsMiddleware.setExposedHeaders((List<String>) options.get("exposedHeaders"));
+        }
+        
+        if (options.containsKey("allowCredentials")) {
+            corsMiddleware.setAllowCredentials((boolean) options.get("allowCredentials"));
+        }
+        
+        if (options.containsKey("maxAge")) {
+            corsMiddleware.setMaxAge((long) options.get("maxAge"));
+        }
+        
+        addMiddleware(corsMiddleware);
     }
 
     @Override

@@ -250,6 +250,7 @@ mvn clean install -DskipTests
   - [x] 插件管理 - DefaultPluginManager、DefaultPluginLoader、JarPluginLoader、Plugins工厂类
   - [x] Web接口 - HttpMethod、HttpStatus、Request、Response、Session、Controller、RestController、Router、Route、Middleware、CorsMiddleware、View、WebException、WebServer、WebApplication、Filter、SessionManager、StaticFileHandler、MimeType
   - [x] Web实现 - DefaultWebServer、DefaultRouter、DefaultRoute、DefaultSession、DefaultSessionManager、DefaultWebApplication、DefaultStaticFileHandler
+  - [x] Web中间件实现 - DefaultCorsMiddleware、LoggingMiddleware、SecurityMiddleware
 - [ ] 阶段五：示例和文档
 - [ ] 阶段六：发布和维护
 
