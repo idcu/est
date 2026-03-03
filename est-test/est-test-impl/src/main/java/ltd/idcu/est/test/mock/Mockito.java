@@ -237,7 +237,7 @@ public final class Mockito {
             return true;
         }
 
-        Object getResult() {
+        Object getResult() throws Throwable {
             if (result instanceof ThrowingAnswer) {
                 throw ((ThrowingAnswer) result).getThrowable();
             }

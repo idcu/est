@@ -2,6 +2,7 @@ package ltd.idcu.est.test.result;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 
 public class TestReporter {
 

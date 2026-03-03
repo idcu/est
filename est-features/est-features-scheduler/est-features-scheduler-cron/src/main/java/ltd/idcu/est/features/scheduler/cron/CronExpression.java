@@ -145,7 +145,7 @@ public class CronExpression {
         return "CronExpression{" + expression + "}";
     }
     
-    public static CronExpression parse(String expression) {
+    public static CronExpression from(String expression) {
         return new CronExpression(expression);
     }
     

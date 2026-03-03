@@ -1,6 +1,9 @@
 package ltd.idcu.est.features.security.jwt;
 
 import ltd.idcu.est.features.security.api.*;
+import ltd.idcu.est.features.security.api.SecurityException;
+import ltd.idcu.est.features.security.basic.DefaultAuthentication;
+import ltd.idcu.est.features.security.basic.DefaultUser;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,7 +72,6 @@ public class JwtSecurityContext implements SecurityContext {
         }
         
         DefaultUser user = new DefaultUser(username, null);
-        user.setId((String) jwtToken.getClaim("user_id"));
         
         DefaultAuthentication auth = new DefaultAuthentication(user, null);
         auth.setToken(token);

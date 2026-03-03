@@ -66,9 +66,14 @@ public final class SystemMonitor {
     
     public HealthCheckResult checkHealth() {
         for (HealthCheck healthCheck : healthChecks) {
-            HealthCheckResult result = healthCheck.check();
-            if (!result.isHealthy()) {
-                return result;
+            if (healthCheck instanceof SystemHealthCheck systemHealthCheck) {
+                systemHealthCheck.check();
+                HealthCheckResult result = systemHealthCheck.getLastResult();
+                if (result != null && !result.isHealthy()) {
+                    return result;
+                }
+            } else {
+                healthCheck.check();
             }
         }
         return HealthCheckResult.healthy("system", "All system health checks passed");
@@ -76,7 +81,14 @@ public final class SystemMonitor {
     
     public List<HealthCheckResult> checkAllHealth() {
         return healthChecks.stream()
-                .map(HealthCheck::check)
+                .map(healthCheck -> {
+                    healthCheck.check();
+                    if (healthCheck instanceof SystemHealthCheck systemHealthCheck) {
+                        return systemHealthCheck.getLastResult();
+                    }
+                    return null;
+                })
+                .filter(result -> result != null)
                 .toList();
     }
     

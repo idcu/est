@@ -178,7 +178,6 @@ public class CronScheduler implements Scheduler {
         
         boolean cancelled = scheduledTask.future().cancel(false);
         if (cancelled) {
-            scheduledTask.task().setState(TaskState.CANCELLED);
             cancelledCount.incrementAndGet();
             notifyCancelled(taskId);
         }

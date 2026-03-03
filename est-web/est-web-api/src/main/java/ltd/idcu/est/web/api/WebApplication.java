@@ -87,5 +87,12 @@ public interface WebApplication extends Lifecycle {
         return create(name, "1.0.0");
     }
 
-    static WebApplication create(String name, String version);
+    static WebApplication create(String name, String version) {
+        try {
+            Class<?> clazz = Class.forName("ltd.idcu.est.web.impl.DefaultWebApplication");
+            return (WebApplication) clazz.getDeclaredConstructor(String.class, String.class).newInstance(name, version);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create WebApplication", e);
+        }
+    }
 }

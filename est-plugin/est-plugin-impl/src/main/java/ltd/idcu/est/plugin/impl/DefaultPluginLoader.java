@@ -107,11 +107,6 @@ public class DefaultPluginLoader implements PluginLoader {
     }
 
     private PluginInfo extractPluginInfo(Class<? extends Plugin> pluginClass) {
-        PluginInfo annotation = pluginClass.getAnnotation(PluginInfo.class);
-        if (annotation != null) {
-            return annotation;
-        }
-        
         return PluginInfo.builder()
                 .name(pluginClass.getSimpleName())
                 .version("1.0.0")

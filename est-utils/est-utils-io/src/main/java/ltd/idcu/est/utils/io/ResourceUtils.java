@@ -156,8 +156,12 @@ public final class ResourceUtils {
             return false;
         }
         if (URL_PROTOCOL_FILE.equals(url.getProtocol())) {
-            File file = getFile(url);
-            return file.exists();
+            try {
+                File file = getFile(url);
+                return file.exists();
+            } catch (FileNotFoundException ex) {
+                return false;
+            }
         }
         try (InputStream is = url.openStream()) {
             return true;

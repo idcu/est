@@ -245,10 +245,11 @@ mvn clean install -DskipTests
     - [x] 测试运行器 - TestRunner、TestScanner、TestExecutor
     - [x] Mock支持 - @Mock、mock()、when().thenReturn()、verify()
     - [x] 异步测试 - AsyncAssertions.await()、until()
-- [ ] 阶段四：插件与Web模块实现
+- [x] 阶段四：插件与Web模块实现
   - [x] 插件接口 - Plugin、PluginManager、PluginState、PluginInfo、PluginStats、PluginListener、PluginLoader、PluginConfig、PluginException、PluginContext、AbstractPlugin
   - [x] 插件管理 - DefaultPluginManager、DefaultPluginLoader、JarPluginLoader、Plugins工厂类
   - [x] Web接口 - HttpMethod、HttpStatus、Request、Response、Session、Controller、RestController、Router、Route、Middleware、CorsMiddleware、View、WebException、WebServer、WebApplication、Filter、SessionManager、StaticFileHandler、MimeType
+  - [x] Web实现 - DefaultWebServer、DefaultRouter、DefaultRoute、DefaultSession、DefaultSessionManager、DefaultWebApplication、DefaultStaticFileHandler
 - [ ] 阶段五：示例和文档
 - [ ] 阶段六：发布和维护
 

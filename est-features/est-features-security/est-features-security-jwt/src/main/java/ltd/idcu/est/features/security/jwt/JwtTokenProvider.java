@@ -1,6 +1,7 @@
 package ltd.idcu.est.features.security.jwt;
 
 import ltd.idcu.est.features.security.api.*;
+import ltd.idcu.est.features.security.api.SecurityException;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

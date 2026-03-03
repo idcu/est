@@ -47,7 +47,7 @@ public interface WebServer extends Module {
 
     void staticFiles(String path, String location, String... extensions);
 
-    void errorHandler(BiConsumer<Request, Response, Exception> handler);
+    void errorHandler(ErrorHandler handler);
 
     void before(String path, BiConsumer<Request, Response> filter);
 

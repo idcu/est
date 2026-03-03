@@ -216,7 +216,7 @@ public class JvmMetrics implements Metrics {
     }
     
     public int getAvailableProcessors() {
-        return runtimeMXBean.getAvailableProcessors();
+        return Runtime.getRuntime().availableProcessors();
     }
     
     public long getProcessCpuTime() {

@@ -369,19 +369,27 @@ public class JdbcOrm implements Orm {
     }
     
     private <T> EntityMapper<T> createMapper(Class<T> entityClass, EntityMetadata metadata) {
-        return rs -> {
-            try {
-                T entity = entityClass.getDeclaredConstructor().newInstance();
-                for (ColumnMetadata column : metadata.columns) {
-                    Object value = rs.getObject(column.columnName);
-                    if (value != null) {
-                        column.field.setAccessible(true);
-                        column.field.set(entity, value);
+        return new EntityMapper<T>() {
+            @Override
+            public T map(ResultSet rs) throws SQLException {
+                try {
+                    T entity = entityClass.getDeclaredConstructor().newInstance();
+                    for (ColumnMetadata column : metadata.columns) {
+                        Object value = rs.getObject(column.columnName);
+                        if (value != null) {
+                            column.field.setAccessible(true);
+                            column.field.set(entity, value);
+                        }
                     }
+                    return entity;
+                } catch (Exception e) {
+                    throw new DataException("Failed to map entity", e);
                 }
-                return entity;
-            } catch (Exception e) {
-                throw new DataException("Failed to map entity", e);
+            }
+
+            @Override
+            public T map(ResultSet rs, int rowNum) throws SQLException {
+                return map(rs);
             }
         };
     }

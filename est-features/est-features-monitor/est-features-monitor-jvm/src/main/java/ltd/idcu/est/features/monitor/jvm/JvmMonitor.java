@@ -67,9 +67,14 @@ public final class JvmMonitor {
     
     public HealthCheckResult checkHealth() {
         for (HealthCheck healthCheck : healthChecks) {
-            HealthCheckResult result = healthCheck.check();
-            if (!result.isHealthy()) {
-                return result;
+            if (healthCheck instanceof JvmHealthCheck jvmHealthCheck) {
+                jvmHealthCheck.check();
+                HealthCheckResult result = jvmHealthCheck.getLastResult();
+                if (result != null && !result.isHealthy()) {
+                    return result;
+                }
+            } else {
+                healthCheck.check();
             }
         }
         return HealthCheckResult.healthy("jvm", "All JVM health checks passed");
@@ -77,7 +82,14 @@ public final class JvmMonitor {
     
     public List<HealthCheckResult> checkAllHealth() {
         return healthChecks.stream()
-                .map(HealthCheck::check)
+                .map(healthCheck -> {
+                    healthCheck.check();
+                    if (healthCheck instanceof JvmHealthCheck jvmHealthCheck) {
+                        return jvmHealthCheck.getLastResult();
+                    }
+                    return null;
+                })
+                .filter(result -> result != null)
                 .toList();
     }
     

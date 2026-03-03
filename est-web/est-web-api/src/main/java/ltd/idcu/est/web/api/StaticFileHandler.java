@@ -1,5 +1,6 @@
 package ltd.idcu.est.web.api;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
@@ -56,8 +57,8 @@ public interface StaticFileHandler {
         long getLastModified();
         String getMimeType();
         String getExtension();
-        InputStream getInputStream();
-        byte[] readAllBytes();
+        InputStream getInputStream() throws IOException;
+        byte[] readAllBytes() throws IOException;
         Path toPath();
     }
 }

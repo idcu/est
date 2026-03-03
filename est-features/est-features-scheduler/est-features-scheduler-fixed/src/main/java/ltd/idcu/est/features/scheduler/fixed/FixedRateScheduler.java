@@ -200,7 +200,6 @@ public class FixedRateScheduler implements Scheduler {
         
         boolean cancelled = wrapper.future().cancel(false);
         if (cancelled) {
-            wrapper.task().setState(TaskState.CANCELLED);
             cancelledCount.incrementAndGet();
             notifyCancelled(taskId);
         }

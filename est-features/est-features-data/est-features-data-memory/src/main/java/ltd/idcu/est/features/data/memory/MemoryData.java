@@ -1,6 +1,7 @@
 package ltd.idcu.est.features.data.memory;
 
 import ltd.idcu.est.features.data.api.*;
+import java.util.List;
 
 public final class MemoryData {
     

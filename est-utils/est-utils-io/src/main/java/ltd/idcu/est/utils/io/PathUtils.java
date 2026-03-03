@@ -2,11 +2,14 @@ package ltd.idcu.est.utils.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 public final class PathUtils {
@@ -377,11 +380,6 @@ public final class PathUtils {
         try (Stream<Path> stream = Files.find(start, maxDepth, matcher)) {
             return stream.toList();
         }
-    }
-
-    @FunctionalInterface
-    public interface BiPredicate<T, U> {
-        boolean test(T t, U u);
     }
 
     public static Path createSymbolicLink(Path link, Path target) throws IOException {

@@ -116,7 +116,7 @@ public class TestExecutor {
         List<Throwable> failures = new ArrayList<>();
 
         for (int i = 0; i < arguments.size(); i++) {
-            Object[] args = arguments.get(i];
+            Object[] args = arguments.get(i);
             String testName = formatParameterizedName(testMethod, args, i);
             long testStartTime = System.currentTimeMillis();
 

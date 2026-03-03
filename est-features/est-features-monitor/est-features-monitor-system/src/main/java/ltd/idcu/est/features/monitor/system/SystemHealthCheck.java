@@ -37,7 +37,7 @@ public class SystemHealthCheck implements HealthCheck {
     }
     
     @Override
-    public HealthCheckResult check() {
+    public HealthStatus check() {
         Map<String, Object> details = new HashMap<>();
         
         OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
@@ -102,11 +102,15 @@ public class SystemHealthCheck implements HealthCheck {
         String message = buildHealthMessage(status, cpuLoad, memoryUsage, diskUsage);
         
         lastResult = new HealthCheckResult(status, name, message, details);
-        return lastResult;
+        return status;
     }
     
     @Override
-    public HealthCheckResult getStatus() {
+    public HealthStatus getStatus() {
+        return lastResult != null ? lastResult.getStatus() : HealthStatus.UNKNOWN;
+    }
+    
+    public HealthCheckResult getLastResult() {
         return lastResult;
     }
     

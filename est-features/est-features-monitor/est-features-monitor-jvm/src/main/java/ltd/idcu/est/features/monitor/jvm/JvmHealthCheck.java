@@ -30,7 +30,7 @@ public class JvmHealthCheck implements HealthCheck {
     }
     
     @Override
-    public HealthCheckResult check() {
+    public HealthStatus check() {
         Map<String, Object> details = new HashMap<>();
         
         MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
@@ -72,11 +72,15 @@ public class JvmHealthCheck implements HealthCheck {
         String message = buildHealthMessage(status, heapUsagePercent, cpuLoad);
         
         lastResult = new HealthCheckResult(status, name, message, details);
-        return lastResult;
+        return status;
     }
     
     @Override
-    public HealthCheckResult getStatus() {
+    public HealthStatus getStatus() {
+        return lastResult != null ? lastResult.getStatus() : HealthStatus.UNKNOWN;
+    }
+    
+    public HealthCheckResult getLastResult() {
         return lastResult;
     }
     

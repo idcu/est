@@ -1,6 +1,7 @@
 package ltd.idcu.est.features.security.jwt;
 
 import ltd.idcu.est.features.security.api.*;
+import ltd.idcu.est.features.security.api.SecurityException;
 import ltd.idcu.est.features.security.basic.*;
 
 import java.util.*;
@@ -49,6 +50,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             throw new AuthenticationException("Username is required");
         }
         
+        final String finalUsername = username;
         Object credentials = authentication.getCredentials();
         String password = credentials != null ? credentials.toString() : null;
         
@@ -60,7 +62,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         User user = userDetailsService.findByUsername(username)
                 .orElseThrow(() -> {
                     stats.incrementFailedAuthentications();
-                    return new AuthenticationException("User not found: " + username);
+                    return new AuthenticationException("User not found: " + finalUsername);
                 });
         
         if (!user.isEnabled()) {

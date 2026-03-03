@@ -67,7 +67,7 @@ public class BasicCrypto implements Crypto {
             
             return new SecretKeySpec(keyBytes, AES_ALGORITHM);
         } catch (Exception e) {
-            throw new SecurityException("Failed to derive key from secret", "KEY_DERIVATION_ERROR", e);
+            throw new ltd.idcu.est.features.security.api.SecurityException("Failed to derive key from secret", "KEY_DERIVATION_ERROR", e);
         }
     }
     
@@ -89,7 +89,7 @@ public class BasicCrypto implements Crypto {
             
             return Base64.getEncoder().encodeToString(cipherTextWithIv);
         } catch (Exception e) {
-            throw new SecurityException("Encryption failed", "ENCRYPTION_ERROR", e);
+            throw new ltd.idcu.est.features.security.api.SecurityException("Encryption failed", "ENCRYPTION_ERROR", e);
         }
     }
     
@@ -99,7 +99,7 @@ public class BasicCrypto implements Crypto {
             byte[] cipherTextWithIv = Base64.getDecoder().decode(cipherText);
             
             if (cipherTextWithIv.length < GCM_IV_LENGTH) {
-                throw new SecurityException("Invalid cipher text", "INVALID_CIPHER_TEXT");
+                throw new ltd.idcu.est.features.security.api.SecurityException("Invalid cipher text", "INVALID_CIPHER_TEXT");
             }
             
             byte[] iv = Arrays.copyOfRange(cipherTextWithIv, 0, GCM_IV_LENGTH);
@@ -111,10 +111,10 @@ public class BasicCrypto implements Crypto {
             
             byte[] plainText = cipher.doFinal(cipherBytes);
             return new String(plainText, StandardCharsets.UTF_8);
-        } catch (SecurityException e) {
+        } catch (ltd.idcu.est.features.security.api.SecurityException e) {
             throw e;
         } catch (Exception e) {
-            throw new SecurityException("Decryption failed", "DECRYPTION_ERROR", e);
+            throw new ltd.idcu.est.features.security.api.SecurityException("Decryption failed", "DECRYPTION_ERROR", e);
         }
     }
     
@@ -134,7 +134,7 @@ public class BasicCrypto implements Crypto {
             
             return Base64.getEncoder().encodeToString(hashWithSalt);
         } catch (Exception e) {
-            throw new SecurityException("Hashing failed", "HASH_ERROR", e);
+            throw new ltd.idcu.est.features.security.api.SecurityException("Hashing failed", "HASH_ERROR", e);
         }
     }
     
@@ -174,7 +174,7 @@ public class BasicCrypto implements Crypto {
             
             return Base64.getEncoder().encodeToString(signature.sign());
         } catch (Exception e) {
-            throw new SecurityException("Signing failed", "SIGN_ERROR", e);
+            throw new ltd.idcu.est.features.security.api.SecurityException("Signing failed", "SIGN_ERROR", e);
         }
     }
     
@@ -206,7 +206,7 @@ public class BasicCrypto implements Crypto {
             keyGenerator.init(keyLength, secureRandom);
             return keyGenerator.generateKey();
         } catch (Exception e) {
-            throw new SecurityException("Key generation failed", "KEY_GENERATION_ERROR", e);
+            throw new ltd.idcu.est.features.security.api.SecurityException("Key generation failed", "KEY_GENERATION_ERROR", e);
         }
     }
     
@@ -218,7 +218,7 @@ public class BasicCrypto implements Crypto {
             this.keyPair = keyPairGenerator.generateKeyPair();
             return this.keyPair;
         } catch (Exception e) {
-            throw new SecurityException("Key pair generation failed", "KEY_PAIR_GENERATION_ERROR", e);
+            throw new ltd.idcu.est.features.security.api.SecurityException("Key pair generation failed", "KEY_PAIR_GENERATION_ERROR", e);
         }
     }
     
@@ -267,7 +267,7 @@ public class BasicCrypto implements Crypto {
                 keyPair = new KeyPair(publicKey, keyPair.getPrivate());
             }
         } catch (Exception e) {
-            throw new SecurityException("Public key import failed", "KEY_IMPORT_ERROR", e);
+            throw new ltd.idcu.est.features.security.api.SecurityException("Public key import failed", "KEY_IMPORT_ERROR", e);
         }
     }
     
@@ -284,7 +284,7 @@ public class BasicCrypto implements Crypto {
                 keyPair = new KeyPair(keyPair.getPublic(), privateKey);
             }
         } catch (Exception e) {
-            throw new SecurityException("Private key import failed", "KEY_IMPORT_ERROR", e);
+            throw new ltd.idcu.est.features.security.api.SecurityException("Private key import failed", "KEY_IMPORT_ERROR", e);
         }
     }
     

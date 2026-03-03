@@ -20,7 +20,7 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
     }
     
     @Override
-    public Authentication authenticate(Authentication authentication) throws SecurityException {
+    public Authentication authenticate(Authentication authentication) throws ltd.idcu.est.features.security.api.SecurityException {
         stats.incrementAuthenticationCount();
         
         if (authentication == null) {
@@ -38,6 +38,7 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
             throw new AuthenticationException("Username is required");
         }
         
+        final String finalUsername = username;
         Object credentials = authentication.getCredentials();
         String password = credentials != null ? credentials.toString() : null;
         
@@ -49,7 +50,7 @@ public class BasicAuthenticationProvider implements AuthenticationProvider {
         User user = userDetailsService.findByUsername(username)
                 .orElseThrow(() -> {
                     stats.incrementFailedAuthentications();
-                    return new AuthenticationException("User not found: " + username);
+                    return new AuthenticationException("User not found: " + finalUsername);
                 });
         
         if (!user.isEnabled()) {

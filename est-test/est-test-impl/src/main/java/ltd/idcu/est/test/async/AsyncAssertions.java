@@ -13,8 +13,8 @@ public final class AsyncAssertions {
     private AsyncAssertions() {
     }
 
-    public static void await() {
-        await(DEFAULT_TIMEOUT);
+    public static AwaitBuilder await() {
+        return await(DEFAULT_TIMEOUT);
     }
 
     public static AwaitBuilder await(Duration timeout) {

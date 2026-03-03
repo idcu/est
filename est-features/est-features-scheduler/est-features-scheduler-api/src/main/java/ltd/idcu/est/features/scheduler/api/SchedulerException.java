@@ -44,6 +44,7 @@ public class SchedulerException extends RuntimeException {
     }
     
     public enum ErrorCode {
+        UNKNOWN,
         TASK_NOT_FOUND,
         TASK_ALREADY_EXISTS,
         INVALID_CRON_EXPRESSION,

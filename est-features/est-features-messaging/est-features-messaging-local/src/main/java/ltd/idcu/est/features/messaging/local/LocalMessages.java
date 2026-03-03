@@ -64,8 +64,14 @@ public final class LocalMessages {
     }
     
     public static void send(String queue, Object body) {
-        try (MessageProducer producer = newProducer()) {
+        MessageProducer producer = null;
+        try {
+            producer = newProducer();
             producer.send(queue, body);
+        } finally {
+            if (producer != null) {
+                producer.close();
+            }
         }
     }
     
