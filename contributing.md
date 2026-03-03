@@ -22,7 +22,7 @@
 ### 克隆仓库
 
 ```bash
-git clone https://github.com/yourusername/est.git
+git clone https://github.com/idcu/est.git
 cd est
 ```
 
