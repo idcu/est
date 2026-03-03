@@ -277,12 +277,42 @@ mvn clean install -DskipTests
     - [x] RESTful API应用 - 构建RESTful风格的API
     - [x] MVC应用 - 模型-视图-控制器架构的应用
     - [x] 中间件应用 - 使用和自定义中间件
-  - [ ] 文档编写
+  - [x] 文档编写
+    - [x] API文档 - 使用Javadoc生成详细的API文档
+    - [x] 用户指南 - 框架的安装、配置和使用指南
+    - [x] 示例文档 - 各个示例的详细说明文档
+    - [x] 架构文档 - 框架的设计理念和架构说明
+    - [x] 贡献指南 - 如何为框架贡献代码
 - [ ] 阶段六：发布和维护
 
 ## License
 
 [MIT License](LICENSE)
+
+## 文档
+
+EST框架提供了完整的文档支持，包括：
+
+### 架构设计文档
+- 位置：`.ai/docs/architecture_design.md`
+- 内容：框架的设计理念、架构说明、模块结构和开发计划
+
+### API文档
+- 生成方式：使用Javadoc生成
+- 命令：`mvn javadoc:aggregate`
+- 输出位置：`target/site/apidocs`
+
+### 用户指南
+- 内容：框架的安装、配置和使用指南
+- 位置：`.ai/docs/`目录下
+
+### 示例文档
+- 内容：各个示例的详细说明文档
+- 位置：`est-examples`目录下的各个示例模块中
+
+### 贡献指南
+- 内容：如何为框架贡献代码
+- 位置：`contributing.md`
 
 ## Author
 
