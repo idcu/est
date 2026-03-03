@@ -182,7 +182,7 @@ mvn clean install -DskipTests
 | est-features-messaging | 消息功能，本地消息、AMQP消息、MQTT消息 |
 | est-features-monitor | 监控功能，JVM监控、系统监控 |
 | est-features-scheduler | 调度功能，Cron调度、固定间隔调度 |
-| est-plugin | 插件系统，插件加载、管理 |
+| est-plugin | 插件系统，插件接口、插件加载器（类加载、JAR加载）、插件管理器、依赖管理 |
 | est-web | Web功能，HTTP服务器、路由、中间件、MVC |
 
 ## 模块统计
@@ -247,6 +247,7 @@ mvn clean install -DskipTests
     - [x] 异步测试 - AsyncAssertions.await()、until()
 - [ ] 阶段四：插件与Web模块实现
   - [x] 插件接口 - Plugin、PluginManager、PluginState、PluginInfo、PluginStats、PluginListener、PluginLoader、PluginConfig、PluginException、PluginContext、AbstractPlugin
+  - [x] 插件管理 - DefaultPluginManager、DefaultPluginLoader、JarPluginLoader、Plugins工厂类
 - [ ] 阶段五：示例和文档
 - [ ] 阶段六：发布和维护
 

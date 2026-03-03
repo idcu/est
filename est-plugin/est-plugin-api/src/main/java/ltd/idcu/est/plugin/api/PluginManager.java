@@ -36,4 +36,11 @@ public interface PluginManager {
     void removeListener(PluginListener listener);
     
     PluginStats getStats();
+    
+    interface Builder {
+        Builder config(PluginConfig config);
+        Builder addLoader(PluginLoader loader);
+        Builder addListener(PluginListener listener);
+        PluginManager build();
+    }
 }
