@@ -52,6 +52,30 @@
             <groupId>ltd.idcu</groupId>
             <artifactId>est-features-logging-console</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-security-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-security-basic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-scheduler-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-scheduler-cron</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-monitor-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-monitor-jvm</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
