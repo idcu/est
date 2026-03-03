@@ -199,7 +199,9 @@ mvn clean install -DskipTests
   - [x] 事件系统 - EventBus接口、Event、EventListener、EventConfig、EventStats
     - [x] 本地事件 - LocalEventBus、LocalEvents工厂类
     - [x] 异步事件 - AsyncEventBus、AsyncEvents工厂类（支持虚拟线程）
-  - [ ] 日志系统（控制台、文件）
+  - [x] 日志系统 - Logger接口、LogLevel、LogRecord、LogFormatter、LogAppender、LogConfig、LogStats
+    - [x] 控制台日志 - ConsoleLogger、ConsoleLogAppender、ConsoleLogFormatter、ConsoleLogs工厂类
+    - [x] 文件日志 - FileLogger、FileLogAppender、FileLogFormatter、FileLogs工厂类（支持文件滚动和日期滚动）
   - [ ] 数据系统（JDBC、内存、Redis）
   - [ ] 安全系统（基础、JWT）
   - [ ] 消息系统（本地、AMQP）
