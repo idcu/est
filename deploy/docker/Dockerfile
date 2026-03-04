@@ -11,6 +11,7 @@ COPY est-collection ./est-collection
 COPY est-features ./est-features
 COPY est-plugin ./est-plugin
 COPY est-web ./est-web
+COPY est-scaffold ./est-scaffold
 COPY est-examples ./est-examples
 
 RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*

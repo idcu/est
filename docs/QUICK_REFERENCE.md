@@ -76,6 +76,43 @@ bus.subscribe(MyEvent.class, event -> handle(event));
 bus.publish(new MyEvent());
 ```
 
+### 6. 日志
+```java
+import ltd.idcu.est.features.logging.api.Logger;
+import ltd.idcu.est.features.logging.api.LogLevel;
+import ltd.idcu.est.features.logging.console.ConsoleLogs;
+
+Logger logger = ConsoleLogs.getLogger("MyApp", LogLevel.DEBUG);
+logger.debug("Debug message");
+logger.info("Info message");
+logger.warn("Warning message");
+logger.error("Error message", exception);
+```
+
+### 7. 调度
+```java
+import ltd.idcu.est.features.scheduler.api.Scheduler;
+import ltd.idcu.est.features.scheduler.fixed.FixedRateSchedulers;
+import java.util.concurrent.TimeUnit;
+
+Scheduler scheduler = FixedRateSchedulers.create();
+scheduler.start();
+scheduler.scheduleAtFixedRate(FixedRateSchedulers.wrap(() -> {
+    System.out.println("Task executed");
+}), 0, 5, TimeUnit.SECONDS);
+```
+
+### 8. 配置
+```java
+import ltd.idcu.est.core.api.Config;
+import ltd.idcu.est.core.impl.DefaultConfig;
+
+Config config = new DefaultConfig();
+config.set("app.name", "MyApp");
+String name = config.getString("app.name");
+int port = config.getInt("app.port", 8080);
+```
+
 ## 导入语句速查
 
 ### 核心模块
@@ -97,8 +134,20 @@ import ltd.idcu.est.features.cache.api.*;
 import ltd.idcu.est.features.cache.memory.*;
 import ltd.idcu.est.features.event.api.*;
 import ltd.idcu.est.features.event.local.*;
+import ltd.idcu.est.features.event.async.*;
 import ltd.idcu.est.features.logging.api.*;
 import ltd.idcu.est.features.logging.console.*;
+import ltd.idcu.est.features.logging.file.*;
+import ltd.idcu.est.features.scheduler.api.*;
+import ltd.idcu.est.features.scheduler.fixed.*;
+import ltd.idcu.est.features.scheduler.cron.*;
+import ltd.idcu.est.features.monitor.api.*;
+import ltd.idcu.est.features.monitor.jvm.*;
+import ltd.idcu.est.features.monitor.system.*;
+import ltd.idcu.est.features.security.api.*;
+import ltd.idcu.est.features.security.basic.*;
+import ltd.idcu.est.features.security.jwt.*;
+import ltd.idcu.est.features.security.apikey.*;
 ```
 
 ## Maven 依赖速查

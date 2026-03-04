@@ -213,6 +213,121 @@ EST 事件关键类：
 
 ---
 
+### 9. 添加日志功能
+
+**提示词：**
+```
+为 EST 项目添加日志功能，使用 EST 框架的日志模块。
+
+需求：
+1. 创建控制台日志记录器（Loggers.newConsoleLogger()）
+2. 创建文件日志记录器（Loggers.newFileLogger()）
+3. 实现以下日志级别：
+   - DEBUG：调试信息
+   - INFO：一般信息
+   - WARN：警告信息
+   - ERROR：错误信息
+4. 演示不同级别的日志输出
+5. 添加日志格式化（可选）
+
+EST 日志关键类：
+- Logger 接口
+- Loggers 工厂类
+- est-features-logging-api 和 est-features-logging-console/est-features-logging-file 依赖
+
+请提供完整的日志使用示例。
+```
+
+---
+
+### 10. 添加调度功能
+
+**提示词：**
+```
+为 EST 项目添加任务调度功能，使用 EST 框架的调度模块。
+
+需求：
+1. 创建固定间隔调度器（Schedulers.newFixedRateScheduler()）
+2. 创建 Cron 表达式调度器（Schedulers.newCronScheduler()）
+3. 实现以下任务：
+   - 每 5 秒执行一次的简单任务
+   - 每分钟执行一次的任务（Cron 表达式）
+   - 每天凌晨 2 点执行的任务（Cron 表达式）
+4. 添加任务监听器，监听任务执行事件
+5. 演示任务启动、暂停、恢复、停止
+
+EST 调度关键类：
+- Scheduler 接口
+- Schedulers 工厂类
+- Task 接口
+- est-features-scheduler-api 和 est-features-scheduler-fixed/est-features-scheduler-cron 依赖
+
+请提供完整的调度功能示例。
+```
+
+---
+
+### 11. 添加监控功能
+
+**提示词：**
+```
+为 EST 项目添加监控功能，使用 EST 框架的监控模块。
+
+需求：
+1. 创建 JVM 监控器（Monitors.newJvmMonitor()）
+2. 创建系统监控器（Monitors.newSystemMonitor()）
+3. 实现以下监控指标：
+   - JVM 内存使用情况
+   - JVM 线程数
+   - JVM GC 统计
+   - CPU 使用率
+   - 磁盘使用情况
+   - 网络 I/O
+4. 添加健康检查端点
+5. 定期打印监控信息（每 10 秒）
+
+EST 监控关键类：
+- Monitor 接口
+- Monitors 工厂类
+- HealthCheck 接口
+- est-features-monitor-api 和 est-features-monitor-jvm/est-features-monitor-system 依赖
+
+请提供完整的监控功能示例。
+```
+
+---
+
+### 12. 添加安全认证功能
+
+**提示词：**
+```
+为 EST Web 应用添加安全认证功能，使用 EST 框架的安全模块。
+
+需求：
+1. 实现基础认证（BasicSecurity）
+   - 用户管理（注册、登录、注销）
+   - 角色管理
+   - 权限检查
+2. 实现 JWT 认证（JwtSecurity）
+   - JWT token 生成
+   - JWT token 验证
+   - Token 刷新
+3. 实现 API Key 认证（ApiKeySecurity）
+4. 添加密码加密（BCrypt）
+5. 创建受保护的 API 端点
+6. 实现基于属性的授权策略
+
+EST 安全关键类：
+- Security 接口
+- SecurityManager 类
+- User, Role, Permission 接口
+- est-features-security-api 和 est-features-security-basic/est-features-security-jwt/est-features-security-apikey 依赖
+
+请提供完整的安全认证实现示例。
+```
+
+---
+
 ## 特定场景提示词
 
 ### 场景：创建微服务
@@ -319,3 +434,7 @@ EST 数据模块关键类：
 | 事件驱动 | 6 |
 | 中间件 | 7 |
 | 多模块集成 | 8 |
+| 日志功能 | 9 |
+| 调度功能 | 10 |
+| 监控功能 | 11 |
+| 安全认证 | 12 |
