@@ -334,11 +334,6 @@ public class HttpServerImpl implements WebServer {
         }
 
         private void handleRoute(Route route, DefaultRequest request, DefaultResponse response) {
-            if (route.getHandlerFunction() != null) {
-                route.getHandlerFunction().accept(request, response);
-                return;
-            }
-            
             String handler = route.getHandler();
             if (handler == null || handler.isEmpty()) {
                 response.sendError(500, "No handler defined for route");
