@@ -150,7 +150,7 @@ public class DefaultSessionManager implements SessionManager {
         }
     }
 
-    public SessionConfig getSessionConfig() {
+    public SessionManager.SessionConfig getSessionConfig() {
         return sessionConfig;
     }
 
