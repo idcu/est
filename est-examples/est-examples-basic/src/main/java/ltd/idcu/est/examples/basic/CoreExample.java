@@ -14,6 +14,9 @@ public class CoreExample {
         // 依赖注入示例
         containerExample();
         
+        // 增强依赖注入示例
+        EnhancedContainerExample.run();
+        
         // 配置管理示例
         configExample();
         
