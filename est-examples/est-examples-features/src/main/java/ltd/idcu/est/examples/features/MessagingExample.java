@@ -1,5 +1,6 @@
 package ltd.idcu.est.examples.features;
 
+import ltd.idcu.est.features.messaging.api.DefaultMessage;
 import ltd.idcu.est.features.messaging.api.Message;
 import ltd.idcu.est.features.messaging.api.MessageConsumer;
 import ltd.idcu.est.features.messaging.api.MessageProducer;
@@ -92,32 +93,5 @@ public class MessagingExample {
         System.out.println("Published notification");
         
         latch.await(2, TimeUnit.SECONDS);
-    }
-    
-    private static class DefaultMessage implements Message {
-        private final String id;
-        private final String topic;
-        private final Object body;
-        private final long timestamp;
-        
-        public DefaultMessage(String id, String topic, Object body) {
-            this.id = id;
-            this.topic = topic;
-            this.body = body;
-            this.timestamp = System.currentTimeMillis();
-        }
-        
-        public static DefaultMessage of(String id, String topic, Object body) {
-            return new DefaultMessage(id, topic, body);
-        }
-        
-        @Override
-        public String getId() { return id; }
-        @Override
-        public String getTopic() { return topic; }
-        @Override
-        public Object getBody() { return body; }
-        @Override
-        public long getTimestamp() { return timestamp; }
     }
 }

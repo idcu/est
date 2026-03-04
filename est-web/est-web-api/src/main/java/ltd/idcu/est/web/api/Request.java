@@ -148,4 +148,12 @@ public interface Request {
     boolean isAsyncStarted();
 
     AsyncContext getAsyncContext();
+
+    void setAttribute(String name, Object value);
+
+    Object getAttribute(String name);
+
+    void removeAttribute(String name);
+
+    Map<String, Object> getAttributes();
 }

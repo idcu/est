@@ -60,9 +60,10 @@ public class HttpServerImpl implements WebServer {
             server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
             server.createContext("/", new RequestHandler());
             
-            webSocketServerManager.setHost(host);
-            webSocketServerManager.setPort(port);
-            webSocketServerManager.initialize();
+            // WebSocket temporarily disabled
+            // webSocketServerManager.setHost(host);
+            // webSocketServerManager.setPort(port);
+            // webSocketServerManager.initialize();
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize HTTP server", e);
         }
@@ -74,7 +75,7 @@ public class HttpServerImpl implements WebServer {
             initialize();
         }
         server.start();
-        webSocketServerManager.start();
+        // webSocketServerManager.start();
         sessionManager.startCleanupTask();
         running = true;
     }
@@ -84,7 +85,7 @@ public class HttpServerImpl implements WebServer {
         if (server != null) {
             sessionManager.stopCleanupTask();
             server.stop(0);
-            webSocketServerManager.stop();
+            // webSocketServerManager.stop();
             running = false;
         }
     }
@@ -439,11 +440,11 @@ public class HttpServerImpl implements WebServer {
 
     @Override
     public void websocket(String path, WebSocketHandler handler) {
-        webSocketServerManager.addHandler(path, handler);
+        // WebSocket temporarily disabled
     }
 
     @Override
     public void websocket(WebSocketEndpoint endpoint) {
-        webSocketServerManager.addEndpoint(endpoint);
+        // WebSocket temporarily disabled
     }
 }

@@ -3,6 +3,7 @@ package ltd.idcu.est.examples.web;
 import ltd.idcu.est.web.DefaultCorsMiddleware;
 import ltd.idcu.est.web.DefaultWebApplication;
 import ltd.idcu.est.web.LoggingMiddleware;
+import ltd.idcu.est.web.api.Session;
 import ltd.idcu.est.web.api.WebApplication;
 
 import java.util.List;
@@ -48,12 +49,14 @@ public class EnhancedWebExample {
         
         app.enableCors(corsMiddleware);
         
-        app.get("/api/data", (req, res) -> {
-            res.json(Map.of(
-                "message", "This is a CORS-enabled API endpoint",
-                "timestamp", System.currentTimeMillis(),
-                "data", List.of("item1", "item2", "item3")
-            ));
+        app.routes(router -> {
+            router.get("/api/data", (req, res) -> {
+                res.json(Map.of(
+                    "message", "This is a CORS-enabled API endpoint",
+                    "timestamp", System.currentTimeMillis(),
+                    "data", List.of("item1", "item2", "item3")
+                ));
+            });
         });
     }
     
@@ -62,59 +65,64 @@ public class EnhancedWebExample {
         
         app.staticFiles("/static", "static");
         
-        app.get("/", (req, res) -> {
-            res.send("""
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>EST Web Examples</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
-                        h1 { color: #333; }
-                        .route { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; }
-                        .route code { background: #e0e0e0; padding: 2px 6px; border-radius: 3px; }
-                    </style>
-                </head>
-                <body>
-                    <h1>EST Web Framework Examples</h1>
-                    <h2>Available Routes:</h2>
-                    <div class="route">
-                        <code>GET /</code> - This page
-                    </div>
-                    <div class="route">
-                        <code>GET /api/data</code> - CORS enabled API (JSON)
-                    </div>
-                    <div class="route">
-                        <code>GET /session/counter</code> - Session-based counter
-                    </div>
-                    <div class="route">
-                        <code>GET /error</code> - Test error handling
-                    </div>
-                    <div class="route">
-                        <code>GET /static/*</code> - Static files (try /static/index.html if exists)
-                    </div>
-                </body>
-                </html>
-                """);
+        app.routes(router -> {
+            router.get("/", (req, res) -> {
+                res.html("""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>EST Web Examples</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+                            h1 { color: #333; }
+                            .route { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; }
+                            .route code { background: #e0e0e0; padding: 2px 6px; border-radius: 3px; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>EST Web Framework Examples</h1>
+                        <h2>Available Routes:</h2>
+                        <div class="route">
+                            <code>GET /</code> - This page
+                        </div>
+                        <div class="route">
+                            <code>GET /api/data</code> - CORS enabled API (JSON)
+                        </div>
+                        <div class="route">
+                            <code>GET /session/counter</code> - Session-based counter
+                        </div>
+                        <div class="route">
+                            <code>GET /error</code> - Test error handling
+                        </div>
+                        <div class="route">
+                            <code>GET /static/*</code> - Static files (try /static/index.html if exists)
+                        </div>
+                    </body>
+                    </html>
+                    """);
+            });
         });
     }
     
     private static void sessionExample(WebApplication app) {
         System.out.println("Setting up session example...");
         
-        app.get("/session/counter", (req, res) -> {
-            Integer count = (Integer) req.session().getAttribute("counter");
-            if (count == null) {
-                count = 0;
-            }
-            count++;
-            req.session().setAttribute("counter", count);
-            
-            res.json(Map.of(
-                "sessionId", req.session().getId(),
-                "counter", count,
-                "message", "Refresh to increment the counter"
-            ));
+        app.routes(router -> {
+            router.get("/session/counter", (req, res) -> {
+                Session session = req.getSession(true);
+                Integer count = (Integer) session.getAttribute("counter");
+                if (count == null) {
+                    count = 0;
+                }
+                count++;
+                session.setAttribute("counter", count);
+                
+                res.json(Map.of(
+                    "sessionId", session.getId(),
+                    "counter", count,
+                    "message", "Refresh to increment the counter"
+                ));
+            });
         });
     }
     
@@ -129,12 +137,14 @@ public class EnhancedWebExample {
             System.err.println("Global error handler caught: " + e.getClass().getName() + ": " + e.getMessage());
         });
         
-        app.get("/error", (req, res) -> {
-            throw new RuntimeException("This is a test error!");
-        });
-        
-        app.get("/error/illegal", (req, res) -> {
-            throw new IllegalArgumentException("Invalid argument provided!");
+        app.routes(router -> {
+            router.get("/error", (req, res) -> {
+                throw new RuntimeException("This is a test error!");
+            });
+            
+            router.get("/error/illegal", (req, res) -> {
+                throw new IllegalArgumentException("Invalid argument provided!");
+            });
         });
     }
     

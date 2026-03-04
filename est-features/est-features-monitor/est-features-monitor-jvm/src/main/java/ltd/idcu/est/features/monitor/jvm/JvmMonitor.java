@@ -1,25 +1,18 @@
 package ltd.idcu.est.features.monitor.jvm;
 
+import ltd.idcu.est.features.monitor.api.AbstractMonitor;
 import ltd.idcu.est.features.monitor.api.HealthCheck;
 import ltd.idcu.est.features.monitor.api.HealthCheckResult;
-import ltd.idcu.est.features.monitor.api.Metrics;
 
 import java.lang.management.ManagementFactory;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public final class JvmMonitor {
+public final class JvmMonitor extends AbstractMonitor {
     
     private static volatile JvmMonitor instance;
     
-    private final JvmMetrics metrics;
-    private final List<HealthCheck> healthChecks;
-    
     private JvmMonitor() {
-        this.metrics = new JvmMetrics();
-        this.healthChecks = new CopyOnWriteArrayList<>();
-        this.healthChecks.add(new JvmHealthCheck());
+        super(new JvmMetrics());
     }
     
     public static JvmMonitor getInstance() {
@@ -33,40 +26,18 @@ public final class JvmMonitor {
         return instance;
     }
     
-    public Metrics getMetrics() {
-        return metrics;
+    @Override
+    protected void initializeDefaultHealthChecks() {
+        addHealthCheck(new JvmHealthCheck());
     }
     
-    public Object getMetric(String name) {
-        return metrics.getMetric(name);
+    public JvmMetrics getJvmMetrics() {
+        return (JvmMetrics) getMetrics();
     }
     
-    public Map<String, Object> getAllMetrics() {
-        return metrics.getAllMetrics();
-    }
-    
-    public void registerMetric(String name, Object value) {
-        metrics.registerMetric(name, value);
-    }
-    
-    public void unregisterMetric(String name) {
-        metrics.unregisterMetric(name);
-    }
-    
-    public void addHealthCheck(HealthCheck healthCheck) {
-        healthChecks.add(healthCheck);
-    }
-    
-    public void removeHealthCheck(HealthCheck healthCheck) {
-        healthChecks.remove(healthCheck);
-    }
-    
-    public List<HealthCheck> getHealthChecks() {
-        return List.copyOf(healthChecks);
-    }
-    
+    @Override
     public HealthCheckResult checkHealth() {
-        for (HealthCheck healthCheck : healthChecks) {
+        for (HealthCheck healthCheck : getInternalHealthChecks()) {
             if (healthCheck instanceof JvmHealthCheck jvmHealthCheck) {
                 jvmHealthCheck.check();
                 HealthCheckResult result = jvmHealthCheck.getLastResult();
@@ -80,8 +51,9 @@ public final class JvmMonitor {
         return HealthCheckResult.healthy("jvm", "All JVM health checks passed");
     }
     
+    @Override
     public List<HealthCheckResult> checkAllHealth() {
-        return healthChecks.stream()
+        return getInternalHealthChecks().stream()
                 .map(healthCheck -> {
                     healthCheck.check();
                     if (healthCheck instanceof JvmHealthCheck jvmHealthCheck) {
@@ -101,9 +73,5 @@ public final class JvmMonitor {
         return String.format("%s (%s)", 
                 ManagementFactory.getRuntimeMXBean().getVmName(),
                 ManagementFactory.getRuntimeMXBean().getVmVersion());
-    }
-    
-    public void reset() {
-        metrics.reset();
     }
 }

@@ -1,24 +1,18 @@
 package ltd.idcu.est.features.monitor.system;
 
+import ltd.idcu.est.features.monitor.api.AbstractMonitor;
 import ltd.idcu.est.features.monitor.api.HealthCheck;
 import ltd.idcu.est.features.monitor.api.HealthCheckResult;
 import ltd.idcu.est.features.monitor.api.Metrics;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public final class SystemMonitor {
+public final class SystemMonitor extends AbstractMonitor {
     
     private static volatile SystemMonitor instance;
     
-    private final SystemMetrics metrics;
-    private final List<HealthCheck> healthChecks;
-    
     private SystemMonitor() {
-        this.metrics = new SystemMetrics();
-        this.healthChecks = new CopyOnWriteArrayList<>();
-        this.healthChecks.add(new SystemHealthCheck());
+        super(new SystemMetrics());
     }
     
     public static SystemMonitor getInstance() {
@@ -32,40 +26,18 @@ public final class SystemMonitor {
         return instance;
     }
     
-    public Metrics getMetrics() {
-        return metrics;
+    @Override
+    protected void initializeDefaultHealthChecks() {
+        addHealthCheck(new SystemHealthCheck());
     }
     
-    public Object getMetric(String name) {
-        return metrics.getMetric(name);
+    public SystemMetrics getSystemMetrics() {
+        return (SystemMetrics) getMetrics();
     }
     
-    public Map<String, Object> getAllMetrics() {
-        return metrics.getAllMetrics();
-    }
-    
-    public void registerMetric(String name, Object value) {
-        metrics.registerMetric(name, value);
-    }
-    
-    public void unregisterMetric(String name) {
-        metrics.unregisterMetric(name);
-    }
-    
-    public void addHealthCheck(HealthCheck healthCheck) {
-        healthChecks.add(healthCheck);
-    }
-    
-    public void removeHealthCheck(HealthCheck healthCheck) {
-        healthChecks.remove(healthCheck);
-    }
-    
-    public List<HealthCheck> getHealthChecks() {
-        return List.copyOf(healthChecks);
-    }
-    
+    @Override
     public HealthCheckResult checkHealth() {
-        for (HealthCheck healthCheck : healthChecks) {
+        for (HealthCheck healthCheck : getInternalHealthChecks()) {
             if (healthCheck instanceof SystemHealthCheck systemHealthCheck) {
                 systemHealthCheck.check();
                 HealthCheckResult result = systemHealthCheck.getLastResult();
@@ -79,8 +51,9 @@ public final class SystemMonitor {
         return HealthCheckResult.healthy("system", "All system health checks passed");
     }
     
+    @Override
     public List<HealthCheckResult> checkAllHealth() {
-        return healthChecks.stream()
+        return getInternalHealthChecks().stream()
                 .map(healthCheck -> {
                     healthCheck.check();
                     if (healthCheck instanceof SystemHealthCheck systemHealthCheck) {
@@ -93,13 +66,10 @@ public final class SystemMonitor {
     }
     
     public String getOsInfo() {
+        SystemMetrics metrics = getSystemMetrics();
         return String.format("%s %s (%s)", 
                 metrics.getOsName(),
                 metrics.getOsVersion(),
                 metrics.getOsArch());
-    }
-    
-    public void reset() {
-        metrics.reset();
     }
 }

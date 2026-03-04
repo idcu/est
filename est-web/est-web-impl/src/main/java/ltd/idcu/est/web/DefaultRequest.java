@@ -18,6 +18,7 @@ public class DefaultRequest implements Request {
     private final Map<String, List<String>> parameters;
     private final Map<String, String> cookies;
     private final Map<String, String> pathVariables;
+    private final Map<String, Object> attributes;
     private SessionManager sessionManager;
     private Session session;
     private byte[] bodyBytes;
@@ -29,6 +30,7 @@ public class DefaultRequest implements Request {
         this.parameters = new HashMap<>();
         this.cookies = new HashMap<>();
         this.pathVariables = new HashMap<>();
+        this.attributes = new HashMap<>();
         parseQueryParameters();
         parseCookies();
     }
@@ -342,5 +344,25 @@ public class DefaultRequest implements Request {
     @Override
     public AsyncContext getAsyncContext() {
         return asyncContext;
+    }
+
+    @Override
+    public void setAttribute(String name, Object value) {
+        attributes.put(name, value);
+    }
+
+    @Override
+    public Object getAttribute(String name) {
+        return attributes.get(name);
+    }
+
+    @Override
+    public void removeAttribute(String name) {
+        attributes.remove(name);
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return new HashMap<>(attributes);
     }
 }

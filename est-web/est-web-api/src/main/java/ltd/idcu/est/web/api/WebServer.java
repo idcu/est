@@ -70,4 +70,8 @@ public interface WebServer extends Module {
         String contextPath = getContextPath();
         return String.format("https://%s:%d%s", host, port, contextPath);
     }
+
+    void websocket(String path, WebSocketHandler handler);
+
+    void websocket(WebSocketEndpoint endpoint);
 }

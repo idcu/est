@@ -9,17 +9,26 @@ import java.nio.file.FileStore;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SystemMetrics implements Metrics {
     
     private final Map<String, Object> customMetrics;
+    private final Map<String, java.util.concurrent.atomic.AtomicLong> counters;
+    private final Map<String, java.util.List<Long>> histograms;
+    private final Map<String, Number> gauges;
     private final OperatingSystemMXBean osBean;
     
     public SystemMetrics() {
         this.customMetrics = new ConcurrentHashMap<>();
+        this.counters = new ConcurrentHashMap<>();
+        this.histograms = new ConcurrentHashMap<>();
+        this.gauges = new ConcurrentHashMap<>();
         this.osBean = ManagementFactory.getOperatingSystemMXBean();
     }
     
@@ -295,5 +304,65 @@ public class SystemMetrics implements Metrics {
             diskInfo.put("error", e.getMessage());
         }
         return diskInfo;
+    }
+
+    @Override
+    public void incrementCounter(String name) {
+        counters.computeIfAbsent(name, k -> new java.util.concurrent.atomic.AtomicLong(0)).incrementAndGet();
+    }
+
+    @Override
+    public void decrementCounter(String name) {
+        counters.computeIfAbsent(name, k -> new java.util.concurrent.atomic.AtomicLong(0)).decrementAndGet();
+    }
+
+    @Override
+    public void recordHistogram(String name, long value) {
+        histograms.computeIfAbsent(name, k -> new java.util.concurrent.CopyOnWriteArrayList<>()).add(value);
+    }
+
+    @Override
+    public void recordTimer(String name, long milliseconds) {
+        recordHistogram(name, milliseconds);
+    }
+
+    @Override
+    public void recordGauge(String name, Number value) {
+        gauges.put(name, value);
+    }
+
+    @Override
+    public Map<String, Metric> getMetricDetails() {
+        Map<String, Metric> details = new HashMap<>();
+        Map<String, Object> allMetrics = getAllMetrics();
+        for (Map.Entry<String, Object> entry : allMetrics.entrySet()) {
+            details.put(entry.getKey(), new Metric(entry.getKey(), entry.getValue()));
+        }
+        for (Map.Entry<String, java.util.concurrent.atomic.AtomicLong> entry : counters.entrySet()) {
+            details.put(entry.getKey(), new Metric(entry.getKey(), entry.getValue().get(), "count"));
+        }
+        for (Map.Entry<String, Number> entry : gauges.entrySet()) {
+            details.put(entry.getKey(), new Metric(entry.getKey(), entry.getValue()));
+        }
+        return details;
+    }
+
+    @Override
+    public long getCounter(String name) {
+        java.util.concurrent.atomic.AtomicLong counter = counters.get(name);
+        return counter != null ? counter.get() : 0;
+    }
+
+    @Override
+    public double getHistogramPercentile(String name, double percentile) {
+        List<Long> values = histograms.get(name);
+        if (values == null || values.isEmpty()) {
+            return 0;
+        }
+        List<Long> sorted = new ArrayList<>(values);
+        java.util.Collections.sort(sorted);
+        int index = (int) Math.ceil(percentile * sorted.size()) - 1;
+        index = Math.max(0, Math.min(index, sorted.size() - 1));
+        return sorted.get(index);
     }
 }

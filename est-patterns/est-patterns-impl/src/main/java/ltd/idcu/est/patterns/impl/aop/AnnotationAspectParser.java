@@ -1,7 +1,12 @@
 package ltd.idcu.est.patterns.impl.aop;
 
-import ltd.idcu.est.core.api.annotation.aop.*;
 import ltd.idcu.est.patterns.api.aop.*;
+import ltd.idcu.est.patterns.api.aop.annotation.Aspect;
+import ltd.idcu.est.patterns.api.aop.annotation.After;
+import ltd.idcu.est.patterns.api.aop.annotation.AfterReturning;
+import ltd.idcu.est.patterns.api.aop.annotation.AfterThrowing;
+import ltd.idcu.est.patterns.api.aop.annotation.Around;
+import ltd.idcu.est.patterns.api.aop.annotation.Before;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

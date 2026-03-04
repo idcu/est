@@ -271,7 +271,7 @@ public class JvmMetrics implements Metrics {
 
     @Override
     public void recordHistogram(String name, long value) {
-        histograms.computeIfAbsent(name, k -> Collections.synchronizedList(new ArrayList<>())).add(value);
+        histograms.computeIfAbsent(name, k -> new java.util.concurrent.CopyOnWriteArrayList<>()).add(value);
     }
 
     @Override

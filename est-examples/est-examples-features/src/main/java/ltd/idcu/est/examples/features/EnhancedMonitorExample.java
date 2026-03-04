@@ -71,7 +71,7 @@ public class EnhancedMonitorExample {
         List<HealthCheckResult> jvmHealthDetails = jvmMonitor.checkAllHealth();
         System.out.println("\nJVM Health Details:");
         jvmHealthDetails.forEach(result -> {
-            System.out.println("  " + result.getComponent() + ": " + result.getStatus() + " - " + result.getMessage());
+            System.out.println("  " + result.getName() + ": " + result.getStatus() + " - " + result.getMessage());
         });
         
         HealthCheckResult systemHealth = systemMonitor.checkHealth();

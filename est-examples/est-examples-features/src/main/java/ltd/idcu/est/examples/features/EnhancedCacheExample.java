@@ -22,7 +22,7 @@ public class EnhancedCacheExample {
     private static void lruCacheExample() {
         System.out.println("\n--- LRU Cache Example ---");
         
-        Cache<String, String> cache = Caches.newLruCache(3);
+        Cache<String, String> cache = Caches.<String, String>builder().maxSize(3).evictionPolicy("LRU").build();
         System.out.println("Created LRU cache with max size: 3");
         
         cache.put("a", "1");

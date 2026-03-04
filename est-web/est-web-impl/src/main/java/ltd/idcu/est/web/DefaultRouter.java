@@ -20,12 +20,12 @@ public class DefaultRouter implements Router {
     private List<String> currentMiddleware;
 
     public DefaultRouter() {
-        this.routes = Collections.synchronizedList(new ArrayList<>());
+        this.routes = new java.util.concurrent.CopyOnWriteArrayList<>();
         this.namedRoutes = new ConcurrentHashMap<>();
         this.routeCache = new ConcurrentHashMap<>();
         this.currentPrefix = "";
         this.currentName = "";
-        this.currentMiddleware = Collections.synchronizedList(new ArrayList<>());
+        this.currentMiddleware = new java.util.concurrent.CopyOnWriteArrayList<>();
     }
 
     @Override

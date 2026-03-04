@@ -1,0 +1,15 @@
+**/.git
+**/.gitignore
+**/target
+**/node_modules
+**/.DS_Store
+**/Thumbs.db
+**/.idea
+**/.vscode
+**/*.iml
+**/.mvn
+**/mvnw
+**/mvnw.cmd
+**/docs
+**/*.md
+LICENSE

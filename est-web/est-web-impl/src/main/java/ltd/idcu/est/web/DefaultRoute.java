@@ -27,7 +27,7 @@ public class DefaultRoute implements Route {
     private final List<String> middleware;
 
     public DefaultRoute(String path, HttpMethod method, String handler) {
-        this(path, method, handler, null, null, new ArrayList<>(), new HashMap<>());
+        this(path, method, handler, null, null, null, new ArrayList<>(), new HashMap<>());
     }
 
     public DefaultRoute(String path, HttpMethod method, RouteHandler routeHandler) {

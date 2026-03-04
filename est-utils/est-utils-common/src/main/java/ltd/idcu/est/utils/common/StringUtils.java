@@ -429,7 +429,10 @@ public final class StringUtils {
     }
 
     public static String replace(String str, String target, String replacement) {
-        if (str == null || target == null || replacement == null) {
+        if (str == null) {
+            return null;
+        }
+        if (target == null || replacement == null) {
             return str;
         }
         return str.replace(target, replacement);
@@ -545,9 +548,10 @@ public final class StringUtils {
         }
         int count = 0;
         int idx = 0;
+        int subLen = sub.length();
         while ((idx = str.indexOf(sub, idx)) != INDEX_NOT_FOUND) {
             count++;
-            idx += sub.length();
+            idx += 1;
         }
         return count;
     }

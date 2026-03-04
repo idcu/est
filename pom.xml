@@ -39,6 +39,7 @@
         <module>est-features</module>
         <module>est-plugin</module>
         <module>est-web</module>
+        <module>est-scaffold</module>
         <module>est-examples</module>
     </modules>
 
@@ -221,6 +222,11 @@
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-messaging-mqtt</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
                 <artifactId>est-features-monitor-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -267,6 +273,11 @@
             <dependency>
                 <groupId>ltd.idcu</groupId>
                 <artifactId>est-web-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-scaffold</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

@@ -2,10 +2,8 @@ package ltd.idcu.est.web;
 
 import ltd.idcu.est.web.api.Request;
 import ltd.idcu.est.web.api.WebSocketSession;
-import org.java_websocket.WebSocket;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -13,13 +11,11 @@ import java.util.UUID;
 public class DefaultWebSocketSession implements WebSocketSession {
 
     private final String id;
-    private final WebSocket webSocket;
     private final Request request;
     private final Map<String, Object> attributes;
 
-    public DefaultWebSocketSession(WebSocket webSocket, Request request) {
+    public DefaultWebSocketSession(Object webSocket, Request request) {
         this.id = UUID.randomUUID().toString();
-        this.webSocket = webSocket;
         this.request = request;
         this.attributes = new HashMap<>();
     }
@@ -31,39 +27,25 @@ public class DefaultWebSocketSession implements WebSocketSession {
 
     @Override
     public boolean isOpen() {
-        return webSocket != null && webSocket.isOpen();
+        return false;
     }
 
     @Override
     public void sendText(String message) throws IOException {
-        if (webSocket != null && webSocket.isOpen()) {
-            webSocket.send(message);
-        } else {
-            throw new IOException("WebSocket session is not open");
-        }
+        throw new IOException("WebSocket not implemented");
     }
 
     @Override
     public void sendBinary(byte[] data) throws IOException {
-        if (webSocket != null && webSocket.isOpen()) {
-            webSocket.send(ByteBuffer.wrap(data));
-        } else {
-            throw new IOException("WebSocket session is not open");
-        }
+        throw new IOException("WebSocket not implemented");
     }
 
     @Override
     public void close() throws IOException {
-        if (webSocket != null && webSocket.isOpen()) {
-            webSocket.close();
-        }
     }
 
     @Override
     public void close(int code, String reason) throws IOException {
-        if (webSocket != null && webSocket.isOpen()) {
-            webSocket.close(code, reason);
-        }
     }
 
     @Override

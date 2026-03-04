@@ -39,14 +39,24 @@ public class DefaultContainer implements Container {
     private final ConstructorInjector constructorInjector;
     private final FieldInjector fieldInjector;
     private final MethodInjector methodInjector;
-    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
+    private final List<BeanPostProcessor> beanPostProcessors = new java.util.concurrent.CopyOnWriteArrayList<>();
     private final List<DisposableBean> disposableBeans = new java.util.concurrent.CopyOnWriteArrayList<>();
     private final List<Object> preDestroyBeans = new java.util.concurrent.CopyOnWriteArrayList<>();
+    private ltd.idcu.est.core.api.Config config;
 
     public DefaultContainer() {
         this.constructorInjector = new ConstructorInjector(this);
         this.fieldInjector = new FieldInjector(this);
         this.methodInjector = new MethodInjector(this);
+    }
+
+    public DefaultContainer(ltd.idcu.est.core.api.Config config) {
+        this();
+        this.config = config;
+    }
+
+    public ltd.idcu.est.core.api.Config getConfig() {
+        return config;
     }
 
     private String buildKey(Class<?> type, String qualifier) {

@@ -110,7 +110,7 @@ public class DefaultAsyncContext implements AsyncContext {
         listeners.forEach(listener -> listener.onComplete(this));
     }
 
-    private void notifyError(Throwable throwable) {
+    public void notifyError(Throwable throwable) {
         listeners.forEach(listener -> listener.onError(this, throwable));
     }
 

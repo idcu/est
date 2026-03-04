@@ -358,12 +358,13 @@ public class DefaultWebApplication implements WebApplication {
             server.addMiddleware(middleware);
         }
         
-        for (Map.Entry<String, WebSocketHandler> entry : webSocketHandlers.entrySet()) {
-            server.websocket(entry.getKey(), entry.getValue());
-        }
-        for (WebSocketEndpoint endpoint : webSocketEndpoints) {
-            server.websocket(endpoint);
-        }
+        // WebSocket temporarily disabled
+        // for (Map.Entry<String, WebSocketHandler> entry : webSocketHandlers.entrySet()) {
+        //     server.websocket(entry.getKey(), entry.getValue());
+        // }
+        // for (WebSocketEndpoint endpoint : webSocketEndpoints) {
+        //     server.websocket(endpoint);
+        // }
         
         server.errorHandler((request, response, e) -> {
             Consumer<Exception> handler = findExceptionHandler(e.getClass());

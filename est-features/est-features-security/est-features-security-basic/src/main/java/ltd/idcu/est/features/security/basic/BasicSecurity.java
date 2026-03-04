@@ -10,35 +10,35 @@ public final class BasicSecurity {
     }
     
     public static DefaultUser newUser(String username, String password) {
-        return DefaultUser.of(username, password);
+        return SecurityFactory.newUser(username, password);
     }
     
     public static DefaultUser.DefaultUserBuilder userBuilder() {
-        return DefaultUser.builder();
+        return SecurityFactory.userBuilder();
     }
     
     public static DefaultRole newRole(String name) {
-        return DefaultRole.of(name);
+        return SecurityFactory.newRole(name);
     }
     
     public static DefaultRole newRole(String name, String description) {
-        return DefaultRole.of(name, description);
+        return SecurityFactory.newRole(name, description);
     }
     
     public static DefaultPermission newPermission(String name) {
-        return DefaultPermission.of(name);
+        return SecurityFactory.newPermission(name);
     }
     
     public static DefaultPermission newPermission(String name, String resource, String action) {
-        return DefaultPermission.of(name, resource, action);
+        return SecurityFactory.newPermission(name, resource, action);
     }
     
     public static BCryptPasswordEncoder passwordEncoder() {
-        return BCryptPasswordEncoder.create();
+        return SecurityFactory.passwordEncoder();
     }
     
     public static BCryptPasswordEncoder passwordEncoder(int strength) {
-        return BCryptPasswordEncoder.create(strength);
+        return SecurityFactory.passwordEncoder(strength);
     }
     
     public static BasicCrypto crypto() {
@@ -54,7 +54,7 @@ public final class BasicSecurity {
     }
     
     public static InMemoryUserDetailsService inMemoryUserDetailsService() {
-        return InMemoryUserDetailsService.create();
+        return SecurityFactory.inMemoryUserDetailsService();
     }
     
     public static BasicAuthenticationProvider authenticationProvider(
@@ -80,18 +80,18 @@ public final class BasicSecurity {
     }
     
     public static DefaultAuthorization authorization(User user, Set<String> roles, Set<String> permissions) {
-        return DefaultAuthorization.of(user, roles, permissions);
+        return SecurityFactory.authorization(user, roles, permissions);
     }
     
     public static DefaultAuthentication authentication(User user) {
-        return DefaultAuthentication.of(user);
+        return SecurityFactory.authentication(user);
     }
     
     public static DefaultAuthentication authentication(User user, Object credentials) {
-        return DefaultAuthentication.of(user, credentials);
+        return SecurityFactory.authentication(user, credentials);
     }
     
     public static DefaultAuthentication unauthenticated() {
-        return DefaultAuthentication.unauthenticated();
+        return SecurityFactory.unauthenticated();
     }
 }

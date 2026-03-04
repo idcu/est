@@ -52,7 +52,7 @@ public class PerformanceMonitorMiddleware implements Middleware {
             
             metrics.decrementCounter("http.requests.active");
             
-            int status = response.getStatus();
+            int status = response.getStatus().getCode();
             metrics.incrementCounter("http.responses." + status);
         }
     }
