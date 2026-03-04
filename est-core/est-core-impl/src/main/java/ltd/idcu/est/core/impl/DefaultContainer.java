@@ -9,6 +9,7 @@ import ltd.idcu.est.core.api.processor.BeanPostProcessor;
 import ltd.idcu.est.core.api.scope.Scope;
 import ltd.idcu.est.core.impl.inject.ConstructorInjector;
 import ltd.idcu.est.core.impl.scope.ScopeStrategy;
+import ltd.idcu.est.core.impl.scan.ComponentScanner;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -304,6 +305,11 @@ public class DefaultContainer implements Container {
             preDestroyBeans.clear();
         }
         clear();
+    }
+
+    @Override
+    public void scan(String... basePackages) {
+        ComponentScanner.scanAndRegister(this, basePackages);
     }
 
     @Override

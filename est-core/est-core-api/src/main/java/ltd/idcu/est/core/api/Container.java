@@ -44,6 +44,8 @@ public interface Container {
     
     void addBeanPostProcessor(BeanPostProcessor processor);
     
+    void scan(String... basePackages);
+    
     void close();
     
     void clear();

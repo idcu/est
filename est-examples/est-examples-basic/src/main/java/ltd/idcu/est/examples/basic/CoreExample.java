@@ -20,6 +20,9 @@ public class CoreExample {
         // 生命周期容器示例
         LifecycleContainerExample.run();
         
+        // 组件扫描示例
+        ComponentScanExample.main(new String[]{});
+        
         // 配置管理示例
         configExample();
         
