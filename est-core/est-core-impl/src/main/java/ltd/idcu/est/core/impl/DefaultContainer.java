@@ -36,8 +36,8 @@ public class DefaultContainer implements Container {
     private final ScopeStrategy scopeStrategy = new ScopeStrategy();
     private final ConstructorInjector constructorInjector;
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
-    private final List<DisposableBean> disposableBeans = new ArrayList<>();
-    private final List<Object> preDestroyBeans = new ArrayList<>();
+    private final List<DisposableBean> disposableBeans = new java.util.concurrent.CopyOnWriteArrayList<>();
+    private final List<Object> preDestroyBeans = new java.util.concurrent.CopyOnWriteArrayList<>();
 
     public DefaultContainer() {
         this.constructorInjector = new ConstructorInjector(this);
@@ -230,14 +230,10 @@ public class DefaultContainer implements Container {
 
     private void registerDisposableBean(Object bean) {
         if (bean instanceof DisposableBean) {
-            synchronized (disposableBeans) {
-                disposableBeans.add((DisposableBean) bean);
-            }
+            disposableBeans.add((DisposableBean) bean);
         }
         if (hasPreDestroyMethod(bean)) {
-            synchronized (preDestroyBeans) {
-                preDestroyBeans.add(bean);
-            }
+            preDestroyBeans.add(bean);
         }
     }
 
@@ -288,22 +284,18 @@ public class DefaultContainer implements Container {
 
     @Override
     public void close() {
-        synchronized (disposableBeans) {
-            for (DisposableBean bean : disposableBeans) {
-                try {
-                    bean.destroy();
-                } catch (Exception e) {
-                    throw new RuntimeException("Failed to destroy bean", e);
-                }
+        for (DisposableBean bean : disposableBeans) {
+            try {
+                bean.destroy();
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to destroy bean", e);
             }
-            disposableBeans.clear();
         }
-        synchronized (preDestroyBeans) {
-            for (Object bean : preDestroyBeans) {
-                invokePreDestroy(bean);
-            }
-            preDestroyBeans.clear();
+        disposableBeans.clear();
+        for (Object bean : preDestroyBeans) {
+            invokePreDestroy(bean);
         }
+        preDestroyBeans.clear();
         clear();
     }
 

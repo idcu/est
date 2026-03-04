@@ -38,11 +38,23 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-cache-file</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-cache-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
             <artifactId>est-features-event-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-features-event-local</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-event-async</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
@@ -54,11 +66,19 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-logging-file</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
             <artifactId>est-features-security-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-features-security-basic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-security-jwt</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
@@ -70,11 +90,51 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-scheduler-fixed</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
             <artifactId>est-features-monitor-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-features-monitor-jvm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-monitor-system</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-data-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-data-memory</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-data-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-messaging-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-messaging-local</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-messaging-mqtt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-messaging-amqp</artifactId>
         </dependency>
     </dependencies>
 

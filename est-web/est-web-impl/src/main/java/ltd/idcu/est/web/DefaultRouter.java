@@ -5,27 +5,26 @@ import ltd.idcu.est.web.api.Route;
 import ltd.idcu.est.web.api.RouteHandler;
 import ltd.idcu.est.web.api.Router;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
 public class DefaultRouter implements Router {
 
     private final List<Route> routes;
     private final Map<String, Route> namedRoutes;
+    private final Map<HttpMethod, Map<String, Route>> routeCache;
     private String currentPrefix;
     private String currentName;
     private List<String> currentMiddleware;
 
     public DefaultRouter() {
-        this.routes = new ArrayList<>();
-        this.namedRoutes = new HashMap<>();
+        this.routes = Collections.synchronizedList(new ArrayList<>());
+        this.namedRoutes = new ConcurrentHashMap<>();
+        this.routeCache = new ConcurrentHashMap<>();
         this.currentPrefix = "";
         this.currentName = "";
-        this.currentMiddleware = new ArrayList<>();
+        this.currentMiddleware = Collections.synchronizedList(new ArrayList<>());
     }
 
     @Override
@@ -174,8 +173,15 @@ public class DefaultRouter implements Router {
 
     @Override
     public Route match(String path, HttpMethod method) {
+        Map<String, Route> methodCache = routeCache.computeIfAbsent(method, k -> new ConcurrentHashMap<>());
+        Route cached = methodCache.get(path);
+        if (cached != null && cached.matches(path, method)) {
+            return cached;
+        }
+        
         for (Route route : routes) {
             if (route.matches(path, method)) {
+                methodCache.put(path, route);
                 return route;
             }
         }
@@ -231,6 +237,7 @@ public class DefaultRouter implements Router {
     public void clear() {
         routes.clear();
         namedRoutes.clear();
+        routeCache.clear();
     }
 
     @Override
