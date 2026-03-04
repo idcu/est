@@ -296,10 +296,10 @@ mvn clean install -DskipTests
 
 ## 文档
 
-EST框架提供了完整的文档支持，包括：
+EST提供了完整的文档支持，包括：
 
 ### 架构设计文档
-- 位置：`architecture_design.md`
+- 位置：`ARCHITECTURE.md`
 - 内容：框架的设计理念、架构说明、模块结构和开发计划
 
 ### API文档
@@ -309,15 +309,15 @@ EST框架提供了完整的文档支持，包括：
 
 ### 用户指南
 - 内容：框架的安装、配置和使用指南
-- 位置：`user_guide.md`目录下
+- 位置：`USER_GUIDE.md`
 
 ### 示例文档
 - 内容：各个示例的详细说明文档
-- 位置：`est-examples`目录下的各个示例模块中
+- 位置：`EXAMPLES.md`
 
 ### 贡献指南
 - 内容：如何为框架贡献代码
-- 位置：`contributing.md`
+- 位置：`CONTRIBUTING.md`
 
 ## Author
 

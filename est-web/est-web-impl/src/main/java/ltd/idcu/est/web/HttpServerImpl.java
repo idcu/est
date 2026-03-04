@@ -161,7 +161,12 @@ public class HttpServerImpl implements WebServer {
 
     @Override
     public void registerController(Class<? extends Controller> controllerClass) {
-        registerController("/", null);
+        try {
+            Controller controller = controllerClass.getDeclaredConstructor().newInstance();
+            registerController("/", controller);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to register controller", e);
+        }
     }
 
     @Override
@@ -171,7 +176,12 @@ public class HttpServerImpl implements WebServer {
 
     @Override
     public void registerRestController(Class<? extends RestController> controllerClass) {
-        router.route("/", HttpMethod.GET, "restController:" + controllerClass.getName());
+        try {
+            RestController controller = controllerClass.getDeclaredConstructor().newInstance();
+            registerRestController("/", controller);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to register rest controller", e);
+        }
     }
 
     @Override
