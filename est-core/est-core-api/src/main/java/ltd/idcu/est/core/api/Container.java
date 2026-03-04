@@ -1,5 +1,6 @@
 package ltd.idcu.est.core.api;
 
+import ltd.idcu.est.core.api.processor.BeanPostProcessor;
 import ltd.idcu.est.core.api.scope.Scope;
 
 import java.util.Optional;
@@ -40,6 +41,10 @@ public interface Container {
     boolean contains(Class<?> type);
     
     boolean contains(Class<?> type, String qualifier);
+    
+    void addBeanPostProcessor(BeanPostProcessor processor);
+    
+    void close();
     
     void clear();
 }

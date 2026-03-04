@@ -17,6 +17,9 @@ public class CoreExample {
         // 增强依赖注入示例
         EnhancedContainerExample.run();
         
+        // 生命周期容器示例
+        LifecycleContainerExample.run();
+        
         // 配置管理示例
         configExample();
         
