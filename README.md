@@ -420,28 +420,41 @@ mvn clean install -DskipTests
 
 ## 文档
 
-EST提供了完整的文档支持，包括：
+EST 提供了完善的文档体系，包括：
 
-### 架构设计文档
-- 位置：`ARCHITECTURE.md`
-- 内容：框架的设计理念、架构说明、模块结构和开发计划
+### 📚 入门指南
+- [快速开始](docs/guides/getting-started.md) - 从零开始使用 EST 框架
+- [安装与配置](docs/guides/installation.md) - 环境准备和项目配置
 
-### API文档
-- 生成方式：使用Javadoc生成
-- 命令：`mvn javadoc:aggregate`
-- 输出位置：`target/site/apidocs`
+### 🎓 教程系列
+- [入门教程](docs/tutorials/beginner/)
+  - [第一个 EST 应用](docs/tutorials/beginner/01-first-app.md)
+- [Web 开发教程](docs/tutorials/web/)
+  - [基础 Web 应用](docs/tutorials/web/01-basic-web-app.md)
+- [功能模块教程](docs/tutorials/features/)
+  - [缓存系统](docs/tutorials/features/01-cache.md)
 
-### 用户指南
-- 内容：框架的安装、配置和使用指南
-- 位置：`USER_GUIDE.md`
+### 📖 API 参考
+- [核心模块 API](docs/api/core/)
+- [Web 模块 API](docs/api/web/)
+- [功能模块 API](docs/api/features/)
+- [Javadoc](docs/api/README.md#生成-javadoc) - `mvn javadoc:aggregate`
 
-### 示例文档
-- 内容：各个示例的详细说明文档
-- 位置：`EXAMPLES.md`
+### 🏗️ 架构设计
+- [整体架构](ARCHITECTURE.md) - 框架的设计理念和架构说明
+- [模块设计](docs/architecture/module-design.md)
 
-### 贡献指南
-- 内容：如何为框架贡献代码
-- 位置：`CONTRIBUTING.md`
+### ✅ 最佳实践
+- [代码组织](docs/best-practices/code-organization.md)
+- [性能优化](docs/best-practices/performance.md)
+- [安全性](docs/best-practices/security.md)
+- [测试指南](TESTING_GUIDE.md)
+
+### 🤝 贡献指南
+- [如何贡献](CONTRIBUTING.md)
+
+### 📂 文档索引
+- [完整文档目录](docs/README.md)
 
 ## Author
 
