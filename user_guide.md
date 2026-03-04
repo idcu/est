@@ -86,28 +86,28 @@ mvn javadoc:aggregate
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-core-api</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- 引用核心实现 -->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-core-impl</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- 引用Collection功能 -->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-collection-impl</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- 引用Web功能 -->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-web-impl</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

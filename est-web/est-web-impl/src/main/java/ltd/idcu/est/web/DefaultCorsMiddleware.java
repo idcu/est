@@ -21,7 +21,14 @@ public class DefaultCorsMiddleware implements CorsMiddleware {
 
     public DefaultCorsMiddleware() {
         this.allowedOrigins = new ArrayList<>();
+        this.allowedOrigins.add("*");
         this.allowedMethods = new ArrayList<>();
+        this.allowedMethods.add("GET");
+        this.allowedMethods.add("POST");
+        this.allowedMethods.add("PUT");
+        this.allowedMethods.add("DELETE");
+        this.allowedMethods.add("PATCH");
+        this.allowedMethods.add("OPTIONS");
         this.allowedHeaders = new ArrayList<>();
         this.exposedHeaders = new ArrayList<>();
         this.allowCredentials = false;

@@ -171,7 +171,7 @@ public class HttpServerImpl implements WebServer {
 
     @Override
     public void registerRestController(Class<? extends RestController> controllerClass) {
-        registerRestController("/", null);
+        router.route("/", HttpMethod.GET, "restController:" + controllerClass.getName());
     }
 
     @Override

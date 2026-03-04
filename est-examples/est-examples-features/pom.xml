@@ -7,7 +7,7 @@
     <parent>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-examples</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>est-examples-features</artifactId>

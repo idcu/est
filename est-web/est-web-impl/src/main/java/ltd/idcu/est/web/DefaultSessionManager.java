@@ -88,7 +88,14 @@ public class DefaultSessionManager implements SessionManager {
 
     @Override
     public List<Session> getAllSessions() {
-        return new ArrayList<>(sessions.values());
+        List<Session> allSessions = new ArrayList<>(sessions.values());
+        List<Session> storeSessions = sessionStore.loadAll();
+        for (Session session : storeSessions) {
+            if (!sessions.containsKey(session.getId())) {
+                allSessions.add(session);
+            }
+        }
+        return allSessions;
     }
 
     @Override

@@ -2,7 +2,7 @@
 
 EST 是一个零依赖的现代 Java 框架，采用递进式模块结构设计。
 
-- **版本**: 1.0.0-SNAPSHOT
+- **版本**: 1.3.0-SNAPSHOT
 - **项目**: EST
 - **作者**: idcu
 - **许可证**: MIT License
@@ -128,21 +128,21 @@ mvn clean install -DskipTests
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-core-api</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- 引用Collection功能 -->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-collection-impl</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- 引用Web功能 -->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-web-impl</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

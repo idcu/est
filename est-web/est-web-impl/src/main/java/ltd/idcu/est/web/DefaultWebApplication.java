@@ -26,6 +26,10 @@ public class DefaultWebApplication implements WebApplication {
     private Runnable shutdownCallback;
     private volatile boolean running = false;
 
+    public DefaultWebApplication() {
+        this("EST Web Application", "1.0.0");
+    }
+
     public DefaultWebApplication(String name, String version) {
         this.name = name;
         this.version = version;
@@ -391,6 +395,10 @@ public class DefaultWebApplication implements WebApplication {
             current = current.getSuperclass();
         }
         return null;
+    }
+
+    public static WebApplication create() {
+        return new DefaultWebApplication();
     }
 
     public static WebApplication create(String name, String version) {

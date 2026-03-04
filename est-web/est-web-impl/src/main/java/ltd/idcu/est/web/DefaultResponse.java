@@ -181,7 +181,6 @@ public class DefaultResponse implements Response {
     public void redirect(String url, HttpStatus status) {
         setStatus(status);
         setHeader("Location", url);
-        committed = true;
     }
 
     @Override
