@@ -49,13 +49,40 @@ est/
 │   └── est-collection-impl/               # Collection实现
 ├── est-features/                          # 功能模块
 │   ├── est-features-cache/                # 缓存功能
+│   │   ├── est-features-cache-api/        # 缓存接口
+│   │   ├── est-features-cache-memory/     # 内存缓存
+│   │   ├── est-features-cache-file/       # 文件缓存
+│   │   └── est-features-cache-redis/      # Redis缓存
 │   ├── est-features-event/                # 事件功能
+│   │   ├── est-features-event-api/        # 事件接口
+│   │   ├── est-features-event-local/      # 本地事件
+│   │   └── est-features-event-async/      # 异步事件
 │   ├── est-features-logging/              # 日志功能
+│   │   ├── est-features-logging-api/      # 日志接口
+│   │   ├── est-features-logging-console/  # 控制台日志
+│   │   └── est-features-logging-file/     # 文件日志
 │   ├── est-features-data/                 # 数据功能
+│   │   ├── est-features-data-api/         # 数据接口
+│   │   ├── est-features-data-jdbc/        # JDBC数据访问
+│   │   ├── est-features-data-memory/      # 内存数据访问
+│   │   └── est-features-data-redis/       # Redis数据访问
 │   ├── est-features-security/             # 安全功能
+│   │   ├── est-features-security-api/     # 安全接口
+│   │   ├── est-features-security-basic/   # 基础认证
+│   │   └── est-features-security-jwt/     # JWT认证
 │   ├── est-features-messaging/            # 消息功能
+│   │   ├── est-features-messaging-api/    # 消息接口
+│   │   ├── est-features-messaging-local/  # 本地消息
+│   │   ├── est-features-messaging-amqp/   # AMQP消息
+│   │   └── est-features-messaging-mqtt/   # MQTT消息
 │   ├── est-features-monitor/              # 监控功能
+│   │   ├── est-features-monitor-api/      # 监控接口
+│   │   ├── est-features-monitor-jvm/      # JVM监控
+│   │   └── est-features-monitor-system/   # 系统监控
 │   └── est-features-scheduler/            # 调度功能
+│       ├── est-features-scheduler-api/    # 调度接口
+│       ├── est-features-scheduler-cron/   # Cron调度
+│       └── est-features-scheduler-fixed/  # 固定间隔调度
 ├── est-plugin/                            # 插件模块
 │   ├── est-plugin-api/                    # 插件接口
 │   └── est-plugin-impl/                   # 插件实现
@@ -96,9 +123,83 @@ est/
 ### 模块依赖关系
 
 ```
-est-test-api  ─────────────────────────────────────────────────────►  零依赖
-      │
-      └──► est-test-impl ──► est-utils-common (复用 AssertUtils)
+est-core (核心层)
+  ▲
+  │
+  ├─► est-patterns (设计模式)
+  │     ▲
+  │     │
+  │     └─► est-utils (工具层)
+  │           ▲
+  │           │
+  │           ├─► est-utils-common
+  │           ├─► est-utils-io
+  │           └─► est-utils-format
+  │                 ├─► est-utils-format-json
+  │                 ├─► est-utils-format-xml
+  │                 └─► est-utils-format-yaml
+  │
+  ├─► est-test (测试层)
+  │     ├─► est-test-api (零依赖)
+  │     └─► est-test-impl ──► est-utils-common
+  │
+  ├─► est-collection (集合层)
+  │     ├─► est-collection-api
+  │     └─► est-collection-impl ──► est-utils-*
+  │
+  └─► est-features (功能层)
+        ├─► est-features-cache
+        │     ├─► est-features-cache-api
+        │     ├─► est-features-cache-memory
+        │     ├─► est-features-cache-file
+        │     └─► est-features-cache-redis
+        ├─► est-features-event
+        │     ├─► est-features-event-api
+        │     ├─► est-features-event-local
+        │     └─► est-features-event-async
+        ├─► est-features-logging
+        │     ├─► est-features-logging-api
+        │     ├─► est-features-logging-console
+        │     └─► est-features-logging-file
+        ├─► est-features-data
+        │     ├─► est-features-data-api
+        │     ├─► est-features-data-jdbc
+        │     ├─► est-features-data-memory
+        │     └─► est-features-data-redis
+        ├─► est-features-security
+        │     ├─► est-features-security-api
+        │     ├─► est-features-security-basic
+        │     └─► est-features-security-jwt
+        ├─► est-features-messaging
+        │     ├─► est-features-messaging-api
+        │     ├─► est-features-messaging-local
+        │     ├─► est-features-messaging-amqp
+        │     └─► est-features-messaging-mqtt
+        ├─► est-features-monitor
+        │     ├─► est-features-monitor-api
+        │     ├─► est-features-monitor-jvm
+        │     └─► est-features-monitor-system
+        └─► est-features-scheduler
+              ├─► est-features-scheduler-api
+              ├─► est-features-scheduler-cron
+              └─► est-features-scheduler-fixed
+              ▲
+              │
+              ├─► est-plugin (插件层)
+              │     ├─► est-plugin-api
+              │     └─► est-plugin-impl
+              │           ▲
+              │           │
+              └─► est-web (Web层)
+                    ├─► est-web-api
+                    └─► est-web-impl
+                          ▲
+                          │
+                          └─► est-examples (示例层)
+                                ├─► est-examples-basic
+                                ├─► est-examples-advanced
+                                ├─► est-examples-features
+                                └─► est-examples-web
 ```
 
 ## 快速开始
@@ -192,12 +293,35 @@ mvn clean install -DskipTests
 
 ## 模块统计
 
-| 类型 | 数量 |
-|------|------|
-| 顶层模块 | 9 |
-| 二级模块 | 27 |
-| 三级模块 | 30 |
-| **总计** | **66** |
+### 详细统计
+
+| 类型 | 数量 | 说明 |
+|------|------|------|
+| 顶层模块 | 9 | est-core, est-patterns, est-utils, est-test, est-collection, est-features, est-plugin, est-web, est-examples |
+| 二级模块 | 27 | 各顶层模块下的子模块 |
+| 三级模块 | 30 | 二级模块下的子模块（主要在 est-utils 和 est-features 下） |
+| **总计** | **66** | 包括根 pom.xml |
+
+### 功能模块分布
+
+| 功能类别 | 模块数 | 子模块 |
+|----------|--------|--------|
+| 核心模块 | 2 | est-core-api, est-core-impl |
+| 设计模式 | 2 | est-patterns-api, est-patterns-impl |
+| 工具模块 | 6 | est-utils-common, est-utils-io, est-utils-format-json, est-utils-format-xml, est-utils-format-yaml |
+| 测试模块 | 2 | est-test-api, est-test-impl |
+| Collection 模块 | 2 | est-collection-api, est-collection-impl |
+| 缓存功能 | 4 | est-features-cache-api, est-features-cache-memory, est-features-cache-file, est-features-cache-redis |
+| 事件功能 | 3 | est-features-event-api, est-features-event-local, est-features-event-async |
+| 日志功能 | 3 | est-features-logging-api, est-features-logging-console, est-features-logging-file |
+| 数据功能 | 4 | est-features-data-api, est-features-data-jdbc, est-features-data-memory, est-features-data-redis |
+| 安全功能 | 3 | est-features-security-api, est-features-security-basic, est-features-security-jwt |
+| 消息功能 | 4 | est-features-messaging-api, est-features-messaging-local, est-features-messaging-amqp, est-features-messaging-mqtt |
+| 监控功能 | 3 | est-features-monitor-api, est-features-monitor-jvm, est-features-monitor-system |
+| 调度功能 | 3 | est-features-scheduler-api, est-features-scheduler-cron, est-features-scheduler-fixed |
+| 插件模块 | 2 | est-plugin-api, est-plugin-impl |
+| Web 模块 | 2 | est-web-api, est-web-impl |
+| 示例模块 | 4 | est-examples-basic, est-examples-advanced, est-examples-features, est-examples-web |
 
 ## 开发计划
 
