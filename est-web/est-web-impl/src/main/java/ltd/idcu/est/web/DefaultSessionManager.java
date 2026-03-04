@@ -13,8 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultSessionManager implements SessionManager {
 
     private final Map<String, Session> sessions;
-    private final SessionStore sessionStore;
-    private final SessionConfig sessionConfig;
+    private final SessionManager.SessionStore sessionStore;
+    private final SessionManager.SessionConfig sessionConfig;
     private final SecureRandom secureRandom;
     private int maxInactiveInterval = 1800;
 

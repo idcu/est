@@ -2,6 +2,11 @@
 
 EST 是一个零依赖的现代 Java 框架，采用递进式模块结构设计。
 
+- **版本**: 1.0.0-SNAPSHOT
+- **项目**: EST Framework
+- **作者**: idcu
+- **许可证**: MIT License
+
 ## 核心特性
 
 - **零依赖**：不依赖任何第三方库，避免依赖冲突和版本管理问题
@@ -123,21 +128,21 @@ mvn clean install -DskipTests
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-core-api</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
 </dependency>
 
 <!-- 引用Collection功能 -->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-collection-impl</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
 </dependency>
 
 <!-- 引用Web功能 -->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-web-impl</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -205,7 +210,7 @@ mvn clean install -DskipTests
   - [x] Collection 接口定义 - Collection、Collector、Pair、Collections 工厂类
   - [x] 链式调用功能实现 - DefaultCollection、SingletonCollection、CollectionFactory
   - [x] 格式转换功能实现 - toJson、toYaml、toXml、fromJson、fromYaml、fromXml
-- [ ] 阶段三：功能模块实现
+- [x] 阶段三：功能模块实现
   - [x] 缓存系统 - Cache接口、CacheEntry、CacheConfig、CacheStats、CacheLoader、CacheListener
     - [x] 内存缓存 - MemoryCache、LruCacheStrategy、Caches工厂类
     - [x] 文件缓存 - FileCache、FileCaches工厂类
