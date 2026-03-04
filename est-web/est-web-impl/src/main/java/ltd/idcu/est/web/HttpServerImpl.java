@@ -28,7 +28,7 @@ public class HttpServerImpl implements WebServer {
     private View.ViewResolver viewResolver;
     private final DefaultSessionManager sessionManager;
     private final List<StaticFileHandler> staticFileHandlers;
-    private BiConsumer<Request, Response, Exception> errorHandler;
+    private ErrorHandler errorHandler;
     private volatile boolean running = false;
 
     public HttpServerImpl() {
@@ -188,7 +188,7 @@ public class HttpServerImpl implements WebServer {
     }
 
     @Override
-    public void errorHandler(BiConsumer<Request, Response, Exception> handler) {
+    public void errorHandler(ErrorHandler handler) {
         this.errorHandler = handler;
     }
 
@@ -326,7 +326,7 @@ public class HttpServerImpl implements WebServer {
 
         private void handleError(DefaultRequest request, DefaultResponse response, Exception e) {
             if (errorHandler != null) {
-                errorHandler.accept(request, response, e);
+                errorHandler.handle(request, response, e);
             } else {
                 response.sendError(500, "Internal Server Error: " + e.getMessage());
             }

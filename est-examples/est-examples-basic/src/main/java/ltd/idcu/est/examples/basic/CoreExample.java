@@ -5,7 +5,7 @@ import ltd.idcu.est.core.api.Config;
 import ltd.idcu.est.core.api.Module;
 import ltd.idcu.est.core.impl.DefaultContainer;
 import ltd.idcu.est.core.impl.DefaultConfig;
-import ltd.idcu.est.core.impl.DefaultModule;
+import ltd.idcu.est.core.impl.AbstractModule;
 
 public class CoreExample {
     public static void run() {
@@ -25,9 +25,9 @@ public class CoreExample {
         System.out.println("\n1. Dependency Injection Container Example:");
         Container container = new DefaultContainer();
         
-        // 注册服务
-        container.register(String.class, "Hello EST!");
-        container.register(Integer.class, 42);
+        // 注册服务 - 使用 registerSingleton
+        container.registerSingleton(String.class, "Hello EST!");
+        container.registerSingleton(Integer.class, 42);
         
         // 获取服务
         String message = container.get(String.class);
@@ -47,9 +47,9 @@ public class CoreExample {
         config.set("app.debug", true);
         
         // 获取配置
-        String appName = config.get("app.name", String.class);
-        String appVersion = config.get("app.version", String.class);
-        boolean debug = config.get("app.debug", Boolean.class);
+        String appName = config.getString("app.name");
+        String appVersion = config.getString("app.version");
+        boolean debug = config.getBoolean("app.debug");
         
         System.out.println("App Name: " + appName);
         System.out.println("App Version: " + appVersion);
@@ -58,7 +58,22 @@ public class CoreExample {
     
     private static void moduleExample() {
         System.out.println("\n3. Module Management Example:");
-        Module module = new DefaultModule();
+        Module module = new AbstractModule("example-module", "1.0.0") {
+            @Override
+            protected void doInitialize() {
+                System.out.println("Module initialized");
+            }
+
+            @Override
+            protected void doStart() {
+                System.out.println("Module started");
+            }
+
+            @Override
+            protected void doStop() {
+                System.out.println("Module stopped");
+            }
+        };
         
         // 初始化模块
         module.initialize();

@@ -1,4 +1,4 @@
-package ltd.idcu.est.web.impl;
+package ltd.idcu.est.web;
 
 import ltd.idcu.est.web.api.Middleware;
 import ltd.idcu.est.web.api.Request;

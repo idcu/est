@@ -5,6 +5,7 @@ import ltd.idcu.est.utils.io.IOUtils;
 import ltd.idcu.est.web.api.HttpMethod;
 import ltd.idcu.est.web.api.Request;
 import ltd.idcu.est.web.api.Session;
+import ltd.idcu.est.web.api.SessionManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

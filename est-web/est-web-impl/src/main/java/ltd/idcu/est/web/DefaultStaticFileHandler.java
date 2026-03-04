@@ -189,7 +189,7 @@ public class DefaultStaticFileHandler implements StaticFileHandler {
             response.setHeader("Content-Length", String.valueOf(staticFile.getSize()));
             if (cacheEnabled) {
                 response.setHeader("Cache-Control", "max-age=" + cacheMaxAge);
-                response.setHeader("Last-Modified", staticFile.getLastModified().toString());
+                response.setHeader("Last-Modified", String.valueOf(staticFile.getLastModified()));
             }
             try (InputStream is = staticFile.getInputStream()) {
                 response.setBody(is);

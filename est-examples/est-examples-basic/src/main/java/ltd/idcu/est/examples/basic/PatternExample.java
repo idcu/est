@@ -1,13 +1,9 @@
 package ltd.idcu.est.examples.basic;
 
-import ltd.idcu.est.patterns.api.Singleton;
-import ltd.idcu.est.patterns.api.Factory;
-import ltd.idcu.est.patterns.api.Builder;
-import ltd.idcu.est.patterns.api.Adapter;
-import ltd.idcu.est.patterns.impl.DefaultSingleton;
-import ltd.idcu.est.patterns.impl.DefaultFactory;
-import ltd.idcu.est.patterns.impl.AbstractBuilder;
-import ltd.idcu.est.patterns.impl.DefaultAdapter;
+import ltd.idcu.est.patterns.api.creational.Singleton;
+import ltd.idcu.est.patterns.api.creational.Factory;
+import ltd.idcu.est.patterns.api.creational.Builder;
+import ltd.idcu.est.patterns.api.structural.Adapter;
 
 public class PatternExample {
     public static void run() {
@@ -28,43 +24,90 @@ public class PatternExample {
     
     private static void singletonExample() {
         System.out.println("\n1. Singleton Pattern Example:");
-        Singleton singleton1 = DefaultSingleton.getInstance();
-        Singleton singleton2 = DefaultSingleton.getInstance();
         
-        System.out.println("Singleton 1 hashcode: " + singleton1.hashCode());
-        System.out.println("Singleton 2 hashcode: " + singleton2.hashCode());
-        System.out.println("Are they the same instance? " + (singleton1 == singleton2));
+        // 使用 Singleton.of() 创建单例
+        Singleton<String> singleton = Singleton.of(() -> "Singleton Instance");
+        
+        String instance1 = singleton.getInstance();
+        String instance2 = singleton.getInstance();
+        
+        System.out.println("Instance 1: " + instance1);
+        System.out.println("Instance 2: " + instance2);
+        System.out.println("Are they the same instance? " + (instance1 == instance2));
     }
     
     private static void factoryExample() {
         System.out.println("\n2. Factory Pattern Example:");
-        Factory factory = new DefaultFactory();
         
-        // 创建不同类型的对象
-        Object product1 = factory.create("type1");
-        Object product2 = factory.create("type2");
+        // 创建工厂实例
+        Factory<String> factory = new Factory<>() {
+            @Override
+            public String create() {
+                return "Product from Factory";
+            }
+
+            @Override
+            public String getType() {
+                return "StringFactory";
+            }
+        };
         
-        System.out.println("Product 1: " + product1);
-        System.out.println("Product 2: " + product2);
+        String product = factory.create();
+        String type = factory.getType();
+        
+        System.out.println("Product: " + product);
+        System.out.println("Factory type: " + type);
     }
     
     private static void builderExample() {
         System.out.println("\n3. Builder Pattern Example:");
-        Builder builder = new AbstractBuilder();
         
-        // 构建复杂对象
-        Object complexObject = builder.build();
+        // 创建建造者实例
+        StringBuilder builder = new StringBuilder();
+        Builder<String> stringBuilder = new Builder<>() {
+            @Override
+            public Builder<String> reset() {
+                builder.setLength(0);
+                return this;
+            }
+
+            @Override
+            public String build() {
+                return builder.toString();
+            }
+        };
         
-        System.out.println("Complex object built: " + complexObject);
+        builder.append("Hello").append(" ").append("Builder");
+        String result = stringBuilder.build();
+        
+        System.out.println("Built string: " + result);
     }
     
     private static void adapterExample() {
         System.out.println("\n4. Adapter Pattern Example:");
-        Adapter adapter = new DefaultAdapter();
         
-        // 适配不同接口
-        Object adaptedObject = adapter.adapt(new Object());
+        // 创建适配器实例
+        Adapter<String, Integer> stringToIntAdapter = new Adapter<>() {
+            @Override
+            public Integer adapt(String source) {
+                return Integer.parseInt(source);
+            }
+
+            @Override
+            public Class<String> getSourceType() {
+                return String.class;
+            }
+
+            @Override
+            public Class<Integer> getTargetType() {
+                return Integer.class;
+            }
+        };
         
-        System.out.println("Adapted object: " + adaptedObject);
+        String numberStr = "12345";
+        Integer number = stringToIntAdapter.adapt(numberStr);
+        
+        System.out.println("Source: " + numberStr + " (" + stringToIntAdapter.getSourceType().getSimpleName() + ")");
+        System.out.println("Target: " + number + " (" + stringToIntAdapter.getTargetType().getSimpleName() + ")");
     }
 }

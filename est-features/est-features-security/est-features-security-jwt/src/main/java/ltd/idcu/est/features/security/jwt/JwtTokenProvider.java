@@ -220,13 +220,32 @@ public class JwtTokenProvider implements TokenProvider {
             }
 
             @Override
-            public Set<String> getRoles() {
-                return t.getRoles();
+            public String getPassword() {
+                return null;
             }
 
             @Override
-            public Set<String> getPermissions() {
-                return t.getPermissions();
+            public void setPassword(String password) {
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return true;
+            }
+
+            @Override
+            public boolean isAccountNonExpired() {
+                return true;
+            }
+
+            @Override
+            public boolean isAccountNonLocked() {
+                return true;
+            }
+
+            @Override
+            public boolean isCredentialsNonExpired() {
+                return true;
             }
         };
         

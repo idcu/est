@@ -1,16 +1,16 @@
 package ltd.idcu.est.web;
 
 import ltd.idcu.est.web.api.CorsMiddleware;
-import ltd.idcu.est.web.api.Middleware;
 import ltd.idcu.est.web.api.Request;
 import ltd.idcu.est.web.api.Response;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 public class DefaultCorsMiddleware implements CorsMiddleware {
+
+    private static final String NAME = "cors";
+    private static final int PRIORITY = 50;
 
     private List<String> allowedOrigins;
     private List<String> allowedMethods;
@@ -30,12 +30,12 @@ public class DefaultCorsMiddleware implements CorsMiddleware {
 
     @Override
     public String getName() {
-        return "CORS";
+        return NAME;
     }
 
     @Override
     public int getPriority() {
-        return 50;
+        return PRIORITY;
     }
 
     @Override
@@ -74,72 +74,70 @@ public class DefaultCorsMiddleware implements CorsMiddleware {
     }
 
     @Override
-            public void setExposedHeaders(List<String> headers) {
-                this.exposedHeaders = headers != null ? new ArrayList<>(headers) : new ArrayList<>();
-            }
+    public void setExposedHeaders(List<String> headers) {
+        this.exposedHeaders = headers != null ? new ArrayList<>(headers) : new ArrayList<>();
+    }
 
     @Override
-            public boolean isAllowCredentials() {
-                return allowCredentials;
-            }
+    public boolean isAllowCredentials() {
+        return allowCredentials;
+    }
 
-            @Override
-            public void setAllowCredentials(boolean allowCredentials) {
-                this.allowCredentials = allowCredentials;
-            }
+    @Override
+    public void setAllowCredentials(boolean allowCredentials) {
+        this.allowCredentials = allowCredentials;
+    }
 
-            @Override
-            public long getMaxAge() {
-                return maxAge;
-            }
+    @Override
+    public long getMaxAge() {
+        return maxAge;
+    }
 
-            @Override
-            public void setMaxAge(long maxAge) {
-                this.maxAge = maxAge;
-            }
+    @Override
+    public void setMaxAge(long maxAge) {
+        this.maxAge = maxAge;
+    }
 
-            @Override
-            public boolean before(Request request, Response response) {
-                String origin = request.getHeader("Origin");
-                if (origin != null && !isOriginAllowed(origin)) {
-                    response.setStatus(403);
-                    response.json("{\"error\":\"Origin not allowed\"}");
-                    return false;
-                }
+    @Override
+    public boolean isOriginAllowed(String origin) {
+        return allowedOrigins.contains("*") || allowedOrigins.contains(origin);
+    }
 
-                if ("OPTIONS".equalsIgnoreCase(request.getMethod().getMethod())) {
-                    response.setStatus(200);
-                    response.setHeader("Access-Control-Allow-Origin", getAllowedOrigins().contains("*") ? "*" : getAllowedOrigins().get(0));
-                    response.setHeader("Access-Control-Allow-Methods", String.join(",", getAllowedMethods()));
-                    if (allowCredentials) {
-                        response.setHeader("Access-Control-Allow-Credentials", "true");
-                    }
-                    if (maxAge > 0) {
-                        response.setHeader("Access-Control-Max-Age", String.valueOf(maxAge));
-                    }
-                    if (!exposedHeaders.isEmpty()) {
-                        response.setHeader("Access-Control-Expose-Headers", String.join(",", exposedHeaders));
-                    }
-                    return true;
-                }
-
-                if (request.getMethod().getMethod().equals("OPTIONS")) {
-                    response.setStatus(405);
-                    response.json("{\"error\":\"Method not allowed\"}");
-                    return false;
-                }
-                return true;
-            }
-
-            @Override
-            public void after(Request request, Response response) {
-            }
-
+    @Override
+    public boolean before(Request request, Response response) {
+        String origin = request.getHeader("Origin");
+        
+        if (origin != null && !isOriginAllowed(origin)) {
+            response.setStatus(403);
+            response.json("{\"error\":\"Origin not allowed\"}");
+            return false;
         }
 
-        @Override
-        public boolean isGlobal() {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod().getMethod())) {
+            response.setStatus(200);
+            response.setHeader("Access-Control-Allow-Origin", getAllowedOrigins().contains("*") ? "*" : (getAllowedOrigins().isEmpty() ? "*" : getAllowedOrigins().get(0)));
+            response.setHeader("Access-Control-Allow-Methods", String.join(",", getAllowedMethods()));
+            if (allowCredentials) {
+                response.setHeader("Access-Control-Allow-Credentials", "true");
+            }
+            if (maxAge > 0) {
+                response.setHeader("Access-Control-Max-Age", String.valueOf(maxAge));
+            }
+            if (!exposedHeaders.isEmpty()) {
+                response.setHeader("Access-Control-Expose-Headers", String.join(",", exposedHeaders));
+            }
             return true;
         }
+
+        return true;
+    }
+
+    @Override
+    public void after(Request request, Response response) {
+    }
+
+    @Override
+    public boolean isGlobal() {
+        return true;
     }
 }
