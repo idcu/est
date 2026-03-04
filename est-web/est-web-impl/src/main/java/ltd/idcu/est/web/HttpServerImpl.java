@@ -269,6 +269,7 @@ public class HttpServerImpl implements WebServer {
             DefaultRequest request = new DefaultRequest(exchange);
             DefaultResponse response = new DefaultResponse(exchange);
             request.setSessionManager(sessionManager);
+            response.setViewResolver(viewResolver);
 
             try {
                 String path = request.getPath();

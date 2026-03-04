@@ -186,6 +186,11 @@
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-data-mongodb</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
                 <artifactId>est-features-security-api</artifactId>
                 <version>${project.version}</version>
             </dependency>

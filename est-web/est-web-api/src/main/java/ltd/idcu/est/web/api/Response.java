@@ -111,4 +111,10 @@ public interface Response {
     default void internalServerError() {
         setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    void render(View view);
+
+    void render(String viewName);
+
+    void render(String viewName, Map<String, Object> model);
 }

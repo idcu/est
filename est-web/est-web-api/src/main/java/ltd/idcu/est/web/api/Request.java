@@ -136,4 +136,10 @@ public interface Request {
     String getPathVariable(String name);
 
     void addPathVariables(Map<String, String> variables);
+
+    FormData getFormData();
+
+    MultipartFile getFile(String name);
+
+    List<MultipartFile> getFiles(String name);
 }

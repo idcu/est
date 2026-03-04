@@ -26,6 +26,7 @@ public class DefaultWebApplication implements WebApplication {
     private Runnable startupCallback;
     private Runnable shutdownCallback;
     private volatile boolean running = false;
+    private View.ViewResolver viewResolver;
 
     public DefaultWebApplication() {
         this("EST Web Application", "1.0.0");
@@ -345,6 +346,10 @@ public class DefaultWebApplication implements WebApplication {
         server.setPort(port);
         server.setRouter(router);
         
+        if (viewResolver != null) {
+            server.setViewResolver(viewResolver);
+        }
+        
         for (Middleware middleware : middlewares) {
             server.addMiddleware(middleware);
         }
@@ -429,5 +434,47 @@ public class DefaultWebApplication implements WebApplication {
 
     public static WebApplication create(String name, String version) {
         return new DefaultWebApplication(name, version);
+    }
+
+    @Override
+    public View.ViewResolver getViewResolver() {
+        return viewResolver;
+    }
+
+    @Override
+    public void setViewResolver(View.ViewResolver viewResolver) {
+        this.viewResolver = viewResolver;
+    }
+
+    @Override
+    public void setViewEngine(View.ViewEngine viewEngine) {
+        this.viewResolver = new DefaultViewResolver(viewEngine);
+    }
+
+    @Override
+    public void setViewEngine(View.ViewEngine viewEngine, String templatePath) {
+        this.viewResolver = new DefaultViewResolver(viewEngine, templatePath);
+    }
+
+    @Override
+    public void setViewEngine(View.ViewEngine viewEngine, String templatePath, String templatePrefix, String templateSuffix) {
+        this.viewResolver = new DefaultViewResolver(viewEngine, templatePath, templatePrefix, templateSuffix);
+    }
+
+    @Override
+    public View createView(String viewName) {
+        if (viewResolver != null) {
+            return viewResolver.resolve(viewName);
+        }
+        DefaultView view = new DefaultView(viewName);
+        view.setViewEngine(new StringTemplateEngine());
+        return view;
+    }
+
+    @Override
+    public View createView(String viewName, Map<String, Object> model) {
+        View view = createView(viewName);
+        view.setModel(model);
+        return view;
     }
 }

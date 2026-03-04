@@ -2,10 +2,7 @@ package ltd.idcu.est.web;
 
 import com.sun.net.httpserver.HttpExchange;
 import ltd.idcu.est.utils.io.IOUtils;
-import ltd.idcu.est.web.api.HttpMethod;
-import ltd.idcu.est.web.api.Request;
-import ltd.idcu.est.web.api.Session;
-import ltd.idcu.est.web.api.SessionManager;
+import ltd.idcu.est.web.api.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,6 +21,7 @@ public class DefaultRequest implements Request {
     private SessionManager sessionManager;
     private Session session;
     private byte[] bodyBytes;
+    private FormData formData;
 
     public DefaultRequest(HttpExchange exchange) {
         this.exchange = exchange;
@@ -293,5 +291,36 @@ public class DefaultRequest implements Request {
 
     public HttpExchange getExchange() {
         return exchange;
+    }
+
+    @Override
+    public FormData getFormData() {
+        if (formData == null) {
+            try {
+                String contentType = getContentType();
+                byte[] body = getBodyBytes();
+                formData = MultipartParser.parse(contentType, body);
+                
+                Map<String, List<String>> params = formData.getParameters();
+                for (Map.Entry<String, List<String>> entry : params.entrySet()) {
+                    for (String value : entry.getValue()) {
+                        parameters.computeIfAbsent(entry.getKey(), k -> new ArrayList<>()).add(value);
+                    }
+                }
+            } catch (IOException e) {
+                formData = new DefaultFormData(false);
+            }
+        }
+        return formData;
+    }
+
+    @Override
+    public MultipartFile getFile(String name) {
+        return getFormData().getFile(name);
+    }
+
+    @Override
+    public List<MultipartFile> getFiles(String name) {
+        return getFormData().getFiles(name);
     }
 }

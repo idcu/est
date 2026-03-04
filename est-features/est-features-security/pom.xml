@@ -20,6 +20,9 @@
         <module>est-features-security-api</module>
         <module>est-features-security-basic</module>
         <module>est-features-security-jwt</module>
+        <module>est-features-security-oauth2</module>
+        <module>est-features-security-apikey</module>
+        <module>est-features-security-policy</module>
     </modules>
 
 </project>

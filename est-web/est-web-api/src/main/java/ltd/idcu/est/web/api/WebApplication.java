@@ -95,4 +95,18 @@ public interface WebApplication extends Lifecycle {
             throw new RuntimeException("Failed to create WebApplication", e);
         }
     }
+
+    View.ViewResolver getViewResolver();
+
+    void setViewResolver(View.ViewResolver viewResolver);
+
+    void setViewEngine(View.ViewEngine viewEngine);
+
+    void setViewEngine(View.ViewEngine viewEngine, String templatePath);
+
+    void setViewEngine(View.ViewEngine viewEngine, String templatePath, String templatePrefix, String templateSuffix);
+
+    View createView(String viewName);
+
+    View createView(String viewName, Map<String, Object> model);
 }

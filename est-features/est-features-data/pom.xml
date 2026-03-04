@@ -21,6 +21,7 @@
         <module>est-features-data-jdbc</module>
         <module>est-features-data-memory</module>
         <module>est-features-data-redis</module>
+        <module>est-features-data-mongodb</module>
     </modules>
 
 </project>

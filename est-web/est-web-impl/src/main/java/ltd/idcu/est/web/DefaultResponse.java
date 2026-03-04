@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import ltd.idcu.est.utils.format.json.JsonUtils;
 import ltd.idcu.est.web.api.HttpStatus;
 import ltd.idcu.est.web.api.Response;
+import ltd.idcu.est.web.api.View;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,6 +25,7 @@ public class DefaultResponse implements Response {
     private byte[] bodyBytes;
     private boolean committed = false;
     private final Map<String, Cookie> cookies = new HashMap<>();
+    private View.ViewResolver viewResolver;
 
     public DefaultResponse(HttpExchange exchange) {
         this.exchange = exchange;
@@ -300,6 +302,36 @@ public class DefaultResponse implements Response {
 
     public HttpExchange getExchange() {
         return exchange;
+    }
+
+    public void setViewResolver(View.ViewResolver viewResolver) {
+        this.viewResolver = viewResolver;
+    }
+
+    @Override
+    public void render(View view) {
+        String rendered = view.render();
+        setContentType(view.getContentType());
+        setBody(rendered);
+    }
+
+    @Override
+    public void render(String viewName) {
+        render(viewName, new HashMap<>());
+    }
+
+    @Override
+    public void render(String viewName, Map<String, Object> model) {
+        if (viewResolver != null) {
+            View view = viewResolver.resolve(viewName);
+            view.setModel(model);
+            render(view);
+        } else {
+            DefaultView view = new DefaultView(viewName);
+            view.setViewEngine(new StringTemplateEngine());
+            view.setModel(model);
+            render(view);
+        }
     }
 
     private static class Cookie {
