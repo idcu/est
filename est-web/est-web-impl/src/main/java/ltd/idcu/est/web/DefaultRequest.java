@@ -22,6 +22,7 @@ public class DefaultRequest implements Request {
     private Session session;
     private byte[] bodyBytes;
     private FormData formData;
+    private AsyncContext asyncContext;
 
     public DefaultRequest(HttpExchange exchange) {
         this.exchange = exchange;
@@ -322,5 +323,24 @@ public class DefaultRequest implements Request {
     @Override
     public List<MultipartFile> getFiles(String name) {
         return getFormData().getFiles(name);
+    }
+
+    @Override
+    public AsyncContext startAsync() {
+        throw new IllegalStateException("Async context must be started from the handler");
+    }
+
+    void setAsyncContext(AsyncContext asyncContext) {
+        this.asyncContext = asyncContext;
+    }
+
+    @Override
+    public boolean isAsyncStarted() {
+        return asyncContext != null && asyncContext.isAsyncStarted();
+    }
+
+    @Override
+    public AsyncContext getAsyncContext() {
+        return asyncContext;
     }
 }

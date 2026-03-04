@@ -13,6 +13,8 @@ public interface Route {
 
     RouteHandler getRouteHandler();
 
+    AsyncHandler getAsyncHandler();
+
     List<String> getPathVariables();
 
     Map<String, String> getMetadata();

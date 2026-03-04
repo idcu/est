@@ -10,33 +10,49 @@ public interface Router {
 
     Router get(String path, RouteHandler handler);
 
+    Router get(String path, AsyncHandler handler);
+
     Router post(String path, String handler);
 
     Router post(String path, RouteHandler handler);
+
+    Router post(String path, AsyncHandler handler);
 
     Router put(String path, String handler);
 
     Router put(String path, RouteHandler handler);
 
+    Router put(String path, AsyncHandler handler);
+
     Router delete(String path, String handler);
 
     Router delete(String path, RouteHandler handler);
+
+    Router delete(String path, AsyncHandler handler);
 
     Router patch(String path, String handler);
 
     Router patch(String path, RouteHandler handler);
 
+    Router patch(String path, AsyncHandler handler);
+
     Router head(String path, String handler);
 
     Router head(String path, RouteHandler handler);
+
+    Router head(String path, AsyncHandler handler);
 
     Router options(String path, String handler);
 
     Router options(String path, RouteHandler handler);
 
+    Router options(String path, AsyncHandler handler);
+
     Router route(String path, HttpMethod method, String handler);
 
     Router route(String path, HttpMethod method, RouteHandler handler);
+
+    Router route(String path, HttpMethod method, AsyncHandler handler);
 
     Router group(String prefix, BiConsumer<Router, Router> groupHandler);
 

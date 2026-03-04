@@ -109,4 +109,8 @@ public interface WebApplication extends Lifecycle {
     View createView(String viewName);
 
     View createView(String viewName, Map<String, Object> model);
+
+    void websocket(String path, WebSocketHandler handler);
+
+    void websocket(WebSocketEndpoint endpoint);
 }

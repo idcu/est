@@ -142,4 +142,10 @@ public interface Request {
     MultipartFile getFile(String name);
 
     List<MultipartFile> getFiles(String name);
+
+    AsyncContext startAsync();
+
+    boolean isAsyncStarted();
+
+    AsyncContext getAsyncContext();
 }

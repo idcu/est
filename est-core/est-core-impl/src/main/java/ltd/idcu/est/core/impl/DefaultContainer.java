@@ -8,6 +8,8 @@ import ltd.idcu.est.core.api.lifecycle.PreDestroy;
 import ltd.idcu.est.core.api.processor.BeanPostProcessor;
 import ltd.idcu.est.core.api.scope.Scope;
 import ltd.idcu.est.core.impl.inject.ConstructorInjector;
+import ltd.idcu.est.core.impl.inject.FieldInjector;
+import ltd.idcu.est.core.impl.inject.MethodInjector;
 import ltd.idcu.est.core.impl.scope.ScopeStrategy;
 import ltd.idcu.est.core.impl.scan.ComponentScanner;
 
@@ -35,12 +37,16 @@ public class DefaultContainer implements Container {
     private final Map<String, Object> instances = new ConcurrentHashMap<>();
     private final ScopeStrategy scopeStrategy = new ScopeStrategy();
     private final ConstructorInjector constructorInjector;
+    private final FieldInjector fieldInjector;
+    private final MethodInjector methodInjector;
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
     private final List<DisposableBean> disposableBeans = new java.util.concurrent.CopyOnWriteArrayList<>();
     private final List<Object> preDestroyBeans = new java.util.concurrent.CopyOnWriteArrayList<>();
 
     public DefaultContainer() {
         this.constructorInjector = new ConstructorInjector(this);
+        this.fieldInjector = new FieldInjector(this);
+        this.methodInjector = new MethodInjector(this);
     }
 
     private String buildKey(Class<?> type, String qualifier) {
@@ -84,6 +90,7 @@ public class DefaultContainer implements Container {
         }
         String key = buildKey(type, qualifier);
         T processedInstance = processBean(instance, key);
+        injectDependencies(processedInstance);
         initializeBean(processedInstance, key);
         registerDisposableBean(processedInstance);
         instances.put(key, processedInstance);
@@ -186,9 +193,15 @@ public class DefaultContainer implements Container {
     @SuppressWarnings("unchecked")
     private <T> T processAndInitializeBean(T instance, String beanName) {
         T processed = processBean(instance, beanName);
+        injectDependencies(processed);
         initializeBean(processed, beanName);
         registerDisposableBean(processed);
         return processed;
+    }
+
+    private void injectDependencies(Object instance) {
+        fieldInjector.injectFields(instance);
+        methodInjector.injectMethods(instance);
     }
 
     @SuppressWarnings("unchecked")

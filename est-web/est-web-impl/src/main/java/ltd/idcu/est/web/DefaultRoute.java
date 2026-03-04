@@ -1,5 +1,6 @@
 package ltd.idcu.est.web;
 
+import ltd.idcu.est.web.api.AsyncHandler;
 import ltd.idcu.est.web.api.HttpMethod;
 import ltd.idcu.est.web.api.Route;
 import ltd.idcu.est.web.api.RouteHandler;
@@ -18,6 +19,7 @@ public class DefaultRoute implements Route {
     private final HttpMethod method;
     private final String handler;
     private final RouteHandler routeHandler;
+    private final AsyncHandler asyncHandler;
     private final String name;
     private final List<String> pathVariables;
     private final Map<String, String> metadata;
@@ -29,15 +31,20 @@ public class DefaultRoute implements Route {
     }
 
     public DefaultRoute(String path, HttpMethod method, RouteHandler routeHandler) {
-        this(path, method, null, routeHandler, null, new ArrayList<>(), new HashMap<>());
+        this(path, method, null, routeHandler, null, null, new ArrayList<>(), new HashMap<>());
     }
 
-    public DefaultRoute(String path, HttpMethod method, String handler, RouteHandler routeHandler, String name,
+    public DefaultRoute(String path, HttpMethod method, AsyncHandler asyncHandler) {
+        this(path, method, null, null, asyncHandler, null, new ArrayList<>(), new HashMap<>());
+    }
+
+    public DefaultRoute(String path, HttpMethod method, String handler, RouteHandler routeHandler, AsyncHandler asyncHandler, String name,
                         List<String> pathVariables, Map<String, String> metadata) {
         this.path = path;
         this.method = method;
         this.handler = handler;
         this.routeHandler = routeHandler;
+        this.asyncHandler = asyncHandler;
         this.name = name;
         this.pathVariables = new ArrayList<>(pathVariables);
         this.metadata = new HashMap<>(metadata);
@@ -85,6 +92,11 @@ public class DefaultRoute implements Route {
     @Override
     public RouteHandler getRouteHandler() {
         return routeHandler;
+    }
+
+    @Override
+    public AsyncHandler getAsyncHandler() {
+        return asyncHandler;
     }
 
     @Override

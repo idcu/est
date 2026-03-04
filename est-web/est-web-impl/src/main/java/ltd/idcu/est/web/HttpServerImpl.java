@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
 
@@ -30,6 +31,7 @@ public class HttpServerImpl implements WebServer {
     private final List<StaticFileHandler> staticFileHandlers;
     private ErrorHandler errorHandler;
     private volatile boolean running = false;
+    private final WebSocketServerManager webSocketServerManager;
 
     public HttpServerImpl() {
         this.name = "EST HTTP Server";
@@ -38,6 +40,7 @@ public class HttpServerImpl implements WebServer {
         this.middlewares = new ArrayList<>();
         this.sessionManager = new DefaultSessionManager();
         this.staticFileHandlers = new ArrayList<>();
+        this.webSocketServerManager = new WebSocketServerManager();
     }
 
     @Override
@@ -56,6 +59,10 @@ public class HttpServerImpl implements WebServer {
             server = HttpServer.create(new InetSocketAddress(host, port), 0);
             server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
             server.createContext("/", new RequestHandler());
+            
+            webSocketServerManager.setHost(host);
+            webSocketServerManager.setPort(port);
+            webSocketServerManager.initialize();
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize HTTP server", e);
         }
@@ -67,6 +74,7 @@ public class HttpServerImpl implements WebServer {
             initialize();
         }
         server.start();
+        webSocketServerManager.start();
         sessionManager.startCleanupTask();
         running = true;
     }
@@ -76,6 +84,7 @@ public class HttpServerImpl implements WebServer {
         if (server != null) {
             sessionManager.stopCleanupTask();
             server.stop(0);
+            webSocketServerManager.stop();
             running = false;
         }
     }
@@ -308,19 +317,23 @@ public class HttpServerImpl implements WebServer {
                     handleRoute(route, request, response);
                 }
 
-                for (int i = middlewares.size() - 1; i >= 0; i--) {
-                    Middleware middleware = middlewares.get(i);
-                    if (middleware.shouldApply(request) || middleware.isGlobal()) {
-                        middleware.after(request, response);
+                if (!request.isAsyncStarted()) {
+                    for (int i = middlewares.size() - 1; i >= 0; i--) {
+                        Middleware middleware = middlewares.get(i);
+                        if (middleware.shouldApply(request) || middleware.isGlobal()) {
+                            middleware.after(request, response);
+                        }
                     }
+
+                    setSessionCookie(request, response);
+
+                    response.commit();
                 }
-
-                setSessionCookie(request, response);
-
-                response.commit();
             } catch (Exception e) {
                 handleError(request, response, e);
-                response.commit();
+                if (!request.isAsyncStarted()) {
+                    response.commit();
+                }
             }
         }
 
@@ -337,6 +350,12 @@ public class HttpServerImpl implements WebServer {
         }
 
         private void handleRoute(Route route, DefaultRequest request, DefaultResponse response) throws Exception {
+            AsyncHandler asyncHandler = route.getAsyncHandler();
+            if (asyncHandler != null) {
+                handleAsyncRoute(asyncHandler, request, response);
+                return;
+            }
+
             RouteHandler routeHandler = route.getRouteHandler();
             if (routeHandler != null) {
                 routeHandler.handle(request, response);
@@ -357,6 +376,52 @@ public class HttpServerImpl implements WebServer {
             ));
         }
 
+        private void handleAsyncRoute(AsyncHandler asyncHandler, DefaultRequest request, DefaultResponse response) {
+            DefaultAsyncContext asyncContext = new DefaultAsyncContext(request, response, () -> {
+                try {
+                    setSessionCookie(request, response);
+                    response.commit();
+                } catch (Exception e) {
+                    handleError(request, response, e);
+                    try {
+                        response.commit();
+                    } catch (Exception ex) {
+                        // ignore
+                    }
+                }
+            });
+            request.setAsyncContext(asyncContext);
+
+            asyncContext.addListener(new AsyncContext.AsyncListener() {
+                @Override
+                public void onComplete(AsyncContext context) {
+                    // already handled in complete callback
+                }
+
+                @Override
+                public void onTimeout(AsyncContext context) {
+                    response.sendError(504, "Request timeout");
+                    context.complete();
+                }
+
+                @Override
+                public void onError(AsyncContext context, Throwable throwable) {
+                    handleError(request, response, (Exception) throwable);
+                    context.complete();
+                }
+            });
+
+            try {
+                CompletableFuture<Void> future = asyncHandler.handle(asyncContext);
+                if (future != null) {
+                    asyncContext.complete(future);
+                }
+            } catch (Exception e) {
+                asyncContext.notifyError(e);
+                asyncContext.complete();
+            }
+        }
+
         private void handleError(DefaultRequest request, DefaultResponse response, Exception e) {
             if (errorHandler != null) {
                 errorHandler.handle(request, response, e);
@@ -370,5 +435,15 @@ public class HttpServerImpl implements WebServer {
                 }
             }
         }
+    }
+
+    @Override
+    public void websocket(String path, WebSocketHandler handler) {
+        webSocketServerManager.addHandler(path, handler);
+    }
+
+    @Override
+    public void websocket(WebSocketEndpoint endpoint) {
+        webSocketServerManager.addEndpoint(endpoint);
     }
 }
