@@ -312,6 +312,8 @@ public class HttpServerImpl implements WebServer {
                     }
                 }
 
+                setSessionCookie(request, response);
+
                 response.commit();
             } catch (Exception e) {
                 handleError(request, response, e);
@@ -319,7 +321,24 @@ public class HttpServerImpl implements WebServer {
             }
         }
 
+        private void setSessionCookie(DefaultRequest request, DefaultResponse response) {
+            ltd.idcu.est.web.api.Session session = request.getSession(false);
+            if (session != null && session.isValid()) {
+                String sessionId = session.getId();
+                String existingSessionId = request.getCookie("JSESSIONID");
+                if (existingSessionId == null || !existingSessionId.equals(sessionId)) {
+                    response.setCookie("JSESSIONID", sessionId, sessionManager.getMaxInactiveInterval(), 
+                                      "/", null, request.isSecure(), true);
+                }
+            }
+        }
+
         private void handleRoute(Route route, DefaultRequest request, DefaultResponse response) {
+            if (route.getHandlerFunction() != null) {
+                route.getHandlerFunction().accept(request, response);
+                return;
+            }
+            
             String handler = route.getHandler();
             if (handler == null || handler.isEmpty()) {
                 response.sendError(500, "No handler defined for route");

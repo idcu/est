@@ -10,15 +10,26 @@ import ltd.idcu.est.web.api.StaticFileHandler;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileTime;
+import java.nio.file.StandardOpenOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public class DefaultStaticFileHandler implements StaticFileHandler {
+
+    private static final DateTimeFormatter HTTP_DATE_FORMATTER = 
+        DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
+                        .withZone(ZoneId.of("GMT"));
 
     private String pathPrefix;
     private String location;
@@ -27,6 +38,8 @@ public class DefaultStaticFileHandler implements StaticFileHandler {
     private String defaultMimeType;
     private boolean cacheEnabled;
     private long cacheMaxAge;
+    private boolean etagEnabled;
+    private static final int CHUNK_SIZE = 8192;
 
     public DefaultStaticFileHandler() {
         this.pathPrefix = "/static";
@@ -36,6 +49,7 @@ public class DefaultStaticFileHandler implements StaticFileHandler {
         this.defaultMimeType = MimeType.getDefaultMimeType();
         this.cacheEnabled = true;
         this.cacheMaxAge = 3600;
+        this.etagEnabled = true;
     }
 
     public DefaultStaticFileHandler(String pathPrefix, String location) {
@@ -176,6 +190,14 @@ public class DefaultStaticFileHandler implements StaticFileHandler {
         this.cacheMaxAge = seconds;
     }
 
+    public boolean isEtagEnabled() {
+        return etagEnabled;
+    }
+
+    public void setEtagEnabled(boolean etagEnabled) {
+        this.etagEnabled = etagEnabled;
+    }
+
     @Override
     public void serve(String path, Request request, Response response) {
         Optional<StaticFile> staticFileOpt = resolve(path);
@@ -183,19 +205,85 @@ public class DefaultStaticFileHandler implements StaticFileHandler {
             response.sendError(404, "File not found");
             return;
         }
+        
         StaticFile staticFile = staticFileOpt.get();
+        File file = new File(staticFile.getPath());
+        
         try {
+            String etag = generateETag(file);
+            String lastModified = formatHttpDate(file.lastModified());
+            
+            String ifNoneMatch = request.getHeader("If-None-Match");
+            String ifModifiedSince = request.getHeader("If-Modified-Since");
+            
+            if (ifNoneMatch != null && ifNoneMatch.equals(etag)) {
+                response.setStatus(304);
+                return;
+            }
+            
+            if (ifModifiedSince != null) {
+                try {
+                    long ifModifiedTime = parseHttpDate(ifModifiedSince);
+                    if (file.lastModified() <= ifModifiedTime) {
+                        response.setStatus(304);
+                        return;
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+            
             response.setContentType(staticFile.getMimeType());
             response.setHeader("Content-Length", String.valueOf(staticFile.getSize()));
+            response.setHeader("Last-Modified", lastModified);
+            
             if (cacheEnabled) {
                 response.setHeader("Cache-Control", "max-age=" + cacheMaxAge);
-                response.setHeader("Last-Modified", String.valueOf(staticFile.getLastModified()));
             }
-            try (InputStream is = staticFile.getInputStream()) {
-                response.setBody(is);
+            
+            if (etagEnabled) {
+                response.setHeader("ETag", etag);
             }
+            
+            try (InputStream is = Files.newInputStream(file.toPath(), StandardOpenOption.READ);
+                 OutputStream os = response.getOutputStream()) {
+                byte[] buffer = new byte[CHUNK_SIZE];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+                os.flush();
+            }
+            
         } catch (IOException e) {
             response.sendError(500, "Failed to serve file: " + e.getMessage());
+        }
+    }
+
+    private String generateETag(File file) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            String content = file.getPath() + file.lastModified() + file.length();
+            byte[] hash = md.digest(content.getBytes());
+            StringBuilder sb = new StringBuilder("\"");
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+            sb.append("\"");
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            return "\"" + file.lastModified() + "-" + file.length() + "\"";
+        }
+    }
+
+    private String formatHttpDate(long timestamp) {
+        return HTTP_DATE_FORMATTER.format(Instant.ofEpochMilli(timestamp));
+    }
+
+    private long parseHttpDate(String dateString) {
+        try {
+            return HTTP_DATE_FORMATTER.parse(dateString, Instant::from).toEpochMilli();
+        } catch (Exception e) {
+            return 0;
         }
     }
 

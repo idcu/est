@@ -207,175 +207,32 @@ public class JarPluginLoader implements PluginLoader {
             if (name.endsWith(".class")) {
                 String className = name.replace('/', '.').replace(".class", "");
                 
-                if (isPluginClass(jar, entry, className)) {
-                    return className;
-                }
-            }
-        }
-        
-        return null;
-    }
-
-    private boolean isPluginClass(JarFile jar, JarEntry entry, String className) {
-        try (InputStream is = jar.getInputStream(entry)) {
-            byte[] classBytes = readAllBytes(is);
-            return implementsPluginInterface(classBytes);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private boolean implementsPluginInterface(byte[] classBytes) {
-        try {
-            String className = extractClassName(classBytes);
-            if (className == null) {
-                return false;
-            }
-            
-            String[] interfaces = extractInterfaces(classBytes);
-            for (String iface : interfaces) {
-                if (iface.equals("ltd/idcu/est/plugin/api/Plugin") ||
-                    iface.endsWith("/Plugin")) {
-                    return true;
-                }
-            }
-            
-            return className.contains("Plugin");
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private String extractClassName(byte[] classBytes) {
-        if (classBytes.length < 10) {
-            return null;
-        }
-        
-        int constantPoolCount = ((classBytes[8] & 0xFF) << 8) | (classBytes[9] & 0xFF);
-        int offset = 10;
-        String[] constantPool = new String[constantPoolCount];
-        
-        for (int i = 1; i < constantPoolCount && offset < classBytes.length - 1; i++) {
-            int tag = classBytes[offset] & 0xFF;
-            offset++;
-            
-            switch (tag) {
-                case 1:
-                    if (offset + 1 < classBytes.length) {
-                        int length = ((classBytes[offset] & 0xFF) << 8) | (classBytes[offset + 1] & 0xFF);
-                        if (offset + 2 + length <= classBytes.length) {
-                            constantPool[i] = new String(classBytes, offset + 2, length);
+                if (className.contains("Plugin") && !className.equals("ltd.idcu.est.plugin.api.Plugin")) {
+                    try {
+                        if (isPluginClassByLoading(jar, className)) {
+                            return className;
                         }
-                        offset += 2 + length;
-                    } else {
-                        return null;
+                    } catch (Exception e) {
+                        continue;
                     }
-                    break;
-                case 7:
-                    offset += 2;
-                    break;
-                case 9:
-                case 10:
-                case 11:
-                    offset += 4;
-                    break;
-                case 8:
-                    offset += 2;
-                    break;
-                case 3:
-                case 4:
-                    offset += 4;
-                    break;
-                case 5:
-                case 6:
-                    offset += 8;
-                    i++;
-                    break;
-                case 12:
-                    offset += 4;
-                    break;
-                case 15:
-                    offset += 3;
-                    break;
-                case 16:
-                    offset += 2;
-                    break;
-                case 17:
-                case 18:
-                    offset += 4;
-                    break;
-                default:
-                    return null;
-            }
-        }
-        
-        if (offset + 2 >= classBytes.length) {
-            return null;
-        }
-        
-        int thisClassIndex = ((classBytes[offset] & 0xFF) << 8) | (classBytes[offset + 1] & 0xFF);
-        offset += 2;
-        
-        if (thisClassIndex > 0 && thisClassIndex < constantPoolCount) {
-            int nameIndex = 0;
-            int tempOffset = 10;
-            for (int i = 1; i < thisClassIndex && tempOffset < classBytes.length - 1; i++) {
-                int tag = classBytes[tempOffset] & 0xFF;
-                tempOffset++;
-                switch (tag) {
-                    case 1:
-                        if (tempOffset + 1 < classBytes.length) {
-                            int len = ((classBytes[tempOffset] & 0xFF) << 8) | (classBytes[tempOffset + 1] & 0xFF);
-                            tempOffset += 2 + len;
-                        }
-                        break;
-                    case 7:
-                        if (i == thisClassIndex - 1) {
-                            nameIndex = ((classBytes[tempOffset] & 0xFF) << 8) | (classBytes[tempOffset + 1] & 0xFF);
-                        }
-                        tempOffset += 2;
-                        break;
-                    case 9:
-                    case 10:
-                    case 11:
-                        tempOffset += 4;
-                        break;
-                    case 8:
-                        tempOffset += 2;
-                        break;
-                    case 3:
-                    case 4:
-                        tempOffset += 4;
-                        break;
-                    case 5:
-                    case 6:
-                        tempOffset += 8;
-                        i++;
-                        break;
-                    case 12:
-                        tempOffset += 4;
-                        break;
-                    case 15:
-                        tempOffset += 3;
-                        break;
-                    case 16:
-                        tempOffset += 2;
-                        break;
-                    case 17:
-                    case 18:
-                        tempOffset += 4;
-                        break;
                 }
             }
-            if (nameIndex > 0 && nameIndex < constantPoolCount) {
-                return constantPool[nameIndex];
-            }
         }
+        
         return null;
     }
 
-    private String[] extractInterfaces(byte[] classBytes) {
-        return new String[0];
+    private boolean isPluginClassByLoading(JarFile jar, String className) {
+        try {
+            URL jarUrl = new File(jar.getName()).toURI().toURL();
+            URLClassLoader classLoader = new URLClassLoader(new URL[]{jarUrl}, getClass().getClassLoader());
+            Class<?> clazz = classLoader.loadClass(className);
+            return ltd.idcu.est.plugin.api.Plugin.class.isAssignableFrom(clazz) && 
+                   !clazz.isInterface() && 
+                   !java.lang.reflect.Modifier.isAbstract(clazz.getModifiers());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private byte[] readAllBytes(InputStream is) throws IOException {

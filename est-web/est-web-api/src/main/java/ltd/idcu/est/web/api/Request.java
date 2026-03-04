@@ -132,4 +132,8 @@ public interface Request {
     default boolean hasHeader(String name) {
         return getHeader(name) != null;
     }
+
+    String getPathVariable(String name);
+
+    void addPathVariables(Map<String, String> variables);
 }
