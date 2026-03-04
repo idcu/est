@@ -3,7 +3,7 @@
 EST 是一个零依赖的现代 Java 框架，采用递进式模块结构设计。
 
 - **版本**: 1.0.0-SNAPSHOT
-- **项目**: EST Framework
+- **项目**: EST
 - **作者**: idcu
 - **许可证**: MIT License
 
