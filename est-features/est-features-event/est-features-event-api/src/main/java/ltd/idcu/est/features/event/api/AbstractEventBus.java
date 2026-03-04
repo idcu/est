@@ -41,8 +41,13 @@ public abstract class AbstractEventBus implements EventBus {
         }
         
         ListenerWrapper<T> wrapper = new ListenerWrapper<>(listener, priority);
-        eventListeners.add(wrapper);
-        eventListeners.sort((w1, w2) -> Integer.compare(w2.getPriority(), w1.getPriority()));
+        int insertIndex = 0;
+        for (; insertIndex < eventListeners.size(); insertIndex++) {
+            if (eventListeners.get(insertIndex).getPriority() < priority) {
+                break;
+            }
+        }
+        eventListeners.add(insertIndex, wrapper);
     }
     
     @Override
@@ -96,6 +101,23 @@ public abstract class AbstractEventBus implements EventBus {
     
     public Set<String> getEventTypes() {
         return new HashSet<>(listeners.keySet());
+    }
+    
+    @SuppressWarnings("unchecked")
+    protected <T> void deliverEventToListener(ListenerWrapper<?> wrapper, Event event, T data) {
+        long start = System.currentTimeMillis();
+        try {
+            EventListener<T> listener = (EventListener<T>) wrapper.getListener();
+            listener.onEvent(event, data);
+            stats.incrementDeliveredCount();
+        } catch (Exception e) {
+            stats.incrementFailedCount();
+            if (config.isPropagateExceptions()) {
+                throw new EventException("Error delivering event: " + event.getType(), e);
+            }
+        } finally {
+            stats.addDeliveryTime(System.currentTimeMillis() - start);
+        }
     }
     
     protected static class ListenerWrapper<T> {

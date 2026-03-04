@@ -1,5 +1,6 @@
 package ltd.idcu.est.core.impl;
 
+import ltd.idcu.est.core.api.Config;
 import ltd.idcu.est.core.api.Container;
 import ltd.idcu.est.core.api.lifecycle.DisposableBean;
 import ltd.idcu.est.core.api.lifecycle.InitializingBean;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 
 public class DefaultContainer implements Container {
@@ -39,10 +41,10 @@ public class DefaultContainer implements Container {
     private final ConstructorInjector constructorInjector;
     private final FieldInjector fieldInjector;
     private final MethodInjector methodInjector;
-    private final List<BeanPostProcessor> beanPostProcessors = new java.util.concurrent.CopyOnWriteArrayList<>();
-    private final List<DisposableBean> disposableBeans = new java.util.concurrent.CopyOnWriteArrayList<>();
-    private final List<Object> preDestroyBeans = new java.util.concurrent.CopyOnWriteArrayList<>();
-    private ltd.idcu.est.core.api.Config config;
+    private final List<BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
+    private final List<DisposableBean> disposableBeans = new CopyOnWriteArrayList<>();
+    private final List<Object> preDestroyBeans = new CopyOnWriteArrayList<>();
+    private Config config;
 
     public DefaultContainer() {
         this.constructorInjector = new ConstructorInjector(this);
@@ -50,12 +52,12 @@ public class DefaultContainer implements Container {
         this.methodInjector = new MethodInjector(this);
     }
 
-    public DefaultContainer(ltd.idcu.est.core.api.Config config) {
+    public DefaultContainer(Config config) {
         this();
         this.config = config;
     }
 
-    public ltd.idcu.est.core.api.Config getConfig() {
+    public Config getConfig() {
         return config;
     }
 

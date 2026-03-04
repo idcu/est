@@ -8,6 +8,7 @@ import ltd.idcu.est.web.api.Router;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiConsumer;
 
 public class DefaultRouter implements Router {
@@ -20,12 +21,12 @@ public class DefaultRouter implements Router {
     private List<String> currentMiddleware;
 
     public DefaultRouter() {
-        this.routes = new java.util.concurrent.CopyOnWriteArrayList<>();
+        this.routes = new CopyOnWriteArrayList<>();
         this.namedRoutes = new ConcurrentHashMap<>();
         this.routeCache = new ConcurrentHashMap<>();
         this.currentPrefix = "";
         this.currentName = "";
-        this.currentMiddleware = new java.util.concurrent.CopyOnWriteArrayList<>();
+        this.currentMiddleware = new CopyOnWriteArrayList<>();
     }
 
     @Override

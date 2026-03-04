@@ -41,7 +41,6 @@ public class AsyncEventBus extends AbstractEventBus {
     }
     
     @Override
-    @SuppressWarnings("unchecked")
     public <T> void publish(String eventType, T data, Object source) {
         checkRunning();
         
@@ -59,21 +58,7 @@ public class AsyncEventBus extends AbstractEventBus {
         Event event = DefaultEvent.of(eventType, data, source);
         
         for (ListenerWrapper<?> wrapper : eventListeners) {
-            executor.submit(() -> {
-                long start = System.currentTimeMillis();
-                try {
-                    EventListener<T> listener = (EventListener<T>) wrapper.getListener();
-                    listener.onEvent(event, data);
-                    stats.incrementDeliveredCount();
-                } catch (Exception e) {
-                    stats.incrementFailedCount();
-                    if (config.isPropagateExceptions()) {
-                        throw new EventException("Error delivering event: " + eventType, e);
-                    }
-                } finally {
-                    stats.addDeliveryTime(System.currentTimeMillis() - start);
-                }
-            });
+            executor.submit(() -> deliverEventToListener(wrapper, event, data));
         }
     }
     
@@ -83,7 +68,6 @@ public class AsyncEventBus extends AbstractEventBus {
     }
     
     @Override
-    @SuppressWarnings("unchecked")
     public <T> CompletableFuture<Void> publishAsync(String eventType, T data, Object source) {
         checkRunning();
         
@@ -103,21 +87,7 @@ public class AsyncEventBus extends AbstractEventBus {
         List<CompletableFuture<Void>> futures = new ArrayList<>();
         
         for (ListenerWrapper<?> wrapper : eventListeners) {
-            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-                long start = System.currentTimeMillis();
-                try {
-                    EventListener<T> listener = (EventListener<T>) wrapper.getListener();
-                    listener.onEvent(event, data);
-                    stats.incrementDeliveredCount();
-                } catch (Exception e) {
-                    stats.incrementFailedCount();
-                    if (config.isPropagateExceptions()) {
-                        throw new EventException("Error delivering event: " + eventType, e);
-                    }
-                } finally {
-                    stats.addDeliveryTime(System.currentTimeMillis() - start);
-                }
-            }, executor);
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> deliverEventToListener(wrapper, event, data), executor);
             futures.add(future);
         }
         

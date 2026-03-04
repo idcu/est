@@ -25,7 +25,6 @@ public class LocalEventBus extends AbstractEventBus {
     }
     
     @Override
-    @SuppressWarnings("unchecked")
     public <T> void publish(String eventType, T data, Object source) {
         if (eventType == null || eventType.isEmpty()) {
             throw new IllegalArgumentException("Event type cannot be null or empty");
@@ -41,19 +40,7 @@ public class LocalEventBus extends AbstractEventBus {
         Event event = DefaultEvent.of(eventType, data, source);
         
         for (ListenerWrapper<?> wrapper : eventListeners) {
-            long start = System.currentTimeMillis();
-            try {
-                EventListener<T> listener = (EventListener<T>) wrapper.getListener();
-                listener.onEvent(event, data);
-                stats.incrementDeliveredCount();
-            } catch (Exception e) {
-                stats.incrementFailedCount();
-                if (config.isPropagateExceptions()) {
-                    throw new EventException("Error delivering event: " + eventType, e);
-                }
-            } finally {
-                stats.addDeliveryTime(System.currentTimeMillis() - start);
-            }
+            deliverEventToListener(wrapper, event, data);
         }
     }
     
