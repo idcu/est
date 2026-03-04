@@ -67,12 +67,14 @@ public class HttpServerImpl implements WebServer {
             initialize();
         }
         server.start();
+        sessionManager.startCleanupTask();
         running = true;
     }
 
     @Override
     public void stop() {
         if (server != null) {
+            sessionManager.stopCleanupTask();
             server.stop(0);
             running = false;
         }
@@ -333,7 +335,13 @@ public class HttpServerImpl implements WebServer {
             }
         }
 
-        private void handleRoute(Route route, DefaultRequest request, DefaultResponse response) {
+        private void handleRoute(Route route, DefaultRequest request, DefaultResponse response) throws Exception {
+            RouteHandler routeHandler = route.getRouteHandler();
+            if (routeHandler != null) {
+                routeHandler.handle(request, response);
+                return;
+            }
+
             String handler = route.getHandler();
             if (handler == null || handler.isEmpty()) {
                 response.sendError(500, "No handler defined for route");

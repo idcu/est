@@ -11,6 +11,8 @@ public interface Route {
 
     String getHandler();
 
+    RouteHandler getRouteHandler();
+
     List<String> getPathVariables();
 
     Map<String, String> getMetadata();

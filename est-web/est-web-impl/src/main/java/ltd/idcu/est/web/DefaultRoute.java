@@ -2,6 +2,7 @@ package ltd.idcu.est.web;
 
 import ltd.idcu.est.web.api.HttpMethod;
 import ltd.idcu.est.web.api.Route;
+import ltd.idcu.est.web.api.RouteHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,7 @@ public class DefaultRoute implements Route {
     private final String path;
     private final HttpMethod method;
     private final String handler;
+    private final RouteHandler routeHandler;
     private final String name;
     private final List<String> pathVariables;
     private final Map<String, String> metadata;
@@ -23,14 +25,19 @@ public class DefaultRoute implements Route {
     private final List<String> middleware;
 
     public DefaultRoute(String path, HttpMethod method, String handler) {
-        this(path, method, handler, null, new ArrayList<>(), new HashMap<>());
+        this(path, method, handler, null, null, new ArrayList<>(), new HashMap<>());
     }
 
-    public DefaultRoute(String path, HttpMethod method, String handler, String name,
+    public DefaultRoute(String path, HttpMethod method, RouteHandler routeHandler) {
+        this(path, method, null, routeHandler, null, new ArrayList<>(), new HashMap<>());
+    }
+
+    public DefaultRoute(String path, HttpMethod method, String handler, RouteHandler routeHandler, String name,
                         List<String> pathVariables, Map<String, String> metadata) {
         this.path = path;
         this.method = method;
         this.handler = handler;
+        this.routeHandler = routeHandler;
         this.name = name;
         this.pathVariables = new ArrayList<>(pathVariables);
         this.metadata = new HashMap<>(metadata);
@@ -73,6 +80,11 @@ public class DefaultRoute implements Route {
     @Override
     public String getHandler() {
         return handler;
+    }
+
+    @Override
+    public RouteHandler getRouteHandler() {
+        return routeHandler;
     }
 
     @Override

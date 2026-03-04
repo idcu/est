@@ -9,6 +9,9 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class DefaultSessionManager implements SessionManager {
 
@@ -16,6 +19,8 @@ public class DefaultSessionManager implements SessionManager {
     private final SessionManager.SessionStore sessionStore;
     private final SessionManager.SessionConfig sessionConfig;
     private final SecureRandom secureRandom;
+    private final ScheduledExecutorService cleanupScheduler;
+    private volatile boolean cleanupStarted = false;
     private int maxInactiveInterval = 1800;
 
     public DefaultSessionManager() {
@@ -23,6 +28,12 @@ public class DefaultSessionManager implements SessionManager {
         this.sessionStore = new InMemorySessionStore();
         this.sessionConfig = new DefaultSessionConfig();
         this.secureRandom = new SecureRandom();
+        this.cleanupScheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread t = new Thread(r);
+            t.setName("est-session-cleanup");
+            t.setDaemon(true);
+            return t;
+        });
     }
 
     @Override
@@ -159,6 +170,49 @@ public class DefaultSessionManager implements SessionManager {
 
     public SessionManager.SessionConfig getSessionConfig() {
         return sessionConfig;
+    }
+
+    public void startCleanupTask() {
+        startCleanupTask(1, TimeUnit.MINUTES);
+    }
+
+    public void startCleanupTask(long interval, TimeUnit unit) {
+        if (!cleanupStarted) {
+            synchronized (this) {
+                if (!cleanupStarted) {
+                    cleanupScheduler.scheduleAtFixedRate(
+                        this::cleanExpiredSessions,
+                        interval,
+                        interval,
+                        unit
+                    );
+                    cleanupStarted = true;
+                }
+            }
+        }
+    }
+
+    public void stopCleanupTask() {
+        if (cleanupStarted) {
+            synchronized (this) {
+                if (cleanupStarted) {
+                    cleanupScheduler.shutdown();
+                    try {
+                        if (!cleanupScheduler.awaitTermination(5, TimeUnit.SECONDS)) {
+                            cleanupScheduler.shutdownNow();
+                        }
+                    } catch (InterruptedException e) {
+                        cleanupScheduler.shutdownNow();
+                        Thread.currentThread().interrupt();
+                    }
+                    cleanupStarted = false;
+                }
+            }
+        }
+    }
+
+    public boolean isCleanupStarted() {
+        return cleanupStarted;
     }
 
     private static class InMemorySessionStore implements SessionStore {

@@ -2,6 +2,7 @@ package ltd.idcu.est.web;
 
 import ltd.idcu.est.web.api.HttpMethod;
 import ltd.idcu.est.web.api.Route;
+import ltd.idcu.est.web.api.RouteHandler;
 import ltd.idcu.est.web.api.Router;
 
 import java.util.ArrayList;
@@ -33,7 +34,17 @@ public class DefaultRouter implements Router {
     }
 
     @Override
+    public Router get(String path, RouteHandler handler) {
+        return route(path, HttpMethod.GET, handler);
+    }
+
+    @Override
     public Router post(String path, String handler) {
+        return route(path, HttpMethod.POST, handler);
+    }
+
+    @Override
+    public Router post(String path, RouteHandler handler) {
         return route(path, HttpMethod.POST, handler);
     }
 
@@ -43,7 +54,17 @@ public class DefaultRouter implements Router {
     }
 
     @Override
+    public Router put(String path, RouteHandler handler) {
+        return route(path, HttpMethod.PUT, handler);
+    }
+
+    @Override
     public Router delete(String path, String handler) {
+        return route(path, HttpMethod.DELETE, handler);
+    }
+
+    @Override
+    public Router delete(String path, RouteHandler handler) {
         return route(path, HttpMethod.DELETE, handler);
     }
 
@@ -53,7 +74,17 @@ public class DefaultRouter implements Router {
     }
 
     @Override
+    public Router patch(String path, RouteHandler handler) {
+        return route(path, HttpMethod.PATCH, handler);
+    }
+
+    @Override
     public Router head(String path, String handler) {
+        return route(path, HttpMethod.HEAD, handler);
+    }
+
+    @Override
+    public Router head(String path, RouteHandler handler) {
         return route(path, HttpMethod.HEAD, handler);
     }
 
@@ -63,10 +94,27 @@ public class DefaultRouter implements Router {
     }
 
     @Override
+    public Router options(String path, RouteHandler handler) {
+        return route(path, HttpMethod.OPTIONS, handler);
+    }
+
+    @Override
     public Router route(String path, HttpMethod method, String handler) {
         String fullPath = currentPrefix.isEmpty() ? path : currentPrefix + path;
         DefaultRoute route = new DefaultRoute(fullPath, method, handler);
-        
+        addRouteInternal(route);
+        return this;
+    }
+
+    @Override
+    public Router route(String path, HttpMethod method, RouteHandler handler) {
+        String fullPath = currentPrefix.isEmpty() ? path : currentPrefix + path;
+        DefaultRoute route = new DefaultRoute(fullPath, method, handler);
+        addRouteInternal(route);
+        return this;
+    }
+
+    private void addRouteInternal(DefaultRoute route) {
         if (!currentName.isEmpty()) {
             namedRoutes.put(currentName, route);
         }
@@ -76,7 +124,6 @@ public class DefaultRouter implements Router {
         }
         
         routes.add(route);
-        return this;
     }
 
     @Override

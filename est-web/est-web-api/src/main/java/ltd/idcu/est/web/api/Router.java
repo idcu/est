@@ -8,19 +8,35 @@ public interface Router {
 
     Router get(String path, String handler);
 
+    Router get(String path, RouteHandler handler);
+
     Router post(String path, String handler);
+
+    Router post(String path, RouteHandler handler);
 
     Router put(String path, String handler);
 
+    Router put(String path, RouteHandler handler);
+
     Router delete(String path, String handler);
+
+    Router delete(String path, RouteHandler handler);
 
     Router patch(String path, String handler);
 
+    Router patch(String path, RouteHandler handler);
+
     Router head(String path, String handler);
+
+    Router head(String path, RouteHandler handler);
 
     Router options(String path, String handler);
 
+    Router options(String path, RouteHandler handler);
+
     Router route(String path, HttpMethod method, String handler);
+
+    Router route(String path, HttpMethod method, RouteHandler handler);
 
     Router group(String prefix, BiConsumer<Router, Router> groupHandler);
 

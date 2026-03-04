@@ -4,6 +4,7 @@ import ltd.idcu.est.core.api.Config;
 import ltd.idcu.est.core.api.lifecycle.LifecycleListener;
 import ltd.idcu.est.web.api.*;
 import ltd.idcu.est.web.api.Controller;
+import ltd.idcu.est.web.api.RouteHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -172,6 +173,31 @@ public class DefaultWebApplication implements WebApplication {
     @Override
     public void restController(String path, RestController controller) {
         router.get(path, "restController:" + controller.getClass().getName());
+    }
+
+    public DefaultWebApplication get(String path, RouteHandler handler) {
+        router.get(path, handler);
+        return this;
+    }
+
+    public DefaultWebApplication post(String path, RouteHandler handler) {
+        router.post(path, handler);
+        return this;
+    }
+
+    public DefaultWebApplication put(String path, RouteHandler handler) {
+        router.put(path, handler);
+        return this;
+    }
+
+    public DefaultWebApplication delete(String path, RouteHandler handler) {
+        router.delete(path, handler);
+        return this;
+    }
+
+    public DefaultWebApplication patch(String path, RouteHandler handler) {
+        router.patch(path, handler);
+        return this;
     }
 
     @Override
