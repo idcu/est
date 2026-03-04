@@ -108,27 +108,114 @@ mvn clean install -DskipTests
 
 ## 模块层级架构
 
+EST 采用清晰的递进式层级结构，每个模块都采用 **API/Impl 分离** 设计，模块间通过接口通信，支持独立引用。
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        est-examples (示例层)                      │
+│                      est-examples (示例层)                        │
+│  ├─ est-examples-basic                                           │
+│  ├─ est-examples-web                                             │
+│  ├─ est-examples-features                                        │
+│  └─ est-examples-advanced                                        │
 ├─────────────────────────────────────────────────────────────────┤
-│                         est-web (Web层)                          │
+│                      est-scaffold (脚手架层)                      │
+│  └─ 项目模板生成器                                                 │
 ├─────────────────────────────────────────────────────────────────┤
-│                       est-plugin (插件层)                         │
+│                        est-web (Web层)                            │
+│  ├─ est-web-api (Web接口)                                         │
+│  └─ est-web-impl (Web实现)                                        │
 ├─────────────────────────────────────────────────────────────────┤
-│                      est-features (功能层)                        │
+│                      est-plugin (插件层)                          │
+│  ├─ est-plugin-api (插件接口)                                     │
+│  └─ est-plugin-impl (插件实现)                                    │
 ├─────────────────────────────────────────────────────────────────┤
-│                     est-collection (集合层)                       │
+│                     est-features (功能层)                         │
+│  ├─ est-features-cache (缓存)                                     │
+│  │  ├─ est-features-cache-api                                    │
+│  │  ├─ est-features-cache-memory                                 │
+│  │  ├─ est-features-cache-file                                   │
+│  │  └─ est-features-cache-redis                                  │
+│  ├─ est-features-event (事件)                                     │
+│  │  ├─ est-features-event-api                                    │
+│  │  ├─ est-features-event-local                                  │
+│  │  └─ est-features-event-async                                  │
+│  ├─ est-features-logging (日志)                                   │
+│  │  ├─ est-features-logging-api                                  │
+│  │  ├─ est-features-logging-console                              │
+│  │  └─ est-features-logging-file                                 │
+│  ├─ est-features-data (数据)                                      │
+│  │  ├─ est-features-data-api                                     │
+│  │  ├─ est-features-data-jdbc                                    │
+│  │  ├─ est-features-data-memory                                  │
+│  │  ├─ est-features-data-redis                                   │
+│  │  └─ est-features-data-mongodb                                 │
+│  ├─ est-features-security (安全)                                  │
+│  │  ├─ est-features-security-api                                 │
+│  │  ├─ est-features-security-basic                               │
+│  │  ├─ est-features-security-jwt                                 │
+│  │  ├─ est-features-security-apikey                              │
+│  │  ├─ est-features-security-oauth2                              │
+│  │  └─ est-features-security-policy                              │
+│  ├─ est-features-messaging (消息)                                │
+│  │  ├─ est-features-messaging-api                                │
+│  │  ├─ est-features-messaging-local                              │
+│  │  ├─ est-features-messaging-amqp                               │
+│  │  └─ est-features-messaging-mqtt                               │
+│  ├─ est-features-monitor (监控)                                   │
+│  │  ├─ est-features-monitor-api                                  │
+│  │  ├─ est-features-monitor-jvm                                  │
+│  │  └─ est-features-monitor-system                               │
+│  └─ est-features-scheduler (调度)                                 │
+│     ├─ est-features-scheduler-api                                │
+│     ├─ est-features-scheduler-fixed                              │
+│     └─ est-features-scheduler-cron                               │
 ├─────────────────────────────────────────────────────────────────┤
-│                         est-test (测试层)                         │
+│                    est-collection (集合层)                         │
+│  ├─ est-collection-api (集合接口)                                 │
+│  └─ est-collection-impl (集合实现)                                │
 ├─────────────────────────────────────────────────────────────────┤
-│                        est-utils (工具层)                         │
+│                        est-test (测试层)                           │
+│  ├─ est-test-api (测试接口)                                       │
+│  └─ est-test-impl (测试实现)                                      │
 ├─────────────────────────────────────────────────────────────────┤
-│                      est-patterns (模式层)                        │
+│                       est-utils (工具层)                           │
+│  ├─ est-utils-common (通用工具)                                   │
+│  ├─ est-utils-io (IO工具)                                         │
+│  └─ est-utils-format (格式化工具)                                 │
+│     ├─ est-utils-format-json                                      │
+│     ├─ est-utils-format-xml                                       │
+│     └─ est-utils-format-yaml                                      │
 ├─────────────────────────────────────────────────────────────────┤
-│                        est-core (核心层)                          │
+│                      est-patterns (模式层)                         │
+│  ├─ est-patterns-api (模式接口)                                   │
+│  └─ est-patterns-impl (模式实现)                                  │
+├─────────────────────────────────────────────────────────────────┤
+│                        est-core (核心层)                           │
+│  ├─ est-core-api (核心接口)                                       │
+│  └─ est-core-impl (核心实现)                                      │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+### 模块依赖关系
+
+- **est-core**：无依赖，是所有模块的基础
+- **est-patterns**：依赖 est-core
+- **est-utils**：依赖 est-core
+- **est-test**：依赖 est-core
+- **est-collection**：依赖 est-core、est-utils
+- **est-features**：各子模块按需依赖 est-core、est-utils、est-collection
+- **est-plugin**：依赖 est-core、est-utils
+- **est-web**：依赖 est-core、est-utils、est-collection、est-features（部分）
+- **est-scaffold**：依赖 est-core、est-utils
+- **est-examples**：依赖所有上层模块
+
+### API/Impl 分离设计原则
+
+每个功能模块都严格遵循 API/Impl 分离：
+- ***-api** 模块：仅包含接口定义、注解、数据模型，无具体实现
+- ***-impl** 模块：包含具体实现逻辑，依赖对应的 api 模块
+
+使用时只需引用所需的 api 模块，在运行时再引入具体的 impl 模块，实现完全的解耦。
 
 ## 功能模块详解
 
@@ -142,19 +229,26 @@ mvn clean install -DskipTests
 - **作用域策略** (ScopeStrategy) - 支持单例、原型等多种作用域
 - **注解支持** - @Component, @Service, @Repository, @Inject, @Qualifier, @Primary, @Value
 
-### est-web - Web模块
-完整的Web应用框架，基于Java内置HttpServer：
-- **WebApplication** (DefaultWebApplication) - Web应用主入口
-- **HttpServer** (HttpServerImpl) - 轻量级HTTP服务器
-- **Router** (DefaultRouter) - 功能强大的路由系统，支持路由分组、前缀、命名、中间件、缓存
-- **Request/Response** - HTTP请求响应处理
-- **Middleware** - 中间件系统（CORS、日志、性能监控、安全）
-- **Session管理** (DefaultSessionManager) - 双层存储（内存缓存+持久化）
-- **WebSocket** (WebSocketServerManager) - WebSocket支持
-- **模板引擎** (EstTemplateEngine, StringTemplateEngine) - 内置模板引擎
-- **静态文件** (DefaultStaticFileHandler) - 静态资源服务
-- **MVC支持** - Controller和RestController
-- **异常处理** - 全局和特定异常处理器
+### est-patterns - 设计模式模块
+提供常用设计模式的实现：
+- 创建型模式
+- 结构型模式
+- 行为型模式
+
+### est-utils - 工具模块
+提供通用工具类：
+- 通用工具 (est-utils-common)
+- IO工具 (est-utils-io)
+- 格式化工具 (est-utils-format) - JSON、XML、YAML
+
+### est-test - 测试模块
+提供测试支持框架：
+- 断言工具 (Assertions)
+- 测试运行器
+- 测试注解支持
+
+### est-collection - 集合模块
+提供类似Laravel Collection的链式数据处理能力。
 
 ### est-features - 功能模块
 提供企业级功能组件：
@@ -205,32 +299,32 @@ mvn clean install -DskipTests
 - Cron表达式调度 (CronScheduler)
 - 任务监听和统计
 
-### est-collection - 集合模块
-提供类似Laravel Collection的链式数据处理能力。
-
-### est-utils - 工具模块
-- 通用工具 (est-utils-common)
-- IO工具 (est-utils-io)
-- 格式化工具 - JSON、XML、YAML
-
-### est-test - 测试模块
-- 断言工具 (Assertions)
-- 测试运行器
-- 测试注解支持
-
-### est-patterns - 设计模式模块
-- 创建型模式
-- 结构型模式
-- 行为型模式
-
 ### est-plugin - 插件模块
+提供插件化支持：
 - 插件接口
 - 插件加载器（类加载、JAR加载）
 - 插件管理器
 - 依赖管理
 
+### est-web - Web模块
+完整的Web应用框架，基于Java内置HttpServer：
+- **WebApplication** (DefaultWebApplication) - Web应用主入口
+- **HttpServer** (HttpServerImpl) - 轻量级HTTP服务器
+- **Router** (DefaultRouter) - 功能强大的路由系统，支持路由分组、前缀、命名、中间件、缓存
+- **Request/Response** - HTTP请求响应处理
+- **Middleware** - 中间件系统（CORS、日志、性能监控、安全）
+- **Session管理** (DefaultSessionManager) - 双层存储（内存缓存+持久化）
+- **WebSocket** (WebSocketServerManager) - WebSocket支持
+- **模板引擎** (EstTemplateEngine, StringTemplateEngine) - 内置模板引擎
+- **静态文件** (DefaultStaticFileHandler) - 静态资源服务
+- **MVC支持** - Controller和RestController
+- **异常处理** - 全局和特定异常处理器
+
 ### est-scaffold - 脚手架工具
+提供项目模板生成功能：
 - 项目模板生成器
+- 标准化代码结构生成
+- AI友好的代码生成辅助
 
 ### est-examples - 示例模块
 丰富的示例代码：
