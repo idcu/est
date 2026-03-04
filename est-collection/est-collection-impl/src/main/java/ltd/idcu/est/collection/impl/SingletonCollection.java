@@ -589,13 +589,13 @@ final class SingletonCollection<T> implements Collection<T> {
     @Override
     public Collection<T> peek(Consumer<? super T> action) {
         action.accept(element);
-        return this;
+        return new SingletonCollection<>(element);
     }
 
     @Override
     public Collection<T> onEach(Consumer<? super T> action) {
         action.accept(element);
-        return this;
+        return new SingletonCollection<>(element);
     }
 
     @Override

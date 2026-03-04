@@ -930,7 +930,7 @@ public class DefaultCollection<T> implements Collection<T> {
         for (T item : items) {
             action.accept(item);
         }
-        return this;
+        return new DefaultCollection<>(this);
     }
 
     @Override
@@ -938,7 +938,7 @@ public class DefaultCollection<T> implements Collection<T> {
         for (T item : items) {
             action.accept(item);
         }
-        return this;
+        return new DefaultCollection<>(this);
     }
 
     @Override
