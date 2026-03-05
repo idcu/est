@@ -308,6 +308,10 @@ public class DefaultResponse implements Response {
         this.viewResolver = viewResolver;
     }
 
+    public View.ViewResolver getViewResolver() {
+        return viewResolver;
+    }
+
     @Override
     public void render(View view) {
         String rendered = view.render();

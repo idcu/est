@@ -416,10 +416,11 @@ est1.3/
 ├── est-web/               # Web框架
 ├── est-examples/          # 示例代码
 ├── est-scaffold/          # 脚手架
+├── deploy/                # 部署配置
+│   ├── docker/            # Docker配置
+│   └── k8s/               # Kubernetes配置
+├── .github/               # GitHub Actions CI/CD
 ├── docs/                  # 文档
-├── k8s/                   # K8s配置
 ├── pom.xml                # 父POM
-├── Dockerfile
-├── docker-compose.yml
 └── README.md
 ```

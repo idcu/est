@@ -1,4 +1,4 @@
-# EST - Enterprise Services Toolkit
+# EST
 
 EST 是一个**零依赖**的现代 Java 框架，采用递进式模块结构设计，特别适合初学者和 AI 开发者进行代码生成。
 
@@ -202,9 +202,18 @@ est1.3/
 │   ├── est-features-logging/   # 日志
 │   ├── est-features-data/      # 数据访问
 │   ├── est-features-security/  # 安全认证
+│   ├── est-features-messaging/ # 消息系统
+│   ├── est-features-monitor/   # 监控
+│   ├── est-features-scheduler/ # 调度
 │   └── ...
+├── est-patterns/      # 设计模式
+├── est-plugin/        # 插件系统
+├── est-test/          # 测试框架
+├── est-scaffold/      # 脚手架生成器
 ├── est-web/           # Web 框架
 ├── est-examples/      # 示例代码
+├── deploy/            # 部署配置（Docker、Kubernetes）
+├── .github/           # GitHub Actions CI/CD
 └── docs/              # 文档
 ```
 

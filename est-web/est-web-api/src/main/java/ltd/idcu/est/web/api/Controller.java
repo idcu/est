@@ -4,7 +4,11 @@ public interface Controller {
 
     Request getRequest();
 
+    void setRequest(Request request);
+
     Response getResponse();
+
+    void setResponse(Response response);
 
     default String render(String viewName) {
         return render(viewName, null);

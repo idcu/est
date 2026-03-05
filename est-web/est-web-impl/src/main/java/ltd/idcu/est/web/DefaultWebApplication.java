@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class DefaultWebApplication implements WebApplication {
@@ -27,6 +28,7 @@ public class DefaultWebApplication implements WebApplication {
     private Runnable shutdownCallback;
     private volatile boolean running = false;
     private View.ViewResolver viewResolver;
+    private final Map<String, Controller> controllers = new ConcurrentHashMap<>();
 
     public DefaultWebApplication() {
         this("EST Web Application", "1.0.0");
@@ -158,22 +160,44 @@ public class DefaultWebApplication implements WebApplication {
 
     @Override
     public void controller(String path, Class<? extends Controller> controllerClass) {
-        router.get(path, "controller:" + controllerClass.getName());
+        try {
+            Controller controller = controllerClass.getDeclaredConstructor().newInstance();
+            String key = "controller:" + controllerClass.getName();
+            controllers.put(key, controller);
+            router.get(path, key);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to instantiate controller: " + controllerClass.getName(), e);
+        }
     }
 
     @Override
     public void controller(String path, Controller controller) {
-        router.get(path, "controller:" + controller.getClass().getName());
+        String key = "controller:" + controller.getClass().getName();
+        controllers.put(key, controller);
+        router.get(path, key);
     }
 
     @Override
     public void restController(String path, Class<? extends RestController> controllerClass) {
-        router.get(path, "restController:" + controllerClass.getName());
+        try {
+            RestController controller = controllerClass.getDeclaredConstructor().newInstance();
+            String key = "restController:" + controllerClass.getName();
+            controllers.put(key, controller);
+            router.get(path, key);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to instantiate rest controller: " + controllerClass.getName(), e);
+        }
     }
 
     @Override
     public void restController(String path, RestController controller) {
-        router.get(path, "restController:" + controller.getClass().getName());
+        String key = "restController:" + controller.getClass().getName();
+        controllers.put(key, controller);
+        router.get(path, key);
+    }
+
+    public Map<String, Controller> getControllers() {
+        return controllers;
     }
 
     public DefaultWebApplication get(String path, RouteHandler handler) {
@@ -352,6 +376,10 @@ public class DefaultWebApplication implements WebApplication {
         
         for (Middleware middleware : middlewares) {
             server.addMiddleware(middleware);
+        }
+        
+        if (server instanceof HttpServerImpl) {
+            ((HttpServerImpl) server).setControllers(controllers);
         }
         
         server.errorHandler((request, response, e) -> {

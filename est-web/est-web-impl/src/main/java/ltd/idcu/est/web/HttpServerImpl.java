@@ -7,12 +7,14 @@ import ltd.idcu.est.web.api.*;
 import ltd.idcu.est.web.api.Controller;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
 
@@ -31,6 +33,7 @@ public class HttpServerImpl implements WebServer {
     private final List<StaticFileHandler> staticFileHandlers;
     private ErrorHandler errorHandler;
     private volatile boolean running = false;
+    private final Map<String, Controller> controllers = new ConcurrentHashMap<>();
 
     public HttpServerImpl() {
         this.name = "EST HTTP Server";
@@ -264,6 +267,10 @@ public class HttpServerImpl implements WebServer {
         return sessionManager;
     }
 
+    public void setControllers(Map<String, Controller> controllers) {
+        this.controllers.putAll(controllers);
+    }
+
     private class RequestHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
@@ -360,12 +367,63 @@ public class HttpServerImpl implements WebServer {
                 return;
             }
 
+            if (handler.startsWith("controller:") || handler.startsWith("restController:")) {
+                Controller controller = controllers.get(handler);
+                if (controller != null) {
+                    controller.setRequest(request);
+                    controller.setResponse(response);
+                    invokeControllerMethod(controller, request, response);
+                    return;
+                } else {
+                    response.sendError(500, "Controller not found: " + handler);
+                    return;
+                }
+            }
+
             response.json(Map.of(
                 "path", request.getPath(),
                 "method", request.getMethod().getMethod(),
                 "handler", handler,
                 "params", request.getParameters()
             ));
+        }
+
+        private void invokeControllerMethod(Controller controller, DefaultRequest request, DefaultResponse response) throws Exception {
+            String path = request.getPath();
+            HttpMethod method = request.getMethod();
+            
+            Method[] methods = controller.getClass().getDeclaredMethods();
+            Method targetMethod = null;
+            
+            for (Method m : methods) {
+                String methodName = m.getName().toLowerCase();
+                String httpMethod = method.getMethod().toLowerCase();
+                
+                if (methodName.equals(httpMethod) || 
+                    methodName.equals("handle") || 
+                    methodName.equals("index") ||
+                    methodName.startsWith(httpMethod)) {
+                    targetMethod = m;
+                    break;
+                }
+            }
+            
+            if (targetMethod != null) {
+                targetMethod.setAccessible(true);
+                Object result = targetMethod.invoke(controller);
+                
+                if (result instanceof String) {
+                    String viewName = (String) result;
+                    if (viewName != null && !viewName.isEmpty()) {
+                        String rendered = controller.render(viewName);
+                        if (rendered != null) {
+                            response.html(rendered);
+                        }
+                    }
+                }
+            } else {
+                response.sendError(500, "No suitable method found in controller");
+            }
         }
 
         private void handleAsyncRoute(AsyncHandler asyncHandler, DefaultRequest request, DefaultResponse response) {
