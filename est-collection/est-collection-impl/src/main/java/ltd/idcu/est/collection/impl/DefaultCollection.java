@@ -711,6 +711,16 @@ public class DefaultCollection<T> implements Collection<T> {
     }
 
     @Override
+    public String toPrettyJson() {
+        return JsonUtils.toPrettyJson(items);
+    }
+
+    @Override
+    public String toPrettyJson(int indent) {
+        return JsonUtils.toPrettyJson(items, indent);
+    }
+
+    @Override
     public String toYaml() {
         return YamlUtils.toYaml(items);
     }

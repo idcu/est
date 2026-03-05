@@ -5,6 +5,7 @@ import ltd.idcu.est.core.api.annotation.Component;
 import ltd.idcu.est.core.api.annotation.Inject;
 import ltd.idcu.est.core.api.annotation.Qualifier;
 import ltd.idcu.est.core.api.annotation.Service;
+import ltd.idcu.est.core.api.exception.CircularDependencyException;
 import ltd.idcu.est.core.api.lifecycle.DisposableBean;
 import ltd.idcu.est.core.api.lifecycle.InitializingBean;
 import ltd.idcu.est.core.api.lifecycle.PostConstruct;
@@ -406,5 +407,84 @@ public class DefaultContainerTest {
 
         public boolean isBeforeCalled() { return beforeCalled; }
         public boolean isAfterCalled() { return afterCalled; }
+    }
+    
+    @Test
+    public void testCircularDependencyDetection() {
+        Container container = new DefaultContainer();
+        container.register(CircularA.class, CircularA.class);
+        container.register(CircularB.class, CircularB.class);
+        
+        Assertions.assertThrows(CircularDependencyException.class, () -> {
+            container.get(CircularA.class);
+        });
+    }
+    
+    @Test
+    public void testCircularDependencyChainDetection() {
+        Container container = new DefaultContainer();
+        container.register(CircularX.class, CircularX.class);
+        container.register(CircularY.class, CircularY.class);
+        container.register(CircularZ.class, CircularZ.class);
+        
+        Assertions.assertThrows(CircularDependencyException.class, () -> {
+            container.get(CircularX.class);
+        });
+    }
+    
+    @Test
+    public void testCreateWithCircularDependency() {
+        Container container = new DefaultContainer();
+        container.register(CircularB.class, CircularB.class);
+        container.register(CircularA.class, CircularA.class);
+        
+        Assertions.assertThrows(CircularDependencyException.class, () -> {
+            container.create(CircularA.class);
+        });
+    }
+    
+    static class CircularA {
+        private final CircularB b;
+        
+        @Inject
+        public CircularA(CircularB b) {
+            this.b = b;
+        }
+    }
+    
+    static class CircularB {
+        private final CircularA a;
+        
+        @Inject
+        public CircularB(CircularA a) {
+            this.a = a;
+        }
+    }
+    
+    static class CircularX {
+        private final CircularY y;
+        
+        @Inject
+        public CircularX(CircularY y) {
+            this.y = y;
+        }
+    }
+    
+    static class CircularY {
+        private final CircularZ z;
+        
+        @Inject
+        public CircularY(CircularZ z) {
+            this.z = z;
+        }
+    }
+    
+    static class CircularZ {
+        private final CircularX x;
+        
+        @Inject
+        public CircularZ(CircularX x) {
+            this.x = x;
+        }
     }
 }

@@ -75,6 +75,6 @@ mvn clean install
 如果您有任何问题或建议，可以通过以下方式联系我们：
 
 - GitHub Issues：https://github.com/idcu/est/issues
-- 邮箱：admin@idcu.ltd
+- 邮箱：idcu@qq.com
 
 感谢您的贡献！

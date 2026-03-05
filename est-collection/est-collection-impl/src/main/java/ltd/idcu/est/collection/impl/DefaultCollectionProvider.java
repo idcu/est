@@ -25,8 +25,13 @@ final class DefaultCollectionProvider implements Collections.CollectionProvider 
     }
 
     @Override
-    public Collection<String> fromJson(String json) {
+    public Collection<Object> fromJson(String json) {
         return CollectionFactory.fromJson(json);
+    }
+
+    @Override
+    public <T> Collection<T> fromJson(String json, Class<T> elementType) {
+        return CollectionFactory.fromJson(json, elementType);
     }
 
     @Override

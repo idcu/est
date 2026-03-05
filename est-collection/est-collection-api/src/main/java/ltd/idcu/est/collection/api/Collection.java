@@ -148,6 +148,10 @@ public interface Collection<T> extends Iterable<T> {
 
     String toJson();
 
+    String toPrettyJson();
+
+    String toPrettyJson(int indent);
+
     String toYaml();
 
     String toXml();

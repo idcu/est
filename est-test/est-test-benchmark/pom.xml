@@ -14,14 +14,20 @@
     <name>EST Test Benchmark</name>
     <description>EST Benchmark Module - JMH performance benchmarks</description>
 
+    <properties>
+        <jmh.version>1.37</jmh.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
+            <version>${jmh.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
+            <version>${jmh.version}</version>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
@@ -34,6 +40,10 @@
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-features-cache-memory</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-event-local</artifactId>
         </dependency>
     </dependencies>
 

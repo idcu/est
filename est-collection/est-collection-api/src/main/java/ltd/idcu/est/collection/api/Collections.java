@@ -14,7 +14,8 @@ public final class Collections {
         <T> Collection<T> fromIterable(Iterable<T> iterable);
         <T> Collection<T> fromStream(Stream<T> stream);
         <T> Collection<T> singleton(T element);
-        Collection<String> fromJson(String json);
+        Collection<Object> fromJson(String json);
+        <T> Collection<T> fromJson(String json, Class<T> elementType);
         Collection<Object> fromYaml(String yaml);
         Collection<Object> fromXml(String xml);
         Collection<Integer> range(int start, int end, int step);
@@ -66,8 +67,12 @@ public final class Collections {
         return requireProvider().singleton(element);
     }
 
-    public static Collection<String> fromJson(String json) {
+    public static Collection<Object> fromJson(String json) {
         return requireProvider().fromJson(json);
+    }
+
+    public static <T> Collection<T> fromJson(String json, Class<T> elementType) {
+        return requireProvider().fromJson(json, elementType);
     }
 
     public static Collection<Object> fromYaml(String yaml) {
@@ -487,6 +492,16 @@ public final class Collections {
 
         @Override
         public String toJson() {
+            return "[]";
+        }
+
+        @Override
+        public String toPrettyJson() {
+            return "[]";
+        }
+
+        @Override
+        public String toPrettyJson(int indent) {
             return "[]";
         }
 

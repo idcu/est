@@ -3,6 +3,7 @@ package ltd.idcu.est.core.impl.inject;
 import ltd.idcu.est.core.api.Container;
 import ltd.idcu.est.core.api.annotation.Inject;
 import ltd.idcu.est.core.api.annotation.Qualifier;
+import ltd.idcu.est.core.api.exception.CircularDependencyException;
 
 import java.lang.reflect.Field;
 
@@ -45,6 +46,8 @@ public class FieldInjector {
             }
 
             field.set(instance, value);
+        } catch (CircularDependencyException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException("Failed to inject field: " + field.getName() + 
                 " in class: " + instance.getClass().getName(), e);

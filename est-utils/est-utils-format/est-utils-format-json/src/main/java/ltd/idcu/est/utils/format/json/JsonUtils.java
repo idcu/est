@@ -45,8 +45,11 @@ public final class JsonUtils {
         if (obj instanceof Map) {
             return toJsonMap((Map<?, ?>) obj);
         }
-        if (obj instanceof Collection) {
-            return toJsonArray((Collection<?>) obj);
+        if (obj instanceof java.util.Collection) {
+            return toJsonArray((java.util.Collection<?>) obj);
+        }
+        if (obj instanceof Iterable) {
+            return toJsonArrayFromIterable((Iterable<?>) obj);
         }
         if (obj.getClass().isArray()) {
             return toJsonArrayFromArray(obj);
@@ -71,11 +74,26 @@ public final class JsonUtils {
         return sb.toString();
     }
 
-    private static String toJsonArray(Collection<?> collection) {
+    private static String toJsonArray(java.util.Collection<?> collection) {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
         boolean first = true;
         for (Object item : collection) {
+            if (!first) {
+                sb.append(',');
+            }
+            first = false;
+            sb.append(toJsonValue(item));
+        }
+        sb.append(']');
+        return sb.toString();
+    }
+
+    private static String toJsonArrayFromIterable(Iterable<?> iterable) {
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        boolean first = true;
+        for (Object item : iterable) {
             if (!first) {
                 sb.append(',');
             }

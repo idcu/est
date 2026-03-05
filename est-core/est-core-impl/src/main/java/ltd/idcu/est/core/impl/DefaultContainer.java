@@ -2,6 +2,7 @@ package ltd.idcu.est.core.impl;
 
 import ltd.idcu.est.core.api.Config;
 import ltd.idcu.est.core.api.Container;
+import ltd.idcu.est.core.api.exception.CircularDependencyException;
 import ltd.idcu.est.core.api.lifecycle.DisposableBean;
 import ltd.idcu.est.core.api.lifecycle.InitializingBean;
 import ltd.idcu.est.core.api.lifecycle.PostConstruct;
@@ -45,6 +46,13 @@ public class DefaultContainer implements Container {
     private final List<DisposableBean> disposableBeans = new CopyOnWriteArrayList<>();
     private final List<Object> preDestroyBeans = new CopyOnWriteArrayList<>();
     private Config config;
+
+    private final ThreadLocal<List<String>> currentResolutionChain = new ThreadLocal<>() {
+        @Override
+        protected List<String> initialValue() {
+            return new ArrayList<>();
+        }
+    };
 
     public DefaultContainer() {
         this.constructorInjector = new ConstructorInjector(this);
@@ -150,14 +158,43 @@ public class DefaultContainer implements Container {
         }
 
         String key = buildKey(type, qualifier);
-        Registration registration = registrations.get(key);
-        if (registration == null) {
-            throw new IllegalStateException("No registration found for type: " + type.getName() +
-                (qualifier != null ? " with qualifier: " + qualifier : ""));
-        }
+        checkForCircularDependency(key);
+        
+        try {
+            currentResolutionChain.get().add(key);
+            Registration registration = registrations.get(key);
+            if (registration == null) {
+                throw new IllegalStateException("No registration found for type: " + type.getName() +
+                    (qualifier != null ? " with qualifier: " + qualifier : ""));
+            }
 
-        return (T) scopeStrategy.get(registration.scope, type, qualifier,
-            (Supplier<T>) registration.supplier, instances);
+            try {
+                return (T) scopeStrategy.get(registration.scope, type, qualifier,
+                    (Supplier<T>) registration.supplier, instances);
+            } catch (RuntimeException e) {
+                if (e instanceof CircularDependencyException) {
+                    throw e;
+                }
+                if (e.getCause() instanceof CircularDependencyException) {
+                    throw (CircularDependencyException) e.getCause();
+                }
+                throw e;
+            }
+        } finally {
+            currentResolutionChain.get().remove(currentResolutionChain.get().size() - 1);
+        }
+    }
+    
+    private void checkForCircularDependency(String key) {
+        List<String> chain = currentResolutionChain.get();
+        if (chain.contains(key)) {
+            List<String> copy = new ArrayList<>(chain);
+            copy.add(key);
+            throw new CircularDependencyException(
+                "Circular dependency detected: " + String.join(" -> ", copy),
+                copy
+            );
+        }
     }
 
     @Override
@@ -189,7 +226,24 @@ public class DefaultContainer implements Container {
 
     @Override
     public <T> T create(Class<T> type) {
-        return createInstanceWithLifecycle(type, type.getName());
+        String key = type.getName();
+        checkForCircularDependency(key);
+        try {
+            currentResolutionChain.get().add(key);
+            try {
+                return createInstanceWithLifecycle(type, key);
+            } catch (RuntimeException e) {
+                if (e instanceof CircularDependencyException) {
+                    throw e;
+                }
+                if (e.getCause() instanceof CircularDependencyException) {
+                    throw (CircularDependencyException) e.getCause();
+                }
+                throw e;
+            }
+        } finally {
+            currentResolutionChain.get().remove(currentResolutionChain.get().size() - 1);
+        }
     }
 
     private <T> T createInstance(Class<T> type) {

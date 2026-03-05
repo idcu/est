@@ -41,21 +41,80 @@ public final class CollectionFactory {
         return new SingletonCollection<>(element);
     }
 
-    public static Collection<String> fromJson(String json) {
+    public static Collection<Object> fromJson(String json) {
         if (json == null || json.trim().isEmpty()) {
             return new DefaultCollection<>();
         }
         Object parsed = JsonUtils.parse(json);
         if (parsed instanceof List) {
             @SuppressWarnings("unchecked")
-            List<String> list = (List<String>) parsed;
-            List<String> result = new ArrayList<>();
+            List<Object> list = (List<Object>) parsed;
+            return new DefaultCollection<>(list);
+        }
+        return new DefaultCollection<>();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Collection<T> fromJson(String json, Class<T> elementType) {
+        if (json == null || json.trim().isEmpty()) {
+            return new DefaultCollection<>();
+        }
+        Object parsed = JsonUtils.parse(json);
+        if (parsed instanceof List) {
+            List<Object> list = (List<Object>) parsed;
+            List<T> result = new ArrayList<>();
             for (Object item : list) {
-                result.add(item != null ? String.valueOf(item) : null);
+                result.add(convertToType(item, elementType));
             }
             return new DefaultCollection<>(result);
         }
         return new DefaultCollection<>();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> T convertToType(Object value, Class<T> targetType) {
+        if (value == null) {
+            return null;
+        }
+        if (targetType.isInstance(value)) {
+            return (T) value;
+        }
+        if (targetType == String.class) {
+            return (T) String.valueOf(value);
+        }
+        if (targetType == Integer.class || targetType == int.class) {
+            if (value instanceof Number) {
+                return (T) Integer.valueOf(((Number) value).intValue());
+            }
+            if (value instanceof String) {
+                return (T) Integer.valueOf((String) value);
+            }
+        }
+        if (targetType == Long.class || targetType == long.class) {
+            if (value instanceof Number) {
+                return (T) Long.valueOf(((Number) value).longValue());
+            }
+            if (value instanceof String) {
+                return (T) Long.valueOf((String) value);
+            }
+        }
+        if (targetType == Double.class || targetType == double.class) {
+            if (value instanceof Number) {
+                return (T) Double.valueOf(((Number) value).doubleValue());
+            }
+            if (value instanceof String) {
+                return (T) Double.valueOf((String) value);
+            }
+        }
+        if (targetType == Boolean.class || targetType == boolean.class) {
+            if (value instanceof Boolean) {
+                return (T) value;
+            }
+            if (value instanceof String) {
+                return (T) Boolean.valueOf((String) value);
+            }
+        }
+        throw new IllegalArgumentException("Cannot convert " + value.getClass() + " to " + targetType);
     }
 
     public static Collection<Object> fromYaml(String yaml) {

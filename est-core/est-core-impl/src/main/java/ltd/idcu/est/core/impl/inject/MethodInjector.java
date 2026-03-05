@@ -3,6 +3,7 @@ package ltd.idcu.est.core.impl.inject;
 import ltd.idcu.est.core.api.Container;
 import ltd.idcu.est.core.api.annotation.Inject;
 import ltd.idcu.est.core.api.annotation.Qualifier;
+import ltd.idcu.est.core.api.exception.CircularDependencyException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -44,7 +45,12 @@ public class MethodInjector {
             method.setAccessible(true);
             Object[] args = resolveMethodArguments(method);
             method.invoke(instance, args);
+        } catch (CircularDependencyException e) {
+            throw e;
         } catch (Exception e) {
+            if (e.getCause() instanceof CircularDependencyException) {
+                throw (CircularDependencyException) e.getCause();
+            }
             throw new RuntimeException("Failed to inject method: " + method.getName() + 
                 " in class: " + instance.getClass().getName(), e);
         }
