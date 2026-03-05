@@ -31,7 +31,7 @@ public class MemoryCache<K, V> implements Cache<K, V> {
     public MemoryCache(CacheConfig config) {
         this.config = config;
         this.stats = new CacheStats();
-        this.listeners = new ArrayList<>();
+        this.listeners = new java.util.concurrent.CopyOnWriteArrayList<>();
         this.running = new AtomicBoolean(true);
         this.cache = new ConcurrentHashMap<>();
         this.strategy = createStrategy(config);

@@ -82,21 +82,6 @@ app.get("/profile", (req, res) -> {
 });
 ```
 
-### WebSocket
-
-```java
-app.websocket("/ws", (session) -> {
-    session.onMessage(message -> {
-        System.out.println("Received: " + message);
-        session.send("Echo: " + message);
-    });
-    
-    session.onClose(() -> {
-        System.out.println("Client disconnected");
-    });
-});
-```
-
 ### 模板引擎
 
 ```java

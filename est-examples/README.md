@@ -29,7 +29,6 @@ est-examples/
 - 路由和控制器
 - 中间件使用
 - 会话管理
-- WebSocket
 - 模板引擎
 
 ### 功能示例 (est-examples-features)

@@ -31,7 +31,6 @@ public class HttpServerImpl implements WebServer {
     private final List<StaticFileHandler> staticFileHandlers;
     private ErrorHandler errorHandler;
     private volatile boolean running = false;
-    private final WebSocketServerManager webSocketServerManager;
 
     public HttpServerImpl() {
         this.name = "EST HTTP Server";
@@ -40,7 +39,6 @@ public class HttpServerImpl implements WebServer {
         this.middlewares = new ArrayList<>();
         this.sessionManager = new DefaultSessionManager();
         this.staticFileHandlers = new ArrayList<>();
-        this.webSocketServerManager = new WebSocketServerManager();
     }
 
     @Override
@@ -59,11 +57,6 @@ public class HttpServerImpl implements WebServer {
             server = HttpServer.create(new InetSocketAddress(host, port), 0);
             server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
             server.createContext("/", new RequestHandler());
-            
-            // WebSocket temporarily disabled
-            // webSocketServerManager.setHost(host);
-            // webSocketServerManager.setPort(port);
-            // webSocketServerManager.initialize();
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize HTTP server", e);
         }
@@ -75,7 +68,6 @@ public class HttpServerImpl implements WebServer {
             initialize();
         }
         server.start();
-        // webSocketServerManager.start();
         sessionManager.startCleanupTask();
         running = true;
     }
@@ -85,7 +77,6 @@ public class HttpServerImpl implements WebServer {
         if (server != null) {
             sessionManager.stopCleanupTask();
             server.stop(0);
-            // webSocketServerManager.stop();
             running = false;
         }
     }
@@ -436,15 +427,5 @@ public class HttpServerImpl implements WebServer {
                 }
             }
         }
-    }
-
-    @Override
-    public void websocket(String path, WebSocketHandler handler) {
-        // WebSocket temporarily disabled
-    }
-
-    @Override
-    public void websocket(WebSocketEndpoint endpoint) {
-        // WebSocket temporarily disabled
     }
 }

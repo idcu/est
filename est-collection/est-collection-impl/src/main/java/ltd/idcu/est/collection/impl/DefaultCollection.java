@@ -21,10 +21,14 @@ public class DefaultCollection<T> implements Collection<T> {
     }
 
     public DefaultCollection(Iterable<? extends T> iterable) {
-        this.items = new ArrayList<>();
-        if (iterable != null) {
-            for (T item : iterable) {
-                this.items.add(item);
+        if (iterable instanceof java.util.Collection) {
+            this.items = new ArrayList<>((java.util.Collection<? extends T>) iterable);
+        } else {
+            this.items = new ArrayList<>();
+            if (iterable != null) {
+                for (T item : iterable) {
+                    this.items.add(item);
+                }
             }
         }
     }
@@ -32,10 +36,18 @@ public class DefaultCollection<T> implements Collection<T> {
     public DefaultCollection(Collection<? extends T> collection) {
         this.items = new ArrayList<>();
         if (collection != null) {
-            for (T item : collection) {
-                this.items.add(item);
+            if (collection instanceof DefaultCollection) {
+                this.items.addAll(((DefaultCollection<? extends T>) collection).items);
+            } else {
+                for (T item : collection) {
+                    this.items.add(item);
+                }
             }
         }
+    }
+
+    private DefaultCollection(List<T> items, boolean internal) {
+        this.items = items;
     }
 
     @Override
@@ -69,20 +81,20 @@ public class DefaultCollection<T> implements Collection<T> {
 
     @Override
     public <R> Collection<R> map(Function<? super T, ? extends R> mapper) {
-        List<R> result = new ArrayList<>();
+        List<R> result = new ArrayList<>(items.size());
         for (T item : items) {
             result.add(mapper.apply(item));
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
     public <R> Collection<R> mapIndexed(BiFunction<Integer, ? super T, ? extends R> mapper) {
-        List<R> result = new ArrayList<>();
+        List<R> result = new ArrayList<>(items.size());
         for (int i = 0; i < items.size(); i++) {
             result.add(mapper.apply(i, items.get(i)));
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -93,7 +105,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -104,7 +116,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(items.get(i));
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -115,7 +127,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -129,16 +141,13 @@ public class DefaultCollection<T> implements Collection<T> {
                 }
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
     public Collection<T> distinct() {
-        Set<T> seen = new LinkedHashSet<>();
-        for (T item : items) {
-            seen.add(item);
-        }
-        return new DefaultCollection<>(new ArrayList<>(seen));
+        Set<T> seen = new LinkedHashSet<>(items);
+        return new DefaultCollection<>(new ArrayList<>(seen), true);
     }
 
     @Override
@@ -151,7 +160,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -160,7 +169,7 @@ public class DefaultCollection<T> implements Collection<T> {
             return new DefaultCollection<>();
         }
         int count = Math.min(n, items.size());
-        return new DefaultCollection<>(new ArrayList<>(items.subList(0, count)));
+        return new DefaultCollection<>(new ArrayList<>(items.subList(0, count)), true);
     }
 
     @Override
@@ -172,7 +181,7 @@ public class DefaultCollection<T> implements Collection<T> {
             }
             result.add(item);
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -182,7 +191,7 @@ public class DefaultCollection<T> implements Collection<T> {
         }
         int size = items.size();
         int fromIndex = Math.max(0, size - n);
-        return new DefaultCollection<>(new ArrayList<>(items.subList(fromIndex, size)));
+        return new DefaultCollection<>(new ArrayList<>(items.subList(fromIndex, size)), true);
     }
 
     @Override
@@ -190,7 +199,7 @@ public class DefaultCollection<T> implements Collection<T> {
         if (n >= items.size()) {
             return new DefaultCollection<>();
         }
-        return new DefaultCollection<>(new ArrayList<>(items.subList(n, items.size())));
+        return new DefaultCollection<>(new ArrayList<>(items.subList(n, items.size())), true);
     }
 
     @Override
@@ -199,7 +208,7 @@ public class DefaultCollection<T> implements Collection<T> {
         while (index < items.size() && predicate.test(items.get(index))) {
             index++;
         }
-        return new DefaultCollection<>(new ArrayList<>(items.subList(index, items.size())));
+        return new DefaultCollection<>(new ArrayList<>(items.subList(index, items.size())), true);
     }
 
     @Override
@@ -207,7 +216,7 @@ public class DefaultCollection<T> implements Collection<T> {
         if (n >= items.size()) {
             return new DefaultCollection<>();
         }
-        return new DefaultCollection<>(new ArrayList<>(items.subList(0, items.size() - n)));
+        return new DefaultCollection<>(new ArrayList<>(items.subList(0, items.size() - n)), true);
     }
 
     @Override
@@ -217,7 +226,7 @@ public class DefaultCollection<T> implements Collection<T> {
         if (from >= to) {
             return new DefaultCollection<>();
         }
-        return new DefaultCollection<>(new ArrayList<>(items.subList(from, to)));
+        return new DefaultCollection<>(new ArrayList<>(items.subList(from, to)), true);
     }
 
     @Override
@@ -230,49 +239,49 @@ public class DefaultCollection<T> implements Collection<T> {
             }
             throw new ClassCastException("Elements must implement Comparable");
         });
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
     public Collection<T> sorted(Comparator<? super T> comparator) {
         List<T> result = new ArrayList<>(items);
         result.sort(comparator);
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
     public <R extends Comparable<? super R>> Collection<T> sortBy(Function<? super T, ? extends R> selector) {
         List<T> result = new ArrayList<>(items);
         result.sort(Comparator.comparing(selector));
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
     public <R extends Comparable<? super R>> Collection<T> sortByDescending(Function<? super T, ? extends R> selector) {
         List<T> result = new ArrayList<>(items);
         result.sort(Comparator.comparing(selector).reversed());
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
     public Collection<T> reversed() {
         List<T> result = new ArrayList<>(items);
         Collections.reverse(result);
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
     public Collection<T> shuffled() {
         List<T> result = new ArrayList<>(items);
         Collections.shuffle(result);
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
     public Collection<T> shuffled(Random random) {
         List<T> result = new ArrayList<>(items);
         Collections.shuffle(result, random);
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -516,18 +525,23 @@ public class DefaultCollection<T> implements Collection<T> {
 
     @Override
     public Collection<T> plus(T element) {
-        List<T> result = new ArrayList<>(items);
+        List<T> result = new ArrayList<>(items.size() + 1);
+        result.addAll(items);
         result.add(element);
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
     public Collection<T> plusAll(Iterable<? extends T> elements) {
         List<T> result = new ArrayList<>(items);
-        for (T element : elements) {
-            result.add(element);
+        if (elements instanceof java.util.Collection) {
+            result.addAll((java.util.Collection<? extends T>) elements);
+        } else {
+            for (T element : elements) {
+                result.add(element);
+            }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -538,7 +552,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -553,7 +567,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -569,19 +583,16 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
     public Collection<T> union(Iterable<? extends T> other) {
-        Set<T> seen = new LinkedHashSet<>();
-        for (T item : items) {
-            seen.add(item);
-        }
+        Set<T> seen = new LinkedHashSet<>(items);
         for (T item : other) {
             seen.add(item);
         }
-        return new DefaultCollection<>(new ArrayList<>(seen));
+        return new DefaultCollection<>(new ArrayList<>(seen), true);
     }
 
     @Override
@@ -596,7 +607,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -930,7 +941,7 @@ public class DefaultCollection<T> implements Collection<T> {
         for (T item : items) {
             action.accept(item);
         }
-        return new DefaultCollection<>(this);
+        return this;
     }
 
     @Override
@@ -938,7 +949,7 @@ public class DefaultCollection<T> implements Collection<T> {
         for (T item : items) {
             action.accept(item);
         }
-        return new DefaultCollection<>(this);
+        return this;
     }
 
     @Override
@@ -960,7 +971,7 @@ public class DefaultCollection<T> implements Collection<T> {
             }
             result.add(new ArrayList<>(items.subList(i, end)));
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -991,7 +1002,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(new ArrayList<>(items.subList(i, total)));
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override
@@ -1007,7 +1018,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result);
+        return new DefaultCollection<>(result, true);
     }
 
     @Override

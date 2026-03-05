@@ -19,6 +19,7 @@
     <modules>
         <module>est-test-api</module>
         <module>est-test-impl</module>
+        <module>est-test-benchmark</module>
     </modules>
 
 </project>

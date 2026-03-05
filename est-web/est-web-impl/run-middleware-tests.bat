@@ -1,0 +1,19 @@
+@echo off
+echo === Running EST Web Middleware Tests ===
+echo.
+
+set CLASSPATH=..\est-web-api\target\classes
+set CLASSPATH=%CLASSPATH%;.\target\classes
+set CLASSPATH=%CLASSPATH%;.\target\test-classes
+set CLASSPATH=%CLASSPATH%;..\..\est-test\est-test-api\target\classes
+set CLASSPATH=%CLASSPATH%;..\..\est-test\est-test-impl\target\classes
+set CLASSPATH=%CLASSPATH%;..\..\est-core\est-core-api\target\classes
+set CLASSPATH=%CLASSPATH%;..\..\est-utils\est-utils-io\target\classes
+set CLASSPATH=%CLASSPATH%;..\..\est-utils\est-utils-format\est-utils-format-json\target\classes
+set CLASSPATH=%CLASSPATH%;..\..\est-collection\est-collection-api\target\classes
+set CLASSPATH=%CLASSPATH%;..\..\est-features\est-features-monitor\est-features-monitor-api\target\classes
+
+java -cp %CLASSPATH% ltd.idcu.est.web.MiddlewareTestsRunner
+
+echo.
+echo === Test Run Complete ===

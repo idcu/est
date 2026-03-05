@@ -29,7 +29,7 @@ public class FixedRateScheduler implements Scheduler {
                 r -> {
                     Thread t = new Thread(r);
                     t.setDaemon(true);
-                    t.setName("fixed-rate-scheduler-" + t.getId());
+                    t.setName("fixed-rate-scheduler-" + t.threadId());
                     return t;
                 }));
     }

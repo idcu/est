@@ -227,8 +227,6 @@ public class DefaultWebApplication implements WebApplication {
     private Runnable startupCallback;
     private Runnable shutdownCallback;
     private View.ViewResolver viewResolver;
-    private final Map<String, WebSocketHandler> webSocketHandlers;
-    private final List<WebSocketEndpoint> webSocketEndpoints;
 }
 ```
 

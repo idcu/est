@@ -27,8 +27,6 @@ public class DefaultWebApplication implements WebApplication {
     private Runnable shutdownCallback;
     private volatile boolean running = false;
     private View.ViewResolver viewResolver;
-    private final Map<String, WebSocketHandler> webSocketHandlers;
-    private final List<WebSocketEndpoint> webSocketEndpoints;
 
     public DefaultWebApplication() {
         this("EST Web Application", "1.0.0");
@@ -41,8 +39,6 @@ public class DefaultWebApplication implements WebApplication {
         this.middlewares = new ArrayList<>();
         this.lifecycleListeners = new ArrayList<>();
         this.exceptionHandlers = new HashMap<>();
-        this.webSocketHandlers = new HashMap<>();
-        this.webSocketEndpoints = new ArrayList<>();
     }
 
     @Override
@@ -358,14 +354,6 @@ public class DefaultWebApplication implements WebApplication {
             server.addMiddleware(middleware);
         }
         
-        // WebSocket temporarily disabled
-        // for (Map.Entry<String, WebSocketHandler> entry : webSocketHandlers.entrySet()) {
-        //     server.websocket(entry.getKey(), entry.getValue());
-        // }
-        // for (WebSocketEndpoint endpoint : webSocketEndpoints) {
-        //     server.websocket(endpoint);
-        // }
-        
         server.errorHandler((request, response, e) -> {
             Consumer<Exception> handler = findExceptionHandler(e.getClass());
             if (handler != null) {
@@ -488,23 +476,5 @@ public class DefaultWebApplication implements WebApplication {
         View view = createView(viewName);
         view.setModel(model);
         return view;
-    }
-
-    @Override
-    public void websocket(String path, WebSocketHandler handler) {
-        if (server != null) {
-            server.websocket(path, handler);
-        } else {
-            webSocketHandlers.put(path, handler);
-        }
-    }
-
-    @Override
-    public void websocket(WebSocketEndpoint endpoint) {
-        if (server != null) {
-            server.websocket(endpoint);
-        } else {
-            webSocketEndpoints.add(endpoint);
-        }
     }
 }

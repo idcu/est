@@ -29,7 +29,7 @@ public class CronScheduler implements Scheduler {
                 r -> {
                     Thread t = new Thread(r);
                     t.setDaemon(true);
-                    t.setName("cron-scheduler-" + t.getId());
+                    t.setName("cron-scheduler-" + t.threadId());
                     return t;
                 }));
     }
