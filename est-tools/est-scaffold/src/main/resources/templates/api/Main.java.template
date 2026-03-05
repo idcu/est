@@ -1,0 +1,32 @@
+package ${fullPackageName};
+
+import ltd.idcu.est.web.DefaultWebApplication;
+import ltd.idcu.est.web.LoggingMiddleware;
+import ltd.idcu.est.web.api.WebApplication;
+import ${fullPackageName}.controller.UserController;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== EST REST API ===");
+        
+        WebApplication app = new DefaultWebApplication();
+        
+        app.use(new LoggingMiddleware());
+        
+        UserController controller = new UserController();
+        controller.registerRoutes(app);
+        
+        app.onStartup(() -> {
+            System.out.println("API Server started on http://localhost:8080");
+            System.out.println("Available endpoints:");
+            System.out.println("  - GET    /api/users       - List all users");
+            System.out.println("  - GET    /api/users/:id   - Get user by ID");
+            System.out.println("  - POST   /api/users       - Create new user");
+            System.out.println("  - PUT    /api/users/:id   - Update user");
+            System.out.println("  - DELETE /api/users/:id   - Delete user");
+            System.out.println("\nPress Ctrl+C to stop the server");
+        });
+        
+        app.run(8080);
+    }
+}

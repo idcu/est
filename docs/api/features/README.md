@@ -9,10 +9,12 @@
 | [Cache](./cache.md) | 缓存系统（内存、文件、Redis） |
 | [Event](./event.md) | 事件总线（本地、异步） |
 | [Logging](./logging.md) | 日志系统（控制台、文件） |
-| [Data](./data.md) | 数据访问（JDBC、内存、Redis） |
-| [Security](./security.md) | 安全认证（基础、JWT） |
+| [Data](./data.md) | 数据访问（JDBC、内存、MongoDB、Redis） |
+| [Security](./security.md) | 安全认证（基础、JWT、OAuth2） |
 | [Scheduler](./scheduler.md) | 调度系统（Cron、固定间隔） |
 | [Monitor](./monitor.md) | 监控系统（JVM、系统） |
+| [Messaging](./messaging.md) | 消息系统（ActiveMQ、Kafka、RabbitMQ、Redis等） |
+| [AI](./ai.md) | AI助手（快速参考、代码生成、最佳实践） |
 
 ## 通用设计模式
 

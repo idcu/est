@@ -1,0 +1,15 @@
+package ${fullPackageName};
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== ${artifactId} Library Demo ===");
+        
+        System.out.println("This is a library project.");
+        System.out.println("Use it as a dependency in other projects.");
+        
+        System.out.println("\nLibrary functionality:");
+        System.out.println("  - Add your utility classes here");
+        System.out.println("  - Write tests for your library");
+        System.out.println("  - Publish to Maven repository");
+    }
+}

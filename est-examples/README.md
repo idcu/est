@@ -8,8 +8,9 @@
 est-examples/
 ├── est-examples-basic/      # 基础示例
 ├── est-examples-web/        # Web示例
-├── est-examples-features/ # 功能示例
-├── est-examples-advanced/ # 高级示例
+├── est-examples-features/   # 功能示例
+├── est-examples-advanced/   # 高级示例
+├── est-examples-ai/         # AI助手示例
 └── pom.xml
 ```
 
@@ -30,16 +31,22 @@ est-examples/
 - 中间件使用
 - 会话管理
 - 模板引擎
+- Todo应用
+- 博客应用
+- 看板应用
+- 聊天应用
+- 文件上传
 
 ### 功能示例 (est-examples-features)
 
 - 缓存系统
 - 事件总线
 - 日志系统
-- 数据访问
+- 数据访问（JDBC、内存、MongoDB、Redis）
 - 安全认证
 - 调度系统
 - 监控系统
+- 消息系统（ActiveMQ、Kafka、RabbitMQ、Redis等）
 
 ### 高级示例 (est-examples-advanced)
 
@@ -47,6 +54,14 @@ est-examples/
 - 完整应用
 - 性能优化
 - 测试实践
+- 模块集成
+
+### AI助手示例 (est-examples-ai)
+
+- AI快速开始
+- AI辅助Web应用
+- 代码生成示例
+- 提示词模板示例
 
 ## 运行示例
 
@@ -58,6 +73,10 @@ mvn exec:java
 # 运行功能示例
 cd est-examples-features
 ./run-examples.bat
+
+# 运行AI示例
+cd est-examples-ai
+mvn exec:java
 ```
 
 ## 依赖

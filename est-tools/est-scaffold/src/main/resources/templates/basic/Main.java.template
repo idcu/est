@@ -1,0 +1,19 @@
+package ${fullPackageName};
+
+import ltd.idcu.est.core.api.Container;
+import ltd.idcu.est.core.impl.DefaultContainer;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== EST Framework Application ===");
+        
+        Container container = new DefaultContainer();
+        
+        container.registerSingleton(String.class, "Hello from EST!");
+        
+        String message = container.get(String.class);
+        System.out.println("Message: " + message);
+        
+        System.out.println("Application started successfully!");
+    }
+}

@@ -1,0 +1,36 @@
+package ${package};
+
+import ltd.idcu.est.core.api.Container;
+import ltd.idcu.est.core.impl.DefaultContainer;
+import ltd.idcu.est.core.api.Component;
+import ltd.idcu.est.core.api.Inject;
+
+@Component
+public class ${className} {
+    
+    public static void main(String[] args) {
+        Container container = new DefaultContainer();
+        
+        UserService userService = container.get(UserService.class);
+        userService.greet("World");
+    }
+}
+
+@Component
+class UserService {
+    
+    @Inject
+    private GreetingService greetingService;
+    
+    public void greet(String name) {
+        System.out.println(greetingService.getGreeting() + ", " + name + "!");
+    }
+}
+
+@Component
+class GreetingService {
+    
+    public String getGreeting() {
+        return "Hello";
+    }
+}

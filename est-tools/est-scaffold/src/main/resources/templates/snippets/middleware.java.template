@@ -1,0 +1,22 @@
+package ${package};
+
+import ltd.idcu.est.web.api.Middleware;
+import ltd.idcu.est.web.api.Request;
+import ltd.idcu.est.web.api.Response;
+
+public class ${className} implements Middleware {
+    
+    @Override
+    public void handle(Request req, Response res, Runnable next) {
+        long startTime = System.currentTimeMillis();
+        
+        System.out.println("[${className}] " + req.method() + " " + req.path());
+        
+        try {
+            next.run();
+        } finally {
+            long duration = System.currentTimeMillis() - startTime;
+            System.out.println("[${className}] Completed in " + duration + "ms");
+        }
+    }
+}

@@ -1,0 +1,69 @@
+package ${package};
+
+import ltd.idcu.est.web.api.WebApplication;
+import ltd.idcu.est.web.api.Request;
+import ltd.idcu.est.web.api.Response;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class ${className} {
+    
+    private final Map<String, ${model}> items = new ConcurrentHashMap<>();
+    private int nextId = 1;
+    
+    public void registerRoutes(WebApplication app) {
+        app.routes(router -> {
+            router.get("/api/${resource}", this::list);
+            router.get("/api/${resource}/:id", this::get);
+            router.post("/api/${resource}", this::create);
+            router.put("/api/${resource}/:id", this::update);
+            router.delete("/api/${resource}/:id", this::delete);
+        });
+    }
+    
+    public void list(Request req, Response res) {
+        res.json(new ArrayList<>(items.values()));
+    }
+    
+    public void get(Request req, Response res) {
+        String id = req.param("id");
+        ${model} item = items.get(id);
+        if (item != null) {
+            res.json(item);
+        } else {
+            res.status(404).json(Map.of("error", "Not found"));
+        }
+    }
+    
+    public void create(Request req, Response res) {
+        ${model} item = new ${model}(
+            String.valueOf(nextId++),
+            req.formParam("name"),
+            req.formParam("description")
+        );
+        items.put(item.getId(), item);
+        res.status(201).json(item);
+    }
+    
+    public void update(Request req, Response res) {
+        String id = req.param("id");
+        ${model} item = items.get(id);
+        if (item != null) {
+            String name = req.formParam("name");
+            if (name != null) item.setName(name);
+            res.json(item);
+        } else {
+            res.status(404).json(Map.of("error", "Not found"));
+        }
+    }
+    
+    public void delete(Request req, Response res) {
+        String id = req.param("id");
+        if (items.remove(id) != null) {
+            res.json(Map.of("message", "Deleted"));
+        } else {
+            res.status(404).json(Map.of("error", "Not found"));
+        }
+    }
+}

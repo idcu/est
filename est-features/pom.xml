@@ -25,6 +25,7 @@
         <module>est-features-messaging</module>
         <module>est-features-monitor</module>
         <module>est-features-scheduler</module>
+        <module>est-features-ai</module>
     </modules>
 
 </project>

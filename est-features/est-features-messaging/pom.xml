@@ -21,6 +21,15 @@
         <module>est-features-messaging-local</module>
         <module>est-features-messaging-amqp</module>
         <module>est-features-messaging-mqtt</module>
+        <module>est-features-messaging-kafka</module>
+        <module>est-features-messaging-stomp</module>
+        <module>est-features-messaging-redis</module>
+        <module>est-features-messaging-nats</module>
+        <module>est-features-messaging-zeromq</module>
+        <module>est-features-messaging-pulsar</module>
+        <module>est-features-messaging-rocketmq</module>
+        <module>est-features-messaging-activemq</module>
+        <module>est-features-messaging-websocket</module>
     </modules>
 
 </project>

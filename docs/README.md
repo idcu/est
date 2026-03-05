@@ -8,10 +8,10 @@
 
 如果你是第一次接触 EST 框架，建议按以下顺序阅读：
 
-1. **[快速开始](../README.md)** - 了解 EST 是什么，3 分钟写出第一个程序
-2. **[安装与配置](./guides/installation.md)** - 准备开发环境
-3. **[入门教程](./tutorials/beginner/)** - 从零开始学习核心概念
-4. **[Web 开发教程](./tutorials/web/)** - 学习如何构建 Web 应用
+1. **[环境准备与安装](../docs/setup.md)** - 从零开始，搭建完整开发环境
+2. **[快速开始](../docs/guides/getting-started.md)** - 创建你的第一个应用
+3. **[入门教程](../docs/tutorials/beginner/)** - 从零开始学习核心概念
+4. **[Web 开发教程](../docs/tutorials/web/)** - 学习如何构建 Web 应用
 
 ---
 
@@ -21,9 +21,10 @@
 
 | 文档 | 说明 | 难度 |
 |------|------|------|
-| [快速开始](../README.md) | EST 框架简介，3 分钟上手 | ⭐ |
-| [安装与配置](./guides/installation.md) | 环境准备和项目配置 | ⭐ |
-| [快速开始指南](./guides/getting-started.md) | 从零开始使用 EST | ⭐ |
+| [根目录 README](../README.md) | EST 框架简介，3 分钟上手 | ⭐ |
+| [环境准备与安装](./setup.md) | 从零开始搭建开发环境 | ⭐ |
+| [快速开始指南](./guides/getting-started.md) | 创建你的第一个应用 | ⭐ |
+| [部署指南](./deployment.md) | 本地运行、Docker、Kubernetes 部署 | ⭐⭐ |
 
 ### 🎓 教程系列
 
@@ -60,11 +61,14 @@
 - [安全认证](./api/features/security.md)
 - [监控系统](./api/features/monitor.md)
 - [调度系统](./api/features/scheduler.md)
+- [消息系统](./api/features/messaging.md)
+- [AI助手](./api/features/ai.md)
 
 #### 其他模块
 - [集合模块](./api/collection/README.md)
 - [设计模式模块](./api/patterns/README.md)
 - [测试模块](./api/test/README.md)
+- [脚手架生成器](./api/scaffold/README.md)
 
 ### ✅ 最佳实践
 
@@ -73,7 +77,6 @@
 - [安全性](./best-practices/security.md) - 安全编程指南
 - [测试指南](./TESTING_GUIDE.md) - 如何编写和运行测试
 - [调试技巧](./best-practices/debugging.md) - 调试方法和工具
-- [部署指南](./best-practices/deployment.md) - 如何部署你的应用
 
 ### 🤖 AI 开发者专区
 
@@ -86,7 +89,6 @@
 ### 🏗️ 架构与设计
 
 - [整体架构](./ARCHITECTURE.md) - 框架的设计理念和架构说明
-- [云部署指南](./CLOUD_DEPLOYMENT.md) - Docker、Kubernetes 部署
 - [贡献指南](./CONTRIBUTING.md) - 如何参与项目开发
 
 ---
@@ -94,9 +96,10 @@
 ## 💡 如何使用这些文档？
 
 ### 初学者
-1. 先看 [快速开始](../README.md) 了解 EST 是什么
-2. 跟着 [入门教程](./tutorials/beginner/) 一步步学习
-3. 遇到问题查 [API 参考](./api/README.md)
+1. 先看 [根目录 README](../README.md) 了解 EST 是什么
+2. 跟着 [环境准备与安装](./setup.md) 搭建环境
+3. 跟着 [入门教程](./tutorials/beginner/) 一步步学习
+4. 遇到问题查 [API 参考](./api/README.md)
 
 ### 有经验的开发者
 1. 直接看 [快速参考卡片](./QUICK_REFERENCE.md) 了解 API
@@ -115,9 +118,10 @@
 EST 框架提供了丰富的示例代码，位于项目根目录的 `est-examples/` 文件夹：
 
 - **est-examples-basic** - 基础示例，适合初学者
-- **est-examples-web** - Web 开发示例
+- **est-examples-web** - Web 开发示例（包含Todo、博客、看板、聊天等应用）
 - **est-examples-features** - 功能模块使用示例
 - **est-examples-advanced** - 高级用法示例
+- **est-examples-ai** - AI助手使用示例
 
 ---
 

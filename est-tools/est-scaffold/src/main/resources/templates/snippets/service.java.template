@@ -1,0 +1,34 @@
+package ${package};
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class ${className} {
+    
+    private final Map<String, ${model}> repository = new ConcurrentHashMap<>();
+    
+    public List<${model}> findAll() {
+        return new ArrayList<>(repository.values());
+    }
+    
+    public Optional<${model}> findById(String id) {
+        return Optional.ofNullable(repository.get(id));
+    }
+    
+    public ${model} create(${model} item) {
+        repository.put(item.getId(), item);
+        return item;
+    }
+    
+    public ${model} update(String id, ${model} item) {
+        if (repository.containsKey(id)) {
+            repository.put(id, item);
+            return item;
+        }
+        throw new IllegalArgumentException("Item not found");
+    }
+    
+    public void delete(String id) {
+        repository.remove(id);
+    }
+}

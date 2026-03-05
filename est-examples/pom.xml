@@ -21,6 +21,7 @@
         <module>est-examples-advanced</module>
         <module>est-examples-features</module>
         <module>est-examples-web</module>
+        <module>est-examples-ai</module>
     </modules>
 
 </project>

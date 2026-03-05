@@ -1,0 +1,37 @@
+package ${fullPackageName};
+
+import ltd.idcu.est.plugin.api.EstPlugin;
+import ltd.idcu.est.plugin.api.PluginContext;
+
+public class Main implements EstPlugin {
+    
+    @Override
+    public String getName() {
+        return "${artifactId}";
+    }
+    
+    @Override
+    public String getVersion() {
+        return "1.0.0";
+    }
+    
+    @Override
+    public void initialize(PluginContext context) {
+        System.out.println("Initializing plugin: " + getName());
+        
+        context.registerService("greeting", name -> "Hello, " + name + "!");
+        
+        System.out.println("Plugin initialized successfully!");
+    }
+    
+    @Override
+    public void shutdown() {
+        System.out.println("Shutting down plugin: " + getName());
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("=== EST Plugin: ${artifactId} ===");
+        System.out.println("This is an EST plugin.");
+        System.out.println("Load it into an EST application to use.");
+    }
+}

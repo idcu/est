@@ -374,4 +374,44 @@ public class RedisOrm implements Orm {
         java.lang.reflect.Field idField;
         String idFieldName;
     }
+    
+    @Override
+    public <T> LambdaQueryWrapper<T> lambdaQuery(Class<T> entityClass) {
+        throw new UnsupportedOperationException("Lambda query not supported for Redis");
+    }
+    
+    @Override
+    public <T> LambdaUpdateWrapper<T> lambdaUpdate(Class<T> entityClass) {
+        throw new UnsupportedOperationException("Lambda update not supported for Redis");
+    }
+    
+    @Override
+    public <T> List<T> saveBatch(List<T> entities) {
+        throw new UnsupportedOperationException("Batch save not supported for Redis");
+    }
+    
+    @Override
+    public <T> List<T> updateBatchById(List<T> entities) {
+        throw new UnsupportedOperationException("Batch update not supported for Redis");
+    }
+    
+    @Override
+    public <T> int removeByIds(Class<T> entityClass, List<?> ids) {
+        throw new UnsupportedOperationException("Batch delete not supported for Redis");
+    }
+    
+    @Override
+    public <T> Page<T> page(Class<T> entityClass, Page<T> page) {
+        throw new UnsupportedOperationException("Pagination not supported for Redis");
+    }
+    
+    @Override
+    public <T> Page<T> page(Class<T> entityClass, Page<T> page, Query<T> query) {
+        throw new UnsupportedOperationException("Pagination not supported for Redis");
+    }
+    
+    @Override
+    public <T> Page<T> page(Class<T> entityClass, Page<T> page, LambdaQueryWrapper<T> wrapper) {
+        throw new UnsupportedOperationException("Pagination not supported for Redis");
+    }
 }

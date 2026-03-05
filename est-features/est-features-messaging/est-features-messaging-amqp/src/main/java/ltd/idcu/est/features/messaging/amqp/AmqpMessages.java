@@ -1,10 +1,16 @@
 package ltd.idcu.est.features.messaging.amqp;
 
+import ltd.idcu.est.features.messaging.api.Message;
 import ltd.idcu.est.features.messaging.api.MessageConsumer;
 import ltd.idcu.est.features.messaging.api.MessageProducer;
 import ltd.idcu.est.features.messaging.api.MessagingConfig;
 
+import java.util.function.Consumer;
+
 public final class AmqpMessages {
+    
+    private static AmqpConnection defaultConnection;
+    private static final Object lock = new Object();
     
     private AmqpMessages() {
     }
@@ -26,12 +32,69 @@ public final class AmqpMessages {
         return connection;
     }
     
+    public static AmqpConnection defaultConnection() {
+        if (defaultConnection == null) {
+            synchronized (lock) {
+                if (defaultConnection == null) {
+                    defaultConnection = connect("localhost", 5672);
+                }
+            }
+        }
+        return defaultConnection;
+    }
+    
+    public static void setDefaultConnection(AmqpConnection connection) {
+        synchronized (lock) {
+            if (defaultConnection != null && defaultConnection.isConnected()) {
+                defaultConnection.close();
+            }
+            defaultConnection = connection;
+        }
+    }
+    
+    public static MessageProducer newProducer() {
+        return newProducer(defaultConnection());
+    }
+    
     public static MessageProducer newProducer(AmqpConnection connection) {
         return new AmqpMessageProducer(connection);
     }
     
+    public static MessageConsumer newConsumer() {
+        return newConsumer(defaultConnection());
+    }
+    
     public static MessageConsumer newConsumer(AmqpConnection connection) {
         return new AmqpMessageConsumer(connection, connection.getConfig());
+    }
+    
+    public static void send(String queue, Object body) {
+        MessageProducer producer = null;
+        try {
+            producer = newProducer();
+            producer.send(queue, body);
+        } finally {
+            if (producer != null) {
+                producer.close();
+            }
+        }
+    }
+    
+    public static void send(String queue, String topic, Object body) {
+        MessageProducer producer = null;
+        try {
+            producer = newProducer();
+            producer.send(queue, topic, body);
+        } finally {
+            if (producer != null) {
+                producer.close();
+            }
+        }
+    }
+    
+    public static void subscribe(String queue, Consumer<Message> handler) {
+        MessageConsumer consumer = newConsumer();
+        consumer.subscribe(queue, handler);
     }
     
     public static AmqpMessagesBuilder builder() {

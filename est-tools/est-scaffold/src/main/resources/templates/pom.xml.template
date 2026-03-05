@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+    <packaging>jar</packaging>
+
+    <name>${artifactId}</name>
+    <description>${description}</description>
+
+    <properties>
+        <maven.compiler.source>${javaVersion}</maven.compiler.source>
+        <maven.compiler.target>${javaVersion}</maven.compiler.target>
+        <maven.compiler.release>${javaVersion}</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <est.version>${estVersion}</est.version>
+    </properties>
+
+    <dependencies>
+${if basic}
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-impl</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+${endif}
+${if cli}
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-impl</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-logging-console</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+${endif}
+${if library}
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-api</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-test-api</artifactId>
+            <version>${est.version}</version>
+            <scope>test</scope>
+        </dependency>
+${endif}
+${if plugin}
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-plugin-api</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+${endif}
+${if microservice}
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-web-impl</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-logging-console</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-cache-memory</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-utils-format-json</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-messaging-api</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-messaging-local</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+${endif}
+${if web}
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-web-impl</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-logging-console</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+${endif}
+${if api}
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-web-impl</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-logging-console</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-features-cache-memory</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-utils-format-json</artifactId>
+            <version>${est.version}</version>
+        </dependency>
+${endif}
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${javaVersion}</source>
+                    <target>${javaVersion}</target>
+                    <release>${javaVersion}</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>${fullPackageName}.Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

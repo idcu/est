@@ -1,0 +1,29 @@
+package ${fullPackageName};
+
+import ltd.idcu.est.web.DefaultWebApplication;
+import ltd.idcu.est.web.LoggingMiddleware;
+import ltd.idcu.est.web.api.WebApplication;
+import ${fullPackageName}.controller.HomeController;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== EST Web Application ===");
+        
+        WebApplication app = new DefaultWebApplication();
+        
+        app.use(new LoggingMiddleware());
+        
+        HomeController controller = new HomeController();
+        controller.registerRoutes(app);
+        
+        app.onStartup(() -> {
+            System.out.println("Server started on http://localhost:8080");
+            System.out.println("Available routes:");
+            System.out.println("  - GET /          - Home page");
+            System.out.println("  - GET /hello/:name - Greeting");
+            System.out.println("\nPress Ctrl+C to stop the server");
+        });
+        
+        app.run(8080);
+    }
+}

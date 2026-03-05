@@ -1,0 +1,23 @@
+package ${package};
+
+import ltd.idcu.est.core.api.Component;
+
+@Component
+public class ${className} {
+    
+    private static ${className} instance;
+    
+    private ${className}() {
+    }
+    
+    public static synchronized ${className} getInstance() {
+        if (instance == null) {
+            instance = new ${className}();
+        }
+        return instance;
+    }
+    
+    public void doSomething() {
+        System.out.println("${className} is working!");
+    }
+}

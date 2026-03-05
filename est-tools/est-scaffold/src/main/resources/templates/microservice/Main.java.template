@@ -1,0 +1,50 @@
+package ${fullPackageName};
+
+import ltd.idcu.est.web.DefaultWebApplication;
+import ltd.idcu.est.web.LoggingMiddleware;
+import ltd.idcu.est.web.api.WebApplication;
+import ltd.idcu.est.features.messaging.api.MessagingConfig;
+import ltd.idcu.est.features.messaging.api.MessageProducer;
+import ltd.idcu.est.features.messaging.api.MessageConsumer;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== EST Microservice ===");
+        
+        WebApplication app = new DefaultWebApplication();
+        
+        app.use(new LoggingMiddleware());
+        
+        MessagingConfig messaging = MessagingConfig.local();
+        MessageProducer producer = messaging.createProducer();
+        MessageConsumer consumer = messaging.createConsumer();
+        
+        consumer.subscribe("service-events", message -> {
+            System.out.println("Received event: " + message.getPayload());
+        });
+        
+        app.get("/health", (req, res) -> {
+            res.json(java.util.Map.of(
+                "status", "healthy",
+                "service", "${artifactId}",
+                "version", "1.0.0"
+            ));
+        });
+        
+        app.post("/api/events", (req, res) -> {
+            String event = req.body();
+            producer.send("service-events", event);
+            res.status(202).json(java.util.Map.of("message", "Event published"));
+        });
+        
+        app.onStartup(() -> {
+            System.out.println("Microservice started on http://localhost:8080");
+            System.out.println("\nEndpoints:");
+            System.out.println("  - GET  /health     - Health check");
+            System.out.println("  - POST /api/events - Publish event");
+            System.out.println("\nPress Ctrl+C to stop");
+        });
+        
+        app.run(8080);
+    }
+}

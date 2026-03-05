@@ -192,6 +192,60 @@ public class MessagingConfig {
                 .setPort(port);
     }
     
+    public static MessagingConfig kafka(String host, int port) {
+        return new MessagingConfig()
+                .setHost(host)
+                .setPort(port);
+    }
+    
+    public static MessagingConfig stomp(String host, int port) {
+        return new MessagingConfig()
+                .setHost(host)
+                .setPort(port);
+    }
+    
+    public static MessagingConfig redis(String host, int port) {
+        return new MessagingConfig()
+                .setHost(host)
+                .setPort(port);
+    }
+    
+    public static MessagingConfig nats(String host, int port) {
+        return new MessagingConfig()
+                .setHost(host)
+                .setPort(port);
+    }
+    
+    public static MessagingConfig zeromq(String host, int port) {
+        return new MessagingConfig()
+                .setHost(host)
+                .setPort(port);
+    }
+    
+    public static MessagingConfig pulsar(String host, int port) {
+        return new MessagingConfig()
+                .setHost(host)
+                .setPort(port);
+    }
+    
+    public static MessagingConfig rocketmq(String host, int port) {
+        return new MessagingConfig()
+                .setHost(host)
+                .setPort(port);
+    }
+    
+    public static MessagingConfig activemq(String host, int port) {
+        return new MessagingConfig()
+                .setHost(host)
+                .setPort(port);
+    }
+    
+    public static MessagingConfig websocket(String host, int port) {
+        return new MessagingConfig()
+                .setHost(host)
+                .setPort(port);
+    }
+    
     @Override
     public String toString() {
         return "MessagingConfig{" +

@@ -1,0 +1,28 @@
+package ${package};
+
+import ltd.idcu.est.web.api.WebApplication;
+import ltd.idcu.est.web.api.Request;
+import ltd.idcu.est.web.api.Response;
+
+import java.util.Map;
+
+public class ${className} {
+    
+    public void register(WebApplication app) {
+        app.use((req, res, next) -> {
+            try {
+                next.run();
+            } catch (IllegalArgumentException e) {
+                res.status(400).json(Map.of(
+                    "error", "Bad Request",
+                    "message", e.getMessage()
+                ));
+            } catch (Exception e) {
+                res.status(500).json(Map.of(
+                    "error", "Internal Server Error",
+                    "message", e.getMessage()
+                ));
+            }
+        });
+    }
+}

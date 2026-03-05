@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    
+    tools {
+        jdk 'jdk-${javaVersion}'
+        maven 'maven'
+    }
+    
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timestamps()
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                sh 'mvn clean install -DskipTests=false'
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Build successful!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
+}

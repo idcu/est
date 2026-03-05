@@ -336,9 +336,39 @@ public class JdbcOrm implements Orm {
         }
         
         metadata.columns = new ArrayList<>();
+        metadata.relations = new ArrayList<>();
         
         for (Field field : entityClass.getDeclaredFields()) {
             if (field.isAnnotationPresent(Transient.class)) {
+                continue;
+            }
+            
+            if (field.isAnnotationPresent(OneToOne.class) || 
+                field.isAnnotationPresent(OneToMany.class) || 
+                field.isAnnotationPresent(ManyToOne.class)) {
+                RelationMetadata relation = new RelationMetadata();
+                relation.field = field;
+                relation.fieldName = field.getName();
+                
+                if (field.isAnnotationPresent(OneToOne.class)) {
+                    OneToOne oneToOne = field.getAnnotation(OneToOne.class);
+                    relation.type = "OneToOne";
+                    relation.joinColumn = oneToOne.joinColumn();
+                    relation.mappedBy = oneToOne.mappedBy();
+                    relation.lazy = oneToOne.lazy();
+                } else if (field.isAnnotationPresent(OneToMany.class)) {
+                    OneToMany oneToMany = field.getAnnotation(OneToMany.class);
+                    relation.type = "OneToMany";
+                    relation.mappedBy = oneToMany.mappedBy();
+                    relation.lazy = oneToMany.lazy();
+                } else if (field.isAnnotationPresent(ManyToOne.class)) {
+                    ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+                    relation.type = "ManyToOne";
+                    relation.joinColumn = manyToOne.joinColumn();
+                    relation.lazy = manyToOne.lazy();
+                }
+                
+                metadata.relations.add(relation);
                 continue;
             }
             
@@ -437,6 +467,98 @@ public class JdbcOrm implements Orm {
         return str.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
     }
     
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> LambdaQueryWrapper<T> lambdaQuery(Class<T> entityClass) {
+        EntityMetadata metadata = getEntityMetadata(entityClass);
+        try {
+            Connection conn = connectionPool.getConnection();
+            return new JdbcLambdaQueryWrapper<>(conn, entityClass, createMapper(entityClass, metadata), metadata.tableName);
+        } catch (Exception e) {
+            throw new DataException("Failed to create lambda query wrapper", e);
+        }
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> LambdaUpdateWrapper<T> lambdaUpdate(Class<T> entityClass) {
+        EntityMetadata metadata = getEntityMetadata(entityClass);
+        try {
+            Connection conn = connectionPool.getConnection();
+            return new JdbcLambdaUpdateWrapper<>(conn, metadata.tableName);
+        } catch (Exception e) {
+            throw new DataException("Failed to create lambda update wrapper", e);
+        }
+    }
+    
+    @Override
+    public <T> List<T> saveBatch(List<T> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return entities;
+        }
+        List<T> result = new ArrayList<>();
+        for (T entity : entities) {
+            result.add(save(entity));
+        }
+        return result;
+    }
+    
+    @Override
+    public <T> List<T> updateBatchById(List<T> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return entities;
+        }
+        List<T> result = new ArrayList<>();
+        for (T entity : entities) {
+            result.add(update(entity));
+        }
+        return result;
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> int removeByIds(Class<T> entityClass, List<?> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return 0;
+        }
+        int count = 0;
+        for (Object id : ids) {
+            count += deleteById(entityClass, id);
+        }
+        return count;
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> Page<T> page(Class<T> entityClass, Page<T> page) {
+        Query<T> query = query(entityClass);
+        return page(entityClass, page, query);
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> Page<T> page(Class<T> entityClass, Page<T> page, Query<T> query) {
+        query.offset((int) page.getOffset());
+        query.limit((int) page.getPageSize());
+        List<T> records = query.get();
+        long total = query(entityClass).count();
+        page.setRecords(records);
+        page.setTotal(total);
+        return page;
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> Page<T> page(Class<T> entityClass, Page<T> page, LambdaQueryWrapper<T> wrapper) {
+        wrapper.offset((int) page.getOffset());
+        wrapper.limit((int) page.getPageSize());
+        List<T> records = wrapper.get();
+        long total = wrapper.count();
+        page.setRecords(records);
+        page.setTotal(total);
+        return page;
+    }
+    
     private static class EntityMetadata {
         String tableName;
         Field idField;
@@ -444,6 +566,7 @@ public class JdbcOrm implements Orm {
         String idColumnName;
         boolean idAutoGenerated;
         List<ColumnMetadata> columns;
+        List<RelationMetadata> relations;
     }
     
     private static class ColumnMetadata {
@@ -452,5 +575,14 @@ public class JdbcOrm implements Orm {
         String columnName;
         boolean isId;
         boolean autoGenerated;
+    }
+    
+    private static class RelationMetadata {
+        Field field;
+        String fieldName;
+        String type;
+        String joinColumn;
+        String mappedBy;
+        boolean lazy;
     }
 }

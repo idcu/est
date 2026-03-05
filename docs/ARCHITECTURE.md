@@ -398,11 +398,12 @@ public interface Middleware {
 
 ```
 est1.3/
-├── est-core/              # 核心模块
-├── est-patterns/          # 设计模式
-├── est-utils/             # 工具类
-├── est-test/              # 测试框架
-├── est-collection/        # Collection增强
+├── est-core/              # 核心模块（DI、配置、生命周期）
+├── est-foundation/        # 基础设施层
+│   ├── est-patterns/      # 设计模式
+│   ├── est-utils/         # 工具类
+│   ├── est-test/          # 测试框架
+│   └── est-collection/    # Collection增强
 ├── est-features/          # 功能模块
 │   ├── est-features-cache/
 │   ├── est-features-event/
@@ -411,11 +412,14 @@ est1.3/
 │   ├── est-features-security/
 │   ├── est-features-messaging/
 │   ├── est-features-monitor/
-│   └── est-features-scheduler/
-├── est-plugin/            # 插件系统
-├── est-web/               # Web框架
+│   ├── est-features-scheduler/
+│   └── est-features-ai/
+├── est-extensions/        # 扩展层
+│   ├── est-plugin/        # 插件系统
+│   └── est-web/           # Web框架
+├── est-tools/             # 工具层
+│   └── est-scaffold/      # 脚手架
 ├── est-examples/          # 示例代码
-├── est-scaffold/          # 脚手架
 ├── deploy/                # 部署配置
 │   ├── docker/            # Docker配置
 │   └── k8s/               # Kubernetes配置

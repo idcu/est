@@ -5,6 +5,7 @@ import ltd.idcu.est.features.data.api.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ public class MemoryQuery<T> implements Query<T> {
     private boolean distinctFlag;
     private QueryCondition currentCondition;
     private String currentLogicalOperator;
+    private String lastSql;
     
     public MemoryQuery(List<T> data, Class<T> entityClass) {
         this.data = data;
@@ -82,9 +84,75 @@ public class MemoryQuery<T> implements Query<T> {
     }
     
     @Override
+    public Query<T> whereLikeLeft(String field, String pattern) {
+        conditions.add(new QueryCondition(field, "LIKE", "%" + pattern, "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereLikeRight(String field, String pattern) {
+        conditions.add(new QueryCondition(field, "LIKE", pattern + "%", "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereNotLike(String field, String pattern) {
+        conditions.add(new QueryCondition(field, "NOT LIKE", pattern, "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereNotLikeLeft(String field, String pattern) {
+        conditions.add(new QueryCondition(field, "NOT LIKE", "%" + pattern, "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereNotLikeRight(String field, String pattern) {
+        conditions.add(new QueryCondition(field, "NOT LIKE", pattern + "%", "AND"));
+        return this;
+    }
+    
+    @Override
     public Query<T> whereBetween(String field, Object start, Object end) {
         conditions.add(new QueryCondition(field, "BETWEEN", new Object[]{start, end}, "AND"));
         return this;
+    }
+    
+    @Override
+    public Query<T> whereNotBetween(String field, Object start, Object end) {
+        conditions.add(new QueryCondition(field, "NOT BETWEEN", new Object[]{start, end}, "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> eq(String field, Object value) {
+        return where(field, "=", value);
+    }
+    
+    @Override
+    public Query<T> ne(String field, Object value) {
+        return where(field, "!=", value);
+    }
+    
+    @Override
+    public Query<T> gt(String field, Object value) {
+        return where(field, ">", value);
+    }
+    
+    @Override
+    public Query<T> ge(String field, Object value) {
+        return where(field, ">=", value);
+    }
+    
+    @Override
+    public Query<T> lt(String field, Object value) {
+        return where(field, "<", value);
+    }
+    
+    @Override
+    public Query<T> le(String field, Object value) {
+        return where(field, "<=", value);
     }
     
     @Override
@@ -104,6 +172,56 @@ public class MemoryQuery<T> implements Query<T> {
     }
     
     @Override
+    public Query<T> and(Consumer<Query<T>> consumer) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> or(Consumer<Query<T>> consumer) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> join(String table, String leftField, String rightField) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> join(String table, String leftField, String operator, String rightField) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> leftJoin(String table, String leftField, String rightField) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> leftJoin(String table, String leftField, String operator, String rightField) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> rightJoin(String table, String leftField, String rightField) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> rightJoin(String table, String leftField, String operator, String rightField) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> innerJoin(String table, String leftField, String rightField) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> innerJoin(String table, String leftField, String operator, String rightField) {
+        return this;
+    }
+    
+    @Override
     public Query<T> orderBy(String field) {
         return orderBy(field, true);
     }
@@ -115,6 +233,16 @@ public class MemoryQuery<T> implements Query<T> {
     }
     
     @Override
+    public Query<T> orderByAsc(String field) {
+        return orderBy(field, true);
+    }
+    
+    @Override
+    public Query<T> orderByDesc(String field) {
+        return orderBy(field, false);
+    }
+    
+    @Override
     public Query<T> limit(int limit) {
         this.limitValue = limit;
         return this;
@@ -123,6 +251,24 @@ public class MemoryQuery<T> implements Query<T> {
     @Override
     public Query<T> offset(int offset) {
         this.offsetValue = offset;
+        return this;
+    }
+    
+    @Override
+    public Query<T> page(int pageNum, int pageSize) {
+        this.offsetValue = (pageNum - 1) * pageSize;
+        this.limitValue = pageSize;
+        return this;
+    }
+    
+    @Override
+    public Query<T> last(String sql) {
+        this.lastSql = sql;
+        return this;
+    }
+    
+    @Override
+    public Query<T> include(String... relations) {
         return this;
     }
     
@@ -193,6 +339,29 @@ public class MemoryQuery<T> implements Query<T> {
     }
     
     @Override
+    public T getOne() {
+        return getOne(false);
+    }
+    
+    @Override
+    public T getOne(boolean throwEx) {
+        if (limitValue == null) {
+            limit(1);
+        }
+        List<T> result = get();
+        if (result.isEmpty()) {
+            if (throwEx) {
+                throw new DataException("Expected one result but found none");
+            }
+            return null;
+        }
+        if (result.size() > 1 && throwEx) {
+            throw new DataException("Expected one result but found " + result.size());
+        }
+        return result.get(0);
+    }
+    
+    @Override
     public Optional<T> find(Object id) {
         return data.stream()
                 .filter(entity -> hasId(entity, id))
@@ -245,6 +414,19 @@ public class MemoryQuery<T> implements Query<T> {
                 .mapToDouble(o -> ((Number) o).doubleValue())
                 .average()
                 .orElse(0.0);
+    }
+    
+    @Override
+    public Page<T> page(Page<T> page) {
+        limit((int) page.getPageSize());
+        offset((int) page.getOffset());
+        
+        long total = count();
+        List<T> records = get();
+        
+        page.setTotal(total);
+        page.setRecords(records);
+        return page;
     }
     
     @Override
@@ -306,6 +488,46 @@ public class MemoryQuery<T> implements Query<T> {
         return bindings;
     }
     
+    @Override
+    public Query<T> enableSqlLog() {
+        return this;
+    }
+    
+    @Override
+    public Query<T> disableSqlLog() {
+        return this;
+    }
+    
+    @Override
+    public Query<T> timeout(int seconds) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> noTimeout() {
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereIn(String field, Query<?> subQuery) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereNotIn(String field, Query<?> subQuery) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> exists(Query<?> subQuery) {
+        return this;
+    }
+    
+    @Override
+    public Query<T> notExists(Query<?> subQuery) {
+        return this;
+    }
+    
     @SuppressWarnings("unchecked")
     private List<T> applyConditions(List<T> data) {
         if (conditions.isEmpty()) {
@@ -363,12 +585,28 @@ public class MemoryQuery<T> implements Query<T> {
                         .replace("_", ".");
                 yield fieldValue.toString().matches(pattern);
             }
+            case "NOT LIKE" -> {
+                if (fieldValue == null || condition.value == null) {
+                    yield true;
+                }
+                String pattern = condition.value.toString()
+                        .replace("%", ".*")
+                        .replace("_", ".");
+                yield !fieldValue.toString().matches(pattern);
+            }
             case "BETWEEN" -> {
                 if (condition.value instanceof Object[] range) {
                     Comparable<Object> val = (Comparable<Object>) fieldValue;
                     yield val != null && val.compareTo(range[0]) >= 0 && val.compareTo(range[1]) <= 0;
                 }
                 yield false;
+            }
+            case "NOT BETWEEN" -> {
+                if (condition.value instanceof Object[] range) {
+                    Comparable<Object> val = (Comparable<Object>) fieldValue;
+                    yield val == null || val.compareTo(range[0]) < 0 || val.compareTo(range[1]) > 0;
+                }
+                yield true;
             }
             default -> false;
         };

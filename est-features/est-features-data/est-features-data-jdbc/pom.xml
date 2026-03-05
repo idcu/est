@@ -24,6 +24,16 @@
             <groupId>ltd.idcu</groupId>
             <artifactId>est-utils-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-test-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-test-impl</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

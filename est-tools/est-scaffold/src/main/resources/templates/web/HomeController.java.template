@@ -1,0 +1,60 @@
+package ${fullPackageName}.controller;
+
+import ltd.idcu.est.web.api.WebApplication;
+import ltd.idcu.est.web.api.Request;
+import ltd.idcu.est.web.api.Response;
+
+public class HomeController {
+    
+    public void registerRoutes(WebApplication app) {
+        app.routes(router -> {
+            router.get("/", this::home);
+            router.get("/hello/:name", this::hello);
+        });
+    }
+    
+    public void home(Request request, Response response) {
+        String html = "<!DOCTYPE html>\n" +
+            "<html>\n" +
+            "<head>\n" +
+            "    <title>EST Web App</title>\n" +
+            "    <style>\n" +
+            "        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }\n" +
+            "        h1 { color: #2c3e50; }\n" +
+            "        .container { background: #f8f9fa; padding: 30px; border-radius: 8px; }\n" +
+            "    </style>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "    <div class=\"container\">\n" +
+            "        <h1>Welcome to EST Framework!</h1>\n" +
+            "        <p>This is a sample web application built with EST.</p>\n" +
+            "        <p>Try: <a href=\"/hello/World\">/hello/World</a></p>\n" +
+            "    </div>\n" +
+            "</body>\n" +
+            "</html>";
+        response.html(html);
+    }
+    
+    public void hello(Request request, Response response) {
+        String name = request.param("name");
+        String html = "<!DOCTYPE html>\n" +
+            "<html>\n" +
+            "<head>\n" +
+            "    <title>Hello</title>\n" +
+            "    <style>\n" +
+            "        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }\n" +
+            "        h1 { color: #3498db; }\n" +
+            "        .container { background: #f8f9fa; padding: 30px; border-radius: 8px; }\n" +
+            "    </style>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "    <div class=\"container\">\n" +
+            "        <h1>Hello, " + name + "!</h1>\n" +
+            "        <p>Welcome to EST Framework.</p>\n" +
+            "        <p><a href=\"/\">Back to home</a></p>\n" +
+            "    </div>\n" +
+            "</body>\n" +
+            "</html>";
+        response.html(html);
+    }
+}

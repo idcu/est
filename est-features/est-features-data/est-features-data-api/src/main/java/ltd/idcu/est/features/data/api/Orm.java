@@ -39,4 +39,20 @@ public interface Orm {
     String getTableName(Class<?> entityClass);
     
     String getIdFieldName(Class<?> entityClass);
+    
+    <T> LambdaQueryWrapper<T> lambdaQuery(Class<T> entityClass);
+    
+    <T> LambdaUpdateWrapper<T> lambdaUpdate(Class<T> entityClass);
+    
+    <T> List<T> saveBatch(List<T> entities);
+    
+    <T> List<T> updateBatchById(List<T> entities);
+    
+    <T> int removeByIds(Class<T> entityClass, List<?> ids);
+    
+    <T> Page<T> page(Class<T> entityClass, Page<T> page);
+    
+    <T> Page<T> page(Class<T> entityClass, Page<T> page, Query<T> query);
+    
+    <T> Page<T> page(Class<T> entityClass, Page<T> page, LambdaQueryWrapper<T> wrapper);
 }

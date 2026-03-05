@@ -1,0 +1,98 @@
+package ${fullPackageName}.controller;
+
+import ltd.idcu.est.web.api.WebApplication;
+import ltd.idcu.est.web.api.Request;
+import ltd.idcu.est.web.api.Response;
+import ${fullPackageName}.model.User;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class UserController {
+    
+    private final Map<String, User> users = new ConcurrentHashMap<>();
+    private int nextId = 1;
+    
+    public UserController() {
+        User user1 = new User(String.valueOf(nextId++), "John Doe", "john@example.com");
+        User user2 = new User(String.valueOf(nextId++), "Jane Smith", "jane@example.com");
+        users.put(user1.getId(), user1);
+        users.put(user2.getId(), user2);
+    }
+    
+    public void registerRoutes(WebApplication app) {
+        app.routes(router -> {
+            router.get("/api/users", this::listUsers);
+            router.get("/api/users/:id", this::getUser);
+            router.post("/api/users", this::createUser);
+            router.put("/api/users/:id", this::updateUser);
+            router.delete("/api/users/:id", this::deleteUser);
+        });
+    }
+    
+    public void listUsers(Request request, Response response) {
+        response.json(new ArrayList<>(users.values()));
+    }
+    
+    public void getUser(Request request, Response response) {
+        String id = request.param("id");
+        User user = users.get(id);
+        if (user != null) {
+            response.json(user);
+        } else {
+            response.status(404).json(Map.of("error", "User not found"));
+        }
+    }
+    
+    public void createUser(Request request, Response response) {
+        String body = request.body();
+        String name = extractValue(body, "name");
+        String email = extractValue(body, "email");
+        
+        if (name != null && email != null) {
+            User user = new User(String.valueOf(nextId++), name, email);
+            users.put(user.getId(), user);
+            response.status(201).json(user);
+        } else {
+            response.status(400).json(Map.of("error", "Name and email are required"));
+        }
+    }
+    
+    public void updateUser(Request request, Response response) {
+        String id = request.param("id");
+        User user = users.get(id);
+        
+        if (user != null) {
+            String body = request.body();
+            String name = extractValue(body, "name");
+            String email = extractValue(body, "email");
+            
+            if (name != null) user.setName(name);
+            if (email != null) user.setEmail(email);
+            
+            response.json(user);
+        } else {
+            response.status(404).json(Map.of("error", "User not found"));
+        }
+    }
+    
+    public void deleteUser(Request request, Response response) {
+        String id = request.param("id");
+        User user = users.remove(id);
+        
+        if (user != null) {
+            response.json(Map.of("message", "User deleted successfully"));
+        } else {
+            response.status(404).json(Map.of("error", "User not found"));
+        }
+    }
+    
+    private String extractValue(String body, String key) {
+        String pattern = "\"" + key + "\"\\s*:\\s*\"([^\"]+)\"";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(pattern);
+        java.util.regex.Matcher m = p.matcher(body);
+        if (m.find()) {
+            return m.group(1);
+        }
+        return null;
+    }
+}

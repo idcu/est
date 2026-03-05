@@ -32,14 +32,10 @@
 
     <modules>
         <module>est-core</module>
-        <module>est-patterns</module>
-        <module>est-utils</module>
-        <module>est-test</module>
-        <module>est-collection</module>
+        <module>est-foundation</module>
         <module>est-features</module>
-        <module>est-plugin</module>
-        <module>est-web</module>
-        <module>est-scaffold</module>
+        <module>est-extensions</module>
+        <module>est-tools</module>
         <module>est-examples</module>
     </modules>
 
@@ -227,6 +223,51 @@
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-messaging-kafka</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-messaging-stomp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-messaging-redis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-messaging-nats</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-messaging-zeromq</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-messaging-pulsar</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-messaging-rocketmq</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-messaging-activemq</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-messaging-websocket</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
                 <artifactId>est-features-monitor-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -280,6 +321,16 @@
                 <artifactId>est-scaffold</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-ai-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-ai-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -321,6 +372,20 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.5.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.3.0</version>
+                    <configuration>
+                        <configLocation>checkstyle.xml</configLocation>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>3.21.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>

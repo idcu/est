@@ -244,4 +244,76 @@ public class MemoryOrm implements Orm {
         String idColumnName;
         Class<?> idType;
     }
+    
+    @Override
+    public <T> LambdaQueryWrapper<T> lambdaQuery(Class<T> entityClass) {
+        throw new UnsupportedOperationException("Lambda query not supported in memory ORM");
+    }
+    
+    @Override
+    public <T> LambdaUpdateWrapper<T> lambdaUpdate(Class<T> entityClass) {
+        throw new UnsupportedOperationException("Lambda update not supported in memory ORM");
+    }
+    
+    @Override
+    public <T> List<T> saveBatch(List<T> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return entities;
+        }
+        
+        List<T> result = new ArrayList<>();
+        for (T entity : entities) {
+            result.add(save(entity));
+        }
+        return result;
+    }
+    
+    @Override
+    public <T> List<T> updateBatchById(List<T> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return entities;
+        }
+        
+        List<T> result = new ArrayList<>();
+        for (T entity : entities) {
+            result.add(update(entity));
+        }
+        return result;
+    }
+    
+    @Override
+    public <T> int removeByIds(Class<T> entityClass, List<?> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return 0;
+        }
+        
+        int count = 0;
+        for (Object id : ids) {
+            count += deleteById(entityClass, id);
+        }
+        return count;
+    }
+    
+    @Override
+    public <T> Page<T> page(Class<T> entityClass, Page<T> page) {
+        return page(entityClass, page, query(entityClass));
+    }
+    
+    @Override
+    public <T> Page<T> page(Class<T> entityClass, Page<T> page, Query<T> query) {
+        query.limit((int) page.getPageSize());
+        query.offset((int) page.getOffset());
+        
+        long total = query.count();
+        List<T> records = query.get();
+        
+        page.setTotal(total);
+        page.setRecords(records);
+        return page;
+    }
+    
+    @Override
+    public <T> Page<T> page(Class<T> entityClass, Page<T> page, LambdaQueryWrapper<T> wrapper) {
+        throw new UnsupportedOperationException("Lambda page query not supported in memory ORM");
+    }
 }

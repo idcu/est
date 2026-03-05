@@ -1,0 +1,39 @@
+package ${package};
+
+import ltd.idcu.est.features.event.api.Event;
+import ltd.idcu.est.features.event.api.EventListener;
+import ltd.idcu.est.features.event.api.EventBus;
+
+public class ${className} {
+    
+    public static void main(String[] args) {
+        EventBus eventBus = EventBus.create();
+        
+        UserCreatedListener listener = new UserCreatedListener();
+        eventBus.subscribe(UserCreatedEvent.class, listener);
+        
+        eventBus.publish(new UserCreatedEvent("user-123", "John Doe"));
+    }
+}
+
+class UserCreatedEvent implements Event {
+    private final String userId;
+    private final String username;
+    
+    public UserCreatedEvent(String userId, String username) {
+        this.userId = userId;
+        this.username = username;
+    }
+    
+    public String getUserId() { return userId; }
+    public String getUsername() { return username; }
+}
+
+class UserCreatedListener implements EventListener<UserCreatedEvent> {
+    
+    @Override
+    public void onEvent(UserCreatedEvent event) {
+        System.out.println("User created: " + event.getUsername());
+        System.out.println("User ID: " + event.getUserId());
+    }
+}

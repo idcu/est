@@ -1,0 +1,27 @@
+# EST Scaffold 配置文件
+# 将此文件复制到您的用户主目录并重命名为 .est-scaffold.yml
+
+# 默认配置
+default:
+  groupId: com.example
+  javaVersion: 21
+  version: 1.0.0-SNAPSHOT
+
+# 预设配置
+presets:
+  # 微服务预设
+  microservice:
+    type: microservice
+    groupId: com.example.microservices
+    javaVersion: 21
+  
+  # Web 应用预设
+  webapp:
+    type: web
+    groupId: com.example.webapps
+  
+  # 企业级 API 预设
+  enterprise-api:
+    type: api
+    groupId: com.example.enterprise
+    javaVersion: 17

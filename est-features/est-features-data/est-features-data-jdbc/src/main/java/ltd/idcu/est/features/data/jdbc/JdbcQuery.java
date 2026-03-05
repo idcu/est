@@ -4,6 +4,7 @@ import ltd.idcu.est.features.data.api.*;
 
 import java.sql.*;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class JdbcQuery<T> implements Query<T> {
@@ -12,23 +13,62 @@ public class JdbcQuery<T> implements Query<T> {
     private final Class<T> entityClass;
     private final EntityMapper<T> mapper;
     private final String tableName;
-    private final List<QueryCondition> conditions;
+    private final List<ConditionNode> conditionNodes;
+    private final List<JoinClause> joinClauses;
     private final List<OrderBy> orderBys;
     private final List<String> selectFields;
     private final List<String> groupByFields;
+    private final List<String> includeRelations;
+    private final Dialect dialect;
+    private final QueryMetrics metrics;
     private Integer limitValue;
     private Integer offsetValue;
     private boolean distinctFlag;
+    private String lastSql;
+    private final Stack<ConditionGroup> groupStack;
+    private boolean sqlLogEnabled = false;
+    private Integer queryTimeoutSeconds = null;
     
     public JdbcQuery(Connection connection, Class<T> entityClass, EntityMapper<T> mapper, String tableName) {
         this.connection = connection;
         this.entityClass = entityClass;
         this.mapper = mapper;
         this.tableName = tableName;
-        this.conditions = new ArrayList<>();
+        this.conditionNodes = new ArrayList<>();
+        this.joinClauses = new ArrayList<>();
         this.orderBys = new ArrayList<>();
         this.selectFields = new ArrayList<>();
         this.groupByFields = new ArrayList<>();
+        this.includeRelations = new ArrayList<>();
+        this.dialect = DialectFactory.getDialect(connection);
+        this.metrics = new QueryMetrics();
+        this.groupStack = new Stack<>();
+    }
+    
+    private JdbcQuery(Connection connection, Class<T> entityClass, EntityMapper<T> mapper, String tableName,
+                     List<ConditionNode> conditionNodes, List<OrderBy> orderBys, List<String> selectFields,
+                     List<String> groupByFields, List<String> includeRelations, Dialect dialect, QueryMetrics metrics,
+                     Integer limitValue, Integer offsetValue, boolean distinctFlag, String lastSql,
+                     boolean sqlLogEnabled, Integer queryTimeoutSeconds) {
+        this.connection = connection;
+        this.entityClass = entityClass;
+        this.mapper = mapper;
+        this.tableName = tableName;
+        this.conditionNodes = conditionNodes;
+        this.joinClauses = new ArrayList<>();
+        this.orderBys = orderBys;
+        this.selectFields = selectFields;
+        this.groupByFields = groupByFields;
+        this.includeRelations = includeRelations;
+        this.dialect = dialect;
+        this.metrics = metrics;
+        this.limitValue = limitValue;
+        this.offsetValue = offsetValue;
+        this.distinctFlag = distinctFlag;
+        this.lastSql = lastSql;
+        this.groupStack = new Stack<>();
+        this.sqlLogEnabled = sqlLogEnabled;
+        this.queryTimeoutSeconds = queryTimeoutSeconds;
     }
     
     @Override
@@ -38,7 +78,7 @@ public class JdbcQuery<T> implements Query<T> {
     
     @Override
     public Query<T> where(String field, String operator, Object value) {
-        conditions.add(new QueryCondition(field, operator, value, "AND"));
+        addCondition(new QueryCondition(field, operator, value, "AND"));
         return this;
     }
     
@@ -46,7 +86,7 @@ public class JdbcQuery<T> implements Query<T> {
     public Query<T> whereIn(String field, Iterable<?> values) {
         List<Object> valueList = new ArrayList<>();
         values.forEach(valueList::add);
-        conditions.add(new QueryCondition(field, "IN", valueList, "AND"));
+        addCondition(new QueryCondition(field, "IN", valueList, "AND"));
         return this;
     }
     
@@ -54,47 +94,248 @@ public class JdbcQuery<T> implements Query<T> {
     public Query<T> whereNotIn(String field, Iterable<?> values) {
         List<Object> valueList = new ArrayList<>();
         values.forEach(valueList::add);
-        conditions.add(new QueryCondition(field, "NOT IN", valueList, "AND"));
+        addCondition(new QueryCondition(field, "NOT IN", valueList, "AND"));
         return this;
     }
     
     @Override
     public Query<T> whereNull(String field) {
-        conditions.add(new QueryCondition(field, "IS NULL", null, "AND"));
+        addCondition(new QueryCondition(field, "IS NULL", null, "AND"));
         return this;
     }
     
     @Override
     public Query<T> whereNotNull(String field) {
-        conditions.add(new QueryCondition(field, "IS NOT NULL", null, "AND"));
+        addCondition(new QueryCondition(field, "IS NOT NULL", null, "AND"));
         return this;
     }
     
     @Override
     public Query<T> whereLike(String field, String pattern) {
-        conditions.add(new QueryCondition(field, "LIKE", pattern, "AND"));
+        addCondition(new QueryCondition(field, "LIKE", pattern, "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereLikeLeft(String field, String pattern) {
+        addCondition(new QueryCondition(field, "LIKE", "%" + pattern, "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereLikeRight(String field, String pattern) {
+        addCondition(new QueryCondition(field, "LIKE", pattern + "%", "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereNotLike(String field, String pattern) {
+        addCondition(new QueryCondition(field, "NOT LIKE", pattern, "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereNotLikeLeft(String field, String pattern) {
+        addCondition(new QueryCondition(field, "NOT LIKE", "%" + pattern, "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereNotLikeRight(String field, String pattern) {
+        addCondition(new QueryCondition(field, "NOT LIKE", pattern + "%", "AND"));
         return this;
     }
     
     @Override
     public Query<T> whereBetween(String field, Object start, Object end) {
-        conditions.add(new QueryCondition(field, "BETWEEN", new Object[]{start, end}, "AND"));
+        addCondition(new QueryCondition(field, "BETWEEN", new Object[]{start, end}, "AND"));
         return this;
     }
     
     @Override
+    public Query<T> whereNotBetween(String field, Object start, Object end) {
+        addCondition(new QueryCondition(field, "NOT BETWEEN", new Object[]{start, end}, "AND"));
+        return this;
+    }
+    
+    @Override
+    public Query<T> eq(String field, Object value) {
+        return where(field, "=", value);
+    }
+    
+    @Override
+    public Query<T> ne(String field, Object value) {
+        return where(field, "!=", value);
+    }
+    
+    @Override
+    public Query<T> gt(String field, Object value) {
+        return where(field, ">", value);
+    }
+    
+    @Override
+    public Query<T> ge(String field, Object value) {
+        return where(field, ">=", value);
+    }
+    
+    @Override
+    public Query<T> lt(String field, Object value) {
+        return where(field, "<", value);
+    }
+    
+    @Override
+    public Query<T> le(String field, Object value) {
+        return where(field, "<=", value);
+    }
+    
+    @Override
     public Query<T> and() {
-        if (!conditions.isEmpty()) {
-            conditions.get(conditions.size() - 1).logicalOperator = "AND";
+        if (!conditionNodes.isEmpty()) {
+            ConditionNode lastNode = conditionNodes.get(conditionNodes.size() - 1);
+            if (lastNode instanceof QueryCondition) {
+                ((QueryCondition) lastNode).logicalOperator = "AND";
+            } else if (lastNode instanceof ConditionGroup) {
+                ((ConditionGroup) lastNode).logicalOperator = "AND";
+            }
         }
         return this;
     }
     
     @Override
     public Query<T> or() {
-        if (!conditions.isEmpty()) {
-            conditions.get(conditions.size() - 1).logicalOperator = "OR";
+        if (!conditionNodes.isEmpty()) {
+            ConditionNode lastNode = conditionNodes.get(conditionNodes.size() - 1);
+            if (lastNode instanceof QueryCondition) {
+                ((QueryCondition) lastNode).logicalOperator = "OR";
+            } else if (lastNode instanceof ConditionGroup) {
+                ((ConditionGroup) lastNode).logicalOperator = "OR";
+            }
         }
+        return this;
+    }
+    
+    @Override
+    public Query<T> and(Consumer<Query<T>> consumer) {
+        ConditionGroup group = new ConditionGroup("AND");
+        if (!groupStack.isEmpty()) {
+            groupStack.peek().nodes.add(group);
+        } else {
+            if (!conditionNodes.isEmpty()) {
+                ConditionNode lastNode = conditionNodes.get(conditionNodes.size() - 1);
+                if (lastNode instanceof QueryCondition) {
+                    ((QueryCondition) lastNode).logicalOperator = "AND";
+                } else if (lastNode instanceof ConditionGroup) {
+                    ((ConditionGroup) lastNode).logicalOperator = "AND";
+                }
+            }
+            conditionNodes.add(group);
+        }
+        groupStack.push(group);
+        
+        JdbcQuery<T> subQuery = createSubQuery();
+        consumer.accept(subQuery);
+        
+        groupStack.pop();
+        return this;
+    }
+    
+    @Override
+    public Query<T> or(Consumer<Query<T>> consumer) {
+        ConditionGroup group = new ConditionGroup("OR");
+        if (!groupStack.isEmpty()) {
+            groupStack.peek().nodes.add(group);
+        } else {
+            if (!conditionNodes.isEmpty()) {
+                ConditionNode lastNode = conditionNodes.get(conditionNodes.size() - 1);
+                if (lastNode instanceof QueryCondition) {
+                    ((QueryCondition) lastNode).logicalOperator = "OR";
+                } else if (lastNode instanceof ConditionGroup) {
+                    ((ConditionGroup) lastNode).logicalOperator = "OR";
+                }
+            }
+            conditionNodes.add(group);
+        }
+        groupStack.push(group);
+        
+        JdbcQuery<T> subQuery = createSubQuery();
+        consumer.accept(subQuery);
+        
+        groupStack.pop();
+        return this;
+    }
+    
+    private JdbcQuery<T> createSubQuery() {
+        return new JdbcQuery<>(connection, entityClass, mapper, tableName,
+                new ArrayList<>(), orderBys, selectFields, groupByFields, includeRelations,
+                dialect, metrics, limitValue, offsetValue, distinctFlag, lastSql,
+                sqlLogEnabled, queryTimeoutSeconds) {
+            @Override
+            protected void addCondition(QueryCondition condition) {
+                if (!groupStack.isEmpty()) {
+                    groupStack.peek().nodes.add(condition);
+                } else {
+                    conditionNodes.add(condition);
+                }
+            }
+        };
+    }
+    
+    protected void addCondition(QueryCondition condition) {
+        if (!groupStack.isEmpty()) {
+            groupStack.peek().nodes.add(condition);
+        } else {
+            if (!conditionNodes.isEmpty()) {
+                ConditionNode lastNode = conditionNodes.get(conditionNodes.size() - 1);
+                if (lastNode.logicalOperator == null) {
+                    lastNode.logicalOperator = "AND";
+                }
+            }
+            conditionNodes.add(condition);
+        }
+    }
+    
+    @Override
+    public Query<T> join(String table, String leftField, String rightField) {
+        return join(table, leftField, "=", rightField);
+    }
+    
+    @Override
+    public Query<T> join(String table, String leftField, String operator, String rightField) {
+        return addJoin("JOIN", table, leftField, operator, rightField);
+    }
+    
+    @Override
+    public Query<T> leftJoin(String table, String leftField, String rightField) {
+        return leftJoin(table, leftField, "=", rightField);
+    }
+    
+    @Override
+    public Query<T> leftJoin(String table, String leftField, String operator, String rightField) {
+        return addJoin("LEFT JOIN", table, leftField, operator, rightField);
+    }
+    
+    @Override
+    public Query<T> rightJoin(String table, String leftField, String rightField) {
+        return rightJoin(table, leftField, "=", rightField);
+    }
+    
+    @Override
+    public Query<T> rightJoin(String table, String leftField, String operator, String rightField) {
+        return addJoin("RIGHT JOIN", table, leftField, operator, rightField);
+    }
+    
+    @Override
+    public Query<T> innerJoin(String table, String leftField, String rightField) {
+        return innerJoin(table, leftField, "=", rightField);
+    }
+    
+    @Override
+    public Query<T> innerJoin(String table, String leftField, String operator, String rightField) {
+        return addJoin("INNER JOIN", table, leftField, operator, rightField);
+    }
+    
+    private Query<T> addJoin(String type, String table, String leftField, String operator, String rightField) {
+        joinClauses.add(new JoinClause(type, table, leftField, operator, rightField));
         return this;
     }
     
@@ -110,6 +351,16 @@ public class JdbcQuery<T> implements Query<T> {
     }
     
     @Override
+    public Query<T> orderByAsc(String field) {
+        return orderBy(field, true);
+    }
+    
+    @Override
+    public Query<T> orderByDesc(String field) {
+        return orderBy(field, false);
+    }
+    
+    @Override
     public Query<T> limit(int limit) {
         this.limitValue = limit;
         return this;
@@ -118,6 +369,13 @@ public class JdbcQuery<T> implements Query<T> {
     @Override
     public Query<T> offset(int offset) {
         this.offsetValue = offset;
+        return this;
+    }
+    
+    @Override
+    public Query<T> page(int pageNum, int pageSize) {
+        this.offsetValue = (pageNum - 1) * pageSize;
+        this.limitValue = pageSize;
         return this;
     }
     
@@ -145,20 +403,138 @@ public class JdbcQuery<T> implements Query<T> {
     }
     
     @Override
-    public List<T> get() {
-        String sql = buildSelectSql();
-        List<Object> params = buildParams();
-        
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            setParameters(stmt, params);
-            ResultSet rs = stmt.executeQuery();
-            List<T> result = new ArrayList<>();
-            while (rs.next()) {
-                result.add(mapper.map(rs));
+    public Query<T> last(String sql) {
+        this.lastSql = sql;
+        return this;
+    }
+    
+    @Override
+    public Query<T> include(String... relations) {
+        this.includeRelations.addAll(Arrays.asList(relations));
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereIn(String field, Query<?> subQuery) {
+        addSubQueryCondition(field, "IN", subQuery, "AND");
+        return this;
+    }
+    
+    @Override
+    public Query<T> whereNotIn(String field, Query<?> subQuery) {
+        addSubQueryCondition(field, "NOT IN", subQuery, "AND");
+        return this;
+    }
+    
+    @Override
+    public Query<T> exists(Query<?> subQuery) {
+        addExistsCondition(false, subQuery, "AND");
+        return this;
+    }
+    
+    @Override
+    public Query<T> notExists(Query<?> subQuery) {
+        addExistsCondition(true, subQuery, "AND");
+        return this;
+    }
+    
+    private void addSubQueryCondition(String field, String operator, Query<?> subQuery, String logicalOperator) {
+        SubQueryCondition condition = new SubQueryCondition(field, operator, subQuery, logicalOperator);
+        if (!groupStack.isEmpty()) {
+            groupStack.peek().nodes.add(condition);
+        } else {
+            if (!conditionNodes.isEmpty()) {
+                ConditionNode lastNode = conditionNodes.get(conditionNodes.size() - 1);
+                if (lastNode.logicalOperator == null) {
+                    lastNode.logicalOperator = "AND";
+                }
             }
-            return result;
-        } catch (SQLException e) {
-            throw new DataException("Failed to execute query: " + sql, e);
+            conditionNodes.add(condition);
+        }
+    }
+    
+    private void addExistsCondition(boolean not, Query<?> subQuery, String logicalOperator) {
+        ExistsCondition condition = new ExistsCondition(not, subQuery, logicalOperator);
+        if (!groupStack.isEmpty()) {
+            groupStack.peek().nodes.add(condition);
+        } else {
+            if (!conditionNodes.isEmpty()) {
+                ConditionNode lastNode = conditionNodes.get(conditionNodes.size() - 1);
+                if (lastNode.logicalOperator == null) {
+                    lastNode.logicalOperator = "AND";
+                }
+            }
+            conditionNodes.add(condition);
+        }
+    }
+    
+    public QueryMetrics getMetrics() {
+        return metrics;
+    }
+    
+    @Override
+    public Query<T> enableSqlLog() {
+        this.sqlLogEnabled = true;
+        return this;
+    }
+    
+    @Override
+    public Query<T> disableSqlLog() {
+        this.sqlLogEnabled = false;
+        return this;
+    }
+    
+    @Override
+    public Query<T> timeout(int seconds) {
+        this.queryTimeoutSeconds = seconds;
+        return this;
+    }
+    
+    @Override
+    public Query<T> noTimeout() {
+        this.queryTimeoutSeconds = null;
+        return this;
+    }
+    
+    private void logSql(String sql, List<Object> params) {
+        if (sqlLogEnabled) {
+            System.out.println("[EST ORM] SQL: " + sql);
+            if (!params.isEmpty()) {
+                System.out.println("[EST ORM] Parameters: " + params);
+            }
+        }
+    }
+    
+    private void applyTimeout(PreparedStatement stmt) throws SQLException {
+        if (queryTimeoutSeconds != null) {
+            stmt.setQueryTimeout(queryTimeoutSeconds);
+        }
+    }
+    
+    @Override
+    public List<T> get() {
+        long startTime = System.currentTimeMillis();
+        try {
+            String sql = buildSelectSql();
+            List<Object> params = buildParams();
+            
+            logSql(sql, params);
+            
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                applyTimeout(stmt);
+                setParameters(stmt, params);
+                ResultSet rs = stmt.executeQuery();
+                List<T> result = new ArrayList<>();
+                while (rs.next()) {
+                    result.add(mapper.map(rs));
+                }
+                return result;
+            } catch (SQLException e) {
+                throw new DataException("Failed to execute query: " + sql, e);
+            }
+        } finally {
+            long endTime = System.currentTimeMillis();
+            metrics.recordQuery(endTime - startTime);
         }
     }
     
@@ -177,6 +553,29 @@ public class JdbcQuery<T> implements Query<T> {
     }
     
     @Override
+    public T getOne() {
+        return getOne(false);
+    }
+    
+    @Override
+    public T getOne(boolean throwEx) {
+        if (limitValue == null) {
+            limit(1);
+        }
+        List<T> result = get();
+        if (result.isEmpty()) {
+            if (throwEx) {
+                throw new DataException("Expected one result but found none");
+            }
+            return null;
+        }
+        if (result.size() > 1 && throwEx) {
+            throw new DataException("Expected one result but found " + result.size());
+        }
+        return result.get(0);
+    }
+    
+    @Override
     public Optional<T> find(Object id) {
         return where("id", id).first();
     }
@@ -186,7 +585,10 @@ public class JdbcQuery<T> implements Query<T> {
         String sql = buildCountSql();
         List<Object> params = buildParams();
         
+        logSql(sql, params);
+        
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            applyTimeout(stmt);
             setParameters(stmt, params);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -228,12 +630,28 @@ public class JdbcQuery<T> implements Query<T> {
     }
     
     @Override
+    public Page<T> page(Page<T> page) {
+        limit((int) page.getPageSize());
+        offset((int) page.getOffset());
+        
+        long total = count();
+        List<T> records = get();
+        
+        page.setTotal(total);
+        page.setRecords(records);
+        return page;
+    }
+    
+    @Override
     public int update(Map<String, Object> values) {
         String sql = buildUpdateSql(values);
         List<Object> params = new ArrayList<>(values.values());
         params.addAll(buildParams());
         
+        logSql(sql, params);
+        
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            applyTimeout(stmt);
             setParameters(stmt, params);
             return stmt.executeUpdate();
         } catch (SQLException e) {
@@ -246,7 +664,10 @@ public class JdbcQuery<T> implements Query<T> {
         String sql = buildDeleteSql();
         List<Object> params = buildParams();
         
+        logSql(sql, params);
+        
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            applyTimeout(stmt);
             setParameters(stmt, params);
             return stmt.executeUpdate();
         } catch (SQLException e) {
@@ -262,10 +683,9 @@ public class JdbcQuery<T> implements Query<T> {
     @Override
     public Map<String, Object> getBindings() {
         Map<String, Object> bindings = new LinkedHashMap<>();
-        for (QueryCondition condition : conditions) {
-            if (condition.value != null) {
-                bindings.put(condition.field, condition.value);
-            }
+        List<Object> params = buildParams();
+        for (int i = 0; i < params.size(); i++) {
+            bindings.put("param" + (i + 1), params.get(i));
         }
         return bindings;
     }
@@ -285,16 +705,36 @@ public class JdbcQuery<T> implements Query<T> {
         
         sql.append(" FROM ").append(tableName);
         
+        appendJoinClauses(sql);
         appendWhereClause(sql);
         appendOrderByClause(sql);
-        appendLimitOffsetClause(sql);
         
-        return sql.toString();
+        if (lastSql != null) {
+            sql.append(" ").append(lastSql);
+        }
+        
+        String baseSql = sql.toString();
+        
+        if (limitValue != null) {
+            int offset = offsetValue != null ? offsetValue : 0;
+            return dialect.getLimitSql(baseSql, offset, limitValue);
+        }
+        
+        return baseSql;
+    }
+    
+    private void appendJoinClauses(StringBuilder sql) {
+        for (JoinClause join : joinClauses) {
+            sql.append(" ").append(join.type).append(" ").append(join.table)
+               .append(" ON ").append(join.leftField).append(" ").append(join.operator)
+               .append(" ").append(join.rightField);
+        }
     }
     
     private String buildCountSql() {
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ");
         sql.append(tableName);
+        appendJoinClauses(sql);
         appendWhereClause(sql);
         return sql.toString();
     }
@@ -303,6 +743,7 @@ public class JdbcQuery<T> implements Query<T> {
         StringBuilder sql = new StringBuilder("SELECT ");
         sql.append(func).append("(").append(field).append(") FROM ");
         sql.append(tableName);
+        appendJoinClauses(sql);
         appendWhereClause(sql);
         return sql.toString();
     }
@@ -325,27 +766,70 @@ public class JdbcQuery<T> implements Query<T> {
     }
     
     private void appendWhereClause(StringBuilder sql) {
-        if (conditions.isEmpty()) {
+        if (conditionNodes.isEmpty()) {
             return;
         }
         
         sql.append(" WHERE ");
-        for (int i = 0; i < conditions.size(); i++) {
+        appendConditionNodes(sql, conditionNodes);
+    }
+    
+    private void appendConditionNodes(StringBuilder sql, List<ConditionNode> nodes) {
+        for (int i = 0; i < nodes.size(); i++) {
+            ConditionNode node = nodes.get(i);
             if (i > 0) {
-                sql.append(" ").append(conditions.get(i - 1).logicalOperator).append(" ");
+                ConditionNode prevNode = nodes.get(i - 1);
+                String op = prevNode.logicalOperator != null ? prevNode.logicalOperator : "AND";
+                sql.append(" ").append(op).append(" ");
             }
-            QueryCondition c = conditions.get(i);
-            sql.append(c.field).append(" ").append(c.operator);
             
-            if (c.value instanceof List<?> list) {
-                sql.append(" (").append(Collections.nCopies(list.size(), "?").stream()
-                        .collect(Collectors.joining(", "))).append(")");
-            } else if (c.value instanceof Object[] arr) {
-                sql.append(" ? AND ?");
-            } else if (c.value != null) {
-                sql.append(" ?");
+            if (node instanceof QueryCondition) {
+                appendQueryCondition(sql, (QueryCondition) node);
+            } else if (node instanceof SubQueryCondition) {
+                appendSubQueryCondition(sql, (SubQueryCondition) node);
+            } else if (node instanceof ExistsCondition) {
+                appendExistsCondition(sql, (ExistsCondition) node);
+            } else if (node instanceof ConditionGroup) {
+                appendConditionGroup(sql, (ConditionGroup) node);
             }
         }
+    }
+    
+    private void appendQueryCondition(StringBuilder sql, QueryCondition c) {
+        sql.append(c.field).append(" ").append(c.operator);
+        
+        if (c.value instanceof List<?> list) {
+            sql.append(" (").append(Collections.nCopies(list.size(), "?").stream()
+                    .collect(Collectors.joining(", "))).append(")");
+        } else if (c.value instanceof Object[] arr) {
+            sql.append(" ? AND ?");
+        } else if (c.value != null) {
+            sql.append(" ?");
+        }
+    }
+    
+    private void appendSubQueryCondition(StringBuilder sql, SubQueryCondition c) {
+        sql.append(c.field).append(" ").append(c.operator).append(" (");
+        sql.append(c.subQuery.toSql());
+        sql.append(")");
+    }
+    
+    private void appendExistsCondition(StringBuilder sql, ExistsCondition c) {
+        if (c.not) {
+            sql.append("NOT ");
+        }
+        sql.append("EXISTS (");
+        sql.append(c.subQuery.toSql());
+        sql.append(")");
+    }
+    
+    private void appendConditionGroup(StringBuilder sql, ConditionGroup group) {
+        if (group.nodes.isEmpty()) {
+            return;
+        }
+        sql.append("(");
+        appendConditionNodes(sql, group.nodes);
+        sql.append(")");
     }
     
     private void appendOrderByClause(StringBuilder sql) {
@@ -359,28 +843,36 @@ public class JdbcQuery<T> implements Query<T> {
                 .collect(Collectors.joining(", ")));
     }
     
-    private void appendLimitOffsetClause(StringBuilder sql) {
-        if (limitValue != null) {
-            sql.append(" LIMIT ").append(limitValue);
-        }
-        if (offsetValue != null) {
-            sql.append(" OFFSET ").append(offsetValue);
-        }
-    }
-    
     private List<Object> buildParams() {
         List<Object> params = new ArrayList<>();
-        for (QueryCondition condition : conditions) {
-            if (condition.value instanceof List<?> list) {
-                params.addAll(list);
-            } else if (condition.value instanceof Object[] arr) {
-                params.add(arr[0]);
-                params.add(arr[1]);
-            } else if (condition.value != null) {
-                params.add(condition.value);
+        collectParams(conditionNodes, params);
+        return params;
+    }
+    
+    private void collectParams(List<ConditionNode> nodes, List<Object> params) {
+        for (ConditionNode node : nodes) {
+            if (node instanceof QueryCondition) {
+                QueryCondition c = (QueryCondition) node;
+                if (c.value instanceof List<?> list) {
+                    params.addAll(list);
+                } else if (c.value instanceof Object[] arr) {
+                    params.add(arr[0]);
+                    params.add(arr[1]);
+                } else if (c.value != null) {
+                    params.add(c.value);
+                }
+            } else if (node instanceof SubQueryCondition) {
+                SubQueryCondition c = (SubQueryCondition) node;
+                Map<String, Object> subBindings = c.subQuery.getBindings();
+                params.addAll(subBindings.values());
+            } else if (node instanceof ExistsCondition) {
+                ExistsCondition c = (ExistsCondition) node;
+                Map<String, Object> subBindings = c.subQuery.getBindings();
+                params.addAll(subBindings.values());
+            } else if (node instanceof ConditionGroup) {
+                collectParams(((ConditionGroup) node).nodes, params);
             }
         }
-        return params;
     }
     
     private void setParameters(PreparedStatement stmt, List<Object> params) throws SQLException {
@@ -392,7 +884,10 @@ public class JdbcQuery<T> implements Query<T> {
     private Object executeAggregate(String sql) {
         List<Object> params = buildParams();
         
+        logSql(sql, params);
+        
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            applyTimeout(stmt);
             setParameters(stmt, params);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -404,17 +899,68 @@ public class JdbcQuery<T> implements Query<T> {
         }
     }
     
-    private static class QueryCondition {
+    private static abstract class ConditionNode {
+        String logicalOperator;
+    }
+    
+    private static class QueryCondition extends ConditionNode {
         String field;
         String operator;
         Object value;
-        String logicalOperator;
         
         QueryCondition(String field, String operator, Object value, String logicalOperator) {
             this.field = field;
             this.operator = operator;
             this.value = value;
             this.logicalOperator = logicalOperator;
+        }
+    }
+    
+    private static class SubQueryCondition extends ConditionNode {
+        String field;
+        String operator;
+        Query<?> subQuery;
+        
+        SubQueryCondition(String field, String operator, Query<?> subQuery, String logicalOperator) {
+            this.field = field;
+            this.operator = operator;
+            this.subQuery = subQuery;
+            this.logicalOperator = logicalOperator;
+        }
+    }
+    
+    private static class ExistsCondition extends ConditionNode {
+        boolean not;
+        Query<?> subQuery;
+        
+        ExistsCondition(boolean not, Query<?> subQuery, String logicalOperator) {
+            this.not = not;
+            this.subQuery = subQuery;
+            this.logicalOperator = logicalOperator;
+        }
+    }
+    
+    private static class ConditionGroup extends ConditionNode {
+        List<ConditionNode> nodes = new ArrayList<>();
+        
+        ConditionGroup(String logicalOperator) {
+            this.logicalOperator = logicalOperator;
+        }
+    }
+    
+    private static class JoinClause {
+        String type;
+        String table;
+        String leftField;
+        String operator;
+        String rightField;
+        
+        JoinClause(String type, String table, String leftField, String operator, String rightField) {
+            this.type = type;
+            this.table = table;
+            this.leftField = leftField;
+            this.operator = operator;
+            this.rightField = rightField;
         }
     }
     
