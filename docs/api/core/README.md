@@ -36,7 +36,7 @@ ltd.idcu.est.core
 import ltd.idcu.est.core.DefaultEstApplication;
 import ltd.idcu.est.core.api.EstApplication;
 
-EstApplication app = DefaultEstApplication.create();
+EstApplication app = DefaultEstApplication.create("我的应用", "1.0.0");
 app.run();
 ```
 
@@ -46,4 +46,13 @@ app.run();
 Container container = app.getContainer();
 container.register(UserService.class, UserServiceImpl.class);
 UserService service = container.get(UserService.class);
+```
+
+### 使用配置
+
+```java
+Config config = app.getConfig();
+config.set("app.name", "我的应用");
+String appName = config.get("app.name");
+int port = config.getInt("server.port", 8080);
 ```

@@ -37,28 +37,37 @@ ltd.idcu.est.web
 ### 创建 Web 应用
 
 ```java
-import ltd.idcu.est.web.DefaultWebApplication;
+import ltd.idcu.est.web.Web;
 import ltd.idcu.est.web.api.WebApplication;
 
-WebApplication app = DefaultWebApplication.create();
+WebApplication app = Web.create("我的Web应用", "1.0.0");
 app.run(8080);
 ```
 
 ### 配置路由
 
 ```java
-app.getRouter().get("/", (req, res) -> {
+app.get("/", (req, res) -> {
     res.html("<h1>Hello EST!</h1>");
 });
 
-app.getRouter().post("/api/users", (req, res) -> {
-    // 处理 POST 请求
+app.post("/api/users", (req, res) -> {
+    Map<String, Object> body = req.getJsonBody();
+    res.status(201).json(body);
+});
+
+app.get("/users/:id", (req, res) -> {
+    String id = req.getPathVariable("id");
+    res.text("用户 ID: " + id);
 });
 ```
 
-### 使用中间件
+### 使用路由组
 
 ```java
-app.use(new LoggingMiddleware());
-app.enableCors();
+app.group("/api/v1", (api) -> {
+    api.get("/users", (req, res) -> res.text("用户列表"));
+    api.post("/users", (req, res) -> res.status(201).text("创建用户"));
+    api.get("/users/:id", (req, res) -> res.text("用户 " + req.getPathVariable("id")));
+});
 ```

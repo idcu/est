@@ -87,7 +87,7 @@ public class DefaultSession implements Session {
         if (maxInactiveInterval > 0) {
             Instant now = Instant.now();
             long elapsedSeconds = now.getEpochSecond() - lastAccessedTime.getEpochSecond();
-            if (elapsedSeconds > maxInactiveInterval) {
+            if (elapsedSeconds >= maxInactiveInterval) {
                 valid = false;
                 return false;
             }

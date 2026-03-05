@@ -1,341 +1,480 @@
 # 教程 03: 配置管理
 
-在本教程中，你将学习如何使用 EST 的配置管理功能。
+在本教程中，你将学习如何使用 EST 的配置管理功能！
 
-## Configuration 接口
+---
 
-`Configuration` 接口提供了灵活的配置管理功能。
+## 🎯 学习目标
 
-## 基础用法
+完成本教程后，你将学会：
+- ✅ 如何设置和获取配置
+- ✅ 支持的数据类型
+- ✅ 如何在 Web 应用中使用配置
+- ✅ 配置的最佳实践
+
+---
+
+## ⚙️ 基础用法
+
+### 从 Web 应用获取配置
+
+在 EST Web 应用中，配置对象可以直接从 `WebApplication` 获取：
 
 ```java
 package com.example.config;
 
-import ltd.idcu.est.core.DefaultEstApplication;
-import ltd.idcu.est.core.api.Configuration;
-import ltd.idcu.est.core.api.EstApplication;
+import ltd.idcu.est.web.Web;
+import ltd.idcu.est.web.api.WebApplication;
+import ltd.idcu.est.core.api.Config;
 
 public class BasicConfigExample {
     public static void main(String[] args) {
-        EstApplication app = DefaultEstApplication.create();
-        Configuration config = app.getConfiguration();
+        // 创建 Web 应用
+        WebApplication app = Web.create("配置示例", "1.0.0");
+        Config config = app.getConfig();
         
-        // 设置配置
-        config.set("app.name", "My App");
+        // ==========================================
+        // 1. 设置配置
+        // ==========================================
+        
+        config.set("app.name", "我的应用");
         config.set("app.version", "1.0.0");
         config.set("server.port", 8080);
         config.set("debug", true);
+        config.set("timeout", 30000L);
+        config.set("maxConnections", 100);
+        config.set("ratio", 0.75);
         
-        // 获取配置
+        // ==========================================
+        // 2. 获取配置
+        // ==========================================
+        
+        // 获取字符串
         String appName = config.getString("app.name");
-        String version = config.getString("app.version", "0.0.1");
-        int port = config.getInt("server.port", 80);
-        boolean debug = config.getBoolean("debug", false);
+        String appVersion = config.getString("app.version", "0.0.1"); // 默认值
         
-        System.out.println("App Name: " + appName);
-        System.out.println("Version: " + version);
-        System.out.println("Port: " + port);
-        System.out.println("Debug: " + debug);
-    }
-}
-```
-
-## 支持的数据类型
-
-```java
-Configuration config = app.getConfiguration();
-
-// 字符串
-config.set("string.key", "value");
-String str = config.getString("string.key");
-
-// 整数
-config.set("int.key", 123);
-int intVal = config.getInt("int.key");
-int intWithDefault = config.getInt("nonexistent", 456);
-
-// 长整数
-config.set("long.key", 123456789L);
-long longVal = config.getLong("long.key");
-
-// 浮点数
-config.set("double.key", 3.14);
-double doubleVal = config.getDouble("double.key");
-
-// 布尔值
-config.set("boolean.key", true);
-boolean boolVal = config.getBoolean("boolean.key");
-
-// List
-List<String> list = Arrays.asList("a", "b", "c");
-config.set("list.key", list);
-List<String> retrievedList = config.getList("list.key");
-
-// Map
-Map<String, Object> map = new HashMap<>();
-map.put("key1", "value1");
-map.put("key2", 42);
-config.set("map.key", map);
-Map<String, Object> retrievedMap = config.getMap("map.key");
-```
-
-## 从 properties 文件加载
-
-创建 `src/main/resources/application.properties`：
-
-```properties
-# 应用配置
-app.name=My EST Application
-app.version=1.0.0
-app.description=A sample application
-
-# 服务器配置
-server.port=8080
-server.host=0.0.0.0
-server.threadPoolSize=20
-
-# 数据库配置
-db.url=jdbc:mysql://localhost:3306/mydb
-db.username=root
-db.password=secret
-db.maxConnections=20
-
-# 缓存配置
-cache.enabled=true
-cache.maxSize=1000
-cache.expireAfterWrite=3600
-
-# 日志配置
-logging.level=INFO
-logging.file=logs/app.log
-logging.maxFileSize=10MB
-```
-
-现在加载配置文件：
-
-```java
-package com.example.config;
-
-import ltd.idcu.est.core.DefaultEstApplication;
-import ltd.idcu.est.core.api.Configuration;
-import ltd.idcu.est.core.api.EstApplication;
-
-public class PropertiesFileExample {
-    public static void main(String[] args) {
-        EstApplication app = DefaultEstApplication.create();
-        Configuration config = app.getConfiguration();
-        
-        // 从类路径加载 properties 文件
-        config.load("application.properties");
-        
-        // 或者从文件系统加载
-        // config.load(Paths.get("/path/to/config.properties"));
-        
-        // 使用配置
-        String appName = config.getString("app.name");
+        // 获取整数
         int port = config.getInt("server.port");
-        boolean cacheEnabled = config.getBoolean("cache.enabled");
+        int portWithDefault = config.getInt("server.port", 80);
         
-        System.out.println("App Name: " + appName);
-        System.out.println("Port: " + port);
-        System.out.println("Cache Enabled: " + cacheEnabled);
+        // 获取布尔值
+        boolean debug = config.getBoolean("debug");
+        boolean debugWithDefault = config.getBoolean("debug", false);
+        
+        // 获取长整型
+        long timeout = config.getLong("timeout");
+        long timeoutWithDefault = config.getLong("timeout", 30000L);
+        
+        // 获取双精度浮点数
+        double ratio = config.getDouble("ratio");
+        double ratioWithDefault = config.getDouble("ratio", 0.5);
+        
+        // 获取整数
+        int maxConn = config.getInt("maxConnections", 50);
+        
+        // ==========================================
+        // 3. 使用配置
+        // ==========================================
+        
+        System.out.println("应用名称：" + appName);
+        System.out.println("版本：" + appVersion);
+        System.out.println("端口：" + port);
+        System.out.println("调试模式：" + (debug ? "开启" : "关闭"));
+        System.out.println("超时时间：" + timeout + "ms");
+        System.out.println("最大连接数：" + maxConn);
+        System.out.println("比率：" + ratio);
+        
+        // 在路由中使用配置
+        app.get("/api/config", (req, res) -> {
+            res.json(java.util.Map.of(
+                "appName", config.getString("app.name"),
+                "version", config.getString("app.version"),
+                "debug", config.getBoolean("debug")
+            ));
+        });
+        
+        app.onStartup(() -> {
+            System.out.println("\n🚀 " + appName + " 启动成功！");
+            System.out.println("📍 访问地址：http://localhost:" + port);
+        });
+        
+        app.run(port);
     }
 }
 ```
 
-## 从 YAML 文件加载
+### 运行结果
 
-创建 `src/main/resources/application.yml`：
+```
+应用名称：我的应用
+版本：1.0.0
+端口：8080
+调试模式：开启
+超时时间：30000ms
+最大连接数：100
+比率：0.75
 
-```yaml
-app:
-  name: My EST Application
-  version: 1.0.0
-  description: A sample application
-
-server:
-  port: 8080
-  host: 0.0.0.0
-  threadPoolSize: 20
-
-db:
-  url: jdbc:mysql://localhost:3306/mydb
-  username: root
-  password: secret
-  maxConnections: 20
-
-cache:
-  enabled: true
-  maxSize: 1000
-  expireAfterWrite: 3600
-
-logging:
-  level: INFO
-  file: logs/app.log
-  maxFileSize: 10MB
+🚀 我的应用 启动成功！
+📍 访问地址：http://localhost:8080
 ```
 
-加载 YAML 配置：
+---
+
+## 📊 支持的数据类型
+
+EST 的配置系统支持多种数据类型：
+
+| 数据类型 | 设置方法 | 获取方法 | 示例 |
+|---------|----------|----------|------|
+| String | `config.set("key", "value")` | `config.getString("key")` | `"hello"` |
+| int | `config.set("key", 123)` | `config.getInt("key")` | `123` |
+| long | `config.set("key", 123456789L)` | `config.getLong("key")` | `123456789L` |
+| double | `config.set("key", 3.14)` | `config.getDouble("key")` | `3.14` |
+| boolean | `config.set("key", true)` | `config.getBoolean("key")` | `true` / `false` |
+| Object | `config.set("key", obj)` | `config.get("key")` | 任意对象 |
+
+### 完整示例
 
 ```java
 package com.example.config;
 
-public class YamlFileExample {
+import ltd.idcu.est.web.Web;
+import ltd.idcu.est.web.api.WebApplication;
+import ltd.idcu.est.core.api.Config;
+
+public class AllTypesExample {
     public static void main(String[] args) {
-        EstApplication app = DefaultEstApplication.create();
-        Configuration config = app.getConfiguration();
+        WebApplication app = Web.create("类型示例", "1.0.0");
+        Config config = app.getConfig();
         
-        // 从类路径加载 YAML 文件
-        config.load("application.yml");
+        // 设置各种类型的配置
+        config.set("string.key", "Hello, EST!");
+        config.set("int.key", 42);
+        config.set("long.key", 1234567890123L);
+        config.set("double.key", 3.1415926);
+        config.set("boolean.key", true);
         
-        // 使用配置（扁平化键）
-        String appName = config.getString("app.name");
-        int port = config.getInt("server.port");
+        // 获取并打印
+        System.out.println("字符串: " + config.getString("string.key"));
+        System.out.println("整数: " + config.getInt("int.key"));
+        System.out.println("长整型: " + config.getLong("long.key"));
+        System.out.println("浮点数: " + config.getDouble("double.key"));
+        System.out.println("布尔值: " + config.getBoolean("boolean.key"));
         
-        System.out.println("App Name: " + appName);
-        System.out.println("Port: " + port);
+        // 使用默认值（不存在的键）
+        System.out.println("\n不存在的键（带默认值）:");
+        System.out.println("字符串: " + config.getString("nonexistent", "默认值"));
+        System.out.println("整数: " + config.getInt("nonexistent", 100));
+        System.out.println("布尔值: " + config.getBoolean("nonexistent", false));
     }
 }
 ```
 
-## 配置合并和覆盖
+---
+
+## 🎛️ 在 Web 应用中使用配置
+
+让我们看一个更实际的例子，在 Web 应用中使用配置：
+
+### 示例：可配置的 Web 应用
 
 ```java
 package com.example.config;
 
-public class ConfigMergeExample {
+import ltd.idcu.est.web.Web;
+import ltd.idcu.est.web.api.WebApplication;
+import ltd.idcu.est.core.api.Config;
+
+public class ConfigurableWebApp {
     public static void main(String[] args) {
-        EstApplication app = DefaultEstApplication.create();
-        Configuration config = app.getConfiguration();
+        // 创建应用
+        WebApplication app = Web.create("可配置应用", "1.0.0");
+        Config config = app.getConfig();
         
-        // 1. 先加载默认配置
-        config.load("application-defaults.properties");
+        // ==========================================
+        // 1. 配置应用
+        // ==========================================
         
-        // 2. 再加载环境特定配置（会覆盖默认值）
-        String env = System.getProperty("env", "dev");
-        config.load("application-" + env + ".properties");
+        // 应用配置
+        config.set("app.name", "我的在线商店");
+        config.set("app.description", "一个简单的在线商店");
+        config.set("app.currency", "CNY");
         
-        // 3. 最后可以用系统属性覆盖
-        String port = System.getProperty("server.port");
-        if (port != null) {
-            config.set("server.port", Integer.parseInt(port));
-        }
+        // 服务器配置
+        config.set("server.port", 8080);
+        config.set("server.host", "0.0.0.0");
         
-        // 使用最终配置
-        System.out.println("Server Port: " + config.getInt("server.port"));
-    }
-}
-```
-
-## 配置验证
-
-```java
-package com.example.config;
-
-public class ConfigValidationExample {
-    public static void main(String[] args) {
-        EstApplication app = DefaultEstApplication.create();
-        Configuration config = app.getConfiguration();
+        // 业务配置
+        config.set("shop.taxRate", 0.13);
+        config.set("shop.maxCartItems", 100);
+        config.set("shop.enableDiscounts", true);
         
-        config.load("application.properties");
+        // ==========================================
+        // 2. 从配置读取
+        // ==========================================
         
-        // 验证必需的配置
-        validateConfig(config);
-        
-        // 继续应用启动
-        System.out.println("Configuration validated successfully!");
-    }
-    
-    private static void validateConfig(Configuration config) {
-        List<String> errors = new ArrayList<>();
-        
-        // 检查必需配置
-        if (!config.contains("app.name")) {
-            errors.add("app.name is required");
-        }
-        
-        // 验证端口范围
         int port = config.getInt("server.port", 8080);
-        if (port < 1 || port > 65535) {
-            errors.add("server.port must be between 1 and 65535");
-        }
+        double taxRate = config.getDouble("shop.taxRate", 0.10);
+        int maxCartItems = config.getInt("shop.maxCartItems", 50);
+        boolean enableDiscounts = config.getBoolean("shop.enableDiscounts", false);
+        String currency = config.getString("app.currency", "CNY");
         
-        // 验证日志级别
-        String logLevel = config.getString("logging.level", "INFO");
-        Set<String> validLevels = Set.of("DEBUG", "INFO", "WARN", "ERROR");
-        if (!validLevels.contains(logLevel.toUpperCase())) {
-            errors.add("logging.level must be one of: " + validLevels);
-        }
+        // ==========================================
+        // 3. 创建路由
+        // ==========================================
         
-        if (!errors.isEmpty()) {
-            throw new IllegalStateException("Configuration errors:\n" + 
-                String.join("\n", errors));
-        }
+        // 首页 - 显示应用信息
+        app.get("/", (req, res) -> {
+            res.html("""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>%s</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 40px; }
+                        h1 { color: #2c3e50; }
+                        .config { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px; }
+                        .config-item { margin: 10px 0; }
+                    </style>
+                </head>
+                <body>
+                    <h1>🎉 %s</h1>
+                    <p>%s</p>
+                    
+                    <div class="config">
+                        <h3>⚙️ 当前配置</h3>
+                        <div class="config-item">💰 货币：%s</div>
+                        <div class="config-item">📊 税率：%.0f%%</div>
+                        <div class="config-item">🛒 最大购物车：%d 件</div>
+                        <div class="config-item">🎁 折扣功能：%s</div>
+                    </div>
+                </body>
+                </html>
+            """.formatted(
+                config.getString("app.name"),
+                config.getString("app.name"),
+                config.getString("app.description"),
+                currency,
+                taxRate * 100,
+                maxCartItems,
+                enableDiscounts ? "已启用" : "未启用"
+            ));
+        });
+        
+        // API - 计算价格（使用税率配置）
+        app.get("/api/calculate-price", (req, res) -> {
+            double price = Double.parseDouble(req.queryParam("price", "0"));
+            
+            double tax = price * taxRate;
+            double total = price + tax;
+            
+            // 如果启用折扣，满100减10
+            if (enableDiscounts && total >= 100) {
+                total -= 10;
+            }
+            
+            res.json(java.util.Map.of(
+                "originalPrice", price,
+                "tax", String.format("%.2f", tax),
+                "discount", enableDiscounts && total + 10 >= 100 ? 10 : 0,
+                "totalPrice", String.format("%.2f", total),
+                "currency", currency
+            ));
+        });
+        
+        // API - 获取所有配置
+        app.get("/api/config", (req, res) -> {
+            res.json(java.util.Map.of(
+                "app", java.util.Map.of(
+                    "name", config.getString("app.name"),
+                    "description", config.getString("app.description"),
+                    "currency", currency
+                ),
+                "shop", java.util.Map.of(
+                    "taxRate", taxRate,
+                    "maxCartItems", maxCartItems,
+                    "enableDiscounts", enableDiscounts
+                )
+            ));
+        });
+        
+        // ==========================================
+        // 4. 启动应用
+        // ==========================================
+        
+        app.onStartup(() -> {
+            System.out.println("\n" + "=".repeat(50));
+            System.out.println("  🚀 " + config.getString("app.name") + " 已启动！");
+            System.out.println("  📍 访问地址：http://localhost:" + port);
+            System.out.println("  🧮 测试价格计算：http://localhost:" + port + "/api/calculate-price?price=100");
+            System.out.println("=".repeat(50) + "\n");
+        });
+        
+        app.run(port);
     }
 }
 ```
 
-## 在应用中使用配置
+### 测试这个应用
+
+运行应用后，你可以：
+
+1. **访问首页**：http://localhost:8080
+   - 会显示应用信息和当前配置
+
+2. **测试价格计算**：http://localhost:8080/api/calculate-price?price=100
+   - 会计算包含税费和折扣的总价
+
+3. **查看所有配置**：http://localhost:8080/api/config
+   - 会返回 JSON 格式的所有配置
+
+---
+
+## 🔍 检查配置是否存在
+
+你可以检查某个配置键是否存在：
 
 ```java
-package com.example.config;
-
-public class AppConfigExample {
-    public static void main(String[] args) {
-        EstApplication app = DefaultEstApplication.create();
-        Configuration config = app.getConfiguration();
-        
-        config.load("application.properties");
-        
-        // 创建服务器配置
-        int port = config.getInt("server.port", 8080);
-        String host = config.getString("server.host", "0.0.0.0");
-        
-        // 创建缓存配置
-        boolean cacheEnabled = config.getBoolean("cache.enabled", false);
-        int cacheMaxSize = config.getInt("cache.maxSize", 1000);
-        int cacheExpire = config.getInt("cache.expireAfterWrite", 3600);
-        
-        // 创建数据库配置
-        String dbUrl = config.getString("db.url");
-        String dbUsername = config.getString("db.username");
-        String dbPassword = config.getString("db.password");
-        
-        // 使用配置创建组件
-        if (cacheEnabled) {
-            Cache<String, Object> cache = MemoryCaches.create(
-                CacheConfig.builder()
-                    .maxSize(cacheMaxSize)
-                    .expireAfterWrite(cacheExpire)
-                    .build()
-            );
-            app.getContainer().registerSingleton(Cache.class, cache);
-        }
-        
-        // 启动应用
-        app.run();
-        System.out.println("Application started on " + host + ":" + port);
-    }
+// 检查配置是否存在
+if (config.contains("app.name")) {
+    System.out.println("app.name 配置存在");
+} else {
+    System.out.println("app.name 配置不存在");
 }
 ```
 
-## 最佳实践
+---
 
-1. **使用配置文件**
-   - 不要硬编码配置值
-   - 支持多环境配置（dev, test, prod）
+## 🗑️ 移除配置
 
-2. **提供默认值**
-   - 使用带默认值的 getter 方法
-   - 确保应用在缺少配置时也能运行
+你可以移除不需要的配置：
 
-3. **验证配置**
-   - 启动时验证必需配置
-   - 检查配置值的有效性
+```java
+// 设置配置
+config.set("temp.key", "临时值");
+System.out.println("设置后：" + config.getString("temp.key"));
 
-4. **配置优先级**
-   - 默认配置 < 环境配置 < 系统属性 < 命令行参数
+// 移除配置
+config.remove("temp.key");
+System.out.println("移除后：" + config.getString("temp.key", "已移除"));
+```
 
-## 下一步
+---
 
-在下一个教程中，我们将学习 [模块系统](./04-modules.md)。
+## 📦 获取所有配置键
+
+你可以获取所有已设置的配置键：
+
+```java
+import java.util.Set;
+
+Set<String> keys = config.keys();
+
+System.out.println("所有配置键：");
+for (String key : keys) {
+    System.out.println("- " + key);
+}
+```
+
+---
+
+## ✅ 最佳实践
+
+### 1. 使用带默认值的 getter
+
+```java
+// ✅ 好：总是提供默认值
+int port = config.getInt("server.port", 8080);
+boolean debug = config.getBoolean("debug", false);
+String currency = config.getString("app.currency", "CNY");
+
+// ❌ 不好：不提供默认值（可能抛出异常）
+int port = config.getInt("server.port");
+```
+
+### 2. 使用配置常量
+
+```java
+// ✅ 好：定义配置键的常量
+public class AppConfigKeys {
+    public static final String APP_NAME = "app.name";
+    public static final String SERVER_PORT = "server.port";
+    public static final String DEBUG_MODE = "debug";
+}
+
+// 使用常量
+config.set(AppConfigKeys.APP_NAME, "我的应用");
+String appName = config.getString(AppConfigKeys.APP_NAME, "默认应用");
+```
+
+### 3. 分组相关配置
+
+```java
+// ✅ 好：用点号分组
+config.set("app.name", "我的应用");
+config.set("app.version", "1.0.0");
+config.set("server.port", 8080);
+config.set("server.host", "0.0.0.0");
+config.set("database.url", "jdbc:mysql://...");
+config.set("database.username", "root");
+
+// ❌ 不好：没有分组
+config.set("name", "我的应用");
+config.set("version", "1.0.0");
+config.set("port", 8080);
+```
+
+### 4. 验证配置值
+
+```java
+// ✅ 好：验证配置值的有效性
+int port = config.getInt("server.port", 8080);
+
+if (port < 1 || port > 65535) {
+    throw new IllegalArgumentException("端口必须在 1-65535 之间：" + port);
+}
+
+boolean debug = config.getBoolean("debug", false);
+```
+
+### 5. 在启动时打印配置
+
+```java
+// ✅ 好：启动时打印重要配置
+app.onStartup(() -> {
+    System.out.println("=== 应用配置 ===");
+    System.out.println("应用名称：" + config.getString("app.name"));
+    System.out.println("版本：" + config.getString("app.version"));
+    System.out.println("端口：" + config.getInt("server.port"));
+    System.out.println("调试模式：" + (config.getBoolean("debug") ? "开启" : "关闭"));
+    System.out.println("==============");
+});
+```
+
+---
+
+## 💡 小练习
+
+试试完成以下练习：
+
+1. **添加更多配置**：添加 `app.theme`、`shop.discountThreshold` 等配置
+2. **创建配置页面**：创建一个网页，显示所有配置并允许修改
+3. **配置验证**：添加代码验证所有配置值的有效性
+4. **多环境配置**：创建一个简单的多环境配置系统（开发、测试、生产）
+
+---
+
+## 🎓 下一步
+
+恭喜你！你已经学会了使用配置管理！
+
+你现在已经完成了所有的入门教程！接下来，你可以：
+
+- 学习 [Web 开发教程](../web/01-basic-web-app.md) - 深入学习 Web 开发
+- 查阅 [API 参考](../api/README.md) - 了解更多 API
+- 探索 [示例代码](../../est-examples/) - 查看更多示例
+- 阅读 [最佳实践](../best-practices/README.md) - 提升代码质量
+
+---
+
+**入门教程完成！你太棒了！** 🎉🎊

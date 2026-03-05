@@ -1,361 +1,120 @@
 # EST - Enterprise Services Toolkit
 
-EST 是一个零依赖的现代 Java 框架，采用递进式模块结构设计，**特别适合 AI coder 进行代码生成**。
+EST 是一个**零依赖**的现代 Java 框架，采用递进式模块结构设计，特别适合初学者和 AI 开发者进行代码生成。
 
 - **版本**: 1.3.0-SNAPSHOT
 - **项目**: EST
 - **作者**: idcu
 - **许可证**: MIT License
 
-## 核心特性
+## 🌟 什么是 EST 框架？
 
-- **零依赖**：不依赖任何第三方库，避免依赖冲突和版本管理问题
-- **递进式模块**：每个层级的模块都可以独立被其他项目引用
-- **低耦合设计**：模块间通过接口通信，减少直接依赖
-- **现代 Java**：基于 Java 21+，支持虚拟线程等现代特性
-- **高性能**：优化核心组件性能，支持并发操作
-- **Collection 增强**：提供类似 Laravel Collection 的链式数据处理能力
-- **AI友好**：标准化的API、丰富的示例、脚手架工具，让AI可以轻松生成高质量代码
+EST 是一个专为 Java 开发者设计的轻量级企业级应用开发框架。它的特点是：
 
-## AI Coder 首选
+- **零依赖**：不需要任何第三方库，所有功能都用 Java 标准库实现
+- **简单易用**：API 设计简洁直观，几分钟就能上手
+- **功能强大**：包含 Web 开发、缓存、日志、数据库访问等企业级功能
+- **模块化设计**：想用哪个功能就引入哪个模块，不会有多余的代码
 
-EST 框架专为 AI 代码生成优化：
+## 🚀 快速开始（3 分钟上手）
 
-- 🚀 **脚手架工具** - 一键生成标准项目模板
-- 📚 **标准化模式** - 可预测的代码结构
-- 🔧 **清晰的API** - 简单一致的接口设计
-- 🎯 **丰富示例** - AI可以学习的完整参考
-- 💡 **提示词模板** - 专门为AI设计的代码生成提示词
+### 环境准备
 
-开始使用：[AI Coder 指南](docs/AI_CODER_GUIDE.md) | [快速参考](docs/QUICK_REFERENCE.md) | [提示词模板](docs/AI_PROMPTS.md)
+首先确保你的电脑安装了：
+- **JDK 21 或更高版本**（必须）
+- **Maven 3.6 或更高版本**（用来构建项目）
 
-## 技术栈
+### 第一个 Web 应用
 
-| 技术 | 说明 |
-|------|------|
-| Java 21+ | 核心编程语言 |
-| Maven | 项目构建和依赖管理 |
-| Java 标准库 | 所有功能的实现基础 |
+只需要几行代码，你就能创建一个运行在 8080 端口的 Web 服务器：
 
-## 快速开始
+```java
+import ltd.idcu.est.web.Web;
+import ltd.idcu.est.web.api.WebApplication;
 
-### 环境要求
-
-- JDK 21+
-- Maven 3.6+
-
-### 构建
-
-```bash
-# 构建所有模块
-mvn clean install
-
-# 构建指定模块
-mvn clean install -pl est-core
-
-# 跳过测试
-mvn clean install -DskipTests
+public class HelloWorld {
+    public static void main(String[] args) {
+        // 1. 创建一个 Web 应用，名字叫 "我的第一个应用"，版本 1.0.0
+        WebApplication app = Web.create("我的第一个应用", "1.0.0");
+        
+        // 2. 添加一个路由：当访问 http://localhost:8080/ 时，返回 "Hello, World!"
+        app.get("/", (req, res) -> {
+            res.send("Hello, World!");
+        });
+        
+        // 3. 添加另一个路由：返回 JSON 格式的数据
+        app.get("/api/greeting", (req, res) -> {
+            res.json(java.util.Map.of(
+                "message", "你好，欢迎使用 EST 框架！",
+                "version", "1.3.0"
+            ));
+        });
+        
+        // 4. 启动服务器，监听 8080 端口
+        System.out.println("服务器启动了！访问 http://localhost:8080 试试吧");
+        app.run(8080);
+    }
+}
 ```
 
-### 使用示例
+运行这个程序，然后在浏览器打开 `http://localhost:8080`，你就能看到 "Hello, World!" 了！
 
-```xml
-<!-- 只引用核心接口 -->
-<dependency>
-    <groupId>ltd.idcu</groupId>
-    <artifactId>est-core-api</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
-</dependency>
+## 📦 核心特性
 
-<!-- 引用Collection功能 -->
-<dependency>
-    <groupId>ltd.idcu</groupId>
-    <artifactId>est-collection-impl</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
-</dependency>
+### 1. 零依赖设计
 
-<!-- 引用Web功能 -->
-<dependency>
-    <groupId>ltd.idcu</groupId>
-    <artifactId>est-web-impl</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
-</dependency>
-```
-
-## 设计原则
-
-### 零依赖原则
-
-所有功能使用 Java 标准库实现：
+EST 框架不依赖任何第三方库，所有功能都是用 Java 标准库实现的：
 
 | 功能 | 实现方式 |
 |------|----------|
 | JSON处理 | javax.json 包 |
 | XML处理 | javax.xml 包 |
 | 加密 | javax.crypto 包 |
-| JDBC | java.sql 包 |
-| 并发 | java.util.concurrent 包 |
-| JVM监控 | java.lang.management 包 |
+| 数据库访问 | java.sql 包 |
+| 并发编程 | java.util.concurrent 包 |
 | HTTP服务器 | com.sun.net.httpserver 包 |
 
-### 递进式模块设计
+这意味着：
+- ✅ 不会有依赖冲突问题
+- ✅ 项目体积更小
+- ✅ 部署更简单
+- ✅ 不需要担心第三方库的安全漏洞
 
-采用清晰的层级结构，每个模块都可以独立被其他项目引用，模块间通过接口通信。
+### 2. Web 开发
 
-### 低耦合设计
+EST 提供了完整的 Web 开发功能：
 
-模块间通过接口通信，接口与实现分离，支持多种实现方式。
-
-## 模块层级架构
-
-EST 采用清晰的递进式层级结构，每个模块都采用 **API/Impl 分离** 设计，模块间通过接口通信，支持独立引用。
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                      est-examples (示例层)                        │
-│  ├─ est-examples-basic                                           │
-│  ├─ est-examples-web                                             │
-│  ├─ est-examples-features                                        │
-│  └─ est-examples-advanced                                        │
-├─────────────────────────────────────────────────────────────────┤
-│                      est-scaffold (脚手架层)                      │
-│  └─ 项目模板生成器                                                 │
-├─────────────────────────────────────────────────────────────────┤
-│                        est-web (Web层)                            │
-│  ├─ est-web-api (Web接口)                                         │
-│  └─ est-web-impl (Web实现)                                        │
-├─────────────────────────────────────────────────────────────────┤
-│                      est-plugin (插件层)                          │
-│  ├─ est-plugin-api (插件接口)                                     │
-│  └─ est-plugin-impl (插件实现)                                    │
-├─────────────────────────────────────────────────────────────────┤
-│                     est-features (功能层)                         │
-│  ├─ est-features-cache (缓存)                                     │
-│  │  ├─ est-features-cache-api                                    │
-│  │  ├─ est-features-cache-memory                                 │
-│  │  ├─ est-features-cache-file                                   │
-│  │  └─ est-features-cache-redis                                  │
-│  ├─ est-features-event (事件)                                     │
-│  │  ├─ est-features-event-api                                    │
-│  │  ├─ est-features-event-local                                  │
-│  │  └─ est-features-event-async                                  │
-│  ├─ est-features-logging (日志)                                   │
-│  │  ├─ est-features-logging-api                                  │
-│  │  ├─ est-features-logging-console                              │
-│  │  └─ est-features-logging-file                                 │
-│  ├─ est-features-data (数据)                                      │
-│  │  ├─ est-features-data-api                                     │
-│  │  ├─ est-features-data-jdbc                                    │
-│  │  ├─ est-features-data-memory                                  │
-│  │  ├─ est-features-data-redis                                   │
-│  │  └─ est-features-data-mongodb                                 │
-│  ├─ est-features-security (安全)                                  │
-│  │  ├─ est-features-security-api                                 │
-│  │  ├─ est-features-security-basic                               │
-│  │  ├─ est-features-security-jwt                                 │
-│  │  ├─ est-features-security-apikey                              │
-│  │  ├─ est-features-security-oauth2                              │
-│  │  └─ est-features-security-policy                              │
-│  ├─ est-features-messaging (消息)                                │
-│  │  ├─ est-features-messaging-api                                │
-│  │  ├─ est-features-messaging-local                              │
-│  │  ├─ est-features-messaging-amqp                               │
-│  │  └─ est-features-messaging-mqtt                               │
-│  ├─ est-features-monitor (监控)                                   │
-│  │  ├─ est-features-monitor-api                                  │
-│  │  ├─ est-features-monitor-jvm                                  │
-│  │  └─ est-features-monitor-system                               │
-│  └─ est-features-scheduler (调度)                                 │
-│     ├─ est-features-scheduler-api                                │
-│     ├─ est-features-scheduler-fixed                              │
-│     └─ est-features-scheduler-cron                               │
-├─────────────────────────────────────────────────────────────────┤
-│                    est-collection (集合层)                         │
-│  ├─ est-collection-api (集合接口)                                 │
-│  └─ est-collection-impl (集合实现)                                │
-├─────────────────────────────────────────────────────────────────┤
-│                        est-test (测试层)                           │
-│  ├─ est-test-api (测试接口)                                       │
-│  └─ est-test-impl (测试实现)                                      │
-├─────────────────────────────────────────────────────────────────┤
-│                       est-utils (工具层)                           │
-│  ├─ est-utils-common (通用工具)                                   │
-│  ├─ est-utils-io (IO工具)                                         │
-│  └─ est-utils-format (格式化工具)                                 │
-│     ├─ est-utils-format-json                                      │
-│     ├─ est-utils-format-xml                                       │
-│     └─ est-utils-format-yaml                                      │
-├─────────────────────────────────────────────────────────────────┤
-│                      est-patterns (模式层)                         │
-│  ├─ est-patterns-api (模式接口)                                   │
-│  └─ est-patterns-impl (模式实现)                                  │
-├─────────────────────────────────────────────────────────────────┤
-│                        est-core (核心层)                           │
-│  ├─ est-core-api (核心接口)                                       │
-│  └─ est-core-impl (核心实现)                                      │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### 模块依赖关系
-
-- **est-core**：无依赖，是所有模块的基础
-- **est-patterns**：依赖 est-core
-- **est-utils**：依赖 est-core
-- **est-test**：依赖 est-core
-- **est-collection**：依赖 est-core、est-utils
-- **est-features**：各子模块按需依赖 est-core、est-utils、est-collection
-- **est-plugin**：依赖 est-core、est-utils
-- **est-web**：依赖 est-core、est-utils、est-collection、est-features（部分）
-- **est-scaffold**：依赖 est-core、est-utils
-- **est-examples**：依赖所有上层模块
-
-### API/Impl 分离设计原则
-
-每个功能模块都严格遵循 API/Impl 分离：
-- ***-api** 模块：仅包含接口定义、注解、数据模型，无具体实现
-- ***-impl** 模块：包含具体实现逻辑，依赖对应的 api 模块
-
-使用时只需引用所需的 api 模块，在运行时再引入具体的 impl 模块，实现完全的解耦。
-
-## 功能模块详解
-
-### est-core - 核心模块
-提供框架的核心基础设施：
-- **依赖注入容器** (DefaultContainer) - 三层Map实现的高效DI容器，支持构造器/字段/方法注入
-- **配置管理** (DefaultConfig) - 统一配置接口
-- **模块管理** (ModuleManager) - 模块化生命周期管理
-- **组件扫描** (ComponentScanner) - 自动扫描和注册组件
-- **生命周期管理** (LifecycleManager) - 完整的Bean生命周期（@PostConstruct, @PreDestroy, InitializingBean, DisposableBean）
-- **作用域策略** (ScopeStrategy) - 支持单例、原型等多种作用域
-- **注解支持** - @Component, @Service, @Repository, @Inject, @Qualifier, @Primary, @Value
-
-### est-patterns - 设计模式模块
-提供常用设计模式的实现：
-- 创建型模式
-- 结构型模式
-- 行为型模式
-
-### est-utils - 工具模块
-提供通用工具类：
-- 通用工具 (est-utils-common)
-- IO工具 (est-utils-io)
-- 格式化工具 (est-utils-format) - JSON、XML、YAML
-
-### est-test - 测试模块
-提供测试支持框架：
-- 断言工具 (Assertions)
-- 测试运行器
-- 测试注解支持
-
-### est-collection - 集合模块
-提供类似Laravel Collection的链式数据处理能力。
-
-### est-features - 功能模块
-提供企业级功能组件：
-
-#### est-features-cache - 缓存系统
-- 内存缓存 (MemoryCache) - LRU策略
-- 文件缓存 (FileCache)
-- Redis缓存 (RedisCache)
-- 缓存事件监听和统计
-
-#### est-features-event - 事件总线
-- 本地事件 (LocalEventBus)
-- 异步事件 (AsyncEventBus) - 支持虚拟线程
-- 事件监听器和统计
-
-#### est-features-logging - 日志系统
-- 控制台日志 (ConsoleLogger)
-- 文件日志 (FileLogger)
-- 多种日志级别和格式化
-
-#### est-features-data - 数据访问
-- JDBC数据访问 (JdbcData) - 连接池、ORM、事务管理
-- 内存数据存储 (MemoryData)
-- Redis数据访问 (RedisData)
-- MongoDB数据访问 (MongoData)
-- 统一Repository模式
-
-#### est-features-security - 安全认证
-- 基础认证 (BasicSecurity) - 用户、角色、权限、BCrypt密码加密
-- JWT认证 (JwtSecurity)
-- API Key认证 (ApiKeySecurity)
-- OAuth2认证 (OAuth2Security)
-- 策略引擎 (PolicyEngine) - 基于属性的授权
-
-#### est-features-messaging - 消息系统
-- 本地消息 (LocalMessages) - 队列和主题
-- AMQP消息 (AmqpMessages)
-- MQTT消息 (MqttMessages)
-- 消息生产者和消费者
-
-#### est-features-monitor - 监控系统
-- JVM监控 (JvmMonitor) - 内存、线程、GC等
-- 系统监控 (SystemMonitor) - CPU、磁盘、网络
-- 健康检查 (HealthCheck)
-
-#### est-features-scheduler - 调度系统
-- 固定间隔调度 (FixedRateScheduler)
-- Cron表达式调度 (CronScheduler)
-- 任务监听和统计
-
-### est-plugin - 插件模块
-提供插件化支持：
-- 插件接口
-- 插件加载器（类加载、JAR加载）
-- 插件管理器
-- 依赖管理
-
-### est-web - Web模块
-完整的Web应用框架，基于Java内置HttpServer：
-- **WebApplication** (DefaultWebApplication) - Web应用主入口
-- **HttpServer** (HttpServerImpl) - 轻量级HTTP服务器
-- **Router** (DefaultRouter) - 功能强大的路由系统，支持路由分组、前缀、命名、中间件、缓存
-- **Request/Response** - HTTP请求响应处理
-- **Middleware** - 中间件系统（CORS、日志、性能监控、安全）
-- **Session管理** (DefaultSessionManager) - 双层存储（内存缓存+持久化）
-- **WebSocket** (WebSocketServerManager) - WebSocket支持
-- **模板引擎** (EstTemplateEngine, StringTemplateEngine) - 内置模板引擎
-- **静态文件** (DefaultStaticFileHandler) - 静态资源服务
-- **MVC支持** - Controller和RestController
-- **异常处理** - 全局和特定异常处理器
-
-### est-scaffold - 脚手架工具
-提供项目模板生成功能：
-- 项目模板生成器
-- 标准化代码结构生成
-- AI友好的代码生成辅助
-
-### est-examples - 示例模块
-丰富的示例代码：
-- 基础示例 (est-examples-basic)
-- Web示例 (est-examples-web)
-- 功能示例 (est-examples-features)
-- 高级示例 (est-examples-advanced)
-
-## 部署支持
-
-- **Docker** - 部署配置位于 `deploy/docker/` 目录
-- **Kubernetes** - 部署配置位于 `deploy/k8s/` 目录
-- **CI/CD** - GitHub Actions工作流
-- **部署文档** - 详见 [docs/CLOUD_DEPLOYMENT.md](docs/CLOUD_DEPLOYMENT.md)
-
-## 文档
-
-EST 提供了完善的文档体系，请查看 [docs/README.md](docs/README.md) 获取完整文档索引。
-
-## 代码示例
-
-### 简单Web应用
 ```java
-import ltd.idcu.est.web.WebApplication;
+import ltd.idcu.est.web.Web;
+import ltd.idcu.est.web.api.WebApplication;
 
-public class HelloWorld {
+public class WebExample {
     public static void main(String[] args) {
-        WebApplication app = WebApplication.create("My App", "1.0.0");
+        WebApplication app = Web.create("Web 示例", "1.0.0");
         
-        app.get("/", (req, res) -> {
-            res.send("Hello, World!");
+        // 简单路由
+        app.get("/", (req, res) -> res.html("<h1>首页</h1>"));
+        app.get("/about", (req, res) -> res.send("关于我们"));
+        
+        // 路由参数
+        app.get("/user/:id", (req, res) -> {
+            String userId = req.param("id");
+            res.send("用户 ID: " + userId);
+        });
+        
+        // 表单提交
+        app.post("/login", (req, res) -> {
+            String username = req.formParam("username");
+            String password = req.formParam("password");
+            res.json(java.util.Map.of("success", true, "user", username));
+        });
+        
+        // 路由分组
+        app.routes(router -> {
+            router.group("/api", (r, group) -> {
+                r.get("/users", (req, res) -> res.json(/* 用户列表 */));
+                r.post("/users", (req, res) -> res.json(/* 创建用户 */));
+            });
         });
         
         app.run(8080);
@@ -363,39 +122,201 @@ public class HelloWorld {
 }
 ```
 
-### 依赖注入容器
+### 3. 依赖注入容器
+
+EST 有一个简单但强大的依赖注入容器：
+
 ```java
 import ltd.idcu.est.core.api.Container;
 import ltd.idcu.est.core.impl.DefaultContainer;
 
+// 定义一个服务接口
+interface UserService {
+    String getUserName(String id);
+}
+
+// 实现服务
+class UserServiceImpl implements UserService {
+    @Override
+    public String getUserName(String id) {
+        return "用户 " + id;
+    }
+}
+
 public class DiExample {
     public static void main(String[] args) {
+        // 创建容器
         Container container = new DefaultContainer();
         
-        container.register(MyService.class, MyServiceImpl.class);
-        container.registerSingleton(Config.class, new MyConfig());
+        // 注册服务
+        container.register(UserService.class, UserServiceImpl.class);
         
-        MyService service = container.get(MyService.class);
-        service.doSomething();
+        // 获取服务并使用
+        UserService service = container.get(UserService.class);
+        System.out.println(service.getUserName("123")); // 输出：用户 123
     }
 }
 ```
 
-### 路由分组
+### 4. 配置管理
+
+轻松管理应用配置：
+
 ```java
-app.routes(router -> {
-    router.group("/api", (r, group) -> {
-        r.get("/users", (req, res) -> res.json(users));
-        r.post("/users", (req, res) -> res.json(createUser(req)));
-    });
-    
-    router.group("/admin", (r, group) -> {
-        r.middleware("auth");
-        r.get("/dashboard", (req, res) -> res.render("admin/dashboard"));
-    });
-});
+import ltd.idcu.est.web.Web;
+import ltd.idcu.est.web.api.WebApplication;
+
+public class ConfigExample {
+    public static void main(String[] args) {
+        WebApplication app = Web.create("配置示例", "1.0.0");
+        
+        // 设置配置
+        app.getConfig().set("app.name", "我的应用");
+        app.getConfig().set("server.port", 8080);
+        app.getConfig().set("debug", true);
+        
+        // 获取配置
+        String appName = app.getConfig().getString("app.name");
+        int port = app.getConfig().getInt("server.port", 8080); // 第二个参数是默认值
+        boolean isDebug = app.getConfig().getBoolean("debug", false);
+        
+        System.out.println("应用名: " + appName);
+        System.out.println("端口: " + port);
+        
+        app.run(port);
+    }
+}
 ```
 
-## License
+## 📁 项目结构
+
+EST 采用清晰的递进式模块设计：
+
+```
+est1.3/
+├── est-core/          # 核心模块（依赖注入、配置管理等）
+├── est-utils/         # 工具模块（JSON、XML、IO等）
+├── est-collection/    # 集合增强（类似 Laravel Collection）
+├── est-features/      # 企业级功能
+│   ├── est-features-cache/     # 缓存
+│   ├── est-features-logging/   # 日志
+│   ├── est-features-data/      # 数据访问
+│   ├── est-features-security/  # 安全认证
+│   └── ...
+├── est-web/           # Web 框架
+├── est-examples/      # 示例代码
+└── docs/              # 文档
+```
+
+## 🎯 模块选择指南
+
+根据你的需求选择合适的模块：
+
+### 最小配置（只用核心）
+
+```xml
+<dependency>
+    <groupId>ltd.idcu</groupId>
+    <artifactId>est-core-impl</artifactId>
+    <version>1.3.0-SNAPSHOT</version>
+</dependency>
+```
+
+### Web 开发
+
+```xml
+<dependency>
+    <groupId>ltd.idcu</groupId>
+    <artifactId>est-web-impl</artifactId>
+    <version>1.3.0-SNAPSHOT</version>
+</dependency>
+```
+
+### 完整 Web 应用（包含缓存和日志）
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-web-impl</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-features-cache-memory</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-features-logging-console</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
+    </dependency>
+</dependencies>
+```
+
+## 🛠️ 构建项目
+
+### 克隆并构建
+
+```bash
+# 克隆项目
+git clone https://github.com/idcu/est.git
+cd est
+
+# 构建所有模块
+mvn clean install
+
+# 跳过测试（更快）
+mvn clean install -DskipTests
+
+# 只构建某个模块（比如 web 模块）
+mvn clean install -pl est-web
+```
+
+## 📚 文档
+
+EST 提供了完整的文档体系，帮助你快速上手：
+
+### 入门指南
+- [快速开始](docs/guides/getting-started.md) - 从零开始使用 EST 框架
+- [安装与配置](docs/guides/installation.md) - 环境准备和项目配置
+
+### 教程系列
+- [入门教程](docs/tutorials/beginner/) - 适合初学者的教程
+  - [第一个 EST 应用](docs/tutorials/beginner/01-first-app.md)
+  - [依赖注入容器](docs/tutorials/beginner/02-dependency-injection.md)
+  - [配置管理](docs/tutorials/beginner/03-configuration.md)
+- [Web 开发教程](docs/tutorials/web/)
+  - [基础 Web 应用](docs/tutorials/web/01-basic-web-app.md)
+  - [路由与控制器](docs/tutorials/web/02-routing-controllers.md)
+
+### API 参考
+- [核心模块 API](docs/api/core/)
+- [Web 模块 API](docs/api/web/)
+- [功能模块 API](docs/api/features/)
+
+### AI 开发者专区
+- [AI Coder 指南](docs/AI_CODER_GUIDE.md) - 专为 AI 设计的完整使用指南
+- [快速参考卡片](docs/QUICK_REFERENCE.md) - 一分钟速查表
+- [代码生成提示词模板](docs/AI_PROMPTS.md) - 高质量的 AI 提示词集合
+
+## 💡 更多示例
+
+EST 框架提供了丰富的示例代码，位于 `est-examples/` 目录：
+
+- **est-examples-basic** - 基础示例
+- **est-examples-web** - Web 开发示例
+- **est-examples-features** - 功能模块示例
+- **est-examples-advanced** - 高级用法示例
+
+## 🤝 贡献
+
+欢迎贡献代码！请查看 [贡献指南](docs/CONTRIBUTING.md) 了解如何参与项目开发。
+
+## 📄 许可证
 
 [MIT License](LICENSE)
+
+---
+
+**祝你使用 EST 框架愉快！** 🎉

@@ -69,14 +69,12 @@ public class EstTemplateEngine implements View.ViewEngine {
         if (template == null) return "";
         if (model == null) model = new HashMap<>();
 
-        String result = template;
+        String processedTemplate = removeComments(template);
+        processedTemplate = processForLoops(processedTemplate, model);
+        processedTemplate = processConditionals(processedTemplate, model);
+        processedTemplate = processVariables(processedTemplate, model);
 
-        result = removeComments(result);
-        result = processForLoops(result, model);
-        result = processConditionals(result, model);
-        result = processVariables(result, model);
-
-        return result;
+        return processedTemplate;
     }
 
     private String removeComments(String template) {
@@ -116,8 +114,7 @@ public class EstTemplateEngine implements View.ViewEngine {
                         loopModel.put(varName + "_first", index == 0);
                         loopModel.put(varName + "_last", !iterator.hasNext());
                         
-                        String processedBody = processConditionals(loopBody, loopModel);
-                        processedBody = processVariables(processedBody, loopModel);
+                        String processedBody = render(loopBody, loopModel);
                         result.append(processedBody);
                         index++;
                     }
@@ -139,54 +136,72 @@ public class EstTemplateEngine implements View.ViewEngine {
         while (ifMatcher.find(pos)) {
             result.append(template, pos, ifMatcher.start());
             
-            String condition = ifMatcher.group(1);
-            boolean conditionMet = evaluateCondition(condition, model);
+            int ifStart = ifMatcher.start();
+            int endifPos = findMatchingEndTag(template, ifMatcher.end(), "if", "endif");
             
-            int currentPos = ifMatcher.end();
-            String content = "";
-            boolean found = false;
-            
-            while (true) {
-                int nextIf = findNextTag(template, currentPos, "if");
-                int nextElif = findNextTag(template, currentPos, "elif");
-                int nextElse = findNextTag(template, currentPos, "else");
-                int nextEndif = findNextTag(template, currentPos, "endif");
-                
-                if (nextEndif == -1) break;
-                
-                if (!found && conditionMet) {
-                    int endPos = Math.min(Math.min(nextElif != -1 ? nextElif : Integer.MAX_VALUE, 
-                                                    nextElse != -1 ? nextElse : Integer.MAX_VALUE), 
-                                          nextEndif);
-                    content = template.substring(currentPos, endPos);
-                    found = true;
-                }
-                
-                if (!found && nextElif != -1 && (nextElse == -1 || nextElif < nextElse) && 
-                    (nextEndif == -1 || nextElif < nextEndif)) {
-                    Matcher elifMatcher = ELIF_PATTERN.matcher(template.substring(nextElif));
-                    if (elifMatcher.find()) {
-                        String elifCondition = elifMatcher.group(1);
-                        conditionMet = evaluateCondition(elifCondition, model);
-                        currentPos = nextElif + elifMatcher.end();
-                        continue;
-                    }
-                }
-                
-                if (!found && nextElse != -1 && (nextEndif == -1 || nextElse < nextEndif)) {
-                    Matcher elseMatcher = ELSE_PATTERN.matcher(template.substring(nextElse));
-                    if (elseMatcher.find()) {
-                        conditionMet = true;
-                        currentPos = nextElse + elseMatcher.end();
-                        continue;
-                    }
-                }
-                
+            if (endifPos == -1) {
+                result.append(template.substring(ifStart));
                 break;
             }
             
-            result.append(content);
-            pos = findEndTagEnd(template, findNextTag(template, ifMatcher.end(), "endif"), "endif");
+            String fullBlock = template.substring(ifMatcher.end(), endifPos);
+            String selectedContent = "";
+            boolean anyConditionMet = false;
+            int blockPos = 0;
+            
+            while (blockPos < fullBlock.length() && !anyConditionMet) {
+                int nextElif = findNextTag(fullBlock, blockPos, "elif");
+                int nextElse = findNextTag(fullBlock, blockPos, "else");
+                
+                if (blockPos == 0) {
+                    String condition = ifMatcher.group(1);
+                    if (evaluateCondition(condition, model)) {
+                        int endContent = (nextElif != -1 && (nextElse == -1 || nextElif < nextElse)) ? nextElif : 
+                                        (nextElse != -1 ? nextElse : fullBlock.length());
+                        selectedContent = fullBlock.substring(0, endContent);
+                        anyConditionMet = true;
+                    }
+                } else if (nextElif != -1 && nextElif == blockPos) {
+                    Matcher elifMatcher = ELIF_PATTERN.matcher(fullBlock.substring(nextElif));
+                    if (elifMatcher.find()) {
+                        String elifCondition = elifMatcher.group(1);
+                        int elifEnd = nextElif + elifMatcher.end();
+                        if (evaluateCondition(elifCondition, model)) {
+                            int nextNextElif = findNextTag(fullBlock, elifEnd, "elif");
+                            int nextNextElse = findNextTag(fullBlock, elifEnd, "else");
+                            int endContent = (nextNextElif != -1 && (nextNextElse == -1 || nextNextElif < nextNextElse)) ? nextNextElif :
+                                           (nextNextElse != -1 ? nextNextElse : fullBlock.length());
+                            selectedContent = fullBlock.substring(elifEnd, endContent);
+                            anyConditionMet = true;
+                        }
+                    }
+                } else if (nextElse != -1 && nextElse == blockPos) {
+                    Matcher elseMatcher = ELSE_PATTERN.matcher(fullBlock.substring(nextElse));
+                    if (elseMatcher.find()) {
+                        int elseEnd = nextElse + elseMatcher.end();
+                        selectedContent = fullBlock.substring(elseEnd);
+                        anyConditionMet = true;
+                    }
+                }
+                
+                if (!anyConditionMet) {
+                    if (nextElif != -1 && (nextElse == -1 || nextElif < nextElse)) {
+                        Matcher elifMatcher = ELIF_PATTERN.matcher(fullBlock.substring(nextElif));
+                        if (elifMatcher.find()) {
+                            blockPos = nextElif;
+                        } else {
+                            break;
+                        }
+                    } else if (nextElse != -1) {
+                        blockPos = nextElse;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            
+            result.append(selectedContent);
+            pos = findEndTagEnd(template, endifPos, "endif");
             ifMatcher = IF_PATTERN.matcher(template);
             ifMatcher.region(pos, template.length());
         }
@@ -227,8 +242,8 @@ public class EstTemplateEngine implements View.ViewEngine {
     private Object resolveValue(String expr, Map<String, Object> model) {
         expr = expr.trim();
         
-        if (expr.startsWith("\"") && expr.endsWith("\"") || 
-            expr.startsWith("'") && expr.endsWith("'")) {
+        if ((expr.startsWith("\"") && expr.endsWith("\"")) || 
+            (expr.startsWith("'") && expr.endsWith("'"))) {
             return expr.substring(1, expr.length() - 1);
         }
         
@@ -280,6 +295,14 @@ public class EstTemplateEngine implements View.ViewEngine {
     private boolean evaluateCondition(String condition, Map<String, Object> model) {
         condition = condition.trim();
         
+        if (condition.contains(">=")) {
+            return compareNumeric(condition, ">=", model) >= 0;
+        }
+        
+        if (condition.contains("<=")) {
+            return compareNumeric(condition, "<=", model) <= 0;
+        }
+        
         if (condition.contains("==")) {
             String[] parts = condition.split("==", 2);
             Object left = resolveValue(parts[0].trim(), model);
@@ -292,14 +315,6 @@ public class EstTemplateEngine implements View.ViewEngine {
             Object left = resolveValue(parts[0].trim(), model);
             Object right = resolveValue(parts[1].trim(), model);
             return !Objects.equals(left, right);
-        }
-        
-        if (condition.contains(">=")) {
-            return compareNumeric(condition, ">=", model) >= 0;
-        }
-        
-        if (condition.contains("<=")) {
-            return compareNumeric(condition, "<=", model) <= 0;
         }
         
         if (condition.contains(">")) {

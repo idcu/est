@@ -160,9 +160,12 @@ public class DefaultSessionManager implements SessionManager {
         if (sessionId == null || sessionId.isEmpty()) {
             return false;
         }
+        if (sessionId.length() < 20 || sessionId.length() > 25) {
+            return false;
+        }
         try {
-            Base64.getUrlDecoder().decode(sessionId);
-            return true;
+            byte[] decoded = Base64.getUrlDecoder().decode(sessionId);
+            return decoded.length == 16;
         } catch (IllegalArgumentException e) {
             return false;
         }
