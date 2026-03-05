@@ -2,6 +2,8 @@ package ltd.idcu.est.collection.impl;
 
 import ltd.idcu.est.collection.api.Collection;
 import ltd.idcu.est.collection.api.Collector;
+import ltd.idcu.est.collection.api.LazyCollection;
+import ltd.idcu.est.collection.api.MutableCollection;
 import ltd.idcu.est.collection.api.Pair;
 import ltd.idcu.est.utils.format.json.JsonUtils;
 import ltd.idcu.est.utils.format.yaml.YamlUtils;
@@ -163,6 +165,16 @@ final class SingletonCollection<T> implements Collection<T> {
 
     @Override
     public Collection<T> shuffled(Random random) {
+        return this;
+    }
+
+    @Override
+    public Collection<T> shuffle() {
+        return this;
+    }
+
+    @Override
+    public Collection<T> shuffle(Random random) {
         return this;
     }
 
@@ -470,6 +482,16 @@ final class SingletonCollection<T> implements Collection<T> {
     }
 
     @Override
+    public String toPrettyJson() {
+        return JsonUtils.toPrettyJson(Collections.singletonList(element));
+    }
+
+    @Override
+    public String toPrettyJson(int indent) {
+        return JsonUtils.toPrettyJson(Collections.singletonList(element), indent);
+    }
+
+    @Override
     public String toYaml() {
         return YamlUtils.toYaml(Collections.singletonList(element));
     }
@@ -679,6 +701,78 @@ final class SingletonCollection<T> implements Collection<T> {
     }
 
     @Override
+    public Pair<Collection<T>, Collection<T>> partition(Predicate<? super T> predicate) {
+        if (predicate.test(element)) {
+            return new Pair<>(this, new DefaultCollection<>());
+        } else {
+            return new Pair<>(new DefaultCollection<>(), this);
+        }
+    }
+
+    @Override
+    public <U> Collection<Pair<T, U>> zip(Collection<U> other) {
+        List<Pair<T, U>> result = new ArrayList<>();
+        Iterator<U> otherIterator = other.iterator();
+        if (otherIterator.hasNext()) {
+            result.add(new Pair<>(element, otherIterator.next()));
+        }
+        return new DefaultCollection<>(result);
+    }
+
+    @Override
+    public Collection<Pair<Integer, T>> zipWithIndex() {
+        List<Pair<Integer, T>> result = new ArrayList<>();
+        result.add(new Pair<>(0, element));
+        return new DefaultCollection<>(result);
+    }
+
+    @Override
+    public T random() {
+        return element;
+    }
+
+    @Override
+    public Collection<T> sample(int n) {
+        if (n <= 0) {
+            return new DefaultCollection<>();
+        }
+        return this;
+    }
+
+    @Override
+    public Collection<T> rotate(int distance) {
+        return this;
+    }
+
+    @Override
+    public Collection<T> padStart(int length, T padElement) {
+        if (length <= 1) {
+            return this;
+        }
+        List<T> result = new ArrayList<>();
+        int padCount = length - 1;
+        for (int i = 0; i < padCount; i++) {
+            result.add(padElement);
+        }
+        result.add(element);
+        return new DefaultCollection<>(result);
+    }
+
+    @Override
+    public Collection<T> padEnd(int length, T padElement) {
+        if (length <= 1) {
+            return this;
+        }
+        List<T> result = new ArrayList<>();
+        result.add(element);
+        int padCount = length - 1;
+        for (int i = 0; i < padCount; i++) {
+            result.add(padElement);
+        }
+        return new DefaultCollection<>(result);
+    }
+
+    @Override
     public Stream<T> stream() {
         return Stream.of(element);
     }
@@ -699,6 +793,64 @@ final class SingletonCollection<T> implements Collection<T> {
         if (o == null || getClass() != o.getClass()) return false;
         SingletonCollection<?> that = (SingletonCollection<?>) o;
         return Objects.equals(element, that.element);
+    }
+
+    @Override
+    public <K1, K2> Map<K1, Map<K2, Collection<T>>> groupByMultiple(
+            Function<? super T, ? extends K1> keySelector1,
+            Function<? super T, ? extends K2> keySelector2) {
+        K1 key1 = keySelector1.apply(element);
+        K2 key2 = keySelector2.apply(element);
+        Map<K1, Map<K2, Collection<T>>> result = new LinkedHashMap<>();
+        Map<K2, Collection<T>> innerMap = new LinkedHashMap<>();
+        innerMap.put(key2, this);
+        result.put(key1, innerMap);
+        return result;
+    }
+
+    @Override
+    public <K, A, R> Map<K, R> aggregateBy(
+            Function<? super T, ? extends K> keySelector,
+            Supplier<A> initialSupplier,
+            BiFunction<A, ? super T, A> accumulator) {
+        K key = keySelector.apply(element);
+        Map<K, R> result = new LinkedHashMap<>();
+        A accumulated = accumulator.apply(initialSupplier.get(), element);
+        result.put(key, (R) accumulated);
+        return result;
+    }
+
+    @Override
+    public <K, A, R> Map<K, R> aggregateBy(
+            Function<? super T, ? extends K> keySelector,
+            Supplier<A> initialSupplier,
+            BiFunction<A, ? super T, A> accumulator,
+            Function<A, R> finisher) {
+        K key = keySelector.apply(element);
+        Map<K, R> result = new LinkedHashMap<>();
+        A accumulated = accumulator.apply(initialSupplier.get(), element);
+        result.put(key, finisher.apply(accumulated));
+        return result;
+    }
+
+    @Override
+    public LazyCollection<T> lazy() {
+        return new DefaultLazyCollection<>(Collections.singletonList(element));
+    }
+
+    @Override
+    public Collection<T> eager() {
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> mutable() {
+        return new DefaultCollection<>(Collections.singletonList(element), false);
+    }
+
+    @Override
+    public Collection<T> immutable() {
+        return new DefaultCollection<>(Collections.singletonList(element), true);
     }
 
     @Override

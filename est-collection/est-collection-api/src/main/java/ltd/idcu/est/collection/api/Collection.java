@@ -100,6 +100,21 @@ public interface Collection<T> extends Iterable<T> {
 
     <K> Map<K, Collection<T>> groupBy(Function<? super T, ? extends K> selector);
 
+    <K1, K2> Map<K1, Map<K2, Collection<T>>> groupByMultiple(
+        Function<? super T, ? extends K1> keySelector1,
+        Function<? super T, ? extends K2> keySelector2);
+
+    <K, A, R> Map<K, R> aggregateBy(
+        Function<? super T, ? extends K> keySelector,
+        Supplier<A> initialSupplier,
+        BiFunction<A, ? super T, A> accumulator);
+
+    <K, A, R> Map<K, R> aggregateBy(
+        Function<? super T, ? extends K> keySelector,
+        Supplier<A> initialSupplier,
+        BiFunction<A, ? super T, A> accumulator,
+        Function<A, R> finisher);
+
     <K, V> Map<K, V> associate(Function<? super T, ? extends Pair<K, V>> transform);
 
     <K, V> Map<K, V> associateBy(Function<? super T, ? extends K> keySelector, Function<? super T, ? extends V> valueTransform);
@@ -223,6 +238,34 @@ public interface Collection<T> extends Iterable<T> {
     Stream<T> stream();
 
     Stream<T> parallelStream();
+
+    Pair<Collection<T>, Collection<T>> partition(Predicate<? super T> predicate);
+
+    <U> Collection<Pair<T, U>> zip(Collection<U> other);
+
+    Collection<Pair<Integer, T>> zipWithIndex();
+
+    T random();
+
+    Collection<T> sample(int n);
+
+    Collection<T> rotate(int distance);
+
+    Collection<T> padStart(int length, T padElement);
+
+    Collection<T> padEnd(int length, T padElement);
+
+    Collection<T> shuffle();
+
+    Collection<T> shuffle(Random random);
+
+    LazyCollection<T> lazy();
+
+    Collection<T> eager();
+
+    MutableCollection<T> mutable();
+
+    Collection<T> immutable();
 
     static <T> Collection<T> empty() {
         return Collections.empty();

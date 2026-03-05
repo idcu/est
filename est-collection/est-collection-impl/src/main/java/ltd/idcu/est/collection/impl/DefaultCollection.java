@@ -2,6 +2,7 @@ package ltd.idcu.est.collection.impl;
 
 import ltd.idcu.est.collection.api.Collection;
 import ltd.idcu.est.collection.api.Collector;
+import ltd.idcu.est.collection.api.MutableCollection;
 import ltd.idcu.est.collection.api.Pair;
 import ltd.idcu.est.utils.format.json.JsonUtils;
 import ltd.idcu.est.utils.format.yaml.YamlUtils;
@@ -12,15 +13,27 @@ import java.util.function.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class DefaultCollection<T> implements Collection<T> {
+public class DefaultCollection<T> implements MutableCollection<T> {
 
     private final List<T> items;
+    private final boolean mutable;
 
     public DefaultCollection() {
         this.items = new ArrayList<>();
+        this.mutable = true;
+    }
+
+    public DefaultCollection(boolean mutable) {
+        this.items = new ArrayList<>();
+        this.mutable = mutable;
     }
 
     public DefaultCollection(Iterable<? extends T> iterable) {
+        this(iterable, true);
+    }
+
+    public DefaultCollection(Iterable<? extends T> iterable, boolean mutable) {
+        this.mutable = mutable;
         if (iterable instanceof java.util.Collection) {
             this.items = new ArrayList<>((java.util.Collection<? extends T>) iterable);
         } else {
@@ -34,6 +47,11 @@ public class DefaultCollection<T> implements Collection<T> {
     }
 
     public DefaultCollection(Collection<? extends T> collection) {
+        this(collection, true);
+    }
+
+    public DefaultCollection(Collection<? extends T> collection, boolean mutable) {
+        this.mutable = mutable;
         this.items = new ArrayList<>();
         if (collection != null) {
             if (collection instanceof DefaultCollection) {
@@ -46,8 +64,165 @@ public class DefaultCollection<T> implements Collection<T> {
         }
     }
 
-    private DefaultCollection(List<T> items, boolean internal) {
+    private DefaultCollection(List<T> items, boolean internal, boolean mutable) {
         this.items = items;
+        this.mutable = mutable;
+    }
+
+    private void ensureMutable() {
+        if (!mutable) {
+            throw new UnsupportedOperationException("This collection is immutable");
+        }
+    }
+
+    @Override
+    public MutableCollection<T> addItem(T element) {
+        ensureMutable();
+        items.add(element);
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> addAllItems(Iterable<? extends T> elements) {
+        ensureMutable();
+        if (elements instanceof java.util.Collection) {
+            items.addAll((java.util.Collection<? extends T>) elements);
+        } else {
+            for (T element : elements) {
+                items.add(element);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> removeItem(T element) {
+        ensureMutable();
+        items.remove(element);
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> removeAllItems(Iterable<? extends T> elements) {
+        ensureMutable();
+        if (elements instanceof java.util.Collection) {
+            items.removeAll((java.util.Collection<?>) elements);
+        } else {
+            for (T element : elements) {
+                items.remove(element);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> removeItemsIf(Predicate<? super T> predicate) {
+        ensureMutable();
+        items.removeIf(predicate);
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> replaceAllItems(UnaryOperator<T> operator) {
+        ensureMutable();
+        items.replaceAll(operator);
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> clearItems() {
+        ensureMutable();
+        items.clear();
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> setItem(int index, T element) {
+        ensureMutable();
+        items.set(index, element);
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> insertItem(int index, T element) {
+        ensureMutable();
+        items.add(index, element);
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> removeItemAt(int index) {
+        ensureMutable();
+        items.remove(index);
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public MutableCollection<T> sortItems() {
+        ensureMutable();
+        items.sort((a, b) -> {
+            if (a instanceof Comparable && b instanceof Comparable) {
+                return ((Comparable<Object>) a).compareTo(b);
+            }
+            throw new ClassCastException("Elements must implement Comparable");
+        });
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> sortItems(Comparator<? super T> comparator) {
+        ensureMutable();
+        items.sort(comparator);
+        return this;
+    }
+
+    @Override
+    public <R extends Comparable<? super R>> MutableCollection<T> sortItemsBy(Function<? super T, ? extends R> selector) {
+        ensureMutable();
+        items.sort(Comparator.comparing(selector));
+        return this;
+    }
+
+    @Override
+    public <R extends Comparable<? super R>> MutableCollection<T> sortItemsByDescending(Function<? super T, ? extends R> selector) {
+        ensureMutable();
+        items.sort(Comparator.comparing(selector).reversed());
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> reverseItems() {
+        ensureMutable();
+        Collections.reverse(items);
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> shuffleItems() {
+        ensureMutable();
+        Collections.shuffle(items);
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> shuffleItems(Random random) {
+        ensureMutable();
+        Collections.shuffle(items, random);
+        return this;
+    }
+
+    @Override
+    public Collection<T> toImmutable() {
+        if (!mutable) {
+            return this;
+        }
+        return new DefaultCollection<>(new ArrayList<>(items), true, false);
+    }
+
+    @Override
+    public boolean isMutable() {
+        return mutable;
     }
 
     @Override
@@ -85,7 +260,7 @@ public class DefaultCollection<T> implements Collection<T> {
         for (T item : items) {
             result.add(mapper.apply(item));
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -94,7 +269,7 @@ public class DefaultCollection<T> implements Collection<T> {
         for (int i = 0; i < items.size(); i++) {
             result.add(mapper.apply(i, items.get(i)));
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -105,7 +280,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -116,7 +291,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(items.get(i));
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -127,7 +302,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -141,13 +316,13 @@ public class DefaultCollection<T> implements Collection<T> {
                 }
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
     public Collection<T> distinct() {
         Set<T> seen = new LinkedHashSet<>(items);
-        return new DefaultCollection<>(new ArrayList<>(seen), true);
+        return new DefaultCollection<>(new ArrayList<>(seen), true, mutable);
     }
 
     @Override
@@ -160,16 +335,16 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
     public Collection<T> take(int n) {
         if (n <= 0) {
-            return new DefaultCollection<>();
+            return new DefaultCollection<>(mutable);
         }
         int count = Math.min(n, items.size());
-        return new DefaultCollection<>(new ArrayList<>(items.subList(0, count)), true);
+        return new DefaultCollection<>(new ArrayList<>(items.subList(0, count)), true, mutable);
     }
 
     @Override
@@ -181,25 +356,25 @@ public class DefaultCollection<T> implements Collection<T> {
             }
             result.add(item);
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
     public Collection<T> takeLast(int n) {
         if (n <= 0) {
-            return new DefaultCollection<>();
+            return new DefaultCollection<>(mutable);
         }
         int size = items.size();
         int fromIndex = Math.max(0, size - n);
-        return new DefaultCollection<>(new ArrayList<>(items.subList(fromIndex, size)), true);
+        return new DefaultCollection<>(new ArrayList<>(items.subList(fromIndex, size)), true, mutable);
     }
 
     @Override
     public Collection<T> drop(int n) {
         if (n >= items.size()) {
-            return new DefaultCollection<>();
+            return new DefaultCollection<>(mutable);
         }
-        return new DefaultCollection<>(new ArrayList<>(items.subList(n, items.size())), true);
+        return new DefaultCollection<>(new ArrayList<>(items.subList(n, items.size())), true, mutable);
     }
 
     @Override
@@ -208,15 +383,15 @@ public class DefaultCollection<T> implements Collection<T> {
         while (index < items.size() && predicate.test(items.get(index))) {
             index++;
         }
-        return new DefaultCollection<>(new ArrayList<>(items.subList(index, items.size())), true);
+        return new DefaultCollection<>(new ArrayList<>(items.subList(index, items.size())), true, mutable);
     }
 
     @Override
     public Collection<T> dropLast(int n) {
         if (n >= items.size()) {
-            return new DefaultCollection<>();
+            return new DefaultCollection<>(mutable);
         }
-        return new DefaultCollection<>(new ArrayList<>(items.subList(0, items.size() - n)), true);
+        return new DefaultCollection<>(new ArrayList<>(items.subList(0, items.size() - n)), true, mutable);
     }
 
     @Override
@@ -224,9 +399,9 @@ public class DefaultCollection<T> implements Collection<T> {
         int from = Math.max(0, fromIndex);
         int to = Math.min(items.size(), toIndex);
         if (from >= to) {
-            return new DefaultCollection<>();
+            return new DefaultCollection<>(mutable);
         }
-        return new DefaultCollection<>(new ArrayList<>(items.subList(from, to)), true);
+        return new DefaultCollection<>(new ArrayList<>(items.subList(from, to)), true, mutable);
     }
 
     @Override
@@ -239,49 +414,49 @@ public class DefaultCollection<T> implements Collection<T> {
             }
             throw new ClassCastException("Elements must implement Comparable");
         });
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
     public Collection<T> sorted(Comparator<? super T> comparator) {
         List<T> result = new ArrayList<>(items);
         result.sort(comparator);
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
     public <R extends Comparable<? super R>> Collection<T> sortBy(Function<? super T, ? extends R> selector) {
         List<T> result = new ArrayList<>(items);
         result.sort(Comparator.comparing(selector));
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
     public <R extends Comparable<? super R>> Collection<T> sortByDescending(Function<? super T, ? extends R> selector) {
         List<T> result = new ArrayList<>(items);
         result.sort(Comparator.comparing(selector).reversed());
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
     public Collection<T> reversed() {
         List<T> result = new ArrayList<>(items);
         Collections.reverse(result);
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
     public Collection<T> shuffled() {
         List<T> result = new ArrayList<>(items);
         Collections.shuffle(result);
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
     public Collection<T> shuffled(Random random) {
         List<T> result = new ArrayList<>(items);
         Collections.shuffle(result, random);
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -475,7 +650,57 @@ public class DefaultCollection<T> implements Collection<T> {
         }
         Map<K, Collection<T>> result = new LinkedHashMap<>();
         for (Map.Entry<K, List<T>> entry : map.entrySet()) {
-            result.put(entry.getKey(), new DefaultCollection<>(entry.getValue()));
+            result.put(entry.getKey(), new DefaultCollection<>(entry.getValue(), mutable));
+        }
+        return result;
+    }
+
+    @Override
+    public <K1, K2> Map<K1, Map<K2, Collection<T>>> groupByMultiple(
+            Function<? super T, ? extends K1> keySelector1,
+            Function<? super T, ? extends K2> keySelector2) {
+        Map<K1, Map<K2, List<T>>> map = new LinkedHashMap<>();
+        for (T item : items) {
+            K1 key1 = keySelector1.apply(item);
+            K2 key2 = keySelector2.apply(item);
+            map.computeIfAbsent(key1, k -> new LinkedHashMap<>())
+               .computeIfAbsent(key2, k -> new ArrayList<>())
+               .add(item);
+        }
+        Map<K1, Map<K2, Collection<T>>> result = new LinkedHashMap<>();
+        for (Map.Entry<K1, Map<K2, List<T>>> entry1 : map.entrySet()) {
+            Map<K2, Collection<T>> innerMap = new LinkedHashMap<>();
+            for (Map.Entry<K2, List<T>> entry2 : entry1.getValue().entrySet()) {
+                innerMap.put(entry2.getKey(), new DefaultCollection<>(entry2.getValue(), mutable));
+            }
+            result.put(entry1.getKey(), innerMap);
+        }
+        return result;
+    }
+
+    @Override
+    public <K, A, R> Map<K, R> aggregateBy(
+            Function<? super T, ? extends K> keySelector,
+            Supplier<A> initialSupplier,
+            BiFunction<A, ? super T, A> accumulator) {
+        return aggregateBy(keySelector, initialSupplier, accumulator, a -> (R) a);
+    }
+
+    @Override
+    public <K, A, R> Map<K, R> aggregateBy(
+            Function<? super T, ? extends K> keySelector,
+            Supplier<A> initialSupplier,
+            BiFunction<A, ? super T, A> accumulator,
+            Function<A, R> finisher) {
+        Map<K, A> map = new LinkedHashMap<>();
+        for (T item : items) {
+            K key = keySelector.apply(item);
+            A accum = map.computeIfAbsent(key, k -> initialSupplier.get());
+            map.put(key, accumulator.apply(accum, item));
+        }
+        Map<K, R> result = new LinkedHashMap<>();
+        for (Map.Entry<K, A> entry : map.entrySet()) {
+            result.put(entry.getKey(), finisher.apply(entry.getValue()));
         }
         return result;
     }
@@ -528,7 +753,7 @@ public class DefaultCollection<T> implements Collection<T> {
         List<T> result = new ArrayList<>(items.size() + 1);
         result.addAll(items);
         result.add(element);
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -541,7 +766,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(element);
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -552,7 +777,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -567,7 +792,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -583,7 +808,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -592,7 +817,7 @@ public class DefaultCollection<T> implements Collection<T> {
         for (T item : other) {
             seen.add(item);
         }
-        return new DefaultCollection<>(new ArrayList<>(seen), true);
+        return new DefaultCollection<>(new ArrayList<>(seen), true, mutable);
     }
 
     @Override
@@ -607,7 +832,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -981,7 +1206,7 @@ public class DefaultCollection<T> implements Collection<T> {
             }
             result.add(new ArrayList<>(items.subList(i, end)));
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -1012,7 +1237,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(new ArrayList<>(items.subList(i, total)));
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -1028,7 +1253,7 @@ public class DefaultCollection<T> implements Collection<T> {
                 result.add(item);
             }
         }
-        return new DefaultCollection<>(result, true);
+        return new DefaultCollection<>(result, true, mutable);
     }
 
     @Override
@@ -1086,5 +1311,146 @@ public class DefaultCollection<T> implements Collection<T> {
     @Override
     public int hashCode() {
         return Objects.hash(items);
+    }
+
+    @Override
+    public Pair<Collection<T>, Collection<T>> partition(Predicate<? super T> predicate) {
+        List<T> first = new ArrayList<>();
+        List<T> second = new ArrayList<>();
+        for (T item : items) {
+            if (predicate.test(item)) {
+                first.add(item);
+            } else {
+                second.add(item);
+            }
+        }
+        return Pair.of(
+            new DefaultCollection<>(first, true, mutable),
+            new DefaultCollection<>(second, true, mutable)
+        );
+    }
+
+    @Override
+    public <U> Collection<Pair<T, U>> zip(Collection<U> other) {
+        List<Pair<T, U>> result = new ArrayList<>();
+        Iterator<T> iter1 = items.iterator();
+        Iterator<U> iter2 = other.iterator();
+        while (iter1.hasNext() && iter2.hasNext()) {
+            result.add(Pair.of(iter1.next(), iter2.next()));
+        }
+        return new DefaultCollection<>(result, true, mutable);
+    }
+
+    @Override
+    public Collection<Pair<Integer, T>> zipWithIndex() {
+        List<Pair<Integer, T>> result = new ArrayList<>();
+        for (int i = 0; i < items.size(); i++) {
+            result.add(Pair.of(i, items.get(i)));
+        }
+        return new DefaultCollection<>(result, true, mutable);
+    }
+
+    @Override
+    public T random() {
+        if (items.isEmpty()) {
+            throw new NoSuchElementException("Collection is empty");
+        }
+        Random random = new Random();
+        return items.get(random.nextInt(items.size()));
+    }
+
+    @Override
+    public Collection<T> sample(int n) {
+        if (n <= 0) {
+            return new DefaultCollection<>(mutable);
+        }
+        if (n >= items.size()) {
+            return new DefaultCollection<>(new ArrayList<>(items), true, mutable);
+        }
+        List<T> result = new ArrayList<>(items);
+        Collections.shuffle(result);
+        return new DefaultCollection<>(result.subList(0, n), true, mutable);
+    }
+
+    @Override
+    public Collection<T> rotate(int distance) {
+        if (items.isEmpty() || distance == 0) {
+            return new DefaultCollection<>(new ArrayList<>(items), true, mutable);
+        }
+        int size = items.size();
+        int effectiveDistance = distance % size;
+        if (effectiveDistance < 0) {
+            effectiveDistance += size;
+        }
+        List<T> result = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            int index = (i - effectiveDistance + size) % size;
+            result.add(items.get(index));
+        }
+        return new DefaultCollection<>(result, true, mutable);
+    }
+
+    @Override
+    public Collection<T> padStart(int length, T padElement) {
+        if (items.size() >= length) {
+            return new DefaultCollection<>(new ArrayList<>(items), true, mutable);
+        }
+        List<T> result = new ArrayList<>();
+        int padCount = length - items.size();
+        for (int i = 0; i < padCount; i++) {
+            result.add(padElement);
+        }
+        result.addAll(items);
+        return new DefaultCollection<>(result, true, mutable);
+    }
+
+    @Override
+    public Collection<T> padEnd(int length, T padElement) {
+        if (items.size() >= length) {
+            return new DefaultCollection<>(new ArrayList<>(items), true, mutable);
+        }
+        List<T> result = new ArrayList<>(items);
+        int padCount = length - items.size();
+        for (int i = 0; i < padCount; i++) {
+            result.add(padElement);
+        }
+        return new DefaultCollection<>(result, true, mutable);
+    }
+
+    @Override
+    public Collection<T> shuffle() {
+        List<T> result = new ArrayList<>(items);
+        Collections.shuffle(result);
+        return new DefaultCollection<>(result, true, mutable);
+    }
+
+    @Override
+    public Collection<T> shuffle(Random random) {
+        List<T> result = new ArrayList<>(items);
+        Collections.shuffle(result, random);
+        return new DefaultCollection<>(result, true, mutable);
+    }
+
+    @Override
+    public ltd.idcu.est.collection.api.LazyCollection<T> lazy() {
+        return new DefaultLazyCollection<>(this);
+    }
+
+    @Override
+    public Collection<T> eager() {
+        return this;
+    }
+
+    @Override
+    public MutableCollection<T> mutable() {
+        if (mutable) {
+            return this;
+        }
+        return new DefaultCollection<>(new ArrayList<>(items), true, true);
+    }
+
+    @Override
+    public Collection<T> immutable() {
+        return toImmutable();
     }
 }
