@@ -1,0 +1,43 @@
+package ${package};
+
+import ${entityPackage}.${className};
+import ${servicePackage}.${className}Service;
+import ltd.idcu.est.web.api.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@Route("/${resourcePath}")
+public class ${className}Controller {
+
+    private final ${className}Service service;
+
+    public ${className}Controller(${className}Service service) {
+        this.service = service;
+    }
+
+    @GET
+    public List<${className}> getAll() {
+        return service.findAll();
+    }
+
+    @GET("/{id}")
+    public Optional<${className}> getById(@PathParam("id") ${idType} id) {
+        return service.findById(id);
+    }
+
+    @POST
+    public ${className} create(${className} entity) {
+        return service.save(entity);
+    }
+
+    @PUT("/{id}")
+    public ${className} update(@PathParam("id") ${idType} id, ${className} entity) {
+        return service.save(entity);
+    }
+
+    @DELETE("/{id}")
+    public void delete(@PathParam("id") ${idType} id) {
+        service.deleteById(id);
+    }
+}

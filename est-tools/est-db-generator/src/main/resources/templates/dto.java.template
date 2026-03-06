@@ -1,0 +1,9 @@
+package ${package};
+
+public class ${className}Dto {
+${fields}
+
+    public ${className}Dto() {
+    }
+${gettersSetters}
+}

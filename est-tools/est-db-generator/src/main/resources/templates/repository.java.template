@@ -1,0 +1,7 @@
+package ${package};
+
+import ltd.idcu.est.features.data.api.Repository;
+import ${entityPackage}.${className};
+
+public interface ${className}Repository extends Repository<${className}, ${idType}> {
+}

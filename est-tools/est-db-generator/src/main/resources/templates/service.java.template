@@ -1,0 +1,40 @@
+package ${package};
+
+import ${entityPackage}.${className};
+import ${repositoryPackage}.${className}Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+public class ${className}Service {
+
+    private final ${className}Repository repository;
+
+    public ${className}Service(${className}Repository repository) {
+        this.repository = repository;
+    }
+
+    public List<${className}> findAll() {
+        return repository.findAll();
+    }
+
+    public Optional<${className}> findById(${idType} id) {
+        return repository.findById(id);
+    }
+
+    public ${className} save(${className} entity) {
+        return repository.save(entity);
+    }
+
+    public void deleteById(${idType} id) {
+        repository.deleteById(id);
+    }
+
+    public boolean existsById(${idType} id) {
+        return repository.existsById(id);
+    }
+
+    public long count() {
+        return repository.count();
+    }
+}

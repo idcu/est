@@ -1,0 +1,15 @@
+package ${package};
+
+import ltd.idcu.est.features.data.api.Entity;
+import ltd.idcu.est.features.data.api.Id;
+import ltd.idcu.est.features.data.api.Column;
+${imports}
+
+@Entity
+public class ${className} {
+${fields}
+
+    public ${className}() {
+    }
+${gettersSetters}
+}

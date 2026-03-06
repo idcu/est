@@ -18,6 +18,7 @@
 
     <modules>
         <module>est-scaffold</module>
+        <module>est-db-generator</module>
     </modules>
 
 </project>

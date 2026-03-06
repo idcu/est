@@ -1,9 +1,17 @@
 package ltd.idcu.est.core.api;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 public interface Config {
+    
+    void set(String key, Object value);
+    
+    <T> T get(String key);
+    
+    <T> T get(String key, T defaultValue);
     
     String getString(String key);
     
@@ -25,15 +33,27 @@ public interface Config {
     
     boolean getBoolean(String key, boolean defaultValue);
     
+    <T> List<T> getList(String key);
+    
+    <T> List<T> getList(String key, List<T> defaultValue);
+    
+    <K, V> Map<K, V> getMap(String key);
+    
+    <K, V> Map<K, V> getMap(String key, Map<K, V> defaultValue);
+    
     <T> Optional<T> get(String key, Class<T> type);
     
     boolean contains(String key);
     
     Set<String> getKeys();
     
-    void set(String key, Object value);
-    
     void remove(String key);
+    
+    void load(String resourcePath);
+    
+    void load(java.nio.file.Path filePath);
+    
+    Map<String, Object> getAll();
     
     void reload();
     
