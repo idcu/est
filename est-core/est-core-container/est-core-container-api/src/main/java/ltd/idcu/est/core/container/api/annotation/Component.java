@@ -1,4 +1,4 @@
-package ltd.idcu.est.core.api.annotation;
+package ltd.idcu.est.core.container.api.annotation;
 
 import ltd.idcu.est.core.container.api.scope.Scope;
 

@@ -30,6 +30,10 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
+            <artifactId>est-util-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
             <artifactId>est-test-api</artifactId>
             <scope>test</scope>
         </dependency>

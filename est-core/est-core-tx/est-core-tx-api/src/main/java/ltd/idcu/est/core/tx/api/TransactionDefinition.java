@@ -1,6 +1,6 @@
 package ltd.idcu.est.core.tx.api;
 
-import ltd.idcu.est.core.api.annotation.Transactional;
+import ltd.idcu.est.core.tx.api.annotation.Transactional;
 
 public interface TransactionDefinition {
     Transactional.Propagation getPropagationBehavior();

@@ -12,10 +12,34 @@
 
     <artifactId>est-core-api</artifactId>
 
-    <name>EST Core API</name>
-    <description>EST Core API - Core interfaces for the framework</description>
+    <name>EST Core API (Deprecated)</name>
+    <description>DEPRECATED: EST Core API - Compatibility layer for 1.x. Use new modules instead: est-core-container-api, est-core-config-api, est-core-lifecycle-api, est-core-module-api, est-core-aop-api, est-core-tx-api</description>
 
     <dependencies>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-container-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-config-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-lifecycle-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-module-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-aop-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-tx-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

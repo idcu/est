@@ -1,4 +1,4 @@
-package ltd.idcu.est.core.api.processor;
+package ltd.idcu.est.core.container.api.processor;
 
 public interface BeanPostProcessor {
     default Object postProcessBeforeInitialization(Object bean, String beanName) {

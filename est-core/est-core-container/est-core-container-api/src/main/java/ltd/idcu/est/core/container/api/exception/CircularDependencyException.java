@@ -1,4 +1,4 @@
-package ltd.idcu.est.core.api.exception;
+package ltd.idcu.est.core.container.api.exception;
 
 import java.util.List;
 

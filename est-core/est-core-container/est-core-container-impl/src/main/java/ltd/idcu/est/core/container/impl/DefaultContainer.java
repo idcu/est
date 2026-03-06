@@ -1,0 +1,480 @@
+package ltd.idcu.est.core.container.impl;
+
+import ltd.idcu.est.core.config.api.Config;
+import ltd.idcu.est.core.container.api.Container;
+import ltd.idcu.est.core.container.api.exception.CircularDependencyException;
+import ltd.idcu.est.core.container.api.processor.BeanPostProcessor;
+import ltd.idcu.est.core.container.api.scope.Scope;
+import ltd.idcu.est.core.container.impl.inject.ConstructorInjector;
+import ltd.idcu.est.core.container.impl.inject.FieldInjector;
+import ltd.idcu.est.core.container.impl.inject.MethodInjector;
+import ltd.idcu.est.core.container.impl.scope.ScopeStrategy;
+import ltd.idcu.est.core.container.impl.scan.ComponentScanner;
+import ltd.idcu.est.core.lifecycle.api.DisposableBean;
+import ltd.idcu.est.core.lifecycle.api.InitializingBean;
+import ltd.idcu.est.core.lifecycle.api.PostConstruct;
+import ltd.idcu.est.core.lifecycle.api.PreDestroy;
+import ltd.idcu.est.utils.common.AssertUtils;
+import ltd.idcu.est.utils.common.ObjectUtils;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Supplier;
+
+public class DefaultContainer implements Container {
+
+    private static class Registration {
+        final Supplier<?> supplier;
+        final Scope scope;
+
+        Registration(Supplier<?> supplier, Scope scope) {
+            this.supplier = supplier;
+            this.scope = scope;
+        }
+    }
+
+    private final Map<String, Registration> registrations = new ConcurrentHashMap<>();
+    private final Map<String, Object> instances = new ConcurrentHashMap<>();
+    private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>();
+    private final Set<String> singletonsCurrentlyInCreation = ConcurrentHashMap.newKeySet();
+    private final ScopeStrategy scopeStrategy = new ScopeStrategy();
+    private final ConstructorInjector constructorInjector;
+    private final FieldInjector fieldInjector;
+    private final MethodInjector methodInjector;
+    private final List<BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
+    private final List<DisposableBean> disposableBeans = new CopyOnWriteArrayList<>();
+    private final List<Object> preDestroyBeans = new CopyOnWriteArrayList<>();
+    private final Map<Class<?>, Method[]> postConstructCache = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Method[]> preDestroyCache = new ConcurrentHashMap<>();
+    private Config config;
+
+    private final ThreadLocal<List<String>> currentResolutionChain = new ThreadLocal<List<String>>() {
+        @Override
+        protected List<String> initialValue() {
+            return new ArrayList<>();
+        }
+    };
+
+    public DefaultContainer() {
+        this.constructorInjector = new ConstructorInjector(this);
+        this.fieldInjector = new FieldInjector(this);
+        this.methodInjector = new MethodInjector(this);
+    }
+
+    public DefaultContainer(Config config) {
+        this();
+        this.config = config;
+    }
+
+    public Config getConfig() {
+        return config;
+    }
+
+    private String buildKey(Class<?> type, String qualifier) {
+        return qualifier != null ? type.getName() + "#" + qualifier : type.getName();
+    }
+
+    @Override
+    public <T> void register(Class<T> type, Class<? extends T> implementation) {
+        register(type, implementation, Scope.SINGLETON, null);
+    }
+
+    @Override
+    public <T> void register(Class<T> type, Class<? extends T> implementation, Scope scope) {
+        register(type, implementation, scope, null);
+    }
+
+    @Override
+    public <T> void register(Class<T> type, Class<? extends T> implementation, String qualifier) {
+        register(type, implementation, Scope.SINGLETON, qualifier);
+    }
+
+    @Override
+    public <T> void register(Class<T> type, Class<? extends T> implementation, Scope scope, String qualifier) {
+        AssertUtils.notNull(type, "Type cannot be null");
+        AssertUtils.notNull(implementation, "Implementation cannot be null");
+        String key = buildKey(type, qualifier);
+        registrations.put(key, new Registration(() -> createInstanceWithLifecycle(implementation, key), scope));
+        instances.remove(key);
+    }
+
+    @Override
+    public <T> void registerSingleton(Class<T> type, T instance) {
+        registerSingleton(type, instance, null);
+    }
+
+    @Override
+    public <T> void registerSingleton(Class<T> type, T instance, String qualifier) {
+        AssertUtils.notNull(type, "Type cannot be null");
+        AssertUtils.notNull(instance, "Instance cannot be null");
+        String key = buildKey(type, qualifier);
+        T processedInstance = processBean(instance, key);
+        injectDependencies(processedInstance);
+        initializeBean(processedInstance, key);
+        registerDisposableBean(processedInstance);
+        instances.put(key, processedInstance);
+        registrations.put(key, new Registration(() -> processedInstance, Scope.SINGLETON));
+    }
+
+    @Override
+    public <T> void registerSupplier(Class<T> type, Supplier<T> supplier) {
+        registerSupplier(type, supplier, Scope.SINGLETON, null);
+    }
+
+    @Override
+    public <T> void registerSupplier(Class<T> type, Supplier<T> supplier, Scope scope) {
+        registerSupplier(type, supplier, scope, null);
+    }
+
+    @Override
+    public <T> void registerSupplier(Class<T> type, Supplier<T> supplier, String qualifier) {
+        registerSupplier(type, supplier, Scope.SINGLETON, qualifier);
+    }
+
+    @Override
+    public <T> void registerSupplier(Class<T> type, Supplier<T> supplier, Scope scope, String qualifier) {
+        AssertUtils.notNull(type, "Type cannot be null");
+        AssertUtils.notNull(supplier, "Supplier cannot be null");
+        String key = buildKey(type, qualifier);
+        registrations.put(key, new Registration(() -> {
+            T instance = supplier.get();
+            return processAndInitializeBean(instance, key);
+        }, scope));
+        instances.remove(key);
+    }
+
+    @Override
+    public <T> T get(Class<T> type) {
+        return get(type, null);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T get(Class<T> type, String qualifier) {
+        AssertUtils.notNull(type, "Type cannot be null");
+
+        String key = buildKey(type, qualifier);
+        
+        Object singleton = getSingleton(key, true);
+        if (singleton != null) {
+            return (T) singleton;
+        }
+
+        checkForCircularDependency(key);
+        
+        try {
+            currentResolutionChain.get().add(key);
+            Registration registration = registrations.get(key);
+            if (registration == null) {
+                throw new IllegalStateException("No registration found for type: " + type.getName() +
+                    (qualifier != null ? " with qualifier: " + qualifier : ""));
+            }
+
+            try {
+                if (registration.scope == Scope.SINGLETON) {
+                    return (T) getSingleton(key, () -> {
+                        try {
+                            return scopeStrategy.get(registration.scope, type, qualifier,
+                                (Supplier<T>) registration.supplier, instances);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                } else {
+                    return (T) scopeStrategy.get(registration.scope, type, qualifier,
+                        (Supplier<T>) registration.supplier, instances);
+                }
+            } catch (RuntimeException e) {
+                if (e instanceof CircularDependencyException) {
+                    throw e;
+                }
+                if (e.getCause() instanceof CircularDependencyException) {
+                    throw (CircularDependencyException) e.getCause();
+                }
+                throw e;
+            }
+        } finally {
+            currentResolutionChain.get().remove(currentResolutionChain.get().size() - 1);
+        }
+    }
+    
+    private Object getSingleton(String beanName, boolean allowEarlyReference) {
+        Object singleton = instances.get(beanName);
+        if (singleton == null && singletonsCurrentlyInCreation.contains(beanName)) {
+            synchronized (instances) {
+                singleton = instances.get(beanName);
+                if (singleton == null && allowEarlyReference) {
+                    singleton = earlySingletonObjects.get(beanName);
+                }
+            }
+        }
+        return singleton;
+    }
+    
+    private Object getSingleton(String beanName, Supplier<?> singletonFactory) {
+        Object singleton = instances.get(beanName);
+        if (singleton == null) {
+            synchronized (instances) {
+                singleton = instances.get(beanName);
+                if (singleton == null) {
+                    beforeSingletonCreation(beanName);
+                    try {
+                        singleton = singletonFactory.get();
+                        if (singleton == null) {
+                            throw new IllegalStateException("Singleton factory returned null for bean: " + beanName);
+                        }
+                        addSingleton(beanName, singleton);
+                    } finally {
+                        afterSingletonCreation(beanName);
+                    }
+                }
+            }
+        }
+        return singleton;
+    }
+    
+    private void beforeSingletonCreation(String beanName) {
+        singletonsCurrentlyInCreation.add(beanName);
+    }
+    
+    private void afterSingletonCreation(String beanName) {
+        singletonsCurrentlyInCreation.remove(beanName);
+        earlySingletonObjects.remove(beanName);
+    }
+    
+    private void addSingleton(String beanName, Object singleton) {
+        instances.put(beanName, singleton);
+    }
+    
+    private void checkForCircularDependency(String key) {
+        List<String> chain = currentResolutionChain.get();
+        if (chain.contains(key)) {
+            List<String> copy = new ArrayList<>(chain);
+            copy.add(key);
+            throw new CircularDependencyException(
+                "Circular dependency detected: " + String.join(" -> ", copy),
+                copy
+            );
+        }
+    }
+
+    @Override
+    public <T> Optional<T> getIfPresent(Class<T> type) {
+        return getIfPresent(type, null);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> Optional<T> getIfPresent(Class<T> type, String qualifier) {
+        if (ObjectUtils.isNull(type)) {
+            return Optional.empty();
+        }
+
+        String key = buildKey(type, qualifier);
+        Registration registration = registrations.get(key);
+        if (registration == null) {
+            return Optional.empty();
+        }
+
+        try {
+            T instance = (T) scopeStrategy.get(registration.scope, type, qualifier,
+                (Supplier<T>) registration.supplier, instances);
+            return Optional.of(instance);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public <T> T create(Class<T> type) {
+        String key = type.getName();
+        checkForCircularDependency(key);
+        try {
+            currentResolutionChain.get().add(key);
+            try {
+                return createInstanceWithLifecycle(type, key);
+            } catch (RuntimeException e) {
+                if (e instanceof CircularDependencyException) {
+                    throw e;
+                }
+                if (e.getCause() instanceof CircularDependencyException) {
+                    throw (CircularDependencyException) e.getCause();
+                }
+                throw e;
+            }
+        } finally {
+            currentResolutionChain.get().remove(currentResolutionChain.get().size() - 1);
+        }
+    }
+
+    private <T> T createInstance(Class<T> type) {
+        return constructorInjector.createInstance(type);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T createInstanceWithLifecycle(Class<T> type, String beanName) {
+        T instance = createInstance(type);
+        
+        if (singletonsCurrentlyInCreation.contains(beanName)) {
+            earlySingletonObjects.put(beanName, instance);
+        }
+        
+        return processAndInitializeBean(instance, beanName);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T processAndInitializeBean(T instance, String beanName) {
+        T processed = processBean(instance, beanName);
+        injectDependencies(processed);
+        initializeBean(processed, beanName);
+        registerDisposableBean(processed);
+        return processed;
+    }
+
+    private void injectDependencies(Object instance) {
+        fieldInjector.injectFields(instance);
+        methodInjector.injectMethods(instance);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T processBean(T bean, String beanName) {
+        T processed = bean;
+        for (BeanPostProcessor processor : beanPostProcessors) {
+            processed = (T) processor.postProcessBeforeInitialization(processed, beanName);
+        }
+        return processed;
+    }
+
+    private void initializeBean(Object bean, String beanName) {
+        invokePostConstruct(bean);
+        if (bean instanceof InitializingBean) {
+            try {
+                ((InitializingBean) bean).afterPropertiesSet();
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to initialize bean: " + beanName, e);
+            }
+        }
+        for (BeanPostProcessor processor : beanPostProcessors) {
+            processor.postProcessAfterInitialization(bean, beanName);
+        }
+    }
+
+    private void invokePostConstruct(Object bean) {
+        Class<?> beanClass = bean.getClass();
+        Method[] methods = postConstructCache.computeIfAbsent(beanClass, this::findPostConstructMethods);
+        for (Method method : methods) {
+            try {
+                method.invoke(bean);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to invoke @PostConstruct method on bean: " + beanClass.getName(), e);
+            }
+        }
+    }
+
+    private Method[] findPostConstructMethods(Class<?> beanClass) {
+        return Arrays.stream(beanClass.getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(PostConstruct.class))
+                .peek(method -> method.setAccessible(true))
+                .toArray(Method[]::new);
+    }
+
+    private void registerDisposableBean(Object bean) {
+        if (bean instanceof DisposableBean) {
+            disposableBeans.add((DisposableBean) bean);
+        }
+        if (hasPreDestroyMethod(bean)) {
+            preDestroyBeans.add(bean);
+        }
+    }
+
+    private boolean hasPreDestroyMethod(Object bean) {
+        Class<?> beanClass = bean.getClass();
+        Method[] methods = preDestroyCache.get(beanClass);
+        if (methods == null) {
+            methods = findPreDestroyMethods(beanClass);
+            preDestroyCache.put(beanClass, methods);
+        }
+        return methods.length > 0;
+    }
+
+    private Method[] findPreDestroyMethods(Class<?> beanClass) {
+        return Arrays.stream(beanClass.getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(PreDestroy.class))
+                .peek(method -> method.setAccessible(true))
+                .toArray(Method[]::new);
+    }
+
+    private void invokePreDestroy(Object bean) {
+        Class<?> beanClass = bean.getClass();
+        Method[] methods = preDestroyCache.get(beanClass);
+        if (methods == null) {
+            methods = findPreDestroyMethods(beanClass);
+            preDestroyCache.put(beanClass, methods);
+        }
+        for (Method method : methods) {
+            try {
+                method.invoke(bean);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to invoke @PreDestroy method on bean: " + beanClass.getName(), e);
+            }
+        }
+    }
+
+    @Override
+    public boolean contains(Class<?> type) {
+        return contains(type, null);
+    }
+
+    @Override
+    public boolean contains(Class<?> type, String qualifier) {
+        if (ObjectUtils.isNull(type)) {
+            return false;
+        }
+        String key = buildKey(type, qualifier);
+        return registrations.containsKey(key);
+    }
+
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor processor) {
+        if (ObjectUtils.isNotNull(processor)) {
+            beanPostProcessors.add(processor);
+        }
+    }
+
+    @Override
+    public void close() {
+        for (DisposableBean bean : disposableBeans) {
+            try {
+                bean.destroy();
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to destroy bean", e);
+            }
+        }
+        disposableBeans.clear();
+        for (Object bean : preDestroyBeans) {
+            invokePreDestroy(bean);
+        }
+        preDestroyBeans.clear();
+        postConstructCache.clear();
+        preDestroyCache.clear();
+        clear();
+    }
+
+    @Override
+    public void scan(String... basePackages) {
+        ComponentScanner.scanAndRegister(this, basePackages);
+    }
+
+    @Override
+    public void clear() {
+        registrations.clear();
+        instances.clear();
+    }
+}

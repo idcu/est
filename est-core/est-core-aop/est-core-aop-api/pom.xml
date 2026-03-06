@@ -16,6 +16,10 @@
     <description>EST Core AOP API - Aspect-Oriented Programming Interfaces</description>
 
     <dependencies>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-container-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

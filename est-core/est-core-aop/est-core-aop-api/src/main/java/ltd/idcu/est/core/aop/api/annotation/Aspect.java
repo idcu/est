@@ -1,5 +1,7 @@
 package ltd.idcu.est.core.aop.api.annotation;
 
+import ltd.idcu.est.core.container.api.annotation.Component;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
