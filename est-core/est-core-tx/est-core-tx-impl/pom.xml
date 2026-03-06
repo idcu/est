@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-core-tx</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>est-core-tx-impl</artifactId>
+
+    <name>EST Core Tx Implementation</name>
+    <description>EST Core Tx Implementation - Transaction Management Implementation</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-tx-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-container-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-aop-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-util-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-test-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-test-impl</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
