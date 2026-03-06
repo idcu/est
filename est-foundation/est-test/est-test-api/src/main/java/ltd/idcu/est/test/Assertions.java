@@ -360,6 +360,61 @@ public final class Assertions {
         }
     }
 
+    public static void assertArrayEquals(byte[] expected, byte[] actual) {
+        assertArrayEquals(expected, actual, (String) null);
+    }
+
+    public static void assertArrayEquals(byte[] expected, byte[] actual, String message) {
+        if (!Arrays.equals(expected, actual)) {
+            throw new AssertionError(message != null ? message : 
+                "Expected array: " + Arrays.toString(expected) + " but was: " + Arrays.toString(actual));
+        }
+    }
+
+    public static void assertArrayEquals(short[] expected, short[] actual) {
+        assertArrayEquals(expected, actual, (String) null);
+    }
+
+    public static void assertArrayEquals(short[] expected, short[] actual, String message) {
+        if (!Arrays.equals(expected, actual)) {
+            throw new AssertionError(message != null ? message : 
+                "Expected array: " + Arrays.toString(expected) + " but was: " + Arrays.toString(actual));
+        }
+    }
+
+    public static void assertArrayEquals(float[] expected, float[] actual) {
+        assertArrayEquals(expected, actual, (String) null);
+    }
+
+    public static void assertArrayEquals(float[] expected, float[] actual, String message) {
+        if (!Arrays.equals(expected, actual)) {
+            throw new AssertionError(message != null ? message : 
+                "Expected array: " + Arrays.toString(expected) + " but was: " + Arrays.toString(actual));
+        }
+    }
+
+    public static void assertArrayEquals(char[] expected, char[] actual) {
+        assertArrayEquals(expected, actual, (String) null);
+    }
+
+    public static void assertArrayEquals(char[] expected, char[] actual, String message) {
+        if (!Arrays.equals(expected, actual)) {
+            throw new AssertionError(message != null ? message : 
+                "Expected array: " + Arrays.toString(expected) + " but was: " + Arrays.toString(actual));
+        }
+    }
+
+    public static void assertArrayEquals(boolean[] expected, boolean[] actual) {
+        assertArrayEquals(expected, actual, (String) null);
+    }
+
+    public static void assertArrayEquals(boolean[] expected, boolean[] actual, String message) {
+        if (!Arrays.equals(expected, actual)) {
+            throw new AssertionError(message != null ? message : 
+                "Expected array: " + Arrays.toString(expected) + " but was: " + Arrays.toString(actual));
+        }
+    }
+
     public static <T extends Throwable> T assertThrows(Class<T> expectedType, Executable executable) {
         return assertThrows(expectedType, executable, (String) null);
     }
