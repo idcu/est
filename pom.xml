@@ -403,12 +403,68 @@
                     <configuration>
                         <configLocation>.config/checkstyle.xml</configLocation>
                         <encoding>UTF-8</encoding>
+                        <failsOnError>false</failsOnError>
+                        <failsOnViolation>false</failsOnViolation>
+                        <consoleOutput>true</consoleOutput>
+                        <linkXRef>false</linkXRef>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <id>validate</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
                     <version>3.21.0</version>
+                    <configuration>
+                        <rulesets>
+                            <ruleset>.config/pmd.xml</ruleset>
+                        </rulesets>
+                        <sourceEncoding>UTF-8</sourceEncoding>
+                        <minimumTokens>100</minimumTokens>
+                        <targetJdk>21</targetJdk>
+                        <excludeRoots>
+                            <excludeRoot>target/generated-sources/stubs</excludeRoot>
+                        </excludeRoots>
+                        <failurePriority>5</failurePriority>
+                        <printFailingErrors>true</printFailingErrors>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>pmd-check</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>check</goal>
+                                <goal>cpd-check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>4.8.3.0</version>
+                    <configuration>
+                        <effort>Max</effort>
+                        <threshold>Low</threshold>
+                        <failOnError>false</failOnError>
+                        <excludeFilterFile>.config/spotbugs-exclude.xml</excludeFilterFile>
+                        <encoding>UTF-8</encoding>
+                        <omitVisitors>FindReturnRef</omitVisitors>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.graalvm.buildtools</groupId>

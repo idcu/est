@@ -5,12 +5,14 @@
 
 <module name="Checker">
   <property name="charset" value="UTF-8"/>
+  <property name="severity" value="warning"/>
   
   <module name="TreeWalker">
     <module name="ConstantName"/>
     <module name="EmptyBlock">
       <property name="option" value="TEXT"/>
     </module>
+    <module name="EmptyStatement"/>
     <module name="EqualsHashCode"/>
     <module name="IllegalImport"/>
     <module name="InnerTypeLast"/>
@@ -30,5 +32,44 @@
     <module name="StaticVariableName"/>
     <module name="TypeName"/>
     <module name="UnusedImports"/>
+    <module name="AvoidStarImport"/>
+    <module name="AvoidNestedBlocks"/>
+    <module name="ClassDataAbstractionCoupling"/>
+    <module name="ClassFanOutComplexity"/>
+    <module name="ClassTypeParameterName"/>
+    <module name="DesignForExtension"/>
+    <module name="FinalParameters"/>
+    <module name="HiddenField"/>
+    <module name="IllegalInstantiation"/>
+    <module name="IllegalType"/>
+    <module name="InterfaceTypeParameterName"/>
+    <module name="MagicNumber">
+      <property name="ignoreNumbers" value="-1, 0, 1, 2"/>
+    </module>
+    <module name="MethodTypeParameterName"/>
+    <module name="ModifiedControlVariable"/>
+    <module name="MultipleStringLiterals"/>
+    <module name="MutableException"/>
+    <module name="PackageDeclaration"/>
+    <module name="RedundantImport"/>
+    <module name="ReturnCount">
+      <property name="max" value="6"/>
+    </module>
+    <module name="SimplifyBooleanExpression"/>
+    <module name="SimplifyBooleanReturn"/>
+    <module name="SuperClone"/>
+    <module name="SuperFinalize"/>
+    <module name="SuppressWarnings">
+      <property name="prefixList" value="EST_"/>
+    </module>
+    <module name="VisibilityModifier"/>
+    <module name="WhitespaceAfter"/>
+    <module name="WhitespaceAround">
+      <property name="tokens" value="ASSIGN, BAND, BAND_ASSIGN, BOR, BOR_ASSIGN, BSR, BSR_ASSIGN, BXOR, BXOR_ASSIGN, COLON, DIV, DIV_ASSIGN, DO_WHILE, EQUAL, GE, GT, LAND, LE, LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_RETURN, LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, LOR, LT, MINUS, MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, SL, SL_ASSIGN, SR, SR_ASSIGN, STAR, STAR_ASSIGN, TYPE_EXTENSION_AND, LITERAL_ASSERT"/>
+    </module>
+    <module name="SingleSpaceSeparator"/>
+    <module name="RightCurly"/>
+    <module name="LeftCurly"/>
+    <module name="Indentation"/>
   </module>
 </module>
