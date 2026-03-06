@@ -25,6 +25,7 @@ public class GeneratorConfig {
     private boolean useLombok = false;
     private boolean useSwagger = false;
     private boolean useMybatisPlus = false;
+    private boolean useRelations = false;
 
     public String getJdbcUrl() {
         return jdbcUrl;
@@ -200,6 +201,14 @@ public class GeneratorConfig {
 
     public void setUseMybatisPlus(boolean useMybatisPlus) {
         this.useMybatisPlus = useMybatisPlus;
+    }
+
+    public boolean isUseRelations() {
+        return useRelations;
+    }
+
+    public void setUseRelations(boolean useRelations) {
+        this.useRelations = useRelations;
     }
 
     public boolean shouldGenerateTable(String tableName) {

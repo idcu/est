@@ -26,6 +26,7 @@ public class EntityGenerator {
         engine.setVariable("package", config.getEntityPackage());
         engine.setVariable("className", table.getClassName());
         engine.setVariable("imports", generateImports(table));
+        engine.setVariable("annotations", generateAnnotations(table));
         engine.setVariable("fields", generateFields(table));
         engine.setVariable("gettersSetters", generateGettersSetters(table));
 
@@ -42,11 +43,35 @@ public class EntityGenerator {
             }
         }
         
+        if (config.isUseLombok()) {
+            imports.add("import lombok.Data;");
+            imports.add("import lombok.NoArgsConstructor;");
+            imports.add("import lombok.AllArgsConstructor;");
+        }
+        
         if (imports.isEmpty()) {
             return "";
         }
         
         return imports.stream().sorted().collect(Collectors.joining("\n")) + "\n";
+    }
+
+    private String generateAnnotations(Table table) {
+        StringBuilder sb = new StringBuilder();
+        
+        if (config.isUseLombok()) {
+            sb.append("@Data\n");
+            sb.append("@NoArgsConstructor\n");
+            sb.append("@AllArgsConstructor\n");
+        }
+        
+        if (table.getRemarks() != null && !table.getRemarks().isEmpty()) {
+            sb.append("/**\n");
+            sb.append(" * ").append(table.getRemarks()).append("\n");
+            sb.append(" */\n");
+        }
+        
+        return sb.toString();
     }
 
     private String generateFields(Table table) {
@@ -83,6 +108,10 @@ public class EntityGenerator {
     }
 
     private String generateGettersSetters(Table table) {
+        if (config.isUseLombok()) {
+            return "";
+        }
+        
         StringBuilder sb = new StringBuilder();
         boolean first = true;
         

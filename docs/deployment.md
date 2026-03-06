@@ -753,6 +753,39 @@ db.pool.minEvictableIdleTimeMillis=300000
 - 使用 **Cloud Load Balancing** 作为负载均衡
 - 使用 **Cloud SQL** 托管数据库
 
+### 阿里云
+
+- 使用 **容器服务 ACK**（Alibaba Cloud Container Service for Kubernetes）部署容器化应用
+- 使用 **容器镜像服务 ACR** 存储 Docker 镜像
+- 使用 **负载均衡 SLB** 或 **应用负载均衡 ALB** 作为负载均衡
+- 使用 **云数据库 RDS**（MySQL/PostgreSQL/SQL Server）或 **PolarDB** 托管数据库
+- 使用 **对象存储 OSS** 存储静态资源和文件
+- 使用 **CDN** 加速静态内容分发
+- 使用 **密钥管理服务 KMS** 管理加密密钥
+- 使用 **云监控 CloudMonitor** 监控应用和基础设施
+
+### 腾讯云
+
+- 使用 **容器服务 TKE**（Tencent Kubernetes Engine）部署容器化应用
+- 使用 **容器镜像服务 TCR** 存储 Docker 镜像
+- 使用 **负载均衡 CLB** 或 **应用型负载均衡 ALB** 作为负载均衡
+- 使用 **云数据库 CDB**（MySQL）、**PostgreSQL** 或 **TDSQL** 托管数据库
+- 使用 **对象存储 COS** 存储静态资源和文件
+- 使用 **CDN** 加速静态内容分发
+- 使用 **密钥管理服务 KMS** 管理加密密钥
+- 使用 **云监控 Cloud Monitor** 监控应用和基础设施
+
+### 华为云
+
+- 使用 **容器引擎 CCE**（Cloud Container Engine）部署容器化应用
+- 使用 **容器镜像服务 SWR** 存储 Docker 镜像
+- 使用 **弹性负载均衡 ELB** 作为负载均衡
+- 使用 **云数据库 RDS**（MySQL/PostgreSQL/SQL Server）或 **GaussDB** 托管数据库
+- 使用 **对象存储 OBS** 存储静态资源和文件
+- 使用 **CDN** 加速静态内容分发
+- 使用 **数据加密服务 DEW** 管理加密密钥
+- 使用 **云监控服务 CES** 监控应用和基础设施
+
 ---
 
 ## 故障排查

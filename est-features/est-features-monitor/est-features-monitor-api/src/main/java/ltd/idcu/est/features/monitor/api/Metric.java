@@ -4,22 +4,32 @@ import java.time.Instant;
 
 public class Metric {
     
+    public enum Type {
+        COUNTER,
+        GAUGE,
+        HISTOGRAM,
+        TIMER,
+        CUSTOM
+    }
+    
     private final String name;
     private final Object value;
     private final String unit;
     private final Instant timestamp;
     private final String description;
+    private final Type type;
     
-    public Metric(String name, Object value) {
-        this(name, value, null, null);
+    public Metric(String name, Type type, Object value) {
+        this(name, type, value, null, null);
     }
     
-    public Metric(String name, Object value, String unit) {
-        this(name, value, unit, null);
+    public Metric(String name, Type type, Object value, String unit) {
+        this(name, type, value, unit, null);
     }
     
-    public Metric(String name, Object value, String unit, String description) {
+    public Metric(String name, Type type, Object value, String unit, String description) {
         this.name = name;
+        this.type = type;
         this.value = value;
         this.unit = unit;
         this.timestamp = Instant.now();
@@ -28,6 +38,10 @@ public class Metric {
     
     public String getName() {
         return name;
+    }
+    
+    public Type getType() {
+        return type;
     }
     
     public Object getValue() {
@@ -64,6 +78,7 @@ public class Metric {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Metric{name='").append(name).append('\'');
+        sb.append(", type=").append(type);
         sb.append(", value=").append(value);
         if (unit != null) {
             sb.append(", unit='").append(unit).append('\'');

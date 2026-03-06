@@ -6,6 +6,7 @@ import ltd.idcu.est.features.data.api.Column;
 ${imports}
 
 @Entity
+${annotations}
 public class ${className} {
 ${fields}
 

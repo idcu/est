@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
@@ -41,6 +42,8 @@ public class DefaultContainer implements Container {
 
     private final Map<String, Registration> registrations = new ConcurrentHashMap<>();
     private final Map<String, Object> instances = new ConcurrentHashMap<>();
+    private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>();
+    private final Set<String> singletonsCurrentlyInCreation = ConcurrentHashMap.newKeySet();
     private final ScopeStrategy scopeStrategy = new ScopeStrategy();
     private final ConstructorInjector constructorInjector;
     private final FieldInjector fieldInjector;
@@ -52,7 +55,7 @@ public class DefaultContainer implements Container {
     private final Map<Class<?>, Method[]> preDestroyCache = new ConcurrentHashMap<>();
     private Config config;
 
-    private final ThreadLocal<List<String>> currentResolutionChain = new ThreadLocal<>() {
+    private final ThreadLocal<List<String>> currentResolutionChain = new ThreadLocal<List<String>>() {
         @Override
         protected List<String> initialValue() {
             return new ArrayList<>();
@@ -158,6 +161,12 @@ public class DefaultContainer implements Container {
         AssertUtils.notNull(type, "Type cannot be null");
 
         String key = buildKey(type, qualifier);
+        
+        Object singleton = getSingleton(key, true);
+        if (singleton != null) {
+            return (T) singleton;
+        }
+
         checkForCircularDependency(key);
         
         try {
@@ -169,8 +178,19 @@ public class DefaultContainer implements Container {
             }
 
             try {
-                return (T) scopeStrategy.get(registration.scope, type, qualifier,
-                    (Supplier<T>) registration.supplier, instances);
+                if (registration.scope == Scope.SINGLETON) {
+                    return (T) getSingleton(key, () -> {
+                        try {
+                            return scopeStrategy.get(registration.scope, type, qualifier,
+                                (Supplier<T>) registration.supplier, instances);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                } else {
+                    return (T) scopeStrategy.get(registration.scope, type, qualifier,
+                        (Supplier<T>) registration.supplier, instances);
+                }
             } catch (RuntimeException e) {
                 if (e instanceof CircularDependencyException) {
                     throw e;
@@ -183,6 +203,54 @@ public class DefaultContainer implements Container {
         } finally {
             currentResolutionChain.get().remove(currentResolutionChain.get().size() - 1);
         }
+    }
+    
+    private Object getSingleton(String beanName, boolean allowEarlyReference) {
+        Object singleton = instances.get(beanName);
+        if (singleton == null && singletonsCurrentlyInCreation.contains(beanName)) {
+            synchronized (instances) {
+                singleton = instances.get(beanName);
+                if (singleton == null && allowEarlyReference) {
+                    singleton = earlySingletonObjects.get(beanName);
+                }
+            }
+        }
+        return singleton;
+    }
+    
+    private Object getSingleton(String beanName, Supplier<?> singletonFactory) {
+        Object singleton = instances.get(beanName);
+        if (singleton == null) {
+            synchronized (instances) {
+                singleton = instances.get(beanName);
+                if (singleton == null) {
+                    beforeSingletonCreation(beanName);
+                    try {
+                        singleton = singletonFactory.get();
+                        if (singleton == null) {
+                            throw new IllegalStateException("Singleton factory returned null for bean: " + beanName);
+                        }
+                        addSingleton(beanName, singleton);
+                    } finally {
+                        afterSingletonCreation(beanName);
+                    }
+                }
+            }
+        }
+        return singleton;
+    }
+    
+    private void beforeSingletonCreation(String beanName) {
+        singletonsCurrentlyInCreation.add(beanName);
+    }
+    
+    private void afterSingletonCreation(String beanName) {
+        singletonsCurrentlyInCreation.remove(beanName);
+        earlySingletonObjects.remove(beanName);
+    }
+    
+    private void addSingleton(String beanName, Object singleton) {
+        instances.put(beanName, singleton);
     }
     
     private void checkForCircularDependency(String key) {
@@ -253,6 +321,11 @@ public class DefaultContainer implements Container {
     @SuppressWarnings("unchecked")
     private <T> T createInstanceWithLifecycle(Class<T> type, String beanName) {
         T instance = createInstance(type);
+        
+        if (singletonsCurrentlyInCreation.contains(beanName)) {
+            earlySingletonObjects.put(beanName, instance);
+        }
+        
         return processAndInitializeBean(instance, beanName);
     }
 

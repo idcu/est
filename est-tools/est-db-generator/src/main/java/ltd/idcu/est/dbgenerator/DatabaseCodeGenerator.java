@@ -1,14 +1,15 @@
 package ltd.idcu.est.dbgenerator;
 
+import ltd.idcu.est.dbgenerator.config.ConfigFileParser;
 import ltd.idcu.est.dbgenerator.config.GeneratorConfig;
+import ltd.idcu.est.dbgenerator.database.DatabaseType;
+import ltd.idcu.est.dbgenerator.generator.ControllerGenerator;
+import ltd.idcu.est.dbgenerator.generator.DtoGenerator;
 import ltd.idcu.est.dbgenerator.generator.EntityGenerator;
 import ltd.idcu.est.dbgenerator.generator.RepositoryGenerator;
 import ltd.idcu.est.dbgenerator.generator.ServiceGenerator;
-import ltd.idcu.est.dbgenerator.generator.ControllerGenerator;
-import ltd.idcu.est.dbgenerator.generator.DtoGenerator;
 import ltd.idcu.est.dbgenerator.metadata.Table;
 import ltd.idcu.est.dbgenerator.reader.DatabaseMetadataReader;
-import ltd.idcu.est.dbgenerator.reader.MySQLMetadataReader;
 import ltd.idcu.est.scaffold.FileWriterUtil;
 
 import java.io.IOException;
@@ -30,8 +31,12 @@ public class DatabaseCodeGenerator {
     private final DtoGenerator dtoGenerator;
 
     public DatabaseCodeGenerator(GeneratorConfig config) {
+        this(config, DatabaseType.fromJdbcUrl(config.getJdbcUrl()));
+    }
+
+    public DatabaseCodeGenerator(GeneratorConfig config, DatabaseType dbType) {
         this.config = config;
-        this.reader = new MySQLMetadataReader();
+        this.reader = dbType.createReader();
         this.entityGenerator = new EntityGenerator(config);
         this.repositoryGenerator = new RepositoryGenerator(config);
         this.serviceGenerator = new ServiceGenerator(config);
@@ -136,8 +141,22 @@ public class DatabaseCodeGenerator {
         }
 
         try {
+            if (args.length == 1 && args[0].equals("init-config")) {
+                System.out.println(ConfigFileParser.generateSampleConfig());
+                return;
+            }
+
             GeneratorConfig config = parseArguments(args);
-            DatabaseCodeGenerator generator = new DatabaseCodeGenerator(config);
+            DatabaseCodeGenerator generator;
+            
+            String dbTypeArg = getArgumentValue(args, "--db-type");
+            if (dbTypeArg != null) {
+                DatabaseType dbType = DatabaseType.fromName(dbTypeArg);
+                generator = new DatabaseCodeGenerator(config, dbType);
+            } else {
+                generator = new DatabaseCodeGenerator(config);
+            }
+            
             generator.generate();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
@@ -146,7 +165,30 @@ public class DatabaseCodeGenerator {
         }
     }
 
-    private static GeneratorConfig parseArguments(String[] args) {
+    private static String getArgumentValue(String[] args, String prefix) {
+        for (String arg : args) {
+            if (arg.startsWith(prefix + "=")) {
+                return arg.substring((prefix + "=").length());
+            }
+        }
+        return null;
+    }
+
+    private static boolean hasArgument(String[] args, String argName) {
+        for (String arg : args) {
+            if (arg.equals(argName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static GeneratorConfig parseArguments(String[] args) throws IOException {
+        String configFile = getArgumentValue(args, "--config");
+        if (configFile != null) {
+            return ConfigFileParser.loadFromFile(configFile);
+        }
+
         GeneratorConfig config = new GeneratorConfig();
         
         for (String arg : args) {
@@ -192,11 +234,19 @@ public class DatabaseCodeGenerator {
                 config.setControllerPackage(arg.substring("--controller-package=".length()));
             } else if (arg.startsWith("--dto-package=")) {
                 config.setDtoPackage(arg.substring("--dto-package=".length()));
+            } else if (arg.equals("--lombok")) {
+                config.setUseLombok(true);
+            } else if (arg.equals("--swagger")) {
+                config.setUseSwagger(true);
+            } else if (arg.equals("--mybatis-plus")) {
+                config.setUseMybatisPlus(true);
+            } else if (arg.equals("--relations")) {
+                config.setUseRelations(true);
             }
         }
 
         if (config.getJdbcUrl() == null) {
-            throw new IllegalArgumentException("JDBC URL is required. Use --url=");
+            throw new IllegalArgumentException("JDBC URL is required. Use --url= or --config=");
         }
         if (config.getOutputDir() == null) {
             config.setOutputDir(".");
@@ -211,6 +261,12 @@ public class DatabaseCodeGenerator {
         System.out.println("Usage:");
         System.out.println("  java -jar est-db-generator.jar [options]");
         System.out.println();
+        System.out.println("Commands:");
+        System.out.println("  init-config              Generate a sample configuration file");
+        System.out.println();
+        System.out.println("Configuration File:");
+        System.out.println("  --config=<file>          Use YAML configuration file");
+        System.out.println();
         System.out.println("Required Options:");
         System.out.println("  --url=<jdbc-url>          JDBC connection URL");
         System.out.println();
@@ -218,6 +274,7 @@ public class DatabaseCodeGenerator {
         System.out.println("  --username=<username>     Database username");
         System.out.println("  --password=<password>     Database password");
         System.out.println("  --driver=<driver>         JDBC driver class name");
+        System.out.println("  --db-type=<type>          Database type (mysql, postgresql)");
         System.out.println();
         System.out.println("Generation Options:");
         System.out.println("  --package=<package>       Base package name");
@@ -239,7 +296,20 @@ public class DatabaseCodeGenerator {
         System.out.println("  --controller-package=<pkg> Custom package for Controller classes");
         System.out.println("  --dto-package=<pkg>       Custom package for DTO classes");
         System.out.println();
-        System.out.println("Example:");
+        System.out.println("Feature Options:");
+        System.out.println("  --lombok                  Enable Lombok annotations (@Data, @NoArgsConstructor, @AllArgsConstructor)");
+        System.out.println("  --swagger                Enable Swagger/OpenAPI annotations");
+        System.out.println("  --mybatis-plus           Enable MyBatis-Plus annotations");
+        System.out.println("  --relations              Enable relationship mapping");
+        System.out.println();
+        System.out.println("Examples:");
+        System.out.println("  # Generate sample config");
+        System.out.println("  java -jar est-db-generator.jar init-config > config.yml");
+        System.out.println();
+        System.out.println("  # Use config file");
+        System.out.println("  java -jar est-db-generator.jar --config=config.yml");
+        System.out.println();
+        System.out.println("  # Command line options (MySQL)");
         System.out.println("  java -jar est-db-generator.jar \\");
         System.out.println("    --url=jdbc:mysql://localhost:3306/mydb \\");
         System.out.println("    --username=root \\");
@@ -247,5 +317,14 @@ public class DatabaseCodeGenerator {
         System.out.println("    --package=com.example \\");
         System.out.println("    --output=./src/main/java \\");
         System.out.println("    --tables=user,order,product");
+        System.out.println();
+        System.out.println("  # PostgreSQL");
+        System.out.println("  java -jar est-db-generator.jar \\");
+        System.out.println("    --db-type=postgresql \\");
+        System.out.println("    --url=jdbc:postgresql://localhost:5432/mydb \\");
+        System.out.println("    --username=postgres \\");
+        System.out.println("    --password=123456 \\");
+        System.out.println("    --package=com.example \\");
+        System.out.println("    --output=./src/main/java");
     }
 }
