@@ -6,20 +6,20 @@
 
     <parent>
         <groupId>ltd.idcu</groupId>
-        <artifactId>est</artifactId>
+        <artifactId>est-core</artifactId>
         <version>1.3.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>est-core</artifactId>
+    <artifactId>est-core-container</artifactId>
     <packaging>pom</packaging>
 
-    <name>EST Core</name>
-    <description>EST Core Module - Core interfaces and implementations</description>
+    <name>EST Core Container</name>
+    <description>EST Core Container - Dependency Injection Container Module</description>
 
     <modules>
-        <module>est-core-container</module>
-        <module>est-core-api</module>
-        <module>est-core-impl</module>
+        <module>est-core-container-api</module>
+        <module>est-core-container-impl</module>
     </modules>
 
 </project>
