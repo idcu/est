@@ -19,6 +19,7 @@ public class MigrationConfig {
         SOLON,
         QUARKUS,
         MICRONAUT,
+        EST_1X,
         OTHER
     }
 

@@ -32,6 +32,12 @@ public class MigrationTool {
             case "micronaut":
                 config.setSourceFramework(MigrationConfig.SourceFramework.MICRONAUT);
                 break;
+            case "est-1x":
+            case "est1x":
+            case "est-1.0":
+            case "est-1.3":
+                config.setSourceFramework(MigrationConfig.SourceFramework.EST_1X);
+                break;
             default:
                 System.err.println("Unknown framework: " + framework);
                 printUsage();
@@ -69,6 +75,7 @@ public class MigrationTool {
         System.out.println("  solon        - Migrate from Solon");
         System.out.println("  quarkus      - Migrate from Quarkus");
         System.out.println("  micronaut    - Migrate from Micronaut");
+        System.out.println("  est-1x       - Migrate from EST 1.X to EST 2.0");
         System.out.println();
         System.out.println("Examples:");
         System.out.println("  # Migrate Spring Boot project in-place");
@@ -76,5 +83,8 @@ public class MigrationTool {
         System.out.println();
         System.out.println("  # Migrate Solon project to a new directory");
         System.out.println("  java -jar est-migration-tool.jar solon /path/to/source /path/to/target");
+        System.out.println();
+        System.out.println("  # Migrate EST 1.X project to EST 2.0");
+        System.out.println("  java -jar est-migration-tool.jar est-1x /path/to/est-1.x-project");
     }
 }

@@ -26,6 +26,8 @@ public class MigrationEngine {
         rules.add(new SpringBootAnnotationMigrationRule());
         rules.add(new SpringBootMainClassMigrationRule());
         rules.add(new SolonImportMigrationRule());
+        rules.add(new ltd.idcu.est.migration.rules.Est1xTo2xModuleMigrationRule());
+        rules.add(new ltd.idcu.est.migration.rules.Est1xTo2xPomMigrationRule());
         rules.sort(Comparator.comparingInt(MigrationRule::getPriority).reversed());
     }
 

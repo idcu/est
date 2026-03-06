@@ -876,7 +876,7 @@ ServiceLoader<CacheProvider> loader = ServiceLoader.load(CacheProvider.class);
 - [x] 创建 `est-2.0` 分支
 - [x] 建立 2.0 版本的 CI/CD 流水线
 - [x] 完善代码质量检查规则
-- [ ] 准备迁移工具（est-migration 模块）
+- [x] 准备迁移工具（est-migration 模块）
 - [ ] 制定代码风格规范
 - [ ] 准备文档模板
 - [ ] 备份 1.X 版本（打标签）
