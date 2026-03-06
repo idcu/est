@@ -22,6 +22,7 @@
         <module>est-examples-features</module>
         <module>est-examples-web</module>
         <module>est-examples-ai</module>
+        <module>est-examples-graalvm</module>
     </modules>
 
 </project>

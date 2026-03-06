@@ -1,0 +1,30 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: est-mesh-policy
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  mtls:
+    mode: STRICT
+  portLevelMtls:
+    8080:
+      mode: STRICT
+    9090:
+      mode: STRICT
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: est-disable-mtls-for-health
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  selector:
+    matchLabels:
+      app: est-web-app
+  portLevelMtls:
+    8080:
+      mode: PERMISSIVE

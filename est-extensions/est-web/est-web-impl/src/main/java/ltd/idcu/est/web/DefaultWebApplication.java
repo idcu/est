@@ -2,10 +2,15 @@ package ltd.idcu.est.web;
 
 import ltd.idcu.est.core.api.Config;
 import ltd.idcu.est.core.api.lifecycle.LifecycleListener;
+import ltd.idcu.est.features.hotreload.api.HotReload;
+import ltd.idcu.est.features.hotreload.api.HotReloadListener;
+import ltd.idcu.est.features.hotreload.api.HotReloadService;
 import ltd.idcu.est.web.api.*;
 import ltd.idcu.est.web.api.Controller;
 import ltd.idcu.est.web.api.RouteHandler;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +34,8 @@ public class DefaultWebApplication implements WebApplication {
     private volatile boolean running = false;
     private View.ViewResolver viewResolver;
     private final Map<String, Controller> controllers = new ConcurrentHashMap<>();
+    private HotReloadService hotReloadService;
+    private volatile boolean hotReloadEnabled = false;
 
     public DefaultWebApplication() {
         this("EST Web Application", "1.0.0");
@@ -504,5 +511,58 @@ public class DefaultWebApplication implements WebApplication {
         View view = createView(viewName);
         view.setModel(model);
         return view;
+    }
+
+    @Override
+    public void enableHotReload() {
+        enableHotReload(Paths.get("."));
+    }
+
+    @Override
+    public void enableHotReload(Path... watchPaths) {
+        if (!hotReloadEnabled) {
+            hotReloadService = HotReload.create();
+            for (Path path : watchPaths) {
+                hotReloadService.addWatchPath(path);
+            }
+            hotReloadService.start();
+            hotReloadEnabled = true;
+        }
+    }
+
+    @Override
+    public void disableHotReload() {
+        if (hotReloadEnabled) {
+            if (hotReloadService != null) {
+                hotReloadService.stop();
+            }
+            hotReloadEnabled = false;
+        }
+    }
+
+    @Override
+    public boolean isHotReloadEnabled() {
+        return hotReloadEnabled;
+    }
+
+    @Override
+    public void addHotReloadListener(HotReloadListener listener) {
+        if (hotReloadService != null) {
+            hotReloadService.addListener(listener);
+        }
+    }
+
+    @Override
+    public void removeHotReloadListener(HotReloadListener listener) {
+        if (hotReloadService != null) {
+            hotReloadService.removeListener(listener);
+        }
+    }
+
+    @Override
+    public void triggerHotReload() {
+        if (hotReloadService != null) {
+            hotReloadService.triggerReload();
+        }
     }
 }

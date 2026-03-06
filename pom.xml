@@ -28,6 +28,8 @@
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.release>21</maven.compiler.release>
         <project.version>1.3.0-SNAPSHOT</project.version>
+        <graalvm.version>23.1.2</graalvm.version>
+        <native-maven-plugin.version>0.10.1</native-maven-plugin.version>
     </properties>
 
     <modules>
@@ -35,6 +37,7 @@
         <module>est-foundation</module>
         <module>est-features</module>
         <module>est-extensions</module>
+        <module>est-microservices</module>
         <module>est-tools</module>
         <module>est-examples</module>
     </modules>
@@ -331,6 +334,26 @@
                 <artifactId>est-features-ai-impl</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-hotreload-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-features-hotreload-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-microservices-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-microservices-gateway</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -386,6 +409,25 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
                     <version>3.21.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.graalvm.buildtools</groupId>
+                    <artifactId>native-maven-plugin</artifactId>
+                    <version>${native-maven-plugin.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <imageName>${project.artifactId}</imageName>
+                        <buildArgs>
+                            <buildArg>--no-fallback</buildArg>
+                            <buildArg>--enable-http</buildArg>
+                            <buildArg>--enable-https</buildArg>
+                            <buildArg>--enable-preview</buildArg>
+                            <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                        </buildArgs>
+                        <metadataRepository>
+                            <enabled>true</enabled>
+                        </metadataRepository>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

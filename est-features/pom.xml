@@ -30,6 +30,7 @@
         <module>est-features-config</module>
         <module>est-features-circuitbreaker</module>
         <module>est-features-performance</module>
+        <module>est-features-hotreload</module>
     </modules>
 
 </project>

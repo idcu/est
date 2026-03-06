@@ -1,0 +1,82 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: est-allow-all-in-mesh
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals:
+        - "*"
+    to:
+    - operation:
+        methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: est-allow-health-checks
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  selector:
+    matchLabels:
+      app: est-web-app
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        methods:
+        - GET
+        paths:
+        - /health
+        - /metrics
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: est-allow-api-from-gateway
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  selector:
+    matchLabels:
+      app: est-web-app
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals:
+        - "cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account"
+    to:
+    - operation:
+        methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        paths:
+        - /api/*
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: est-deny-all-by-default
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  action: DENY
+  rules:
+  - {}

@@ -2,7 +2,9 @@ package ltd.idcu.est.web.api;
 
 import ltd.idcu.est.core.api.Config;
 import ltd.idcu.est.core.api.lifecycle.Lifecycle;
+import ltd.idcu.est.features.hotreload.api.HotReloadListener;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -109,4 +111,18 @@ public interface WebApplication extends Lifecycle {
     View createView(String viewName);
 
     View createView(String viewName, Map<String, Object> model);
+
+    void enableHotReload();
+
+    void enableHotReload(Path... watchPaths);
+
+    void disableHotReload();
+
+    boolean isHotReloadEnabled();
+
+    void addHotReloadListener(HotReloadListener listener);
+
+    void removeHotReloadListener(HotReloadListener listener);
+
+    void triggerHotReload();
 }

@@ -14,6 +14,8 @@
 | **学习曲线** | 🟢 平缓 | 🟢 平缓 | 🔴 陡峭 | 🟡 中等 | 🟡 中等 |
 | **社区生态** | 🔵 新兴 | 🟢 活跃 | 🟢 超大规模 | 🟡 中等 | 🟡 中等 |
 | **AI友好** | ✅ 专为AI设计 | ⚠️ 部分支持 | ⚠️ 部分支持 | ⚠️ 部分支持 | ⚠️ 部分支持 |
+| **IDE支持** | ✅ 完整支持（代码补全、模板） | ⚠️ 基础支持 | ✅ 完美支持 | ✅ 良好支持 | ✅ 良好支持 |
+| **迁移工具** | ✅ 内置（Spring/Solon/Quarkus） | ⚠️ 第三方 | ✅ 丰富工具 | ⚠️ 有限 | ⚠️ 有限 |
 
 ---
 
@@ -81,8 +83,18 @@ public class HelloController {
 | **数据访问** | ✅ est-features-data | ✅ solon-data |
 | **缓存** | ✅ est-features-cache | ✅ solon-cache |
 | **安全** | ✅ est-features-security | ✅ solon-security |
-| **微服务** | ⚠️ 基础支持 | ✅ solon-cloud |
+| **服务发现** | ✅ est-features-discovery | ✅ solon-cloud |
+| **配置中心** | ✅ est-features-config | ✅ solon-cloud |
+| **熔断器** | ✅ est-features-circuitbreaker | ✅ solon-cloud |
+| **健康检查** | ✅ est-features-monitor | ✅ solon-health |
+| **监控指标** | ✅ est-features-monitor | ✅ solon-metrics |
+| **性能调优** | ✅ est-features-performance | ⚠️ 需手动配置 |
+| **微服务** | ✅ 完整支持 | ✅ solon-cloud |
 | **AI集成** | ✅ 原生支持 | ✅ solon-ai |
+| **IDE支持** | ✅ est-ide-support | ⚠️ 基础支持 |
+| **迁移工具** | ✅ est-migration-tool | ⚠️ 需手动 |
+| **脚手架** | ✅ est-scaffold | ✅ solon-cli |
+| **数据库生成** | ✅ est-db-generator | ⚠️ 需第三方 |
 | **第三方插件** | 🔵 较少 | 🟢 丰富 |
 
 ### 5. 适用场景
@@ -93,6 +105,11 @@ public class HelloController {
 - 🔧 快速原型开发
 - 📦 对依赖管理有严格要求的项目
 - 🎯 需要完全控制代码的场景
+- ✨ 需要完整 IDE 支持和代码补全
+- 🔄 需要从其他框架平滑迁移
+- 🚀 需要微服务支持（服务发现、配置中心、熔断器）
+- 📊 需要内置健康检查和监控
+- ⚡ 需要 HTTP 服务器优化和 GC 调优工具
 
 #### Solon 适合
 - 🏢 企业级应用开发
@@ -224,4 +241,34 @@ public class HelloWorld {
 
 ---
 
-*本文档最后更新：2025-03-05*
+## 🎉 EST 框架最新进展
+
+### 2026-03-06 更新
+
+EST 框架已完成以下重大改进：
+
+1. **IDE 插件支持模块** (`est-ide-support`)
+   - ✅ 完整的注解注册表（Core、Web、Data、Feature）
+   - ✅ 丰富的代码模板库（10+ 预定义模板）
+   - ✅ 智能代码补全
+   - ✅ 代码诊断和静态分析
+   - ✅ 项目扫描和识别
+
+2. **迁移工具模块** (`est-migration-tool`)
+   - ✅ 支持从 Spring Boot 迁移
+   - ✅ 支持从 Solon 迁移
+   - ✅ 支持从 Quarkus/Micronaut 迁移
+   - ✅ 可扩展的规则引擎
+   - ✅ 自动备份和详细报告
+   - ✅ 命令行工具支持
+
+3. **微服务增强**
+   - ✅ 服务发现模块 (`est-features-discovery`)
+   - ✅ 配置中心模块 (`est-features-config`)
+   - ✅ 熔断器模块 (`est-features-circuitbreaker`)
+   - ✅ 健康检查和监控增强
+   - ✅ HTTP 服务器优化和 GC 调优
+
+---
+
+*本文档最后更新：2026-03-06*

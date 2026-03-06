@@ -1,0 +1,61 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: est-sidecar-default
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  egress:
+  - hosts:
+    - "istio-system/*"
+    - "est/*"
+    - "monitoring/*"
+    - "logging/*"
+  outboundTrafficPolicy:
+    mode: REGISTRY_ONLY
+  ingress:
+  - port:
+      number: 8080
+      protocol: HTTP
+      name: http
+    defaultEndpoint: 0.0.0.0:8080
+  - port:
+      number: 9090
+      protocol: HTTP
+      name: metrics
+    defaultEndpoint: 0.0.0.0:9090
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: est-sidecar-web-app
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  workloadSelector:
+    labels:
+      app: est-web-app
+  egress:
+  - hosts:
+    - "est/postgresql-service.est.svc.cluster.local"
+    - "est/redis-service.est.svc.cluster.local"
+    - "istio-system/*"
+    - "monitoring/*"
+    - "est/est-web-app-service.est.svc.cluster.local"
+  outboundTrafficPolicy:
+    mode: REGISTRY_ONLY
+  ingress:
+  - port:
+      number: 8080
+      protocol: HTTP
+      name: http
+    defaultEndpoint: 0.0.0.0:8080
+    captureMode: DEFAULT
+  - port:
+      number: 9090
+      protocol: HTTP
+      name: metrics
+    defaultEndpoint: 0.0.0.0:9090
+    captureMode: DEFAULT

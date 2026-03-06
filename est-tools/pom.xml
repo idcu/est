@@ -19,6 +19,8 @@
     <modules>
         <module>est-scaffold</module>
         <module>est-db-generator</module>
+        <module>est-ide-support</module>
+        <module>est-migration-tool</module>
     </modules>
 
 </project>

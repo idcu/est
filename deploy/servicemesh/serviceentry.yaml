@@ -1,0 +1,80 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: est-external-db
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  hosts:
+  - postgresql-service.est.svc.cluster.local
+  - postgresql-service
+  addresses:
+  - 10.0.0.0/24
+  ports:
+  - number: 5432
+    name: tcp-postgresql
+    protocol: TCP
+  resolution: STATIC
+  location: MESH_INTERNAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: est-external-redis
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  hosts:
+  - redis-service.est.svc.cluster.local
+  - redis-service
+  ports:
+  - number: 6379
+    name: tcp-redis
+    protocol: TCP
+  resolution: STATIC
+  location: MESH_INTERNAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: est-external-apis
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  hosts:
+  - api.example.com
+  - external-service.com
+  ports:
+  - number: 443
+    name: https
+    protocol: HTTPS
+  resolution: DNS
+  location: MESH_EXTERNAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: est-monitoring-services
+  namespace: est
+  labels:
+    app.kubernetes.io/part-of: est-framework
+spec:
+  hosts:
+  - prometheus.monitoring.svc.cluster.local
+  - grafana.monitoring.svc.cluster.local
+  - jaeger.monitoring.svc.cluster.local
+  ports:
+  - number: 9090
+    name: http-prometheus
+    protocol: HTTP
+  - number: 3000
+    name: http-grafana
+    protocol: HTTP
+  - number: 16686
+    name: http-jaeger
+    protocol: HTTP
+  resolution: STATIC
+  location: MESH_INTERNAL
