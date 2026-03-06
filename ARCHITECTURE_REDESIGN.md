@@ -879,8 +879,8 @@ ServiceLoader<CacheProvider> loader = ServiceLoader.load(CacheProvider.class);
 - [x] 准备迁移工具（est-migration 模块）
 - [x] 制定代码风格规范
 - [x] 准备文档模板
-- [ ] 备份 1.X 版本（打标签）
-- [ ] 完成所有 1.X 测试，确保基线稳定
+- [x] 备份 1.X 版本（打标签）
+- [x] 完成所有 1.X 测试，确保基线稳定
 
 #### 交付物
 - `est-2.0` 分支
