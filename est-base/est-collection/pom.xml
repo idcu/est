@@ -6,21 +6,20 @@
 
     <parent>
         <groupId>ltd.idcu</groupId>
-        <artifactId>est</artifactId>
+        <artifactId>est-base</artifactId>
         <version>1.3.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>est-foundation</artifactId>
+    <artifactId>est-collection</artifactId>
     <packaging>pom</packaging>
 
-    <name>EST Foundation</name>
-    <description>EST Foundation Module - Infrastructure modules for the framework</description>
+    <name>EST Collection</name>
+    <description>EST Collection Module - Laravel-style collection operations</description>
 
     <modules>
-        <module>est-patterns</module>
-        <module>est-utils</module>
-        <module>est-test</module>
-        <module>est-collection</module>
+        <module>est-collection-api</module>
+        <module>est-collection-impl</module>
     </modules>
 
 </project>

@@ -34,7 +34,7 @@
 
     <modules>
         <module>est-core</module>
-        <module>est-foundation</module>
+        <module>est-base</module>
         <module>est-features</module>
         <module>est-extensions</module>
         <module>est-microservices</module>
