@@ -26,6 +26,10 @@
         <module>est-features-monitor</module>
         <module>est-features-scheduler</module>
         <module>est-features-ai</module>
+        <module>est-features-discovery</module>
+        <module>est-features-config</module>
+        <module>est-features-circuitbreaker</module>
+        <module>est-features-performance</module>
     </modules>
 
 </project>
