@@ -66,32 +66,32 @@
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-utils-common</artifactId>
+                <artifactId>est-util-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-utils-io</artifactId>
+                <artifactId>est-util-io</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-utils-format</artifactId>
+                <artifactId>est-util-format</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-utils-format-json</artifactId>
+                <artifactId>est-util-format-json</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-utils-format-yaml</artifactId>
+                <artifactId>est-util-format-yaml</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-utils-format-xml</artifactId>
+                <artifactId>est-util-format-xml</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

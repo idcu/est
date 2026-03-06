@@ -10,12 +10,16 @@
         <version>1.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>est-utils-io</artifactId>
+    <artifactId>est-util-format</artifactId>
+    <packaging>pom</packaging>
 
-    <name>EST Utils IO</name>
-    <description>EST Utils IO - IO utility classes</description>
+    <name>EST Utils Format</name>
+    <description>EST Utils Format - Format utility classes</description>
 
-    <dependencies>
-    </dependencies>
+    <modules>
+        <module>est-util-format-json</module>
+        <module>est-util-format-yaml</module>
+        <module>est-util-format-xml</module>
+    </modules>
 
 </project>

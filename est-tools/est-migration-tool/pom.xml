@@ -18,17 +18,17 @@
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-common</artifactId>
+            <artifactId>est-util-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-format-yaml</artifactId>
+            <artifactId>est-util-format-yaml</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-format-json</artifactId>
+            <artifactId>est-util-format-json</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

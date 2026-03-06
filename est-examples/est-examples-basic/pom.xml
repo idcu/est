@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-common</artifactId>
+            <artifactId>est-util-common</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>

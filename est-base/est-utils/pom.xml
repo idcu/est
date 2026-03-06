@@ -18,9 +18,9 @@
     <description>EST Utils Module - Utility classes for the framework</description>
 
     <modules>
-        <module>est-utils-common</module>
-        <module>est-utils-io</module>
-        <module>est-utils-format</module>
+        <module>est-util-common</module>
+        <module>est-util-io</module>
+        <module>est-util-format</module>
     </modules>
 
 </project>

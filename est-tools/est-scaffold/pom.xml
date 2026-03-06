@@ -35,11 +35,11 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-common</artifactId>
+            <artifactId>est-util-common</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-format-json</artifactId>
+            <artifactId>est-util-format-json</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>

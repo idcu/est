@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-io</artifactId>
+            <artifactId>est-util-io</artifactId>
         </dependency>
     </dependencies>
 

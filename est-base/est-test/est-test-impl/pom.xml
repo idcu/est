@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-common</artifactId>
+            <artifactId>est-util-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

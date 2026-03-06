@@ -22,15 +22,15 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-format-json</artifactId>
+            <artifactId>est-util-format-json</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-format-yaml</artifactId>
+            <artifactId>est-util-format-yaml</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-format-xml</artifactId>
+            <artifactId>est-util-format-xml</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>

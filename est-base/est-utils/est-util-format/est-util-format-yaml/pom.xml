@@ -6,21 +6,19 @@
 
     <parent>
         <groupId>ltd.idcu</groupId>
-        <artifactId>est-utils</artifactId>
+        <artifactId>est-util-format</artifactId>
         <version>1.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>est-utils-common</artifactId>
+    <artifactId>est-util-format-yaml</artifactId>
 
-    <name>EST Utils Common</name>
-    <description>EST Utils Common - Common utility classes</description>
+    <name>EST Utils Format YAML</name>
+    <description>EST Utils Format YAML - YAML format utility classes</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-test-api</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
-            <scope>test</scope>
+            <artifactId>est-util-common</artifactId>
         </dependency>
     </dependencies>
 

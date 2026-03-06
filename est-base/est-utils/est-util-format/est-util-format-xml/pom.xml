@@ -6,20 +6,20 @@
 
     <parent>
         <groupId>ltd.idcu</groupId>
-        <artifactId>est-utils</artifactId>
+        <artifactId>est-util-format</artifactId>
         <version>1.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>est-utils-format</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>est-util-format-xml</artifactId>
 
-    <name>EST Utils Format</name>
-    <description>EST Utils Format - Format utility classes</description>
+    <name>EST Utils Format XML</name>
+    <description>EST Utils Format XML - XML format utility classes</description>
 
-    <modules>
-        <module>est-utils-format-json</module>
-        <module>est-utils-format-yaml</module>
-        <module>est-utils-format-xml</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-util-common</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

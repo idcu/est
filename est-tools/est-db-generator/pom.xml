@@ -27,11 +27,11 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-common</artifactId>
+            <artifactId>est-util-common</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-utils-format-yaml</artifactId>
+            <artifactId>est-util-format-yaml</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
