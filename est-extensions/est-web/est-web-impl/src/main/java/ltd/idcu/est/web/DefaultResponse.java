@@ -1,6 +1,7 @@
 package ltd.idcu.est.web;
 
 import com.sun.net.httpserver.HttpExchange;
+import ltd.idcu.est.utils.common.StringUtils;
 import ltd.idcu.est.utils.format.json.JsonUtils;
 import ltd.idcu.est.web.api.HttpStatus;
 import ltd.idcu.est.web.api.Response;
@@ -290,7 +291,7 @@ public class DefaultResponse implements Response {
     }
 
     private String escapeJson(String str) {
-        if (str == null) {
+        if (StringUtils.isEmpty(str)) {
             return "";
         }
         return str.replace("\\", "\\\\")

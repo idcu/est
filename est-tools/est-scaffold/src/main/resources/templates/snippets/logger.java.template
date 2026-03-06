@@ -1,0 +1,183 @@
+package ${package};
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.io.*;
+import java.nio.file.*;
+import java.util.concurrent.*;
+
+public class ${className} {
+    
+    public enum Level {
+        DEBUG(0), INFO(1), WARN(2), ERROR(3);
+        
+        final int value;
+        Level(int value) { this.value = value; }
+    }
+    
+    private Level minLevel = Level.INFO;
+    private final String name;
+    private final List<LogHandler> handlers = new CopyOnWriteArrayList<>();
+    private static final DateTimeFormatter FORMATTER = 
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+    
+    public ${className}(String name) {
+        this.name = name;
+        addHandler(new ConsoleHandler());
+    }
+    
+    public ${className}(Class<?> clazz) {
+        this(clazz.getSimpleName());
+    }
+    
+    public void setLevel(Level level) {
+        this.minLevel = level;
+    }
+    
+    public void addHandler(LogHandler handler) {
+        handlers.add(handler);
+    }
+    
+    public void removeHandler(LogHandler handler) {
+        handlers.remove(handler);
+    }
+    
+    public void debug(String message) {
+        log(Level.DEBUG, message, null);
+    }
+    
+    public void debug(String format, Object... args) {
+        log(Level.DEBUG, String.format(format, args), null);
+    }
+    
+    public void info(String message) {
+        log(Level.INFO, message, null);
+    }
+    
+    public void info(String format, Object... args) {
+        log(Level.INFO, String.format(format, args), null);
+    }
+    
+    public void warn(String message) {
+        log(Level.WARN, message, null);
+    }
+    
+    public void warn(String format, Object... args) {
+        log(Level.WARN, String.format(format, args), null);
+    }
+    
+    public void warn(String message, Throwable throwable) {
+        log(Level.WARN, message, throwable);
+    }
+    
+    public void error(String message) {
+        log(Level.ERROR, message, null);
+    }
+    
+    public void error(String format, Object... args) {
+        log(Level.ERROR, String.format(format, args), null);
+    }
+    
+    public void error(String message, Throwable throwable) {
+        log(Level.ERROR, message, throwable);
+    }
+    
+    private void log(Level level, String message, Throwable throwable) {
+        if (level.value < minLevel.value) {
+            return;
+        }
+        
+        LogEvent event = new LogEvent(
+            LocalDateTime.now(),
+            level,
+            name,
+            message,
+            throwable
+        );
+        
+        for (LogHandler handler : handlers) {
+            try {
+                handler.handle(event);
+            } catch (Exception e) {
+                System.err.println("Error in log handler: " + e.getMessage());
+            }
+        }
+    }
+    
+    public interface LogHandler {
+        void handle(LogEvent event);
+    }
+    
+    public static class LogEvent {
+        public final LocalDateTime timestamp;
+        public final Level level;
+        public final String loggerName;
+        public final String message;
+        public final Throwable throwable;
+        
+        LogEvent(LocalDateTime timestamp, Level level, String loggerName, 
+                 String message, Throwable throwable) {
+            this.timestamp = timestamp;
+            this.level = level;
+            this.loggerName = loggerName;
+            this.message = message;
+            this.throwable = throwable;
+        }
+        
+        public String format() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[").append(timestamp.format(FORMATTER)).append("]");
+            sb.append(" [").append(level).append("]");
+            sb.append(" [").append(loggerName).append("] ");
+            sb.append(message);
+            if (throwable != null) {
+                StringWriter sw = new StringWriter();
+                throwable.printStackTrace(new PrintWriter(sw));
+                sb.append("\n").append(sw.toString());
+            }
+            return sb.toString();
+        }
+    }
+    
+    public static class ConsoleHandler implements LogHandler {
+        @Override
+        public void handle(LogEvent event) {
+            String formatted = event.format();
+            if (event.level == Level.ERROR) {
+                System.err.println(formatted);
+            } else {
+                System.out.println(formatted);
+            }
+        }
+    }
+    
+    public static class FileHandler implements LogHandler {
+        private final Path logFile;
+        private final BufferedWriter writer;
+        
+        public FileHandler(String filePath) throws IOException {
+            this.logFile = Paths.get(filePath);
+            Files.createDirectories(logFile.getParent());
+            this.writer = Files.newBufferedWriter(
+                logFile, 
+                StandardOpenOption.CREATE, 
+                StandardOpenOption.APPEND
+            );
+        }
+        
+        @Override
+        public void handle(LogEvent event) {
+            try {
+                writer.write(event.format());
+                writer.newLine();
+                writer.flush();
+            } catch (IOException e) {
+                System.err.println("Failed to write log: " + e.getMessage());
+            }
+        }
+        
+        public void close() throws IOException {
+            writer.close();
+        }
+    }
+}

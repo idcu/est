@@ -417,6 +417,11 @@ public class MongoOrm implements Orm {
     }
     
     @Override
+    public <T> int updateBatchCaseWhen(List<T> entities) {
+        throw new UnsupportedOperationException("Batch update not supported for MongoDB");
+    }
+    
+    @Override
     public <T> int removeByIds(Class<T> entityClass, List<?> ids) {
         throw new UnsupportedOperationException("Batch delete not supported for MongoDB");
     }

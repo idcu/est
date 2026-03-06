@@ -1,6 +1,8 @@
 package ltd.idcu.est.features.data.memory;
 
 import ltd.idcu.est.features.data.api.*;
+import ltd.idcu.est.utils.common.AssertUtils;
+import ltd.idcu.est.utils.common.ObjectUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,9 +34,7 @@ public class MemoryOrm implements Orm {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T save(T entity) {
-        if (entity == null) {
-            throw new IllegalArgumentException("Entity cannot be null");
-        }
+        AssertUtils.notNull(entity, "Entity cannot be null");
         MemoryRepository<T, Object> repository = (MemoryRepository<T, Object>) getRepository(entity.getClass());
         return repository.save(entity);
     }
@@ -47,7 +47,7 @@ public class MemoryOrm implements Orm {
     @Override
     @SuppressWarnings("unchecked")
     public <T> void delete(T entity) {
-        if (entity == null) {
+        if (ObjectUtils.isNull(entity)) {
             return;
         }
         MemoryRepository<T, Object> repository = (MemoryRepository<T, Object>) getRepository(entity.getClass());
@@ -257,7 +257,7 @@ public class MemoryOrm implements Orm {
     
     @Override
     public <T> List<T> saveBatch(List<T> entities) {
-        if (entities == null || entities.isEmpty()) {
+        if (ObjectUtils.isNull(entities) || entities.isEmpty()) {
             return entities;
         }
         
@@ -270,7 +270,7 @@ public class MemoryOrm implements Orm {
     
     @Override
     public <T> List<T> updateBatchById(List<T> entities) {
-        if (entities == null || entities.isEmpty()) {
+        if (ObjectUtils.isNull(entities) || entities.isEmpty()) {
             return entities;
         }
         
@@ -282,8 +282,22 @@ public class MemoryOrm implements Orm {
     }
     
     @Override
+    public <T> int updateBatchCaseWhen(List<T> entities) {
+        if (ObjectUtils.isNull(entities) || entities.isEmpty()) {
+            return 0;
+        }
+        
+        int count = 0;
+        for (T entity : entities) {
+            update(entity);
+            count++;
+        }
+        return count;
+    }
+    
+    @Override
     public <T> int removeByIds(Class<T> entityClass, List<?> ids) {
-        if (ids == null || ids.isEmpty()) {
+        if (ObjectUtils.isNull(ids) || ids.isEmpty()) {
             return 0;
         }
         

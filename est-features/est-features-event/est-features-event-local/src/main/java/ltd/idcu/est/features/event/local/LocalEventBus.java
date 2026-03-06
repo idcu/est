@@ -6,6 +6,8 @@ import ltd.idcu.est.features.event.api.Event;
 import ltd.idcu.est.features.event.api.EventConfig;
 import ltd.idcu.est.features.event.api.EventException;
 import ltd.idcu.est.features.event.api.EventListener;
+import ltd.idcu.est.utils.common.AssertUtils;
+import ltd.idcu.est.utils.common.StringUtils;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -26,9 +28,7 @@ public class LocalEventBus extends AbstractEventBus {
     
     @Override
     public <T> void publish(String eventType, T data, Object source) {
-        if (eventType == null || eventType.isEmpty()) {
-            throw new IllegalArgumentException("Event type cannot be null or empty");
-        }
+        AssertUtils.isTrue(StringUtils.isNotBlank(eventType), "Event type cannot be null or empty");
         
         stats.incrementPublishedCount();
         

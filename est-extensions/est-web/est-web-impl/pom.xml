@@ -22,6 +22,10 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
+            <artifactId>est-utils-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
             <artifactId>est-utils-io</artifactId>
         </dependency>
         <dependency>

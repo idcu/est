@@ -1,0 +1,226 @@
+package ${package};
+
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.Consumer;
+
+public class ${className} {
+    
+    private final ScheduledExecutorService executor;
+    private final Map<String, ScheduledTask<?>> tasks = new ConcurrentHashMap<>();
+    
+    public ${className}() {
+        this.executor = Executors.newScheduledThreadPool(4);
+    }
+    
+    public ${className}(int poolSize) {
+        this.executor = Executors.newScheduledThreadPool(poolSize);
+    }
+    
+    public String scheduleAtFixedRate(Runnable task, long initialDelay, long period, TimeUnit unit) {
+        String taskId = UUID.randomUUID().toString();
+        ScheduledFuture<?> future = executor.scheduleAtFixedRate(
+            wrapTask(taskId, task), initialDelay, period, unit
+        );
+        tasks.put(taskId, new ScheduledTask<>(taskId, task, future, TaskType.FIXED_RATE));
+        return taskId;
+    }
+    
+    public String scheduleWithFixedDelay(Runnable task, long initialDelay, long delay, TimeUnit unit) {
+        String taskId = UUID.randomUUID().toString();
+        ScheduledFuture<?> future = executor.scheduleWithFixedDelay(
+            wrapTask(taskId, task), initialDelay, delay, unit
+        );
+        tasks.put(taskId, new ScheduledTask<>(taskId, task, future, TaskType.FIXED_DELAY));
+        return taskId;
+    }
+    
+    public String scheduleOnce(Runnable task, long delay, TimeUnit unit) {
+        String taskId = UUID.randomUUID().toString();
+        ScheduledFuture<?> future = executor.schedule(
+            wrapTask(taskId, () -> {
+                task.run();
+                tasks.remove(taskId);
+            }), delay, unit
+        );
+        tasks.put(taskId, new ScheduledTask<>(taskId, task, future, TaskType.ONE_TIME));
+        return taskId;
+    }
+    
+    public String scheduleCron(Runnable task, String cronExpression) {
+        String taskId = UUID.randomUUID().toString();
+        CronScheduler cronTask = new CronScheduler(task, cronExpression);
+        ScheduledFuture<?> future = executor.scheduleAtFixedRate(
+            wrapTask(taskId, cronTask), 0, 1, TimeUnit.SECONDS
+        );
+        tasks.put(taskId, new ScheduledTask<>(taskId, task, future, TaskType.CRON));
+        return taskId;
+    }
+    
+    public void cancel(String taskId) {
+        ScheduledTask<?> task = tasks.remove(taskId);
+        if (task != null) {
+            task.future.cancel(false);
+        }
+    }
+    
+    public void pause(String taskId) {
+        ScheduledTask<?> task = tasks.get(taskId);
+        if (task != null) {
+            task.paused = true;
+        }
+    }
+    
+    public void resume(String taskId) {
+        ScheduledTask<?> task = tasks.get(taskId);
+        if (task != null) {
+            task.paused = false;
+        }
+    }
+    
+    public Set<String> getTaskIds() {
+        return new HashSet<>(tasks.keySet());
+    }
+    
+    public Optional<TaskInfo> getTaskInfo(String taskId) {
+        ScheduledTask<?> task = tasks.get(taskId);
+        if (task == null) {
+            return Optional.empty();
+        }
+        return Optional.of(new TaskInfo(
+            taskId,
+            task.type,
+            task.paused,
+            task.executionCount
+        ));
+    }
+    
+    public List<TaskInfo> getAllTaskInfo() {
+        List<TaskInfo> infos = new ArrayList<>();
+        for (Map.Entry<String, ScheduledTask<?>> entry : tasks.entrySet()) {
+            ScheduledTask<?> task = entry.getValue();
+            infos.add(new TaskInfo(
+                entry.getKey(),
+                task.type,
+                task.paused,
+                task.executionCount
+            ));
+        }
+        return infos;
+    }
+    
+    public void shutdown() {
+        tasks.values().forEach(task -> task.future.cancel(false));
+        tasks.clear();
+        executor.shutdown();
+        try {
+            if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
+    
+    private Runnable wrapTask(String taskId, Runnable task) {
+        return () -> {
+            ScheduledTask<?> scheduledTask = tasks.get(taskId);
+            if (scheduledTask == null || scheduledTask.paused) {
+                return;
+            }
+            try {
+                task.run();
+                scheduledTask.executionCount++;
+            } catch (Exception e) {
+                System.err.println("Task " + taskId + " execution failed: " + e.getMessage());
+                e.printStackTrace();
+            }
+        };
+    }
+    
+    public enum TaskType {
+        ONE_TIME, FIXED_RATE, FIXED_DELAY, CRON
+    }
+    
+    public static class TaskInfo {
+        public final String taskId;
+        public final TaskType type;
+        public final boolean paused;
+        public final long executionCount;
+        
+        TaskInfo(String taskId, TaskType type, boolean paused, long executionCount) {
+            this.taskId = taskId;
+            this.type = type;
+            this.paused = paused;
+            this.executionCount = executionCount;
+        }
+    }
+    
+    private static class ScheduledTask<T> {
+        final String taskId;
+        final Runnable task;
+        final ScheduledFuture<?> future;
+        final TaskType type;
+        volatile boolean paused = false;
+        long executionCount = 0;
+        
+        ScheduledTask(String taskId, Runnable task, ScheduledFuture<?> future, TaskType type) {
+            this.taskId = taskId;
+            this.task = task;
+            this.future = future;
+            this.type = type;
+        }
+    }
+    
+    private static class CronScheduler implements Runnable {
+        private final Runnable task;
+        private final CronExpression cron;
+        private long lastExecutionTime = 0;
+        
+        CronScheduler(Runnable task, String cronExpression) {
+            this.task = task;
+            this.cron = new CronExpression(cronExpression);
+        }
+        
+        @Override
+        public void run() {
+            long now = System.currentTimeMillis();
+            if (cron.matches(now) && now - lastExecutionTime >= 1000) {
+                task.run();
+                lastExecutionTime = now;
+            }
+        }
+    }
+    
+    private static class CronExpression {
+        private final String expression;
+        
+        CronExpression(String expression) {
+            this.expression = expression;
+        }
+        
+        boolean matches(long timestamp) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(timestamp);
+            return matchesField(cal.get(Calendar.SECOND), getField(0), 0, 59) &&
+                   matchesField(cal.get(Calendar.MINUTE), getField(1), 0, 59) &&
+                   matchesField(cal.get(Calendar.HOUR_OF_DAY), getField(2), 0, 23);
+        }
+        
+        private String getField(int index) {
+            String[] fields = expression.split("\\s+");
+            return index < fields.length ? fields[index] : "*";
+        }
+        
+        private boolean matchesField(int value, String field, int min, int max) {
+            if ("*".equals(field)) return true;
+            try {
+                int fieldValue = Integer.parseInt(field);
+                return value == fieldValue;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+    }
+}

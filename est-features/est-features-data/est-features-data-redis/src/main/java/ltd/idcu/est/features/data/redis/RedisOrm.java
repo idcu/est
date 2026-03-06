@@ -396,6 +396,11 @@ public class RedisOrm implements Orm {
     }
     
     @Override
+    public <T> int updateBatchCaseWhen(List<T> entities) {
+        throw new UnsupportedOperationException("Batch update not supported for Redis");
+    }
+    
+    @Override
     public <T> int removeByIds(Class<T> entityClass, List<?> ids) {
         throw new UnsupportedOperationException("Batch delete not supported for Redis");
     }

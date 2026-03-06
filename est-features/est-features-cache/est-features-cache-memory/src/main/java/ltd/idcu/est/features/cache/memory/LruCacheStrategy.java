@@ -6,11 +6,14 @@ import ltd.idcu.est.features.cache.api.CacheStrategy;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class LruCacheStrategy<K, V> implements CacheStrategy<K, V> {
     
     private final LinkedHashMap<K, CacheEntry<V>> cache;
     private int capacity;
+    private final AtomicLong hitCount = new AtomicLong(0);
+    private final AtomicLong missCount = new AtomicLong(0);
     
     public LruCacheStrategy(int capacity) {
         if (capacity <= 0) {
@@ -58,6 +61,8 @@ public class LruCacheStrategy<K, V> implements CacheStrategy<K, V> {
     @Override
     public void clear() {
         cache.clear();
+        hitCount.set(0);
+        missCount.set(0);
     }
     
     @Override
@@ -73,10 +78,35 @@ public class LruCacheStrategy<K, V> implements CacheStrategy<K, V> {
     }
     
     public CacheEntry<V> get(K key) {
-        return cache.get(key);
+        CacheEntry<V> entry = cache.get(key);
+        if (entry != null) {
+            hitCount.incrementAndGet();
+        } else {
+            missCount.incrementAndGet();
+        }
+        return entry;
     }
     
     public void remove(K key) {
         cache.remove(key);
+    }
+    
+    public long getHitCount() {
+        return hitCount.get();
+    }
+    
+    public long getMissCount() {
+        return missCount.get();
+    }
+    
+    public double getHitRate() {
+        long hits = hitCount.get();
+        long total = hits + missCount.get();
+        return total == 0 ? 0.0 : (double) hits / total;
+    }
+    
+    public void resetStats() {
+        hitCount.set(0);
+        missCount.set(0);
     }
 }

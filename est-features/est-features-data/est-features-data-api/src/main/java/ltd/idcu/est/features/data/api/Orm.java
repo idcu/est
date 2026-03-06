@@ -48,6 +48,8 @@ public interface Orm {
     
     <T> List<T> updateBatchById(List<T> entities);
     
+    <T> int updateBatchCaseWhen(List<T> entities);
+    
     <T> int removeByIds(Class<T> entityClass, List<?> ids);
     
     <T> Page<T> page(Class<T> entityClass, Page<T> page);

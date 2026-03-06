@@ -1,6 +1,8 @@
 package ltd.idcu.est.features.scheduler.cron;
 
 import ltd.idcu.est.features.scheduler.api.*;
+import ltd.idcu.est.utils.common.AssertUtils;
+import ltd.idcu.est.utils.common.ObjectUtils;
 
 import java.time.Instant;
 import java.util.*;
@@ -172,7 +174,7 @@ public class CronScheduler implements Scheduler {
     @Override
     public boolean cancel(String taskId) {
         ScheduledTask scheduledTask = tasks.get(taskId);
-        if (scheduledTask == null) {
+        if (ObjectUtils.isNull(scheduledTask)) {
             return false;
         }
         
@@ -193,7 +195,7 @@ public class CronScheduler implements Scheduler {
     @Override
     public Task getTask(String taskId) {
         ScheduledTask scheduledTask = tasks.get(taskId);
-        return scheduledTask != null ? scheduledTask.task() : null;
+        return ObjectUtils.isNotNull(scheduledTask) ? scheduledTask.task() : null;
     }
     
     @Override
@@ -342,7 +344,7 @@ public class CronScheduler implements Scheduler {
             Instant now = Instant.now();
             Instant nextExecution = cron.getNextExecutionTime(now);
             
-            if (nextExecution != null) {
+            if (ObjectUtils.isNotNull(nextExecution)) {
                 long delay = nextExecution.toEpochMilli() - now.toEpochMilli();
                 if (delay <= 0) {
                     executeTask(task);
@@ -350,7 +352,7 @@ public class CronScheduler implements Scheduler {
                 
                 ScheduledFuture<?> future = executor.schedule(this, Math.max(delay, 0), TimeUnit.MILLISECONDS);
                 ScheduledTask scheduledTask = tasks.get(task.getId());
-                if (scheduledTask != null) {
+                if (ObjectUtils.isNotNull(scheduledTask)) {
                     tasks.put(task.getId(), new ScheduledTask(task, future, ScheduleType.CRON, cron));
                 }
             }

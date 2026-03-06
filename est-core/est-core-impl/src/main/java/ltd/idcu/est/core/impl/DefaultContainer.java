@@ -14,9 +14,12 @@ import ltd.idcu.est.core.impl.inject.FieldInjector;
 import ltd.idcu.est.core.impl.inject.MethodInjector;
 import ltd.idcu.est.core.impl.scope.ScopeStrategy;
 import ltd.idcu.est.core.impl.scan.ComponentScanner;
+import ltd.idcu.est.utils.common.AssertUtils;
+import ltd.idcu.est.utils.common.ObjectUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,6 +48,8 @@ public class DefaultContainer implements Container {
     private final List<BeanPostProcessor> beanPostProcessors = new CopyOnWriteArrayList<>();
     private final List<DisposableBean> disposableBeans = new CopyOnWriteArrayList<>();
     private final List<Object> preDestroyBeans = new CopyOnWriteArrayList<>();
+    private final Map<Class<?>, Method[]> postConstructCache = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Method[]> preDestroyCache = new ConcurrentHashMap<>();
     private Config config;
 
     private final ThreadLocal<List<String>> currentResolutionChain = new ThreadLocal<>() {
@@ -90,9 +95,8 @@ public class DefaultContainer implements Container {
 
     @Override
     public <T> void register(Class<T> type, Class<? extends T> implementation, Scope scope, String qualifier) {
-        if (type == null || implementation == null) {
-            throw new IllegalArgumentException("Type and implementation cannot be null");
-        }
+        AssertUtils.notNull(type, "Type cannot be null");
+        AssertUtils.notNull(implementation, "Implementation cannot be null");
         String key = buildKey(type, qualifier);
         registrations.put(key, new Registration(() -> createInstanceWithLifecycle(implementation, key), scope));
         instances.remove(key);
@@ -105,9 +109,8 @@ public class DefaultContainer implements Container {
 
     @Override
     public <T> void registerSingleton(Class<T> type, T instance, String qualifier) {
-        if (type == null || instance == null) {
-            throw new IllegalArgumentException("Type and instance cannot be null");
-        }
+        AssertUtils.notNull(type, "Type cannot be null");
+        AssertUtils.notNull(instance, "Instance cannot be null");
         String key = buildKey(type, qualifier);
         T processedInstance = processBean(instance, key);
         injectDependencies(processedInstance);
@@ -134,9 +137,8 @@ public class DefaultContainer implements Container {
 
     @Override
     public <T> void registerSupplier(Class<T> type, Supplier<T> supplier, Scope scope, String qualifier) {
-        if (type == null || supplier == null) {
-            throw new IllegalArgumentException("Type and supplier cannot be null");
-        }
+        AssertUtils.notNull(type, "Type cannot be null");
+        AssertUtils.notNull(supplier, "Supplier cannot be null");
         String key = buildKey(type, qualifier);
         registrations.put(key, new Registration(() -> {
             T instance = supplier.get();
@@ -153,9 +155,7 @@ public class DefaultContainer implements Container {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> type, String qualifier) {
-        if (type == null) {
-            throw new IllegalArgumentException("Type cannot be null");
-        }
+        AssertUtils.notNull(type, "Type cannot be null");
 
         String key = buildKey(type, qualifier);
         checkForCircularDependency(key);
@@ -205,7 +205,7 @@ public class DefaultContainer implements Container {
     @Override
     @SuppressWarnings("unchecked")
     public <T> Optional<T> getIfPresent(Class<T> type, String qualifier) {
-        if (type == null) {
+        if (ObjectUtils.isNull(type)) {
             return Optional.empty();
         }
 
@@ -294,17 +294,22 @@ public class DefaultContainer implements Container {
     }
 
     private void invokePostConstruct(Object bean) {
-        Method[] methods = bean.getClass().getDeclaredMethods();
+        Class<?> beanClass = bean.getClass();
+        Method[] methods = postConstructCache.computeIfAbsent(beanClass, this::findPostConstructMethods);
         for (Method method : methods) {
-            if (method.isAnnotationPresent(PostConstruct.class)) {
-                try {
-                    method.setAccessible(true);
-                    method.invoke(bean);
-                } catch (Exception e) {
-                    throw new RuntimeException("Failed to invoke @PostConstruct method on bean: " + bean.getClass().getName(), e);
-                }
+            try {
+                method.invoke(bean);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to invoke @PostConstruct method on bean: " + beanClass.getName(), e);
             }
         }
+    }
+
+    private Method[] findPostConstructMethods(Class<?> beanClass) {
+        return Arrays.stream(beanClass.getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(PostConstruct.class))
+                .peek(method -> method.setAccessible(true))
+                .toArray(Method[]::new);
     }
 
     private void registerDisposableBean(Object bean) {
@@ -317,25 +322,34 @@ public class DefaultContainer implements Container {
     }
 
     private boolean hasPreDestroyMethod(Object bean) {
-        Method[] methods = bean.getClass().getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.isAnnotationPresent(PreDestroy.class)) {
-                return true;
-            }
+        Class<?> beanClass = bean.getClass();
+        Method[] methods = preDestroyCache.get(beanClass);
+        if (methods == null) {
+            methods = findPreDestroyMethods(beanClass);
+            preDestroyCache.put(beanClass, methods);
         }
-        return false;
+        return methods.length > 0;
+    }
+
+    private Method[] findPreDestroyMethods(Class<?> beanClass) {
+        return Arrays.stream(beanClass.getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(PreDestroy.class))
+                .peek(method -> method.setAccessible(true))
+                .toArray(Method[]::new);
     }
 
     private void invokePreDestroy(Object bean) {
-        Method[] methods = bean.getClass().getDeclaredMethods();
+        Class<?> beanClass = bean.getClass();
+        Method[] methods = preDestroyCache.get(beanClass);
+        if (methods == null) {
+            methods = findPreDestroyMethods(beanClass);
+            preDestroyCache.put(beanClass, methods);
+        }
         for (Method method : methods) {
-            if (method.isAnnotationPresent(PreDestroy.class)) {
-                try {
-                    method.setAccessible(true);
-                    method.invoke(bean);
-                } catch (Exception e) {
-                    throw new RuntimeException("Failed to invoke @PreDestroy method on bean: " + bean.getClass().getName(), e);
-                }
+            try {
+                method.invoke(bean);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to invoke @PreDestroy method on bean: " + beanClass.getName(), e);
             }
         }
     }
@@ -347,7 +361,7 @@ public class DefaultContainer implements Container {
 
     @Override
     public boolean contains(Class<?> type, String qualifier) {
-        if (type == null) {
+        if (ObjectUtils.isNull(type)) {
             return false;
         }
         String key = buildKey(type, qualifier);
@@ -356,7 +370,7 @@ public class DefaultContainer implements Container {
 
     @Override
     public void addBeanPostProcessor(BeanPostProcessor processor) {
-        if (processor != null) {
+        if (ObjectUtils.isNotNull(processor)) {
             beanPostProcessors.add(processor);
         }
     }
@@ -375,6 +389,8 @@ public class DefaultContainer implements Container {
             invokePreDestroy(bean);
         }
         preDestroyBeans.clear();
+        postConstructCache.clear();
+        preDestroyCache.clear();
         clear();
     }
 

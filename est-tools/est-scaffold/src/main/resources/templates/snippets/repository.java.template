@@ -1,0 +1,46 @@
+package ${package};
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class ${className} {
+    
+    private final Map<String, ${model}> storage = new ConcurrentHashMap<>();
+    
+    public List<${model}> findAll() {
+        return new ArrayList<>(storage.values());
+    }
+    
+    public Optional<${model}> findById(String id) {
+        return Optional.ofNullable(storage.get(id));
+    }
+    
+    public ${model} save(${model} entity) {
+        storage.put(entity.getId(), entity);
+        return entity;
+    }
+    
+    public ${model} update(String id, ${model} entity) {
+        if (!storage.containsKey(id)) {
+            throw new IllegalArgumentException("Entity not found with id: " + id);
+        }
+        storage.put(id, entity);
+        return entity;
+    }
+    
+    public void delete(String id) {
+        storage.remove(id);
+    }
+    
+    public boolean existsById(String id) {
+        return storage.containsKey(id);
+    }
+    
+    public long count() {
+        return storage.size();
+    }
+    
+    public void clear() {
+        storage.clear();
+    }
+}

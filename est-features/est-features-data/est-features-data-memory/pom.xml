@@ -20,6 +20,10 @@
             <groupId>ltd.idcu</groupId>
             <artifactId>est-features-data-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-utils-common</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

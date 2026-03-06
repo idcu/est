@@ -1,6 +1,8 @@
 package ltd.idcu.est.features.cache.memory;
 
 import ltd.idcu.est.features.cache.api.*;
+import ltd.idcu.est.utils.common.AssertUtils;
+import ltd.idcu.est.utils.common.ObjectUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,6 +20,7 @@ public class MemoryCache<K, V> implements Cache<K, V> {
     private final List<CacheListener<K, V>> listeners;
     private final ScheduledExecutorService cleanupExecutor;
     private final AtomicBoolean running;
+    private final Map<K, Long> ttlCache;
     private CacheLoader<K, V> loader;
     
     public MemoryCache() {
@@ -34,6 +37,7 @@ public class MemoryCache<K, V> implements Cache<K, V> {
         this.listeners = new java.util.concurrent.CopyOnWriteArrayList<>();
         this.running = new AtomicBoolean(true);
         this.cache = new ConcurrentHashMap<>();
+        this.ttlCache = new ConcurrentHashMap<>();
         this.strategy = createStrategy(config);
         
         if (config.getCleanupInterval() > 0) {
@@ -79,14 +83,13 @@ public class MemoryCache<K, V> implements Cache<K, V> {
     }
     
     private void putInternal(K key, CacheEntry<V> entry) {
-        if (key == null) {
-            throw new IllegalArgumentException("Key cannot be null");
-        }
+        AssertUtils.notNull(key, "Key cannot be null");
         
         while (strategy.size() >= config.getMaxSize()) {
             Optional<K> evictedKey = strategy.evict();
             evictedKey.ifPresent(k -> {
                 CacheEntry<V> evictedEntry = cache.remove(k);
+                ttlCache.remove(k);
                 if (evictedEntry != null) {
                     stats.incrementEvictionCount();
                     notifyEvict(k, evictedEntry.getValue());
@@ -95,6 +98,11 @@ public class MemoryCache<K, V> implements Cache<K, V> {
         }
         
         CacheEntry<V> oldEntry = cache.put(key, entry);
+        if (entry.getTtlMillis() > 0) {
+            ttlCache.put(key, entry.getCreatedAt() + entry.getTtlMillis());
+        } else {
+            ttlCache.remove(key);
+        }
         strategy.onPut(key, entry);
         stats.incrementPutCount();
         
@@ -106,8 +114,23 @@ public class MemoryCache<K, V> implements Cache<K, V> {
     
     @Override
     public Optional<V> get(K key) {
-        if (key == null) {
+        if (ObjectUtils.isNull(key)) {
             stats.incrementMissCount();
+            return Optional.empty();
+        }
+        
+        Long expiresAt = ttlCache.get(key);
+        if (expiresAt != null && expiresAt <= System.currentTimeMillis()) {
+            CacheEntry<V> expiredEntry = cache.remove(key);
+            ttlCache.remove(key);
+            strategy.evict();
+            stats.incrementMissCount();
+            if (expiredEntry != null) {
+                notifyExpire(key, expiredEntry.getValue());
+            }
+            if (loader != null) {
+                return loadValue(key);
+            }
             return Optional.empty();
         }
         
@@ -115,17 +138,6 @@ public class MemoryCache<K, V> implements Cache<K, V> {
         
         if (entry == null) {
             stats.incrementMissCount();
-            if (loader != null) {
-                return loadValue(key);
-            }
-            return Optional.empty();
-        }
-        
-        if (entry.isExpired()) {
-            cache.remove(key);
-            strategy.evict();
-            stats.incrementMissCount();
-            notifyExpire(key, entry.getValue());
             if (loader != null) {
                 return loadValue(key);
             }
@@ -149,7 +161,7 @@ public class MemoryCache<K, V> implements Cache<K, V> {
             long loadTime = System.currentTimeMillis() - start;
             stats.addLoadTime(loadTime);
             
-            if (value != null) {
+            if (ObjectUtils.isNotNull(value)) {
                 put(key, value);
                 return Optional.of(value);
             }
@@ -166,27 +178,28 @@ public class MemoryCache<K, V> implements Cache<K, V> {
     
     @Override
     public boolean containsKey(K key) {
-        if (key == null) {
+        if (ObjectUtils.isNull(key)) {
             return false;
         }
-        CacheEntry<V> entry = cache.get(key);
-        if (entry == null) {
+        Long expiresAt = ttlCache.get(key);
+        if (expiresAt != null && expiresAt <= System.currentTimeMillis()) {
+            CacheEntry<V> expiredEntry = cache.remove(key);
+            ttlCache.remove(key);
+            if (expiredEntry != null) {
+                notifyExpire(key, expiredEntry.getValue());
+            }
             return false;
         }
-        if (entry.isExpired()) {
-            cache.remove(key);
-            notifyExpire(key, entry.getValue());
-            return false;
-        }
-        return true;
+        return cache.containsKey(key);
     }
     
     @Override
     public void remove(K key) {
-        if (key == null) {
+        if (ObjectUtils.isNull(key)) {
             return;
         }
         CacheEntry<V> entry = cache.remove(key);
+        ttlCache.remove(key);
         if (entry != null) {
             stats.incrementRemoveCount();
             notifyRemove(key, entry.getValue());
@@ -196,6 +209,7 @@ public class MemoryCache<K, V> implements Cache<K, V> {
     @Override
     public void clear() {
         cache.clear();
+        ttlCache.clear();
         strategy.clear();
         notifyClear();
     }
@@ -220,7 +234,7 @@ public class MemoryCache<K, V> implements Cache<K, V> {
     }
     
     public void addListener(CacheListener<K, V> listener) {
-        if (listener != null) {
+        if (ObjectUtils.isNotNull(listener)) {
             listeners.add(listener);
         }
     }
@@ -257,14 +271,16 @@ public class MemoryCache<K, V> implements Cache<K, V> {
         if (!running.get()) {
             return;
         }
+        long now = System.currentTimeMillis();
         List<K> expiredKeys = new ArrayList<>();
-        for (Map.Entry<K, CacheEntry<V>> entry : cache.entrySet()) {
-            if (entry.getValue().isExpired()) {
+        for (Map.Entry<K, Long> entry : ttlCache.entrySet()) {
+            if (entry.getValue() <= now) {
                 expiredKeys.add(entry.getKey());
             }
         }
         for (K key : expiredKeys) {
             CacheEntry<V> entry = cache.remove(key);
+            ttlCache.remove(key);
             if (entry != null) {
                 stats.incrementEvictionCount();
                 notifyExpire(key, entry.getValue());

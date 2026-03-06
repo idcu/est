@@ -36,6 +36,14 @@
             <groupId>ltd.idcu</groupId>
             <artifactId>est-utils-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-collection-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-collection-impl</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

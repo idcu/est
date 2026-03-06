@@ -19,6 +19,7 @@ public class DialectFactory {
         dialectCache.put("Oracle", new OracleDialect());
         dialectCache.put("SQLServer", new SQLServerDialect());
         dialectCache.put("Microsoft SQL Server", new SQLServerDialect());
+        dialectCache.put("SQLite", new SQLiteDialect());
     }
     
     public static Dialect getDialect(DataSource dataSource) {

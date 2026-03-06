@@ -16,6 +16,7 @@ public class DefaultRouter implements Router {
     private final List<Route> routes;
     private final Map<String, Route> namedRoutes;
     private final Map<HttpMethod, Map<String, Route>> routeCache;
+    private final Map<HttpMethod, List<Route>> routesByMethod;
     private String currentPrefix;
     private String currentName;
     private List<String> currentMiddleware;
@@ -24,6 +25,7 @@ public class DefaultRouter implements Router {
         this.routes = new CopyOnWriteArrayList<>();
         this.namedRoutes = new ConcurrentHashMap<>();
         this.routeCache = new ConcurrentHashMap<>();
+        this.routesByMethod = new ConcurrentHashMap<>();
         this.currentPrefix = "";
         this.currentName = "";
         this.currentMiddleware = new CopyOnWriteArrayList<>();
@@ -168,6 +170,7 @@ public class DefaultRouter implements Router {
         }
         
         routes.add(route);
+        routesByMethod.computeIfAbsent(route.getMethod(), k -> new CopyOnWriteArrayList<>()).add(route);
     }
 
     @Override
@@ -220,14 +223,17 @@ public class DefaultRouter implements Router {
     public Route match(String path, HttpMethod method) {
         Map<String, Route> methodCache = routeCache.computeIfAbsent(method, k -> new ConcurrentHashMap<>());
         Route cached = methodCache.get(path);
-        if (cached != null && cached.matches(path, method)) {
+        if (cached != null) {
             return cached;
         }
         
-        for (Route route : routes) {
-            if (route.matches(path, method)) {
-                methodCache.put(path, route);
-                return route;
+        List<Route> methodRoutes = routesByMethod.get(method);
+        if (methodRoutes != null) {
+            for (Route route : methodRoutes) {
+                if (route.matches(path, method)) {
+                    methodCache.put(path, route);
+                    return route;
+                }
             }
         }
         return null;
@@ -251,13 +257,11 @@ public class DefaultRouter implements Router {
 
     @Override
     public List<Route> getRoutesByMethod(HttpMethod method) {
-        List<Route> result = new ArrayList<>();
-        for (Route route : routes) {
-            if (route.getMethod() == method) {
-                result.add(route);
-            }
+        List<Route> methodRoutes = routesByMethod.get(method);
+        if (methodRoutes == null) {
+            return Collections.emptyList();
         }
-        return result;
+        return Collections.unmodifiableList(methodRoutes);
     }
 
     @Override
@@ -271,11 +275,16 @@ public class DefaultRouter implements Router {
         if (route.getName() != null && !route.getName().isEmpty()) {
             namedRoutes.put(route.getName(), route);
         }
+        routesByMethod.computeIfAbsent(route.getMethod(), k -> new CopyOnWriteArrayList<>()).add(route);
     }
 
     @Override
     public void removeRoute(String path, HttpMethod method) {
         routes.removeIf(route -> route.getPath().equals(path) && route.getMethod() == method);
+        List<Route> methodRoutes = routesByMethod.get(method);
+        if (methodRoutes != null) {
+            methodRoutes.removeIf(route -> route.getPath().equals(path));
+        }
     }
 
     @Override
@@ -283,6 +292,7 @@ public class DefaultRouter implements Router {
         routes.clear();
         namedRoutes.clear();
         routeCache.clear();
+        routesByMethod.clear();
     }
 
     @Override

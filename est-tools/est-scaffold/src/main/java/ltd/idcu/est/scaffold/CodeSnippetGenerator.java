@@ -29,6 +29,62 @@ public class CodeSnippetGenerator {
             Arrays.asList("package", "className", "model")
         ));
         
+        TEMPLATES.put("repository", new CodeTemplate(
+            "Repository层",
+            "创建数据访问Repository层",
+            "snippets/repository.java.template",
+            Arrays.asList("package", "className", "model")
+        ));
+        
+        TEMPLATES.put("dto", new CodeTemplate(
+            "数据传输对象",
+            "创建DTO数据传输对象",
+            "snippets/dto.java.template",
+            Arrays.asList("package", "className")
+        ));
+        
+        TEMPLATES.put("validator", new CodeTemplate(
+            "数据验证器",
+            "创建数据验证器工具类",
+            "snippets/validator.java.template",
+            Arrays.asList("package", "className")
+        ));
+        
+        TEMPLATES.put("cache", new CodeTemplate(
+            "缓存组件",
+            "创建缓存管理器组件",
+            "snippets/cache.java.template",
+            Arrays.asList("package", "className")
+        ));
+        
+        TEMPLATES.put("event", new CodeTemplate(
+            "事件总线",
+            "创建事件总线组件",
+            "snippets/event.java.template",
+            Arrays.asList("package", "className")
+        ));
+        
+        TEMPLATES.put("logger", new CodeTemplate(
+            "日志组件",
+            "创建日志管理器组件",
+            "snippets/logger.java.template",
+            Arrays.asList("package", "className")
+        ));
+        
+        TEMPLATES.put("scheduler", new CodeTemplate(
+            "调度器",
+            "创建任务调度器组件",
+            "snippets/scheduler.java.template",
+            Arrays.asList("package", "className")
+        ));
+        
+        TEMPLATES.put("config", new CodeTemplate(
+            "配置管理器",
+            "创建配置管理器组件",
+            "snippets/config.java.template",
+            Arrays.asList("package", "className")
+        ));
+        
         TEMPLATES.put("middleware", new CodeTemplate(
             "中间件",
             "创建自定义中间件",

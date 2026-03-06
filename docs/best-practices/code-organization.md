@@ -441,6 +441,158 @@ com.yourapp.product/
 | DTO | 动作 + 资源 + Request/Response | `CreateUserRequest` |
 | 异常 | 描述 + Exception | `UserNotFoundException` |
 
+## 使用 EST 框架工具类
+
+EST 框架提供了丰富的工具类来减少重复代码，提高代码质量。在编写代码时，应该优先使用这些工具类。
+
+### 为什么使用工具类？
+
+- ✅ **减少重复代码**：避免在多个地方写相同的 null 检查、字符串处理等代码
+- ✅ **提高可读性**：使用统一的工具类让代码更易理解
+- ✅ **降低错误率**：经过充分测试的工具类比手写代码更可靠
+- ✅ **便于维护**：如果需要修改某个通用逻辑，只需要改工具类一处
+
+### 常用工具类
+
+#### 1. **AssertUtils - 断言工具**
+
+用于参数验证和前置条件检查：
+
+```java
+import ltd.idcu.est.utils.common.AssertUtils;
+
+public void saveUser(User user) {
+    // 检查参数不为 null
+    AssertUtils.notNull(user, "User cannot be null");
+    AssertUtils.notNull(user.getName(), "User name cannot be null");
+    
+    // 检查条件是否满足
+    AssertUtils.isTrue(user.getAge() > 0, "Age must be positive");
+    AssertUtils.isTrue(StringUtils.isNotBlank(user.getEmail()), "Email cannot be blank");
+    
+    // 保存用户...
+}
+```
+
+#### 2. **ObjectUtils - 对象工具**
+
+用于对象 null 检查和比较：
+
+```java
+import ltd.idcu.est.utils.common.ObjectUtils;
+
+// null 检查
+if (ObjectUtils.isNull(user)) {
+    // 处理 null 情况
+}
+
+if (ObjectUtils.isNotNull(user)) {
+    // 处理非 null 情况
+}
+
+// 安全的 equals 比较
+if (ObjectUtils.equals(user1, user2)) {
+    // 两个对象相等
+}
+```
+
+#### 3. **StringUtils - 字符串工具**
+
+用于字符串处理和检查：
+
+```java
+import ltd.idcu.est.utils.common.StringUtils;
+
+// 字符串检查
+boolean isEmpty = StringUtils.isEmpty(str);           // 检查是否为空
+boolean isBlank = StringUtils.isBlank(str);           // 检查是否为空或仅空白字符
+boolean isNotBlank = StringUtils.isNotBlank(str);     // 检查是否不为空且不只是空白字符
+
+// 字符串操作
+String trimmed = StringUtils.trim(str);                // 去除首尾空白
+String uppercase = StringUtils.toUpperCase(str);       // 转大写
+String lowercase = StringUtils.toLowerCase(str);       // 转小写
+
+// 字符串拼接
+String joined = StringUtils.join(list, ", ");         // 用分隔符拼接集合
+```
+
+#### 4. **其他常用工具类**
+
+- **Collections2**：集合工具类
+- **Dates**：日期时间工具类
+- **Files**：文件 IO 工具类
+- **Json**：JSON 格式化工具类
+- **Xml**：XML 格式化工具类
+- **Yaml**：YAML 格式化工具类
+
+### 代码审查要点
+
+在进行代码审查时，注意检查以下问题：
+
+1. **是否使用了手动 null 检查而不是 AssertUtils**：
+   ```java
+   // ❌ 不推荐：手动 null 检查
+   if (user == null) {
+       throw new IllegalArgumentException("User cannot be null");
+   }
+   
+   // ✅ 推荐：使用 AssertUtils
+   AssertUtils.notNull(user, "User cannot be null");
+   ```
+
+2. **是否使用了手动字符串检查而不是 StringUtils**：
+   ```java
+   // ❌ 不推荐：手动字符串检查
+   if (str == null || str.trim().isEmpty()) {
+       // ...
+   }
+   
+   // ✅ 推荐：使用 StringUtils
+   if (StringUtils.isBlank(str)) {
+       // ...
+   }
+   ```
+
+3. **是否重复造轮子**：
+   - 检查是否有现成的工具类方法可以使用
+   - 例如：不要自己写字符串拼接、日期格式化等常用功能
+
+### 添加依赖
+
+要使用这些工具类，需要在 pom.xml 中添加相应的依赖：
+
+```xml
+<!-- 通用工具（包含 AssertUtils, ObjectUtils, StringUtils 等） -->
+<dependency>
+    <groupId>ltd.idcu</groupId>
+    <artifactId>est-utils-common</artifactId>
+    <version>1.3.0-SNAPSHOT</version>
+</dependency>
+
+<!-- IO 工具（文件操作等） -->
+<dependency>
+    <groupId>ltd.idcu</groupId>
+    <artifactId>est-utils-io</artifactId>
+    <version>1.3.0-SNAPSHOT</version>
+</dependency>
+
+<!-- JSON 格式化 -->
+<dependency>
+    <groupId>ltd.idcu</groupId>
+    <artifactId>est-utils-format-json</artifactId>
+    <version>1.3.0-SNAPSHOT</version>
+</dependency>
+```
+
+### 总结
+
+- 🔧 **优先使用 EST 工具类**，避免重复造轮子
+- 📋 **使用 AssertUtils** 进行参数验证和前置条件检查
+- 📝 **使用 StringUtils** 处理字符串操作
+- 🎯 **使用 ObjectUtils** 进行对象 null 检查和比较
+- 👀 **代码审查时**，重点检查是否正确使用了工具类
+
 ## 小练习
 
 1. 按照这个结构创建一个简单的博客应用

@@ -1,0 +1,144 @@
+package ${package};
+
+import java.util.*;
+import java.util.concurrent.*;
+
+public class ${className}<K, V> {
+    
+    private final Map<K, CacheEntry<V>> cache;
+    private final long defaultTtlMillis;
+    private final int maxSize;
+    private final ScheduledExecutorService cleaner;
+    
+    private long hitCount = 0;
+    private long missCount = 0;
+    
+    public ${className}(long defaultTtlMillis, int maxSize) {
+        this.defaultTtlMillis = defaultTtlMillis;
+        this.maxSize = maxSize;
+        this.cache = new ConcurrentHashMap<>();
+        this.cleaner = Executors.newSingleThreadScheduledExecutor();
+        
+        cleaner.scheduleAtFixedRate(this::cleanup, 1, 1, TimeUnit.MINUTES);
+    }
+    
+    public ${className}() {
+        this(TimeUnit.MINUTES.toMillis(5), 1000);
+    }
+    
+    public void put(K key, V value) {
+        put(key, value, defaultTtlMillis);
+    }
+    
+    public void put(K key, V value, long ttlMillis) {
+        if (cache.size() >= maxSize) {
+            evictOldest();
+        }
+        long expiryTime = System.currentTimeMillis() + ttlMillis;
+        cache.put(key, new CacheEntry<>(value, expiryTime));
+    }
+    
+    public Optional<V> get(K key) {
+        CacheEntry<V> entry = cache.get(key);
+        if (entry == null) {
+            missCount++;
+            return Optional.empty();
+        }
+        if (entry.isExpired()) {
+            cache.remove(key);
+            missCount++;
+            return Optional.empty();
+        }
+        hitCount++;
+        return Optional.of(entry.value);
+    }
+    
+    public V getOrDefault(K key, V defaultValue) {
+        return get(key).orElse(defaultValue);
+    }
+    
+    public void remove(K key) {
+        cache.remove(key);
+    }
+    
+    public void clear() {
+        cache.clear();
+    }
+    
+    public boolean containsKey(K key) {
+        return get(key).isPresent();
+    }
+    
+    public int size() {
+        cleanup();
+        return cache.size();
+    }
+    
+    public long getHitCount() {
+        return hitCount;
+    }
+    
+    public long getMissCount() {
+        return missCount;
+    }
+    
+    public double getHitRate() {
+        long total = hitCount + missCount;
+        return total == 0 ? 0.0 : (double) hitCount / total;
+    }
+    
+    public Map<String, Object> getStats() {
+        return Map.of(
+            "size", size(),
+            "maxSize", maxSize,
+            "hitCount", hitCount,
+            "missCount", missCount,
+            "hitRate", String.format("%.2f%%", getHitRate() * 100)
+        );
+    }
+    
+    public void shutdown() {
+        cleaner.shutdown();
+        try {
+            if (!cleaner.awaitTermination(5, TimeUnit.SECONDS)) {
+                cleaner.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            cleaner.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
+    
+    private void cleanup() {
+        long now = System.currentTimeMillis();
+        cache.entrySet().removeIf(entry -> entry.getValue().isExpired());
+    }
+    
+    private void evictOldest() {
+        long oldestTime = Long.MAX_VALUE;
+        K oldestKey = null;
+        for (Map.Entry<K, CacheEntry<V>> entry : cache.entrySet()) {
+            if (entry.getValue().expiryTime < oldestTime) {
+                oldestTime = entry.getValue().expiryTime;
+                oldestKey = entry.getKey();
+            }
+        }
+        if (oldestKey != null) {
+            cache.remove(oldestKey);
+        }
+    }
+    
+    private static class CacheEntry<V> {
+        final V value;
+        final long expiryTime;
+        
+        CacheEntry(V value, long expiryTime) {
+            this.value = value;
+            this.expiryTime = expiryTime;
+        }
+        
+        boolean isExpired() {
+            return System.currentTimeMillis() > expiryTime;
+        }
+    }
+}

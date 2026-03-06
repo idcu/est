@@ -1,6 +1,7 @@
 package ltd.idcu.est.web;
 
 import com.sun.net.httpserver.HttpExchange;
+import ltd.idcu.est.utils.common.StringUtils;
 import ltd.idcu.est.utils.io.IOUtils;
 import ltd.idcu.est.web.api.*;
 
@@ -37,7 +38,7 @@ public class DefaultRequest implements Request {
 
     private void parseQueryParameters() {
         String query = exchange.getRequestURI().getQuery();
-        if (query != null && !query.isEmpty()) {
+        if (StringUtils.isNotEmpty(query)) {
             String[] pairs = query.split("&");
             for (String pair : pairs) {
                 int idx = pair.indexOf('=');
@@ -55,7 +56,7 @@ public class DefaultRequest implements Request {
 
     private void parseCookies() {
         String cookieHeader = exchange.getRequestHeaders().getFirst("Cookie");
-        if (cookieHeader != null && !cookieHeader.isEmpty()) {
+        if (StringUtils.isNotEmpty(cookieHeader)) {
             String[] cookiePairs = cookieHeader.split(";");
             for (String pair : cookiePairs) {
                 String trimmed = pair.trim();
@@ -229,13 +230,13 @@ public class DefaultRequest implements Request {
     @Override
     public List<String> getPathSegments() {
         String path = getPath();
-        if (path == null || path.isEmpty() || path.equals("/")) {
+        if (StringUtils.isEmpty(path) || path.equals("/")) {
             return Collections.emptyList();
         }
         String[] segments = path.split("/");
         List<String> result = new ArrayList<>();
         for (String segment : segments) {
-            if (!segment.isEmpty()) {
+            if (StringUtils.isNotEmpty(segment)) {
                 result.add(segment);
             }
         }

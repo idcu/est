@@ -1,0 +1,113 @@
+package ${package};
+
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.Consumer;
+
+public class ${className} {
+    
+    private final Map<Class<?>, List<EventHandler<?>>> handlers = new ConcurrentHashMap<>();
+    private final ExecutorService executor;
+    private final boolean async;
+    
+    public ${className}(boolean async) {
+        this.async = async;
+        this.executor = async ? Executors.newCachedThreadPool() : null;
+    }
+    
+    public ${className}() {
+        this(false);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <T> void subscribe(Class<T> eventType, Consumer<T> handler) {
+        handlers.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
+                .add(new EventHandler<>(handler));
+    }
+    
+    public <T> void subscribe(Class<T> eventType, Consumer<T> handler, int priority) {
+        handlers.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
+                .add(new EventHandler<>(handler, priority));
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <T> void publish(T event) {
+        List<EventHandler<?>> eventHandlers = handlers.get(event.getClass());
+        if (eventHandlers == null || eventHandlers.isEmpty()) {
+            return;
+        }
+        
+        List<EventHandler<?>> sortedHandlers = new ArrayList<>(eventHandlers);
+        sortedHandlers.sort(Comparator.comparingInt(h -> -h.priority));
+        
+        for (EventHandler<?> handler : sortedHandlers) {
+            EventHandler<T> typedHandler = (EventHandler<T>) handler;
+            if (async) {
+                executor.submit(() -> typedHandler.handle(event));
+            } else {
+                typedHandler.handle(event);
+            }
+        }
+    }
+    
+    public <T> void unsubscribe(Class<T> eventType, Consumer<T> handler) {
+        List<EventHandler<?>> eventHandlers = handlers.get(eventType);
+        if (eventHandlers != null) {
+            eventHandlers.removeIf(h -> h.handler.equals(handler));
+        }
+    }
+    
+    public void unsubscribeAll(Class<?> eventType) {
+        handlers.remove(eventType);
+    }
+    
+    public void clear() {
+        handlers.clear();
+    }
+    
+    public Set<Class<?>> getEventTypes() {
+        return new HashSet<>(handlers.keySet());
+    }
+    
+    public int getHandlerCount(Class<?> eventType) {
+        List<EventHandler<?>> eventHandlers = handlers.get(eventType);
+        return eventHandlers != null ? eventHandlers.size() : 0;
+    }
+    
+    public void shutdown() {
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdown();
+            try {
+                if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                    executor.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                executor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+    
+    private static class EventHandler<T> {
+        final Consumer<T> handler;
+        final int priority;
+        
+        EventHandler(Consumer<T> handler) {
+            this(handler, 0);
+        }
+        
+        EventHandler(Consumer<T> handler, int priority) {
+            this.handler = handler;
+            this.priority = priority;
+        }
+        
+        void handle(T event) {
+            try {
+                handler.accept(event);
+            } catch (Exception e) {
+                System.err.println("Error handling event: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+}
