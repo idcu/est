@@ -311,6 +311,11 @@ public class DefaultSeq<T> implements Seq<T> {
     }
 
     @Override
+    public <A> A[] toArray(java.util.function.IntFunction<A[]> generator) {
+        return items.toArray(generator);
+    }
+
+    @Override
     public String joinToString() {
         return joinToString(", ");
     }
@@ -663,6 +668,16 @@ public class DefaultSeq<T> implements Seq<T> {
     @Override
     public MutableSeq<T> mutable() {
         return new DefaultMutableSeq<>(new ArrayList<>(items));
+    }
+
+    @Override
+    public int indexOf(Object element) {
+        return items.indexOf(element);
+    }
+
+    @Override
+    public int lastIndexOf(Object element) {
+        return items.lastIndexOf(element);
     }
 
     @Override

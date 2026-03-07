@@ -18,6 +18,8 @@ public class DataConfig {
     private boolean testOnReturn = false;
     private boolean testWhileIdle = true;
     private long validationInterval = 30000;
+    private int maxStatementCacheSize = 100;
+    private long maxIdleTime = 30 * 60 * 1000L;
     
     public DataConfig() {
     }
@@ -181,6 +183,30 @@ public class DataConfig {
             throw new IllegalArgumentException("Validation interval must be >= 0");
         }
         this.validationInterval = validationInterval;
+        return this;
+    }
+    
+    public int getMaxStatementCacheSize() {
+        return maxStatementCacheSize;
+    }
+    
+    public DataConfig setMaxStatementCacheSize(int maxStatementCacheSize) {
+        if (maxStatementCacheSize < 0) {
+            throw new IllegalArgumentException("Max statement cache size must be >= 0");
+        }
+        this.maxStatementCacheSize = maxStatementCacheSize;
+        return this;
+    }
+    
+    public long getMaxIdleTime() {
+        return maxIdleTime;
+    }
+    
+    public DataConfig setMaxIdleTime(long maxIdleTime) {
+        if (maxIdleTime < 0) {
+            throw new IllegalArgumentException("Max idle time must be >= 0");
+        }
+        this.maxIdleTime = maxIdleTime;
         return this;
     }
     

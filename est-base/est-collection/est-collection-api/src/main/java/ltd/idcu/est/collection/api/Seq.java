@@ -177,6 +177,8 @@ public interface Seq<T> extends Iterable<T> {
 
     <A> A[] toArray(A[] array);
 
+    <A> A[] toArray(java.util.function.IntFunction<A[]> generator);
+
     String joinToString();
 
     String joinToString(CharSequence separator);
@@ -291,6 +293,34 @@ public interface Seq<T> extends Iterable<T> {
     Seq<T> padStart(int length, T padElement);
 
     Seq<T> padEnd(int length, T padElement);
+
+    int indexOf(Object element);
+
+    int lastIndexOf(Object element);
+
+    default Seq<T> reverse() {
+        return reversed();
+    }
+
+    default boolean anyMatch(Predicate<? super T> predicate) {
+        return any(predicate);
+    }
+
+    default boolean allMatch(Predicate<? super T> predicate) {
+        return all(predicate);
+    }
+
+    default boolean noneMatch(Predicate<? super T> predicate) {
+        return none(predicate);
+    }
+
+    default String join(CharSequence separator) {
+        return joinToString(separator, "", "");
+    }
+
+    default String join() {
+        return joinToString("", "", "");
+    }
 
     MutableSeq<T> mutable();
 

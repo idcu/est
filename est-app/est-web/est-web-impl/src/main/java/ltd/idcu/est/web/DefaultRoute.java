@@ -27,25 +27,25 @@ public class DefaultRoute implements Route {
     private final List<String> middleware;
 
     public DefaultRoute(String path, HttpMethod method, String handler) {
-        this(path, method, handler, null, null, null, new ArrayList<>(), new HashMap<>());
+        this(path, method, handler, null, null, new ArrayList<>(), new HashMap<>());
     }
 
     public DefaultRoute(String path, HttpMethod method, RouteHandler routeHandler) {
-        this(path, method, null, routeHandler, null, null, new ArrayList<>(), new HashMap<>());
+        this(path, method, null, routeHandler, null, new ArrayList<>(), new HashMap<>());
     }
 
     public DefaultRoute(String path, HttpMethod method, AsyncHandler asyncHandler) {
-        this(path, method, null, null, asyncHandler, null, new ArrayList<>(), new HashMap<>());
+        this(path, method, null, null, asyncHandler, new ArrayList<>(), new HashMap<>());
     }
 
-    public DefaultRoute(String path, HttpMethod method, String handler, RouteHandler routeHandler, AsyncHandler asyncHandler, String name,
+    public DefaultRoute(String path, HttpMethod method, String handler, RouteHandler routeHandler, AsyncHandler asyncHandler,
                         List<String> pathVariables, Map<String, String> metadata) {
         this.path = path;
         this.method = method;
         this.handler = handler;
         this.routeHandler = routeHandler;
         this.asyncHandler = asyncHandler;
-        this.name = name;
+        this.name = null;
         this.pathVariables = new ArrayList<>(pathVariables);
         this.metadata = new HashMap<>(metadata);
         this.middleware = new ArrayList<>();

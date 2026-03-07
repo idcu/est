@@ -11,6 +11,9 @@ public class ConnectionPoolStats {
     private long totalDestroyed;
     private long totalWaitTime;
     private long borrowCount;
+    private long successfulBorrows;
+    private long failedBorrows;
+    private int statementCacheSize;
     
     public ConnectionPoolStats() {
     }
@@ -87,6 +90,30 @@ public class ConnectionPoolStats {
         this.borrowCount = borrowCount;
     }
     
+    public long getSuccessfulBorrows() {
+        return successfulBorrows;
+    }
+    
+    public void setSuccessfulBorrows(long successfulBorrows) {
+        this.successfulBorrows = successfulBorrows;
+    }
+    
+    public long getFailedBorrows() {
+        return failedBorrows;
+    }
+    
+    public void setFailedBorrows(long failedBorrows) {
+        this.failedBorrows = failedBorrows;
+    }
+    
+    public int getStatementCacheSize() {
+        return statementCacheSize;
+    }
+    
+    public void setStatementCacheSize(int statementCacheSize) {
+        this.statementCacheSize = statementCacheSize;
+    }
+    
     public double getAverageWaitTime() {
         if (borrowCount == 0) {
             return 0.0;
@@ -109,6 +136,9 @@ public class ConnectionPoolStats {
                 ", idleConnections=" + idleConnections +
                 ", utilizationRate=" + String.format("%.2f%%", getUtilizationRate() * 100) +
                 ", averageWaitTime=" + getAverageWaitTime() + "ms" +
+                ", successfulBorrows=" + successfulBorrows +
+                ", failedBorrows=" + failedBorrows +
+                ", statementCacheSize=" + statementCacheSize +
                 '}';
     }
 }

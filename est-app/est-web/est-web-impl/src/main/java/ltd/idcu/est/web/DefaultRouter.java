@@ -285,6 +285,10 @@ public class DefaultRouter implements Router {
         if (methodRoutes != null) {
             methodRoutes.removeIf(route -> route.getPath().equals(path));
         }
+        Map<String, Route> methodCache = routeCache.get(method);
+        if (methodCache != null) {
+            methodCache.remove(path);
+        }
     }
 
     @Override

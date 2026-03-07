@@ -24,6 +24,11 @@
             <groupId>ltd.idcu</groupId>
             <artifactId>est-core-impl</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-test-api</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

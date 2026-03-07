@@ -392,6 +392,21 @@ public class DefaultMutableSeq<T> implements MutableSeq<T> {
     }
 
     @Override
+    public <A> A[] toArray(java.util.function.IntFunction<A[]> generator) {
+        return items.toArray(generator);
+    }
+
+    @Override
+    public int indexOf(Object element) {
+        return items.indexOf(element);
+    }
+
+    @Override
+    public int lastIndexOf(Object element) {
+        return items.lastIndexOf(element);
+    }
+
+    @Override
     public String joinToString() {
         return joinToString(", ");
     }
