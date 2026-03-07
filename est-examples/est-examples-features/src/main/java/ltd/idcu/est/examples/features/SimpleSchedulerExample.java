@@ -1,12 +1,12 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.scheduler.api.ScheduleConfig;
-import ltd.idcu.est.features.scheduler.api.ScheduleType;
-import ltd.idcu.est.features.scheduler.api.Task;
-import ltd.idcu.est.features.scheduler.api.Scheduler;
-import ltd.idcu.est.features.scheduler.fixed.FixedSchedulers;
-import ltd.idcu.est.features.logging.api.Logger;
-import ltd.idcu.est.features.logging.console.ConsoleLogs;
+import ltd.idcu.est.scheduler.api.ScheduleConfig;
+import ltd.idcu.est.scheduler.api.ScheduleType;
+import ltd.idcu.est.scheduler.api.Task;
+import ltd.idcu.est.scheduler.api.Scheduler;
+import ltd.idcu.est.scheduler.fixed.FixedSchedulers;
+import ltd.idcu.est.logging.api.Logger;
+import ltd.idcu.est.logging.console.ConsoleLogs;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -20,7 +20,7 @@ public class SimpleSchedulerExample {
         
         fixedRateExample();
         
-        System.out.println("\n✓ 所有示例完成！");
+        System.out.println("\n�?所有示例完成！");
     }
     
     private static void fixedRateExample() throws InterruptedException {
@@ -42,7 +42,7 @@ public class SimpleSchedulerExample {
         scheduler.schedule(task, config);
         scheduler.start();
         
-        System.out.println("  调度器已启动，观察 5 秒...");
+        System.out.println("  调度器已启动，观�?5 �?..");
         Thread.sleep(5000);
         
         scheduler.stop();

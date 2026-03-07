@@ -15,8 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ZeroMqConnection {
     
-    private static final byte SIGNATURE = 0xFF;
-    private static final byte VERSION = 0x01;
+    private static final byte SIGNATURE = (byte) 0xFF;
+    private static final byte VERSION = (byte) 0x01;
     
     private final MessagingConfig config;
     private Socket socket;

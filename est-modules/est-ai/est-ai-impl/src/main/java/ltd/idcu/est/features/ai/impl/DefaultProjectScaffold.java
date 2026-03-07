@@ -1,5 +1,6 @@
 package ltd.idcu.est.features.ai.impl;
 
+import ltd.idcu.est.features.ai.api.CodeGenerator;
 import ltd.idcu.est.features.ai.api.ProjectScaffold;
 
 import java.io.IOException;

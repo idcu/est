@@ -1,7 +1,7 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.cache.api.Cache;
-import ltd.idcu.est.features.cache.memory.Caches;
+import ltd.idcu.est.cache.api.Cache;
+import ltd.idcu.est.cache.memory.Caches;
 
 public class CacheExample {
     public static void main(String[] args) {

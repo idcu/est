@@ -1,8 +1,8 @@
 package ltd.idcu.est.examples.basic.event;
 
-import ltd.idcu.est.features.event.api.EventBus;
-import ltd.idcu.est.features.event.api.EventStats;
-import ltd.idcu.est.features.event.local.LocalEvents;
+import ltd.idcu.est.event.api.EventBus;
+import ltd.idcu.est.event.api.EventStats;
+import ltd.idcu.est.event.local.LocalEvents;
 
 public class Event06_Stats {
     public static void main(String[] args) {
@@ -20,9 +20,9 @@ public class Event06_Stats {
         
         System.out.println("=== 事件统计信息 ===");
         System.out.println("已发布事件总数: " + stats.getPublishedCount());
-        System.out.println("处理成功事件数: " + stats.getSuccessCount());
-        System.out.println("处理失败事件数: " + stats.getFailureCount());
-        System.out.println("总监听器数: " + eventBus.getTotalSubscriberCount());
-        System.out.println("event_a 的监听器数: " + eventBus.getSubscriberCount("event_a"));
+        System.out.println("处理成功事件�? " + stats.getSuccessCount());
+        System.out.println("处理失败事件�? " + stats.getFailureCount());
+        System.out.println("总监听器�? " + eventBus.getTotalSubscriberCount());
+        System.out.println("event_a 的监听器�? " + eventBus.getSubscriberCount("event_a"));
     }
 }

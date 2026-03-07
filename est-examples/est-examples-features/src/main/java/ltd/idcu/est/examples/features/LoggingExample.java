@@ -1,14 +1,14 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.logging.api.Logger;
-import ltd.idcu.est.features.logging.console.ConsoleLogs;
+import ltd.idcu.est.logging.api.Logger;
+import ltd.idcu.est.logging.console.ConsoleLogs;
 
 public class LoggingExample {
     public static void main(String[] args) {
-        // 创建控制台日志
+        // 创建控制台日�?
         Logger logger = ConsoleLogs.getLogger(LoggingExample.class);
         
-        // 不同级别的日志
+        // 不同级别的日�?
         logger.debug("Debug message");
         logger.info("Info message");
         logger.warn("Warn message");

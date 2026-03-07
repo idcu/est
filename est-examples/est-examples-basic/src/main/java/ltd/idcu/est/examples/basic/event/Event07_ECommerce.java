@@ -1,7 +1,7 @@
 package ltd.idcu.est.examples.basic.event;
 
-import ltd.idcu.est.features.event.api.EventBus;
-import ltd.idcu.est.features.event.local.LocalEvents;
+import ltd.idcu.est.event.api.EventBus;
+import ltd.idcu.est.event.local.LocalEvents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,12 +74,12 @@ public class Event07_ECommerce {
         System.out.println("=== 电商订单系统示例 ===\n");
         
         List<String> items = new ArrayList<>();
-        items.add("笔记本电脑");
+        items.add("笔记本电�?);
         items.add("无线鼠标");
         
         Order order = new Order("ORD-2024-001", "CUST-001", items, 5999.0);
         orderService.createOrder(order);
         
-        System.out.println("\n✅ 订单处理完成！");
+        System.out.println("\n�?订单处理完成�?);
     }
 }

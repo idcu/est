@@ -1,9 +1,9 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.monitor.api.HealthCheckResult;
-import ltd.idcu.est.features.monitor.api.Metric;
-import ltd.idcu.est.features.monitor.jvm.JvmMonitor;
-import ltd.idcu.est.features.monitor.system.SystemMonitor;
+import ltd.idcu.est.monitor.api.HealthCheckResult;
+import ltd.idcu.est.monitor.api.Metric;
+import ltd.idcu.est.monitor.jvm.JvmMonitor;
+import ltd.idcu.est.monitor.system.SystemMonitor;
 
 import java.util.List;
 import java.util.Map;

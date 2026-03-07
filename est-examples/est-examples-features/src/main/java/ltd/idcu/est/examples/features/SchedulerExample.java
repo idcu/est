@@ -1,13 +1,13 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.scheduler.api.ScheduleConfig;
-import ltd.idcu.est.features.scheduler.api.ScheduleType;
-import ltd.idcu.est.features.scheduler.api.Task;
-import ltd.idcu.est.features.scheduler.cron.CronSchedulers;
+import ltd.idcu.est.scheduler.api.ScheduleConfig;
+import ltd.idcu.est.scheduler.api.ScheduleType;
+import ltd.idcu.est.scheduler.api.Task;
+import ltd.idcu.est.scheduler.cron.CronSchedulers;
 
 public class SchedulerExample {
     public static void main(String[] args) throws InterruptedException {
-        // 创建Cron调度器
+        // 创建Cron调度�?
         var scheduler = CronSchedulers.create();
         
         // 创建任务
@@ -22,14 +22,14 @@ public class SchedulerExample {
                 .build();
         scheduler.schedule(task, config);
         
-        // 启动调度器
+        // 启动调度�?
         scheduler.start();
         System.out.println("Scheduler started. Press Ctrl+C to stop.");
         
-        // 运行一段时间
+        // 运行一段时�?
         Thread.sleep(20000);
         
-        // 停止调度器
+        // 停止调度�?
         scheduler.stop();
         System.out.println("Scheduler stopped.");
     }

@@ -1,25 +1,25 @@
 package ltd.idcu.est.examples.basic.event;
 
-import ltd.idcu.est.features.event.api.EventBus;
-import ltd.idcu.est.features.event.api.EventListener;
-import ltd.idcu.est.features.event.local.LocalEvents;
+import ltd.idcu.est.event.api.EventBus;
+import ltd.idcu.est.event.api.EventListener;
+import ltd.idcu.est.event.local.LocalEvents;
 
 public class Event05_Unsubscribe {
     public static void main(String[] args) {
         EventBus eventBus = LocalEvents.newLocalEventBus();
         
         EventListener<String> listener1 = (event, data) -> {
-            System.out.println("监听器 1: " + data);
+            System.out.println("监听�?1: " + data);
         };
         
         EventListener<String> listener2 = (event, data) -> {
-            System.out.println("监听器 2: " + data);
+            System.out.println("监听�?2: " + data);
         };
         
         eventBus.subscribe("test_event", listener1);
         eventBus.subscribe("test_event", listener2);
         
-        System.out.println("=== 第一次发布 ===");
+        System.out.println("=== 第一次发�?===");
         eventBus.publish("test_event", "消息 A");
         
         eventBus.unsubscribe("test_event", listener1);

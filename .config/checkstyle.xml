@@ -59,9 +59,7 @@
     <module name="SimplifyBooleanReturn"/>
     <module name="SuperClone"/>
     <module name="SuperFinalize"/>
-    <module name="SuppressWarnings">
-      <property name="prefixList" value="EST_"/>
-    </module>
+    <module name="SuppressWarnings"/>
     <module name="VisibilityModifier"/>
     <module name="WhitespaceAfter"/>
     <module name="WhitespaceAround">

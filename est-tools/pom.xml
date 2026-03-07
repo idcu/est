@@ -19,7 +19,7 @@
     <modules>
         <module>est-scaffold</module>
         <module>est-codegen</module>
-        <module>est-cli</module>
+        <!-- <module>est-cli</module> -->
         <module>est-migration</module>
     </modules>
 

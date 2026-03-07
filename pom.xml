@@ -38,7 +38,7 @@
         <module>est-modules</module>
         <module>est-app</module>
         <module>est-tools</module>
-        <module>est-examples</module>
+        <!-- <module>est-examples</module> -->
     </modules>
 
     <dependencyManagement>
@@ -455,17 +455,22 @@
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-web-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ltd.idcu</groupId>
-                <artifactId>est-web-impl</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ltd.idcu</groupId>
                 <artifactId>est-microservice-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-cli</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-codegen</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-migration</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

@@ -1,14 +1,14 @@
 package ltd.idcu.est.examples.basic.data;
 
-import ltd.idcu.est.features.data.api.Entity;
-import ltd.idcu.est.features.data.api.Id;
-import ltd.idcu.est.features.data.api.Repository;
-import ltd.idcu.est.features.data.memory.MemoryData;
+import ltd.idcu.est.data.api.Entity;
+import ltd.idcu.est.data.api.Id;
+import ltd.idcu.est.data.api.Repository;
+import ltd.idcu.est.data.memory.MemoryData;
 
 public class Data01_FirstExample {
     public static void main(String[] args) {
-        System.out.println("=== EST Data 第一个示例 ===");
-        System.out.println("这个示例将带你5分钟上手 EST Features Data！\n");
+        System.out.println("=== EST Data 第一个示�?===");
+        System.out.println("这个示例将带�?分钟上手 EST Features Data！\n");
         
         Repository<User, Long> userRepository = MemoryData.newRepository();
         

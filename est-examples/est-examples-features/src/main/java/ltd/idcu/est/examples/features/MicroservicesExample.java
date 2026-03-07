@@ -1,8 +1,8 @@
-package com.example.microservices;
+package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.config.api.*;
-import ltd.idcu.est.features.circuitbreaker.api.*;
-import ltd.idcu.est.features.discovery.api.*;
+import ltd.idcu.est.config.api.*;
+import ltd.idcu.est.circuitbreaker.api.*;
+import ltd.idcu.est.discovery.api.*;
 
 import java.util.Optional;
 

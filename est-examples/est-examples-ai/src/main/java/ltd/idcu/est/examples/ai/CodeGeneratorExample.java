@@ -1,8 +1,8 @@
-package com.example.ai;
+package ltd.idcu.est.examples.ai;
 
-import ltd.idcu.est.features.ai.api.AiAssistant;
-import ltd.idcu.est.features.ai.api.CodeGenerator;
-import ltd.idcu.est.features.ai.impl.Ai;
+import ltd.idcu.est.ai.api.AiAssistant;
+import ltd.idcu.est.ai.api.CodeGenerator;
+import ltd.idcu.est.ai.impl.Ai;
 
 import java.util.Map;
 

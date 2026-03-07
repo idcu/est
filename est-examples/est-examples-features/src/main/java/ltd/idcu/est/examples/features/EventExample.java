@@ -1,14 +1,14 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.event.api.EventBus;
-import ltd.idcu.est.features.event.local.LocalEvents;
+import ltd.idcu.est.event.api.EventBus;
+import ltd.idcu.est.event.local.LocalEvents;
 
 public class EventExample {
     public static void main(String[] args) {
         // 创建本地事件总线
         EventBus eventBus = LocalEvents.newLocalEventBus();
         
-        // 注册事件监听器
+        // 注册事件监听�?
         LocalEvents.subscribe(eventBus, "message", (String message) -> {
             System.out.println("Received event: " + message);
         });

@@ -1,9 +1,9 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.data.api.Entity;
-import ltd.idcu.est.features.data.api.Id;
-import ltd.idcu.est.features.data.api.Repository;
-import ltd.idcu.est.features.data.memory.MemoryData;
+import ltd.idcu.est.data.api.Entity;
+import ltd.idcu.est.data.api.Id;
+import ltd.idcu.est.data.api.Repository;
+import ltd.idcu.est.data.memory.MemoryData;
 
 import java.time.LocalDateTime;
 import java.util.List;

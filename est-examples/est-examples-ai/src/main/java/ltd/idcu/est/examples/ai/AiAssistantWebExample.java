@@ -1,11 +1,11 @@
-package com.example.ai;
+package ltd.idcu.est.examples.ai;
 
-import ltd.idcu.est.features.ai.api.AiAssistant;
-import ltd.idcu.est.features.ai.api.PromptTemplate;
-import ltd.idcu.est.features.ai.api.PromptTemplateRegistry;
-import ltd.idcu.est.features.ai.api.CodeGenerator;
-import ltd.idcu.est.features.ai.api.ProjectScaffold;
-import ltd.idcu.est.features.ai.impl.Ai;
+import ltd.idcu.est.ai.api.AiAssistant;
+import ltd.idcu.est.ai.api.PromptTemplate;
+import ltd.idcu.est.ai.api.PromptTemplateRegistry;
+import ltd.idcu.est.ai.api.CodeGenerator;
+import ltd.idcu.est.ai.api.ProjectScaffold;
+import ltd.idcu.est.ai.impl.Ai;
 import ltd.idcu.est.web.Web;
 import ltd.idcu.est.web.api.WebApplication;
 import ltd.idcu.est.web.api.Request;
@@ -13,6 +13,7 @@ import ltd.idcu.est.web.api.Response;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AiAssistantWebExample {
     

@@ -1,15 +1,15 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.security.api.Authentication;
-import ltd.idcu.est.features.security.api.PasswordEncoder;
-import ltd.idcu.est.features.security.api.User;
-import ltd.idcu.est.features.security.api.UserDetailsService;
-import ltd.idcu.est.features.security.basic.BasicSecurity;
-import ltd.idcu.est.features.security.basic.DefaultAuthentication;
+import ltd.idcu.est.security.api.Authentication;
+import ltd.idcu.est.security.api.PasswordEncoder;
+import ltd.idcu.est.security.api.User;
+import ltd.idcu.est.security.api.UserDetailsService;
+import ltd.idcu.est.security.basic.BasicSecurity;
+import ltd.idcu.est.security.basic.DefaultAuthentication;
 
 public class SecurityExample {
     public static void main(String[] args) {
-        // 创建密码编码器
+        // 创建密码编码�?
         PasswordEncoder passwordEncoder = BasicSecurity.passwordEncoder();
         
         // 编码密码
@@ -27,7 +27,7 @@ public class SecurityExample {
         User user = BasicSecurity.newUser("admin", encodedPassword);
         userDetailsService.save(user);
         
-        // 创建认证提供者
+        // 创建认证提供�?
         var authenticationProvider = BasicSecurity.authenticationProvider(userDetailsService, passwordEncoder);
         
         // 创建认证对象

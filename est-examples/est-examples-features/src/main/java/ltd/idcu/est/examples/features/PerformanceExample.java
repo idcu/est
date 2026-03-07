@@ -1,6 +1,6 @@
-package com.example.performance;
+package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.performance.api.*;
+import ltd.idcu.est.performance.api.*;
 
 import java.util.Map;
 

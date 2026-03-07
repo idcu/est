@@ -1,6 +1,6 @@
-package com.example.ai;
+package ltd.idcu.est.examples.ai;
 
-import ltd.idcu.est.features.ai.impl.Ai;
+import ltd.idcu.est.ai.impl.Ai;
 
 public class AiQuickStartExample {
     

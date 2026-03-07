@@ -266,7 +266,7 @@ public class SystemMetrics implements Metrics {
         cpuMetrics.put("cores", getAvailableCpuCores());
         cpuMetrics.put("systemLoad", getSystemCpuLoad());
         cpuMetrics.put("processLoad", getProcessCpuLoad());
-        return new Metric("system.cpu", cpuMetrics, "mixed", "System CPU metrics");
+        return new Metric("system.cpu", Metric.Type.CUSTOM, cpuMetrics, "mixed", "System CPU metrics");
     }
     
     public Metric getMemoryMetric() {
@@ -275,7 +275,7 @@ public class SystemMetrics implements Metrics {
         memMetrics.put("free", getFreePhysicalMemory());
         memMetrics.put("used", getUsedPhysicalMemory());
         memMetrics.put("usage", getMemoryUsage());
-        return new Metric("system.memory", memMetrics, "bytes", "System memory metrics");
+        return new Metric("system.memory", Metric.Type.CUSTOM, memMetrics, "bytes", "System memory metrics");
     }
     
     public Metric getDiskMetric() {
@@ -284,7 +284,7 @@ public class SystemMetrics implements Metrics {
         diskMetrics.put("free", getFreeDiskSpace());
         diskMetrics.put("used", getUsedDiskSpace());
         diskMetrics.put("usage", getDiskUsage());
-        return new Metric("system.disk", diskMetrics, "bytes", "System disk metrics");
+        return new Metric("system.disk", Metric.Type.CUSTOM, diskMetrics, "bytes", "System disk metrics");
     }
     
     public Map<String, Object> getDiskInfo() {
@@ -336,13 +336,14 @@ public class SystemMetrics implements Metrics {
         Map<String, Metric> details = new HashMap<>();
         Map<String, Object> allMetrics = getAllMetrics();
         for (Map.Entry<String, Object> entry : allMetrics.entrySet()) {
-            details.put(entry.getKey(), new Metric(entry.getKey(), entry.getValue()));
+            Metric.Type type = entry.getValue() instanceof Number ? Metric.Type.GAUGE : Metric.Type.CUSTOM;
+            details.put(entry.getKey(), new Metric(entry.getKey(), type, entry.getValue()));
         }
         for (Map.Entry<String, java.util.concurrent.atomic.AtomicLong> entry : counters.entrySet()) {
-            details.put(entry.getKey(), new Metric(entry.getKey(), entry.getValue().get(), "count"));
+            details.put(entry.getKey(), new Metric(entry.getKey(), Metric.Type.COUNTER, entry.getValue().get(), "count"));
         }
         for (Map.Entry<String, Number> entry : gauges.entrySet()) {
-            details.put(entry.getKey(), new Metric(entry.getKey(), entry.getValue()));
+            details.put(entry.getKey(), new Metric(entry.getKey(), Metric.Type.GAUGE, entry.getValue()));
         }
         return details;
     }

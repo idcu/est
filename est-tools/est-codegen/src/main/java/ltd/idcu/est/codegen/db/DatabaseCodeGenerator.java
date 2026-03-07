@@ -45,7 +45,7 @@ public class DatabaseCodeGenerator implements CodeGenerator {
     }
 
     @Override
-    public void generate() throws SQLException, IOException {
+    public void generate() throws IOException {
         try (Connection connection = getConnection()) {
             List<Table> tables = readTables(connection);
             
@@ -57,6 +57,8 @@ public class DatabaseCodeGenerator implements CodeGenerator {
             }
             
             System.out.println("Code generation completed!");
+        } catch (SQLException e) {
+            throw new IOException("Database error during code generation", e);
         }
     }
 

@@ -244,19 +244,19 @@ public class JvmMetrics implements Metrics {
     }
     
     public Metric getHeapMetric() {
-        return new Metric("jvm.heap", getAllMetrics(), "bytes", "JVM heap memory metrics");
+        return new Metric("jvm.heap", Metric.Type.CUSTOM, getAllMetrics(), "bytes", "JVM heap memory metrics");
     }
     
     public Metric getThreadMetric() {
-        return new Metric("jvm.thread", getAllMetrics(), "count", "JVM thread metrics");
+        return new Metric("jvm.thread", Metric.Type.CUSTOM, getAllMetrics(), "count", "JVM thread metrics");
     }
     
     public Metric getClassLoadingMetric() {
-        return new Metric("jvm.class", getAllMetrics(), "count", "JVM class loading metrics");
+        return new Metric("jvm.class", Metric.Type.CUSTOM, getAllMetrics(), "count", "JVM class loading metrics");
     }
     
     public Metric getGcMetric() {
-        return new Metric("jvm.gc", getAllMetrics(), "mixed", "JVM garbage collection metrics");
+        return new Metric("jvm.gc", Metric.Type.CUSTOM, getAllMetrics(), "mixed", "JVM garbage collection metrics");
     }
 
     @Override
@@ -289,13 +289,14 @@ public class JvmMetrics implements Metrics {
         Map<String, Metric> details = new HashMap<>();
         Map<String, Object> allMetrics = getAllMetrics();
         for (Map.Entry<String, Object> entry : allMetrics.entrySet()) {
-            details.put(entry.getKey(), new Metric(entry.getKey(), entry.getValue()));
+            Metric.Type type = entry.getValue() instanceof Number ? Metric.Type.GAUGE : Metric.Type.CUSTOM;
+            details.put(entry.getKey(), new Metric(entry.getKey(), type, entry.getValue()));
         }
         for (Map.Entry<String, AtomicLong> entry : counters.entrySet()) {
-            details.put(entry.getKey(), new Metric(entry.getKey(), entry.getValue().get(), "count"));
+            details.put(entry.getKey(), new Metric(entry.getKey(), Metric.Type.COUNTER, entry.getValue().get(), "count"));
         }
         for (Map.Entry<String, Number> entry : gauges.entrySet()) {
-            details.put(entry.getKey(), new Metric(entry.getKey(), entry.getValue()));
+            details.put(entry.getKey(), new Metric(entry.getKey(), Metric.Type.GAUGE, entry.getValue()));
         }
         return details;
     }

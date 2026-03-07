@@ -2,8 +2,8 @@ package ltd.idcu.est.examples.basic.data;
 
 import ltd.idcu.est.collection.api.Seq;
 import ltd.idcu.est.collection.impl.Seqs;
-import ltd.idcu.est.features.data.memory.MemoryData;
-import ltd.idcu.est.features.data.memory.MemoryRepository;
+import ltd.idcu.est.data.memory.MemoryData;
+import ltd.idcu.est.data.memory.MemoryRepository;
 
 import java.util.List;
 
@@ -46,33 +46,33 @@ public class Data04_CollectionIntegration {
         List<Product> productList = repo.findAll();
         Seq<Product> products = Seqs.from(productList);
         
-        System.out.println("--- 1. 筛选有库存且价格 < 10000 的产品 ---");
+        System.out.println("--- 1. 筛选有库存且价�?< 10000 的产�?---");
         products
             .where(p -> p.getStock() > 0)
             .where(p -> p.getPrice() < 10000)
             .forEach(System.out::println);
         
-        System.out.println("\n--- 2. 按价格从低到高排序 ---");
+        System.out.println("\n--- 2. 按价格从低到高排�?---");
         products
             .sortBy(Product::getPrice)
             .forEach(System.out::println);
         
-        System.out.println("\n--- 3. 计算所有有库存产品的总价值 ---");
+        System.out.println("\n--- 3. 计算所有有库存产品的总价�?---");
         double totalValue = products
             .where(p -> p.getStock() > 0)
             .mapToDouble(p -> p.getPrice() * p.getStock())
             .sum();
-        System.out.println("库存总价值：" + totalValue + " 元");
+        System.out.println("库存总价值：" + totalValue + " �?);
         
-        System.out.println("\n--- 4. 找出最贵的 3 个产品 ---");
+        System.out.println("\n--- 4. 找出最贵的 3 个产�?---");
         products
             .sortBy(Product::getPrice, true)
             .take(3)
             .forEach(System.out::println);
         
         System.out.println("\n--- 5. 统计各价格区间的产品数量 ---");
-        System.out.println("价格 < 5000：" + products.where(p -> p.getPrice() < 5000).count());
-        System.out.println("5000-10000：" + products.where(p -> p.getPrice() >= 5000 && p.getPrice() < 10000).count());
-        System.out.println("价格 >= 10000：" + products.where(p -> p.getPrice() >= 10000).count());
+        System.out.println("价格 < 5000�? + products.where(p -> p.getPrice() < 5000).count());
+        System.out.println("5000-10000�? + products.where(p -> p.getPrice() >= 5000 && p.getPrice() < 10000).count());
+        System.out.println("价格 >= 10000�? + products.where(p -> p.getPrice() >= 10000).count());
     }
 }

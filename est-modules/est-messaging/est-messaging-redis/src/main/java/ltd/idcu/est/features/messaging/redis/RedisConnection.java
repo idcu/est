@@ -53,8 +53,12 @@ public class RedisConnection {
     }
     
     public void publish(String channel, String message) throws MessagingException {
-        sendCommand("PUBLISH", channel, message);
-        readResponse();
+        try {
+            sendCommand("PUBLISH", channel, message);
+            readResponse();
+        } catch (IOException e) {
+            throw new MessagingException("Failed to publish message", e);
+        }
     }
     
     public void subscribe(String channel, SubscriptionListener listener) throws MessagingException {

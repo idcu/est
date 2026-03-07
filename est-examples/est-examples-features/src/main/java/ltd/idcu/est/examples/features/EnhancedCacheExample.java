@@ -1,9 +1,9 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.cache.api.Cache;
-import ltd.idcu.est.features.cache.api.CacheConfig;
-import ltd.idcu.est.features.cache.file.FileCaches;
-import ltd.idcu.est.features.cache.memory.Caches;
+import ltd.idcu.est.cache.api.Cache;
+import ltd.idcu.est.cache.api.CacheConfig;
+import ltd.idcu.est.cache.file.FileCaches;
+import ltd.idcu.est.cache.memory.Caches;
 
 import java.util.concurrent.TimeUnit;
 

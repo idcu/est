@@ -1,12 +1,12 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.messaging.api.DefaultMessage;
-import ltd.idcu.est.features.messaging.api.Message;
-import ltd.idcu.est.features.messaging.api.MessageConsumer;
-import ltd.idcu.est.features.messaging.api.MessageProducer;
-import ltd.idcu.est.features.messaging.api.MessageQueue;
-import ltd.idcu.est.features.messaging.api.MessageTopic;
-import ltd.idcu.est.features.messaging.local.LocalMessages;
+import ltd.idcu.est.messaging.api.DefaultMessage;
+import ltd.idcu.est.messaging.api.Message;
+import ltd.idcu.est.messaging.api.MessageConsumer;
+import ltd.idcu.est.messaging.api.MessageProducer;
+import ltd.idcu.est.messaging.api.MessageQueue;
+import ltd.idcu.est.messaging.api.MessageTopic;
+import ltd.idcu.est.messaging.local.LocalMessages;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;

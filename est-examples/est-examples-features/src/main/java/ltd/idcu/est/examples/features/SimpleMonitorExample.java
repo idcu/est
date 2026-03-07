@@ -1,9 +1,9 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.monitor.jvm.JvmMonitor;
-import ltd.idcu.est.features.monitor.api.HealthCheckResult;
-import ltd.idcu.est.features.logging.api.Logger;
-import ltd.idcu.est.features.logging.console.ConsoleLogs;
+import ltd.idcu.est.monitor.jvm.JvmMonitor;
+import ltd.idcu.est.monitor.api.HealthCheckResult;
+import ltd.idcu.est.logging.api.Logger;
+import ltd.idcu.est.logging.console.ConsoleLogs;
 
 import java.util.Map;
 
@@ -17,7 +17,7 @@ public class SimpleMonitorExample {
         jvmMonitorExample();
         healthCheckExample();
         
-        System.out.println("\n✓ 所有示例完成！");
+        System.out.println("\n�?所有示例完成！");
     }
     
     private static void jvmMonitorExample() {
@@ -42,14 +42,14 @@ public class SimpleMonitorExample {
     }
     
     private static void healthCheckExample() {
-        System.out.println("\n--- 健康检查 ---");
+        System.out.println("\n--- 健康检�?---");
         
         JvmMonitor monitor = JvmMonitor.getInstance();
         HealthCheckResult result = monitor.checkHealth();
         
-        System.out.println("  健康状态: " + result.getHealthStatus());
-        System.out.println("  状态消息: " + result.getMessage());
+        System.out.println("  健康状�? " + result.getHealthStatus());
+        System.out.println("  状态消�? " + result.getMessage());
         
-        logger.info("健康检查示例完成");
+        logger.info("健康检查示例完�?);
     }
 }

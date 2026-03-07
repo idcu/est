@@ -6,19 +6,8 @@ import ltd.idcu.est.migration.MigrationResult;
 
 public class Est1xTo2xModuleMigrationRule extends AbstractMigrationRule {
 
-    @Override
-    public int getPriority() {
-        return 100;
-    }
-
-    @Override
-    public String getName() {
-        return "EST 1.X to 2.0 Module Migration";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Migrates EST 1.X module names and package names to EST 2.0";
+    public Est1xTo2xModuleMigrationRule() {
+        super("EST 1.X to 2.0 Module Migration", "Migrates EST 1.X module names and package names to EST 2.0", 100);
     }
 
     @Override
@@ -59,7 +48,7 @@ public class Est1xTo2xModuleMigrationRule extends AbstractMigrationRule {
         migrated = migrated.replaceAll("est-microservices-gateway", "est-gateway");
 
         if (!migrated.equals(content)) {
-            result.addInfo("Updated module names from EST 1.X to 2.0");
+            result.addWarning("Updated module names from EST 1.X to 2.0");
         }
 
         return migrated;
@@ -69,7 +58,7 @@ public class Est1xTo2xModuleMigrationRule extends AbstractMigrationRule {
         String migrated = content;
 
         if (!migrated.equals(content)) {
-            result.addInfo("Updated package names from EST 1.X to 2.0");
+            result.addWarning("Updated package names from EST 1.X to 2.0");
         }
 
         return migrated;

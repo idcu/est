@@ -1,9 +1,9 @@
 package ltd.idcu.est.examples.basic.data;
 
-import ltd.idcu.est.features.data.api.Entity;
-import ltd.idcu.est.features.data.api.Id;
-import ltd.idcu.est.features.data.api.Repository;
-import ltd.idcu.est.features.data.memory.MemoryData;
+import ltd.idcu.est.data.api.Entity;
+import ltd.idcu.est.data.api.Id;
+import ltd.idcu.est.data.api.Repository;
+import ltd.idcu.est.data.memory.MemoryData;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class Data02_BasicCrud {
         
         Repository<Product, Long> repo = MemoryData.newRepository();
         
-        System.out.println("--- 1. 新增（Create）---");
+        System.out.println("--- 1. 新增（Create�?--");
         Product p1 = new Product();
         p1.setName("iPhone 15");
         p1.setPrice(5999.0);
@@ -26,30 +26,30 @@ public class Data02_BasicCrud {
         p2.setStock(50);
         repo.save(p2);
         
-        System.out.println("保存了 2 个产品");
+        System.out.println("保存�?2 个产�?);
         
-        System.out.println("\n--- 2. 查询（Read）---");
+        System.out.println("\n--- 2. 查询（Read�?--");
         Product found = repo.findById(1L).orElse(null);
         System.out.println("找到 ID=1 的产品：" + found);
         
         List<Product> all = repo.findAll();
         System.out.println("所有产品：" + all);
         
-        System.out.println("\n--- 3. 更新（Update）---");
+        System.out.println("\n--- 3. 更新（Update�?--");
         Product toUpdate = repo.findById(1L).orElse(null);
         if (toUpdate != null) {
             toUpdate.setPrice(5499.0);
             toUpdate.setStock(80);
             repo.save(toUpdate);
-            System.out.println("更新后的产品：" + repo.findById(1L).orElse(null));
+            System.out.println("更新后的产品�? + repo.findById(1L).orElse(null));
         }
         
-        System.out.println("\n--- 4. 删除（Delete）---");
+        System.out.println("\n--- 4. 删除（Delete�?--");
         repo.deleteById(2L);
-        System.out.println("删除后剩余产品数：" + repo.count());
+        System.out.println("删除后剩余产品数�? + repo.count());
         
         repo.deleteAll();
-        System.out.println("清空后剩余产品数：" + repo.count());
+        System.out.println("清空后剩余产品数�? + repo.count());
     }
 }
 

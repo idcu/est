@@ -1,8 +1,8 @@
 package ltd.idcu.est.examples.basic.event;
 
-import ltd.idcu.est.features.event.api.EventBus;
-import ltd.idcu.est.features.event.api.EventListener;
-import ltd.idcu.est.features.event.local.LocalEvents;
+import ltd.idcu.est.event.api.EventBus;
+import ltd.idcu.est.event.api.EventListener;
+import ltd.idcu.est.event.local.LocalEvents;
 
 public class Event03_Subscribe {
     public static void main(String[] args) {

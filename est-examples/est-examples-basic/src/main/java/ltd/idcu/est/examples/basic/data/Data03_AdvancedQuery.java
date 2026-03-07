@@ -1,7 +1,7 @@
 package ltd.idcu.est.examples.basic.data;
 
-import ltd.idcu.est.features.data.memory.MemoryData;
-import ltd.idcu.est.features.data.memory.MemoryRepository;
+import ltd.idcu.est.data.memory.MemoryData;
+import ltd.idcu.est.data.memory.MemoryRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +36,7 @@ public class Data03_AdvancedQuery {
         p4.setStock(0);
         repo.save(p4);
         
-        System.out.println("--- 查找价格小于 10000 的产品 ---");
+        System.out.println("--- 查找价格小于 10000 的产�?---");
         List<Product> affordable = repo.findByPredicate(p -> p.getPrice() < 10000);
         affordable.forEach(System.out::println);
         
@@ -44,20 +44,20 @@ public class Data03_AdvancedQuery {
         List<Product> inStock = repo.findByPredicate(p -> p.getStock() > 0);
         inStock.forEach(System.out::println);
         
-        System.out.println("\n--- 查找名称包含 'iPhone' 的产品 ---");
+        System.out.println("\n--- 查找名称包含 'iPhone' 的产�?---");
         List<Product> iphones = repo.findByPredicate(p -> p.getName().contains("iPhone"));
         iphones.forEach(System.out::println);
         
-        System.out.println("\n--- 查找第一个价格大于 5000 的产品 ---");
+        System.out.println("\n--- 查找第一个价格大�?5000 的产�?---");
         Optional<Product> expensive = repo.findFirstByPredicate(p -> p.getPrice() > 5000);
-        expensive.ifPresent(p -> System.out.println("找到：" + p));
+        expensive.ifPresent(p -> System.out.println("找到�? + p));
         
-        System.out.println("\n--- 统计价格大于 5000 的产品数量 ---");
+        System.out.println("\n--- 统计价格大于 5000 的产品数�?---");
         long count = repo.countByPredicate(p -> p.getPrice() > 5000);
-        System.out.println("数量：" + count);
+        System.out.println("数量�? + count);
         
         System.out.println("\n--- 删除所有缺货的产品 ---");
         repo.deleteByPredicate(p -> p.getStock() == 0);
-        System.out.println("删除后剩余：" + repo.count() + " 个产品");
+        System.out.println("删除后剩余：" + repo.count() + " 个产�?);
     }
 }

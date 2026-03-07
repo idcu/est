@@ -1,13 +1,13 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.security.api.Authentication;
-import ltd.idcu.est.features.security.api.PasswordEncoder;
-import ltd.idcu.est.features.security.api.User;
-import ltd.idcu.est.features.security.api.UserDetailsService;
-import ltd.idcu.est.features.security.basic.BasicSecurity;
-import ltd.idcu.est.features.security.basic.DefaultAuthentication;
-import ltd.idcu.est.features.logging.api.Logger;
-import ltd.idcu.est.features.logging.console.ConsoleLogs;
+import ltd.idcu.est.security.api.Authentication;
+import ltd.idcu.est.security.api.PasswordEncoder;
+import ltd.idcu.est.security.api.User;
+import ltd.idcu.est.security.api.UserDetailsService;
+import ltd.idcu.est.security.basic.BasicSecurity;
+import ltd.idcu.est.security.basic.DefaultAuthentication;
+import ltd.idcu.est.logging.api.Logger;
+import ltd.idcu.est.logging.console.ConsoleLogs;
 
 public class SimpleSecurityExample {
     
@@ -19,7 +19,7 @@ public class SimpleSecurityExample {
         passwordEncoderExample();
         basicAuthenticationExample();
         
-        System.out.println("\n✓ 所有示例完成！");
+        System.out.println("\n�?所有示例完成！");
     }
     
     private static void passwordEncoderExample() {
@@ -31,7 +31,7 @@ public class SimpleSecurityExample {
         System.out.println("  明文密码: " + plainPassword);
         
         String encoded = encoder.encode(plainPassword);
-        System.out.println("  加密后: " + encoded);
+        System.out.println("  加密�? " + encoded);
         
         boolean matches = encoder.matches(plainPassword, encoded);
         System.out.println("  密码验证: " + matches);

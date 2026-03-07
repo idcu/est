@@ -1,13 +1,13 @@
 package ltd.idcu.est.examples.features;
 
-import ltd.idcu.est.features.messaging.api.DefaultMessage;
-import ltd.idcu.est.features.messaging.api.MessageQueue;
-import ltd.idcu.est.features.messaging.api.MessageTopic;
-import ltd.idcu.est.features.messaging.api.MessageConsumer;
-import ltd.idcu.est.features.messaging.api.MessageProducer;
-import ltd.idcu.est.features.messaging.local.LocalMessages;
-import ltd.idcu.est.features.logging.api.Logger;
-import ltd.idcu.est.features.logging.console.ConsoleLogs;
+import ltd.idcu.est.messaging.api.DefaultMessage;
+import ltd.idcu.est.messaging.api.MessageQueue;
+import ltd.idcu.est.messaging.api.MessageTopic;
+import ltd.idcu.est.messaging.api.MessageConsumer;
+import ltd.idcu.est.messaging.api.MessageProducer;
+import ltd.idcu.est.messaging.local.LocalMessages;
+import ltd.idcu.est.logging.api.Logger;
+import ltd.idcu.est.logging.console.ConsoleLogs;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +22,7 @@ public class SimpleMessagingExample {
         queueExample();
         topicExample();
         
-        System.out.println("\n✓ 所有示例完成！");
+        System.out.println("\n�?所有示例完成！");
     }
     
     private static void queueExample() throws InterruptedException {
@@ -62,12 +62,12 @@ public class SimpleMessagingExample {
         CountDownLatch latch2 = new CountDownLatch(2);
         
         topic.subscribe(msg -> {
-            System.out.println("  订阅者 1 收到: " + msg.getBody());
+            System.out.println("  订阅�?1 收到: " + msg.getBody());
             latch1.countDown();
         });
         
         topic.subscribe(msg -> {
-            System.out.println("  订阅者 2 收到: " + msg.getBody());
+            System.out.println("  订阅�?2 收到: " + msg.getBody());
             latch2.countDown();
         });
         

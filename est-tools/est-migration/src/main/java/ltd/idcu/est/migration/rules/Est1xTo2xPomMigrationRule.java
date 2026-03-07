@@ -6,19 +6,8 @@ import ltd.idcu.est.migration.MigrationResult;
 
 public class Est1xTo2xPomMigrationRule extends AbstractMigrationRule {
 
-    @Override
-    public int getPriority() {
-        return 90;
-    }
-
-    @Override
-    public String getName() {
-        return "EST 1.X to 2.0 POM Migration";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Migrates EST 1.X pom.xml dependencies to EST 2.0";
+    public Est1xTo2xPomMigrationRule() {
+        super("EST 1.X to 2.0 POM Migration", "Migrates EST 1.X pom.xml dependencies to EST 2.0", 90);
     }
 
     @Override
@@ -264,7 +253,7 @@ public class Est1xTo2xPomMigrationRule extends AbstractMigrationRule {
         );
 
         if (!migrated.equals(content)) {
-            result.addInfo("Updated pom.xml dependencies from EST 1.X to 2.0");
+            result.addWarning("Updated pom.xml dependencies from EST 1.X to 2.0");
         }
 
         return migrated;

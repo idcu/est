@@ -136,16 +136,6 @@
             <groupId>ltd.idcu</groupId>
             <artifactId>est-messaging-amqp</artifactId>
         </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-ide-support</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-migration-tool</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
