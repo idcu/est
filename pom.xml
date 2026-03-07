@@ -36,9 +36,8 @@
         <module>est-core</module>
         <module>est-base</module>
         <module>est-features</module>
-        <module>est-extensions</module>
-        <module>est-microservices</module>
         <module>est-modules</module>
+        <module>est-app</module>
         <module>est-tools</module>
         <module>est-examples</module>
     </modules>
@@ -443,6 +442,31 @@
             <dependency>
                 <groupId>ltd.idcu</groupId>
                 <artifactId>est-gateway</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-console-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-console-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-web-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-web-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-microservice-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
