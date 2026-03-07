@@ -1,11 +1,12 @@
 package ltd.idcu.est.core.impl;
 
-import ltd.idcu.est.core.api.annotation.Transactional;
-import ltd.idcu.est.core.api.transaction.PlatformTransactionManager;
-import ltd.idcu.est.core.api.transaction.TransactionDefinition;
-import ltd.idcu.est.core.api.transaction.TransactionStatus;
-import ltd.idcu.est.core.impl.transaction.DataSourceTransactionManager;
-import ltd.idcu.est.core.impl.transaction.DefaultTransactionDefinition;
+import ltd.idcu.est.core.tx.api.annotation.Transactional;
+import ltd.idcu.est.core.tx.api.PlatformTransactionManager;
+import ltd.idcu.est.core.tx.api.TransactionDefinition;
+import ltd.idcu.est.core.tx.api.TransactionStatus;
+import ltd.idcu.est.core.tx.impl.DataSourceTransactionManager;
+import ltd.idcu.est.core.tx.impl.DefaultTransactionDefinition;
+import ltd.idcu.est.test.Assertions;
 import ltd.idcu.est.test.annotation.Test;
 
 import javax.sql.DataSource;
@@ -15,28 +16,24 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
-import static ltd.idcu.est.test.Assert.*;
-
 public class TransactionTest {
 
     static class MockDataSource implements DataSource {
-        Connection connection;
         boolean committed = false;
         boolean rolledBack = false;
         boolean autoCommit = true;
 
         public MockDataSource() {
-            this.connection = new MockConnection(this);
         }
 
         @Override
         public Connection getConnection() throws SQLException {
-            return connection;
+            return new MockConnection(this);
         }
 
         @Override
         public Connection getConnection(String username, String password) throws SQLException {
-            return connection;
+            return getConnection();
         }
 
         @Override
@@ -66,6 +63,11 @@ public class TransactionTest {
 
         public MockConnection(MockDataSource dataSource) {
             this.dataSource = dataSource;
+        }
+
+        @Override
+        public boolean isValid(int timeout) throws SQLException {
+            return true;
         }
 
         @Override
@@ -218,6 +220,18 @@ public class TransactionTest {
         public int getNetworkTimeout() throws SQLException { return 0; }
 
         @Override
+        public java.sql.SQLXML createSQLXML() throws SQLException { return null; }
+
+        @Override
+        public java.sql.NClob createNClob() throws SQLException { return null; }
+
+        @Override
+        public java.sql.Clob createClob() throws SQLException { return null; }
+
+        @Override
+        public java.sql.Blob createBlob() throws SQLException { return null; }
+
+        @Override
         public <T> T unwrap(Class<T> iface) throws SQLException { return null; }
 
         @Override
@@ -232,14 +246,14 @@ public class TransactionTest {
         TransactionDefinition definition = new DefaultTransactionDefinition();
         TransactionStatus status = txManager.getTransaction(definition);
         
-        assertTrue(status.isNewTransaction());
-        assertFalse(dataSource.autoCommit);
+        Assertions.assertTrue(status.isNewTransaction());
+        Assertions.assertFalse(dataSource.autoCommit);
         
         txManager.commit(status);
         
-        assertTrue(dataSource.committed);
-        assertFalse(dataSource.rolledBack);
-        assertTrue(status.isCompleted());
+        Assertions.assertTrue(dataSource.committed);
+        Assertions.assertFalse(dataSource.rolledBack);
+        Assertions.assertTrue(status.isCompleted());
     }
 
     @Test
@@ -252,9 +266,9 @@ public class TransactionTest {
         
         txManager.rollback(status);
         
-        assertFalse(dataSource.committed);
-        assertTrue(dataSource.rolledBack);
-        assertTrue(status.isCompleted());
+        Assertions.assertFalse(dataSource.committed);
+        Assertions.assertTrue(dataSource.rolledBack);
+        Assertions.assertTrue(status.isCompleted());
     }
 
     @Test
@@ -266,12 +280,12 @@ public class TransactionTest {
         TransactionStatus status = txManager.getTransaction(definition);
         
         status.setRollbackOnly();
-        assertTrue(status.isRollbackOnly());
+        Assertions.assertTrue(status.isRollbackOnly());
         
         txManager.commit(status);
         
-        assertFalse(dataSource.committed);
-        assertTrue(dataSource.rolledBack);
+        Assertions.assertFalse(dataSource.committed);
+        Assertions.assertTrue(dataSource.rolledBack);
     }
 
     @Test
@@ -287,9 +301,9 @@ public class TransactionTest {
         Transactional annotation = TestClass.class.getAnnotation(Transactional.class);
         DefaultTransactionDefinition definition = DefaultTransactionDefinition.from(annotation);
         
-        assertEquals(Transactional.Propagation.REQUIRES_NEW, definition.getPropagationBehavior());
-        assertEquals(Transactional.Isolation.READ_COMMITTED, definition.getIsolationLevel());
-        assertEquals(30, definition.getTimeout());
-        assertTrue(definition.isReadOnly());
+        Assertions.assertEquals(Transactional.Propagation.REQUIRES_NEW, definition.getPropagationBehavior());
+        Assertions.assertEquals(Transactional.Isolation.READ_COMMITTED, definition.getIsolationLevel());
+        Assertions.assertEquals(30, definition.getTimeout());
+        Assertions.assertTrue(definition.isReadOnly());
     }
 }
