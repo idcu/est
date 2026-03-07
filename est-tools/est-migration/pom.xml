@@ -10,9 +10,9 @@
         <version>1.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>est-migration-tool</artifactId>
+    <artifactId>est-migration</artifactId>
     <packaging>jar</packaging>
-    <name>EST Migration Tool</name>
+    <name>EST Migration</name>
     <description>Migration tool for migrating from Spring Boot, Solon, and other frameworks to EST Framework</description>
 
     <dependencies>
