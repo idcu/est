@@ -1,6 +1,6 @@
-package ltd.idcu.est.dbgenerator.reader;
+package ltd.idcu.est.codegen.db.reader;
 
-import ltd.idcu.est.dbgenerator.metadata.Table;
+import ltd.idcu.est.codegen.db.metadata.Table;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;

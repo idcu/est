@@ -59,7 +59,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ltd.idcu.est.dbgenerator.DatabaseCodeGenerator</mainClass>
+                            <mainClass>ltd.idcu.est.codegen.CodeGeneratorMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

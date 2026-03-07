@@ -1,12 +1,12 @@
-package ltd.idcu.est.dbgenerator.reader;
+package ltd.idcu.est.codegen.db.reader;
 
-import ltd.idcu.est.dbgenerator.metadata.Column;
-import ltd.idcu.est.dbgenerator.metadata.ForeignKey;
-import ltd.idcu.est.dbgenerator.metadata.Index;
-import ltd.idcu.est.dbgenerator.metadata.PrimaryKey;
-import ltd.idcu.est.dbgenerator.metadata.Table;
-import ltd.idcu.est.dbgenerator.type.TypeMapper;
-import ltd.idcu.est.dbgenerator.util.NamingUtils;
+import ltd.idcu.est.codegen.db.metadata.Column;
+import ltd.idcu.est.codegen.db.metadata.ForeignKey;
+import ltd.idcu.est.codegen.db.metadata.Index;
+import ltd.idcu.est.codegen.db.metadata.PrimaryKey;
+import ltd.idcu.est.codegen.db.metadata.Table;
+import ltd.idcu.est.codegen.db.type.TypeMapper;
+import ltd.idcu.est.codegen.db.util.NamingUtils;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -17,13 +17,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PostgreSQLMetadataReader implements DatabaseMetadataReader {
+public class MySQLMetadataReader implements DatabaseMetadataReader {
 
     @Override
     public List<String> getTableNames(Connection connection) throws SQLException {
         List<String> tableNames = new ArrayList<>();
         DatabaseMetaData metaData = connection.getMetaData();
-        try (ResultSet rs = metaData.getTables(connection.getCatalog(), "public", "%", new String[]{"TABLE"})) {
+        try (ResultSet rs = metaData.getTables(connection.getCatalog(), null, "%", new String[]{"TABLE"})) {
             while (rs.next()) {
                 tableNames.add(rs.getString("TABLE_NAME"));
             }
@@ -64,7 +64,7 @@ public class PostgreSQLMetadataReader implements DatabaseMetadataReader {
     }
 
     private void readColumns(DatabaseMetaData metaData, Table table) throws SQLException {
-        try (ResultSet rs = metaData.getColumns(null, "public", table.getName(), "%")) {
+        try (ResultSet rs = metaData.getColumns(null, null, table.getName(), "%")) {
             while (rs.next()) {
                 Column column = new Column();
                 column.setName(rs.getString("COLUMN_NAME"));
@@ -91,7 +91,7 @@ public class PostgreSQLMetadataReader implements DatabaseMetadataReader {
 
     private void readPrimaryKey(DatabaseMetaData metaData, Table table) throws SQLException {
         PrimaryKey primaryKey = new PrimaryKey();
-        try (ResultSet rs = metaData.getPrimaryKeys(null, "public", table.getName())) {
+        try (ResultSet rs = metaData.getPrimaryKeys(null, null, table.getName())) {
             while (rs.next()) {
                 if (primaryKey.getName() == null) {
                     primaryKey.setName(rs.getString("PK_NAME"));
@@ -110,7 +110,7 @@ public class PostgreSQLMetadataReader implements DatabaseMetadataReader {
     }
 
     private void readForeignKeys(DatabaseMetaData metaData, Table table) throws SQLException {
-        try (ResultSet rs = metaData.getImportedKeys(null, "public", table.getName())) {
+        try (ResultSet rs = metaData.getImportedKeys(null, null, table.getName())) {
             while (rs.next()) {
                 ForeignKey foreignKey = new ForeignKey();
                 foreignKey.setName(rs.getString("FK_NAME"));
@@ -129,7 +129,7 @@ public class PostgreSQLMetadataReader implements DatabaseMetadataReader {
 
     private void readIndexes(DatabaseMetaData metaData, Table table) throws SQLException {
         Map<String, Index> indexMap = new HashMap<>();
-        try (ResultSet rs = metaData.getIndexInfo(null, "public", table.getName(), false, true)) {
+        try (ResultSet rs = metaData.getIndexInfo(null, null, table.getName(), false, true)) {
             while (rs.next()) {
                 String indexName = rs.getString("INDEX_NAME");
                 if (indexName == null || "PRIMARY".equals(indexName)) {
@@ -154,7 +154,7 @@ public class PostgreSQLMetadataReader implements DatabaseMetadataReader {
     }
 
     private void readTableRemarks(DatabaseMetaData metaData, Table table) throws SQLException {
-        try (ResultSet rs = metaData.getTables(null, "public", table.getName(), new String[]{"TABLE"})) {
+        try (ResultSet rs = metaData.getTables(null, null, table.getName(), new String[]{"TABLE"})) {
             if (rs.next()) {
                 table.setRemarks(rs.getString("REMARKS"));
             }

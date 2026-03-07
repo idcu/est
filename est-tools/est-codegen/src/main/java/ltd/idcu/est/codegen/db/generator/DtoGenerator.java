@@ -1,9 +1,9 @@
-package ltd.idcu.est.dbgenerator.generator;
+package ltd.idcu.est.codegen.db.generator;
 
-import ltd.idcu.est.dbgenerator.config.GeneratorConfig;
-import ltd.idcu.est.dbgenerator.metadata.Column;
-import ltd.idcu.est.dbgenerator.metadata.Table;
-import ltd.idcu.est.dbgenerator.type.TypeMapper;
+import ltd.idcu.est.codegen.db.config.GeneratorConfig;
+import ltd.idcu.est.codegen.db.metadata.Column;
+import ltd.idcu.est.codegen.db.metadata.Table;
+import ltd.idcu.est.codegen.db.type.TypeMapper;
 import ltd.idcu.est.scaffold.TemplateEngine;
 
 import java.io.IOException;

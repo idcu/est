@@ -1,10 +1,11 @@
-package ltd.idcu.est.dbgenerator.metadata;
+package ltd.idcu.est.codegen.db.metadata;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrimaryKey {
+public class Index {
     private String name;
+    private boolean unique;
     private List<Column> columns = new ArrayList<>();
 
     public String getName() {
@@ -13,6 +14,14 @@ public class PrimaryKey {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isUnique() {
+        return unique;
+    }
+
+    public void setUnique(boolean unique) {
+        this.unique = unique;
     }
 
     public List<Column> getColumns() {
@@ -27,18 +36,11 @@ public class PrimaryKey {
         this.columns.add(column);
     }
 
-    public Column getFirstColumn() {
-        return columns.isEmpty() ? null : columns.get(0);
-    }
-
-    public boolean isComposite() {
-        return columns.size() > 1;
-    }
-
     @Override
     public String toString() {
-        return "PrimaryKey{" +
+        return "Index{" +
                 "name='" + name + '\'' +
+                ", unique=" + unique +
                 ", columns=" + columns +
                 '}';
     }

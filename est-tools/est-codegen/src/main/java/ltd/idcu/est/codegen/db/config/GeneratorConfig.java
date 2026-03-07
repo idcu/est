@@ -1,4 +1,4 @@
-package ltd.idcu.est.dbgenerator.config;
+package ltd.idcu.est.codegen.db.config;
 
 import java.util.ArrayList;
 import java.util.List;

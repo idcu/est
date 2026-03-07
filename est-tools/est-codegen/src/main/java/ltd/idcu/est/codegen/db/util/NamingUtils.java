@@ -1,4 +1,4 @@
-package ltd.idcu.est.dbgenerator.util;
+package ltd.idcu.est.codegen.db.util;
 
 public class NamingUtils {
 

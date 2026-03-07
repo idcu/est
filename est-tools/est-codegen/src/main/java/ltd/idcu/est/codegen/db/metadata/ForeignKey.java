@@ -1,4 +1,4 @@
-package ltd.idcu.est.dbgenerator.metadata;
+package ltd.idcu.est.codegen.db.metadata;
 
 public class ForeignKey {
     private String name;

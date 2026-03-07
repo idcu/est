@@ -1,4 +1,4 @@
-package ltd.idcu.est.dbgenerator.config;
+package ltd.idcu.est.codegen.db.config;
 
 import ltd.idcu.est.utils.format.yaml.YamlUtils;
 import ltd.idcu.est.utils.io.ResourceUtils;

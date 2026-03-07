@@ -1,4 +1,4 @@
-package ltd.idcu.est.dbgenerator.type;
+package ltd.idcu.est.codegen.db.type;
 
 import java.sql.Types;
 import java.util.HashMap;

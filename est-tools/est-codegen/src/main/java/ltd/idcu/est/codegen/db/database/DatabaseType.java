@@ -1,8 +1,8 @@
-package ltd.idcu.est.dbgenerator.database;
+package ltd.idcu.est.codegen.db.database;
 
-import ltd.idcu.est.dbgenerator.reader.DatabaseMetadataReader;
-import ltd.idcu.est.dbgenerator.reader.MySQLMetadataReader;
-import ltd.idcu.est.dbgenerator.reader.PostgreSQLMetadataReader;
+import ltd.idcu.est.codegen.db.reader.DatabaseMetadataReader;
+import ltd.idcu.est.codegen.db.reader.MySQLMetadataReader;
+import ltd.idcu.est.codegen.db.reader.PostgreSQLMetadataReader;
 
 public enum DatabaseType {
     MYSQL("mysql", "com.mysql.cj.jdbc.Driver", MySQLMetadataReader.class),

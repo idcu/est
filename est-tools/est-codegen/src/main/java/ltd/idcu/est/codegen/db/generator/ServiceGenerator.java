@@ -1,19 +1,19 @@
-package ltd.idcu.est.dbgenerator.generator;
+package ltd.idcu.est.codegen.db.generator;
 
-import ltd.idcu.est.dbgenerator.config.GeneratorConfig;
-import ltd.idcu.est.dbgenerator.metadata.Column;
-import ltd.idcu.est.dbgenerator.metadata.PrimaryKey;
-import ltd.idcu.est.dbgenerator.metadata.Table;
-import ltd.idcu.est.dbgenerator.type.TypeMapper;
+import ltd.idcu.est.codegen.db.config.GeneratorConfig;
+import ltd.idcu.est.codegen.db.metadata.Column;
+import ltd.idcu.est.codegen.db.metadata.PrimaryKey;
+import ltd.idcu.est.codegen.db.metadata.Table;
+import ltd.idcu.est.codegen.db.type.TypeMapper;
 import ltd.idcu.est.scaffold.TemplateEngine;
 
 import java.io.IOException;
 
-public class RepositoryGenerator {
+public class ServiceGenerator {
 
     private final GeneratorConfig config;
 
-    public RepositoryGenerator(GeneratorConfig config) {
+    public ServiceGenerator(GeneratorConfig config) {
         this.config = config;
     }
 
@@ -22,12 +22,13 @@ public class RepositoryGenerator {
         
         String idType = getIdType(table);
         
-        engine.setVariable("package", config.getRepositoryPackage());
+        engine.setVariable("package", config.getServicePackage());
         engine.setVariable("className", table.getClassName());
         engine.setVariable("entityPackage", config.getEntityPackage());
+        engine.setVariable("repositoryPackage", config.getRepositoryPackage());
         engine.setVariable("idType", idType);
 
-        return engine.renderFromFile("templates/repository.java.template");
+        return engine.renderFromFile("templates/service.java.template");
     }
 
     private String getIdType(Table table) {
