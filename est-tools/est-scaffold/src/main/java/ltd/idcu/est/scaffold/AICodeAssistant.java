@@ -9,15 +9,15 @@ public class AICodeAssistant {
     private static final Map<String, String> PATTERNS = new HashMap<>();
     
     static {
-        PATTERNS.put("web-app", "创建一个EST Web应用");
-        PATTERNS.put("rest-api", "创建REST API服务");
-        PATTERNS.put("crud", "创建CRUD操作");
-        PATTERNS.put("cache", "添加缓存功能");
-        PATTERNS.put("event", "添加事件驱动");
-        PATTERNS.put("logging", "添加日志功能");
-        PATTERNS.put("scheduler", "添加任务调度");
-        PATTERNS.put("validation", "添加数据验证");
-        PATTERNS.put("microservice", "创建微服务");
+        PATTERNS.put("web-app", "Create an EST Web Application");
+        PATTERNS.put("rest-api", "Create REST API Service");
+        PATTERNS.put("crud", "Create CRUD Operations");
+        PATTERNS.put("cache", "Add Caching Feature");
+        PATTERNS.put("event", "Add Event-driven Architecture");
+        PATTERNS.put("logging", "Add Logging Feature");
+        PATTERNS.put("scheduler", "Add Task Scheduling");
+        PATTERNS.put("validation", "Add Data Validation");
+        PATTERNS.put("microservice", "Create Microservice");
     }
     
     public static void main(String[] args) {
@@ -124,221 +124,203 @@ public class AICodeAssistant {
     
     private static String generateWebAppPrompt() {
         return """
-使用EST框架创建一个Java Web应用。
+Create a Java Web Application using the EST Framework.
+Requirements:
+1. Project Name: my-web-app
+2. Features:
+   - Home page (HTML)
+   - User management API
+   - Static file service
+3. Technical Requirements:
+   - Use EST Web module
+   - Add logging middleware
+   - Enable CORS
+   - Port: 8080
 
-需求：
-1. 项目名称：my-web-app
-2. 功能模块：
-   - 首页（HTML）
-   - 用户管理API
-   - 静态文件服务
-3. 技术要求：
-   - 使用EST Web模块
-   - 添加日志中间件
-   - 启用CORS
-   - 端口：8080
-
-参考文档：
+Reference Documentation:
 - EST AI_CODER_GUIDE.md
 - EST PRACTICAL_EXAMPLES.md
 - EST QUICK_REFERENCE.md
 
-请按照EST框架的最佳实践编写代码。
-""";
+Please write code following the best practices of the EST Framework.""";
     }
     
     private static String generateRestApiPrompt() {
         return """
-使用EST框架创建一个完整的REST API服务。
+Create a complete REST API service using the EST Framework.
+API Design:
+- GET    /api/resources      - Get list
+- GET    /api/resources/:id  - Get single
+- POST   /api/resources      - Create
+- PUT    /api/resources/:id  - Update
+- DELETE /api/resources/:id  - Delete
 
-API设计：
-- GET    /api/resources      - 获取列表
-- GET    /api/resources/:id  - 获取单个
-- POST   /api/resources      - 创建
-- PUT    /api/resources/:id  - 更新
-- DELETE /api/resources/:id  - 删除
-
-数据模型：
+Data Model:
 - id (String)
 - name (String)
 - description (String)
 - createdAt (long)
 - updatedAt (long)
 
-技术要求：
-- 使用EST Web模块
-- 内存存储（ConcurrentHashMap）
-- 数据验证
-- 统一错误响应
-- JSON格式
+Technical Requirements:
+- Use EST Web module
+- In-memory storage (ConcurrentHashMap)
+- Data validation
+- Unified error response
+- JSON format
 
-请参考EST框架的REST API模式实现。
-""";
+Please implement following REST API patterns of the EST Framework.""";
     }
     
     private static String generateCrudPrompt() {
         return """
-为EST项目创建完整的CRUD功能。
+Create complete CRUD functionality for an EST project.
+Feature Requirements:
+1. Controller - REST API endpoints
+2. Service - Business logic
+3. Repository - Data access
+4. Model - Data model
+5. DTO - Data transfer object
+6. Validator - Data validation
 
-功能要求：
-1. Controller层 - REST API端点
-2. Service层 - 业务逻辑
-3. Repository层 - 数据访问
-4. Model层 - 数据模型
-5. DTO层 - 数据传输对象
-6. Validator - 数据验证
-
-技术栈：
+Technology Stack:
 - EST Web
-- EST依赖注入容器
-- 内存存储
+- EST Dependency Injection Container
+- In-memory storage
 
-请按照EST的分层架构设计，提供完整的CRUD实现。
-""";
+Please design according to the layered architecture of EST, providing complete CRUD implementation.""";
     }
     
     private static String generateCachePrompt() {
         return """
-为EST项目添加缓存功能。
+Add caching functionality to an EST project.
+Requirements:
+1. Create an in-memory cache manager
+2. Support TTL (time-to-live)
+3. Support maximum capacity limit
+4. Cache hit rate statistics
+5. LRU eviction policy
+6. Thread-safe
 
-需求：
-1. 创建内存缓存管理器
-2. 支持TTL（过期时间）
-3. 支持最大容量限制
-4. 缓存命中率统计
-5. LRU淘汰策略
-6. 线程安全
-
-缓存功能：
+Cache Functions:
 - put(key, value, ttl)
 - get(key)
 - remove(key)
 - clear()
 - getStats()
 
-请使用Java标准库实现，遵循EST框架的零依赖原则。
-""";
+Please implement using Java standard library, following the zero-dependency principle of the EST Framework.""";
     }
     
     private static String generateEventPrompt() {
         return """
-为EST项目添加事件驱动架构。
+Add event-driven architecture to an EST project.
+Requirements:
+1. Create an event bus
+2. Support event subscription/publishing
+3. Support synchronous/asynchronous events
+4. Support event priority
+5. Support event type filtering
+6. Thread-safe
 
-需求：
-1. 创建事件总线
-2. 支持事件订阅/发布
-3. 支持同步/异步事件
-4. 支持事件优先级
-5. 支持事件类型过滤
-6. 线程安全
-
-事件类型示例：
+Event Type Examples:
 - UserCreatedEvent
 - UserUpdatedEvent
 - UserDeletedEvent
 - OrderCreatedEvent
 
-请提供完整的事件总线实现。
-""";
+Please provide complete event bus implementation.""";
     }
     
     private static String generateLoggingPrompt() {
         return """
-为EST项目添加日志功能。
+Add logging functionality to an EST project.
+Requirements:
+1. Create a log manager
+2. Support log levels (DEBUG, INFO, WARN, ERROR)
+3. Support console output
+4. Support file output
+5. Support log formatting
+6. Support multiple log handlers
 
-需求：
-1. 创建日志管理器
-2. 支持日志级别（DEBUG, INFO, WARN, ERROR）
-3. 支持控制台输出
-4. 支持文件输出
-5. 支持日志格式化
-6. 支持多个日志处理器
-
-日志功能：
+Log Functions:
 - logger.debug(message)
 - logger.info(message)
 - logger.warn(message)
 - logger.error(message, throwable)
 
-请提供完整的日志系统实现。
-""";
+Please provide complete logging system implementation.""";
     }
     
     private static String generateSchedulerPrompt() {
         return """
-为EST项目添加任务调度功能。
+Add task scheduling functionality to an EST project.
+Requirements:
+1. Create a task scheduler
+2. Support fixed-rate scheduling
+3. Support fixed-delay scheduling
+4. Support one-time tasks
+5. Support Cron expressions
+6. Support task pause/resume/cancel
+7. Task execution statistics
 
-需求：
-1. 创建任务调度器
-2. 支持固定频率调度
-3. 支持固定延迟调度
-4. 支持一次性任务
-5. 支持Cron表达式
-6. 支持任务暂停/恢复/取消
-7. 任务执行统计
-
-调度模式：
+Scheduling Modes:
 - scheduleAtFixedRate(task, delay, period)
 - scheduleWithFixedDelay(task, delay, period)
 - scheduleOnce(task, delay)
 - scheduleCron(task, cronExpression)
 
-请提供完整的任务调度器实现。
-""";
+Please provide complete task scheduler implementation.""";
     }
     
     private static String generateValidationPrompt() {
         return """
-为EST项目添加数据验证功能。
+Add data validation functionality to an EST project.
+Requirements:
+1. Create a validator utility class
+2. Support the following validations:
+   - Required fields
+   - String length
+   - Email format
+   - Phone number format
+   - Number range
+   - Positive number validation
+3. Chained API
+4. Error message collection
+5. Validation exception
 
-需求：
-1. 创建验证器工具类
-2. 支持以下验证：
-   - 必填字段
-   - 字符串长度
-   - 邮箱格式
-   - 手机号格式
-   - 数字范围
-   - 正数验证
-3. 链式API
-4. 错误信息收集
-5. 验证异常
-
-验证示例：
+Validation Example:
 validator.validateRequired(name, "name")
          .validateLength(name, "name", 3, 50)
          .validateEmail(email, "email")
          .throwIfInvalid();
 
-请提供完整的数据验证器实现。
-""";
+Please provide complete data validator implementation.""";
     }
     
     private static String generateMicroservicePrompt() {
         return """
-使用EST框架创建一个微服务项目。
+Create a microservice project using the EST Framework.
+Microservice Architecture:
+1. Service List:
+   - User service (user-service)
+   - Order service (order-service)
+   - Product service (product-service)
+   - Gateway service (gateway-service)
 
-微服务架构：
-1. 服务列表：
-   - 用户服务 (user-service)
-   - 订单服务 (order-service)
-   - 商品服务 (product-service)
-   - 网关服务 (gateway-service)
+2. Technical Requirements:
+   - Each service uses EST Web
+   - Inter-service REST communication
+   - EST configuration management
+   - EST logging
+   - EST monitoring
 
-2. 技术要求：
-   - 每个服务使用EST Web
-   - 服务间REST通信
-   - EST配置管理
-   - EST日志记录
-   - EST监控
+3. Data Management:
+   - Each service with independent database
+   - Event-driven data synchronization
+   - Eventual consistency
 
-3. 数据管理：
-   - 每个服务独立数据库
-   - 事件驱动数据同步
-   - 最终一致性
-
-请参考EST的MICROSERVICES_ARCHITECTURE.md，提供完整的微服务实现。
-""";
+Please refer to EST's MICROSERVICES_ARCHITECTURE.md, providing complete microservice implementation.""";
     }
     
     private static void analyzeCode(String filePath) {

@@ -8,10 +8,10 @@
 
 如果你是第一次接触 EST 框架，建议按以下顺序阅读：
 
-1. **[环境准备与安装](../docs/setup.md)** - 从零开始，搭建完整开发环境
-2. **[快速开始](../docs/guides/getting-started.md)** - 创建你的第一个应用
-3. **[入门教程](../docs/tutorials/beginner/)** - 从零开始学习核心概念
-4. **[Web 开发教程](../docs/tutorials/web/)** - 学习如何构建 Web 应用
+1. **[环境准备与安装](./getting-started/setup.md)** - 从零开始，搭建完整开发环境
+2. **[快速开始](./guides/getting-started.md)** - 创建你的第一个应用
+3. **[入门教程](./tutorials/beginner/)** - 从零开始学习核心概念
+4. **[Web 开发教程](./tutorials/web/)** - 学习如何构建 Web 应用
 
 ---
 
@@ -22,9 +22,9 @@
 | 文档 | 说明 | 难度 |
 |------|------|------|
 | [根目录 README](../README.md) | EST 框架简介，3 分钟上手 | ⭐ |
-| [环境准备与安装](./setup.md) | 从零开始搭建开发环境 | ⭐ |
+| [环境准备与安装](./getting-started/setup.md) | 从零开始搭建开发环境 | ⭐ |
 | [快速开始指南](./guides/getting-started.md) | 创建你的第一个应用 | ⭐ |
-| [部署指南](./deployment.md) | 本地运行、Docker、Kubernetes 部署 | ⭐⭐ |
+| [部署指南](./deployment/deployment-guide.md) | 本地运行、Docker、Kubernetes 部署 | ⭐⭐ |
 
 ### 🎓 教程系列
 
@@ -75,21 +75,43 @@
 - [代码组织](./best-practices/code-organization.md) - 如何组织你的代码
 - [性能优化](./best-practices/performance.md) - 提升应用性能的技巧
 - [安全性](./best-practices/security.md) - 安全编程指南
-- [测试指南](./TESTING_GUIDE.md) - 如何编写和运行测试
+- [测试指南](./best-practices/testing-guide.md) - 如何编写和运行测试
 - [调试技巧](./best-practices/debugging.md) - 调试方法和工具
+- [代码风格指南](./best-practices/code-style-guide.md) - 统一的代码风格标准
+- [性能调优指南](./best-practices/performance-tuning-guide.md) - 性能优化的最佳实践
+- [性能基准测试报告](./best-practices/performance-benchmark-report.md) - 性能基准测试结果
 
 ### 🤖 AI 开发者专区
 
 专为 AI 代码生成优化的文档：
 
-- [AI Coder 指南](./AI_CODER_GUIDE.md) - 专为 AI 设计的完整使用指南
-- [快速参考卡片](./QUICK_REFERENCE.md) - 一分钟速查表，AI 必备
-- [代码生成提示词模板](./AI_PROMPTS.md) - 高质量的 AI 提示词集合
+- [AI Coder 指南](./ai/ai-coder-guide.md) - 专为 AI 设计的完整使用指南
+- [快速参考卡片](./guides/quick-reference.md) - 一分钟速查表，AI 必备
+- [代码生成提示词模板](./ai/ai-prompts.md) - 高质量的 AI 提示词集合
+- [AI 设计原则](./ai/ai-design-principles.md) - AI 编程设计原则
 
 ### 🏗️ 架构与设计
 
-- [整体架构](./ARCHITECTURE.md) - 框架的设计理念和架构说明
-- [贡献指南](./CONTRIBUTING.md) - 如何参与项目开发
+- [整体架构](./architecture/architecture.md) - 框架的设计理念和架构说明
+- [微服务架构](./architecture/microservices-architecture.md) - 微服务架构设计
+- [微服务开发计划](./architecture/microservices-development-plan.md) - 微服务开发路线图
+- [新架构目录结构](./architecture/new-architecture-structure.md) - 新架构的目录组织
+- [发布说明](./architecture/release-notes.md) - 版本发布说明
+- [模块迁移指南](./architecture/module-migration-guide.md) - 模块迁移详细指南
+- [迁移任务链](./architecture/migration-task-chain.md) - 迁移任务执行计划
+- [迁移指南](./architecture/migration-guide.md) - 完整的迁移指南
+- [架构重新设计](./architecture/architecture-redesign.md) - 架构重新设计方案
+- [架构设计理由](./architecture/architecture-rationale.md) - 架构设计的详细理由
+- [贡献指南](./contributing/README.md) - 如何参与项目开发
+
+### 📊 框架对比
+
+- [主流Java框架对比（精简版）](./comparisons/framework-comparison.md) - EST 与主流框架的简洁对比
+- [主流Java框架全面对比（完整版）](./comparisons/framework-comparison-full.md) - EST 与主流框架的详细对比
+
+### 💡 实际示例
+
+- [实际使用示例](./examples/practical-examples.md) - EST 框架在实际项目中的使用示例
 
 ---
 
@@ -97,19 +119,19 @@
 
 ### 初学者
 1. 先看 [根目录 README](../README.md) 了解 EST 是什么
-2. 跟着 [环境准备与安装](./setup.md) 搭建环境
+2. 跟着 [环境准备与安装](./getting-started/setup.md) 搭建环境
 3. 跟着 [入门教程](./tutorials/beginner/) 一步步学习
 4. 遇到问题查 [API 参考](./api/README.md)
 
 ### 有经验的开发者
-1. 直接看 [快速参考卡片](./QUICK_REFERENCE.md) 了解 API
+1. 直接看 [快速参考卡片](./guides/quick-reference.md) 了解 API
 2. 根据需要查阅 [API 参考](./api/README.md)
 3. 参考 [最佳实践](./best-practices/README.md) 提升代码质量
 
 ### AI 开发者
-1. 必读 [AI Coder 指南](./AI_CODER_GUIDE.md)
-2. 使用 [快速参考卡片](./QUICK_REFERENCE.md) 快速查找 API
-3. 参考 [提示词模板](./AI_PROMPTS.md) 生成高质量代码
+1. 必读 [AI Coder 指南](./ai/ai-coder-guide.md)
+2. 使用 [快速参考卡片](./guides/quick-reference.md) 快速查找 API
+3. 参考 [提示词模板](./ai/ai-prompts.md) 生成高质量代码
 
 ---
 
@@ -144,3 +166,4 @@ EST 框架提供了丰富的示例代码，位于项目根目录的 `est-example
 ---
 
 **祝你学习愉快！** 🎉
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-modules</artifactId>
+        <version>2.0.0</version>
+    </parent>
+
+    <artifactId>est-tracing</artifactId>
+    <packaging>pom</packaging>
+    <name>EST Tracing</name>
+    <description>Distributed tracing feature for EST Framework</description>
+
+    <modules>
+        <module>est-tracing-api</module>
+        <module>est-tracing-impl</module>
+    </modules>
+</project>

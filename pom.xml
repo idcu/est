@@ -38,7 +38,7 @@
         <module>est-modules</module>
         <module>est-app</module>
         <module>est-tools</module>
-        <!-- <module>est-examples</module> -->
+        <module>est-examples</module>
     </modules>
 
     <dependencyManagement>
