@@ -5,6 +5,8 @@ import ltd.idcu.est.cli.ide.ESTCodeAnalyzer;
 import ltd.idcu.est.cli.ide.ESTProjectScanner;
 import ltd.idcu.est.cli.ide.ESTTemplateRegistry;
 import ltd.idcu.est.codegen.CodeGeneratorMain;
+import ltd.idcu.est.migration.MigrationTool;
+import ltd.idcu.est.scaffold.ScaffoldGenerator;
 
 public class EstCliMain {
 
@@ -20,8 +22,16 @@ public class EstCliMain {
 
         try {
             switch (command) {
+                case "new":
+                case "scaffold":
+                    ScaffoldGenerator.main(remainingArgs);
+                    break;
                 case "codegen":
                     CodeGeneratorMain.main(remainingArgs);
+                    break;
+                case "migrate":
+                case "migration":
+                    MigrationTool.main(remainingArgs);
                     break;
                 case "ide":
                     handleIdeCommands(remainingArgs);
@@ -105,9 +115,11 @@ public class EstCliMain {
         System.out.println("  est <command> [options]");
         System.out.println();
         System.out.println("Commands:");
-        System.out.println("  codegen    Code generation tools (database, POJO, etc.)");
-        System.out.println("  ide        IDE integration and analysis tools");
-        System.out.println("  help       Show this help message");
+        System.out.println("  new, scaffold   Create new EST projects");
+        System.out.println("  codegen         Code generation tools (database, POJO, etc.)");
+        System.out.println("  migrate         Migration tools (from Spring Boot, Solon, EST 1.x, etc.)");
+        System.out.println("  ide             IDE integration and analysis tools");
+        System.out.println("  help            Show this help message");
         System.out.println();
         System.out.println("For more information about a command, use:");
         System.out.println("  est <command>");
