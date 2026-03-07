@@ -46,31 +46,31 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-cache-api</artifactId>
+            <artifactId>est-cache-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-cache-memory</artifactId>
+            <artifactId>est-cache-memory</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-event-api</artifactId>
+            <artifactId>est-event-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-event-local</artifactId>
+            <artifactId>est-event-local</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-event-async</artifactId>
+            <artifactId>est-event-async</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-logging-api</artifactId>
+            <artifactId>est-logging-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-logging-console</artifactId>
+            <artifactId>est-logging-console</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>

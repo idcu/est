@@ -12,13 +12,14 @@
 
     <artifactId>est-features-security-basic</artifactId>
 
-    <name>EST Features Security Basic</name>
-    <description>EST Features Security Basic - Basic security implementation</description>
+    <name>EST Features basic (Deprecated)</name>
+    <description>EST Features basic - DEPRECATED, use est-security-basic instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-security-api</artifactId>
+            <artifactId>est-security-basic</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

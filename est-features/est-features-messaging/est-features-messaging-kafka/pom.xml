@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-kafka</artifactId>
 
-    <name>EST Features Messaging Kafka</name>
-    <description>EST Features Messaging Kafka - Kafka messaging implementation</description>
+    <name>EST Features kafka (Deprecated)</name>
+    <description>EST Features kafka - DEPRECATED, use est-messaging-kafka instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-kafka</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

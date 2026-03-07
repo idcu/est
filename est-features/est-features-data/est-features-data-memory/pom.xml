@@ -12,17 +12,14 @@
 
     <artifactId>est-features-data-memory</artifactId>
 
-    <name>EST Features Data Memory</name>
-    <description>EST Features Data Memory - In-memory data implementation</description>
+    <name>EST Features memory (Deprecated)</name>
+    <description>EST Features memory - DEPRECATED, use est-data-memory instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-data-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-util-common</artifactId>
+            <artifactId>est-data-memory</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

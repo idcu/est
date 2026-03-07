@@ -12,13 +12,14 @@
 
     <artifactId>est-features-cache-api</artifactId>
 
-    <name>EST Features Cache API</name>
-    <description>EST Features Cache API - Cache interfaces</description>
+    <name>EST Features api (Deprecated)</name>
+    <description>EST Features api - DEPRECATED, use est-cache-api instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-api</artifactId>
+            <artifactId>est-cache-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

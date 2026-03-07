@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-activemq</artifactId>
 
-    <name>EST Features Messaging ActiveMQ</name>
-    <description>EST Features Messaging ActiveMQ - ActiveMQ messaging implementation</description>
+    <name>EST Features activemq (Deprecated)</name>
+    <description>EST Features activemq - DEPRECATED, use est-messaging-activemq instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-activemq</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

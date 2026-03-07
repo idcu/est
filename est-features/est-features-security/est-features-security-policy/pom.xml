@@ -12,13 +12,14 @@
 
     <artifactId>est-features-security-policy</artifactId>
 
-    <name>EST Features Security Policy</name>
-    <description>EST Features Security Policy - Policy engine and ABAC authorization</description>
+    <name>EST Features policy (Deprecated)</name>
+    <description>EST Features policy - DEPRECATED, use est-security-policy instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-security-api</artifactId>
+            <artifactId>est-security-policy</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

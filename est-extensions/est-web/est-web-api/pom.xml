@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-hotreload-api</artifactId>
+            <artifactId>est-hotreload-api</artifactId>
         </dependency>
     </dependencies>
 

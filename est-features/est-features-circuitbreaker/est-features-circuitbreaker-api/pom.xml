@@ -11,15 +11,16 @@
     </parent>
 
     <artifactId>est-features-circuitbreaker-api</artifactId>
-    <packaging>jar</packaging>
-    <name>EST Features Circuit Breaker API</name>
-    <description>Circuit breaker API for EST Framework</description>
+
+    <name>EST Features api (Deprecated)</name>
+    <description>EST Features api - DEPRECATED, use est-circuitbreaker-api instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-api</artifactId>
+            <artifactId>est-circuitbreaker-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 </project>

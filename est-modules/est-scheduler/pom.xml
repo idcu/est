@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-modules</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>est-scheduler</artifactId>
+    <packaging>pom</packaging>
+
+    <name>EST Scheduler</name>
+    <description>EST Scheduler - Scheduling functionality</description>
+
+    <modules>
+        <module>est-scheduler-api</module>
+        <module>est-scheduler-cron</module>
+        <module>est-scheduler-fixed</module>
+    </modules>
+
+</project>

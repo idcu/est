@@ -12,13 +12,14 @@
 
     <artifactId>est-features-logging-console</artifactId>
 
-    <name>EST Features Logging Console</name>
-    <description>EST Features Logging Console - Console logging implementation</description>
+    <name>EST Features console (Deprecated)</name>
+    <description>EST Features console - DEPRECATED, use est-logging-console instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-logging-api</artifactId>
+            <artifactId>est-logging-console</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

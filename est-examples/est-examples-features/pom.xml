@@ -30,111 +30,111 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-cache-api</artifactId>
+            <artifactId>est-cache-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-cache-memory</artifactId>
+            <artifactId>est-cache-memory</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-cache-file</artifactId>
+            <artifactId>est-cache-file</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-cache-redis</artifactId>
+            <artifactId>est-cache-redis</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-event-api</artifactId>
+            <artifactId>est-event-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-event-local</artifactId>
+            <artifactId>est-event-local</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-event-async</artifactId>
+            <artifactId>est-event-async</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-logging-api</artifactId>
+            <artifactId>est-logging-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-logging-console</artifactId>
+            <artifactId>est-logging-console</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-logging-file</artifactId>
+            <artifactId>est-logging-file</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-security-api</artifactId>
+            <artifactId>est-security-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-security-basic</artifactId>
+            <artifactId>est-security-basic</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-security-jwt</artifactId>
+            <artifactId>est-security-jwt</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-scheduler-api</artifactId>
+            <artifactId>est-scheduler-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-scheduler-cron</artifactId>
+            <artifactId>est-scheduler-cron</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-scheduler-fixed</artifactId>
+            <artifactId>est-scheduler-fixed</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-monitor-api</artifactId>
+            <artifactId>est-monitor-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-monitor-jvm</artifactId>
+            <artifactId>est-monitor-jvm</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-monitor-system</artifactId>
+            <artifactId>est-monitor-system</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-data-api</artifactId>
+            <artifactId>est-data-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-data-memory</artifactId>
+            <artifactId>est-data-memory</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-data-jdbc</artifactId>
+            <artifactId>est-data-jdbc</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-data-redis</artifactId>
+            <artifactId>est-data-redis</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-local</artifactId>
+            <artifactId>est-messaging-local</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-mqtt</artifactId>
+            <artifactId>est-messaging-mqtt</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-amqp</artifactId>
+            <artifactId>est-messaging-amqp</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>

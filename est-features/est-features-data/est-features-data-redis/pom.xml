@@ -12,17 +12,14 @@
 
     <artifactId>est-features-data-redis</artifactId>
 
-    <name>EST Features Data Redis</name>
-    <description>EST Features Data Redis - Redis data implementation</description>
+    <name>EST Features redis (Deprecated)</name>
+    <description>EST Features redis - DEPRECATED, use est-data-redis instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-data-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-util-common</artifactId>
+            <artifactId>est-data-redis</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

@@ -1,38 +1,38 @@
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
-    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-    &lt;parent&gt;
-        &lt;groupId&gt;ltd.idcu&lt;/groupId&gt;
-        &lt;artifactId&gt;est&lt;/artifactId&gt;
-        &lt;version&gt;1.3.0-SNAPSHOT&lt;/version&gt;
-    &lt;/parent&gt;
+    <parent>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
+    </parent>
 
-    &lt;artifactId&gt;est-modules&lt;/artifactId&gt;
-    &lt;packaging&gt;pom&lt;/packaging&gt;
+    <artifactId>est-modules</artifactId>
+    <packaging>pom</packaging>
 
-    &lt;name&gt;EST Modules&lt;/name&gt;
-    &lt;description&gt;EST Modules - Feature modules for the framework&lt;/description&gt;
+    <name>EST Modules</name>
+    <description>EST Modules - Feature modules for the framework</description>
 
-    &lt;modules&gt;
-        &lt;module&gt;est-cache&lt;/module&gt;
-        &lt;module&gt;est-event&lt;/module&gt;
-        &lt;module&gt;est-logging&lt;/module&gt;
-        &lt;module&gt;est-data&lt;/module&gt;
-        &lt;module&gt;est-security&lt;/module&gt;
-        &lt;module&gt;est-messaging&lt;/module&gt;
-        &lt;module&gt;est-monitor&lt;/module&gt;
-        &lt;module&gt;est-scheduler&lt;/module&gt;
-        &lt;module&gt;est-ai&lt;/module&gt;
-        &lt;module&gt;est-discovery&lt;/module&gt;
-        &lt;module&gt;est-config&lt;/module&gt;
-        &lt;module&gt;est-circuitbreaker&lt;/module&gt;
-        &lt;module&gt;est-performance&lt;/module&gt;
-        &lt;module&gt;est-hotreload&lt;/module&gt;
-        &lt;module&gt;est-plugin&lt;/module&gt;
-        &lt;module&gt;est-gateway&lt;/module&gt;
-    &lt;/modules&gt;
+    <modules>
+        <module>est-cache</module>
+        <module>est-event</module>
+        <module>est-logging</module>
+        <module>est-data</module>
+        <module>est-security</module>
+        <module>est-messaging</module>
+        <module>est-monitor</module>
+        <module>est-scheduler</module>
+        <module>est-ai</module>
+        <module>est-discovery</module>
+        <module>est-config</module>
+        <module>est-circuitbreaker</module>
+        <module>est-performance</module>
+        <module>est-hotreload</module>
+        <module>est-plugin</module>
+        <module>est-gateway</module>
+    </modules>
 
-&lt;/project&gt;
+</project>

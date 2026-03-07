@@ -12,17 +12,14 @@
 
     <artifactId>est-features-data-mongodb</artifactId>
 
-    <name>EST Features Data MongoDB</name>
-    <description>EST Features Data MongoDB - MongoDB data implementation</description>
+    <name>EST Features mongodb (Deprecated)</name>
+    <description>EST Features mongodb - DEPRECATED, use est-data-mongodb instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-data-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-util-common</artifactId>
+            <artifactId>est-data-mongodb</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

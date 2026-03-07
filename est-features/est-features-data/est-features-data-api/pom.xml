@@ -12,13 +12,14 @@
 
     <artifactId>est-features-data-api</artifactId>
 
-    <name>EST Features Data API</name>
-    <description>EST Features Data API - Data access interfaces</description>
+    <name>EST Features api (Deprecated)</name>
+    <description>EST Features api - DEPRECATED, use est-data-api instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-api</artifactId>
+            <artifactId>est-data-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

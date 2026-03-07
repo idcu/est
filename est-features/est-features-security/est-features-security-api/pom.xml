@@ -12,13 +12,14 @@
 
     <artifactId>est-features-security-api</artifactId>
 
-    <name>EST Features Security API</name>
-    <description>EST Features Security API - Security interfaces</description>
+    <name>EST Features api (Deprecated)</name>
+    <description>EST Features api - DEPRECATED, use est-security-api instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-api</artifactId>
+            <artifactId>est-security-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

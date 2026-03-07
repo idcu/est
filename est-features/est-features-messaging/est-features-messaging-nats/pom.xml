@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-nats</artifactId>
 
-    <name>EST Features Messaging NATS</name>
-    <description>EST Features Messaging NATS - NATS messaging implementation</description>
+    <name>EST Features nats (Deprecated)</name>
+    <description>EST Features nats - DEPRECATED, use est-messaging-nats instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-nats</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

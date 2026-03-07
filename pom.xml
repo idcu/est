@@ -38,6 +38,7 @@
         <module>est-features</module>
         <module>est-extensions</module>
         <module>est-microservices</module>
+        <module>est-modules</module>
         <module>est-tools</module>
         <module>est-examples</module>
     </modules>
@@ -176,187 +177,222 @@
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-cache-api</artifactId>
+                <artifactId>est-cache-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-cache-memory</artifactId>
+                <artifactId>est-cache-memory</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-cache-file</artifactId>
+                <artifactId>est-cache-file</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-cache-redis</artifactId>
+                <artifactId>est-cache-redis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-event-api</artifactId>
+                <artifactId>est-event-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-event-local</artifactId>
+                <artifactId>est-event-local</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-event-async</artifactId>
+                <artifactId>est-event-async</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-logging-api</artifactId>
+                <artifactId>est-logging-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-logging-console</artifactId>
+                <artifactId>est-logging-console</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-logging-file</artifactId>
+                <artifactId>est-logging-file</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-data-api</artifactId>
+                <artifactId>est-data-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-data-jdbc</artifactId>
+                <artifactId>est-data-jdbc</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-data-memory</artifactId>
+                <artifactId>est-data-memory</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-data-redis</artifactId>
+                <artifactId>est-data-redis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-data-mongodb</artifactId>
+                <artifactId>est-data-mongodb</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-security-api</artifactId>
+                <artifactId>est-security-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-security-basic</artifactId>
+                <artifactId>est-security-basic</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-security-jwt</artifactId>
+                <artifactId>est-security-jwt</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-api</artifactId>
+                <artifactId>est-security-oauth2</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-local</artifactId>
+                <artifactId>est-security-apikey</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-amqp</artifactId>
+                <artifactId>est-security-policy</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-mqtt</artifactId>
+                <artifactId>est-config-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-kafka</artifactId>
+                <artifactId>est-circuitbreaker-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-stomp</artifactId>
+                <artifactId>est-discovery-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-redis</artifactId>
+                <artifactId>est-performance-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-nats</artifactId>
+                <artifactId>est-messaging-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-zeromq</artifactId>
+                <artifactId>est-messaging-local</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-pulsar</artifactId>
+                <artifactId>est-messaging-amqp</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-rocketmq</artifactId>
+                <artifactId>est-messaging-mqtt</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-activemq</artifactId>
+                <artifactId>est-messaging-kafka</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-messaging-websocket</artifactId>
+                <artifactId>est-messaging-stomp</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-monitor-api</artifactId>
+                <artifactId>est-messaging-redis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-monitor-jvm</artifactId>
+                <artifactId>est-messaging-nats</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-monitor-system</artifactId>
+                <artifactId>est-messaging-zeromq</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-scheduler-api</artifactId>
+                <artifactId>est-messaging-pulsar</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-scheduler-cron</artifactId>
+                <artifactId>est-messaging-rocketmq</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-scheduler-fixed</artifactId>
+                <artifactId>est-messaging-activemq</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-messaging-websocket</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-monitor-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-monitor-jvm</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-monitor-system</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-scheduler-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-scheduler-cron</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-scheduler-fixed</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -386,32 +422,27 @@
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-ai-api</artifactId>
+                <artifactId>est-ai-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-ai-impl</artifactId>
+                <artifactId>est-ai-impl</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-hotreload-api</artifactId>
+                <artifactId>est-hotreload-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-features-hotreload-impl</artifactId>
+                <artifactId>est-hotreload-impl</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-microservices-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ltd.idcu</groupId>
-                <artifactId>est-microservices-gateway</artifactId>
+                <artifactId>est-gateway</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

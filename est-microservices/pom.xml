@@ -18,7 +18,6 @@
 
     <modules>
         <module>est-microservices-api</module>
-        <module>est-microservices-gateway</module>
     </modules>
 
 </project>

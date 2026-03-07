@@ -11,15 +11,16 @@
     </parent>
 
     <artifactId>est-features-discovery-api</artifactId>
-    <packaging>jar</packaging>
-    <name>EST Features Discovery API</name>
-    <description>Service discovery API for EST Framework</description>
+
+    <name>EST Features api (Deprecated)</name>
+    <description>EST Features api - DEPRECATED, use est-discovery-api instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-api</artifactId>
+            <artifactId>est-discovery-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 </project>

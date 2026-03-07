@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-pulsar</artifactId>
 
-    <name>EST Features Messaging Pulsar</name>
-    <description>EST Features Messaging Pulsar - Pulsar messaging implementation</description>
+    <name>EST Features pulsar (Deprecated)</name>
+    <description>EST Features pulsar - DEPRECATED, use est-messaging-pulsar instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-pulsar</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

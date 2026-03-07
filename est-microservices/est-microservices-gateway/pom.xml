@@ -10,7 +10,7 @@
         <version>1.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>est-microservices-gateway</artifactId>
+    <artifactId>est-gateway</artifactId>
 
     <name>EST Microservices Gateway</name>
     <description>EST Microservices Gateway - API gateway implementation</description>

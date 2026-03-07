@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-websocket</artifactId>
 
-    <name>EST Features Messaging WebSocket</name>
-    <description>EST Features Messaging WebSocket - WebSocket messaging implementation</description>
+    <name>EST Features websocket (Deprecated)</name>
+    <description>EST Features websocket - DEPRECATED, use est-messaging-websocket instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-websocket</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

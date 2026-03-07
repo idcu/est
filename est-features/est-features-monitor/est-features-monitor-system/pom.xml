@@ -12,13 +12,14 @@
 
     <artifactId>est-features-monitor-system</artifactId>
 
-    <name>EST Features Monitor System</name>
-    <description>EST Features Monitor System - System monitoring implementation</description>
+    <name>EST Features system (Deprecated)</name>
+    <description>EST Features system - DEPRECATED, use est-monitor-system instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-monitor-api</artifactId>
+            <artifactId>est-monitor-system</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

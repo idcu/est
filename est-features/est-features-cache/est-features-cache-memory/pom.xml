@@ -12,17 +12,14 @@
 
     <artifactId>est-features-cache-memory</artifactId>
 
-    <name>EST Features Cache Memory</name>
-    <description>EST Features Cache Memory - In-memory cache implementation</description>
+    <name>EST Features memory (Deprecated)</name>
+    <description>EST Features memory - DEPRECATED, use est-cache-memory instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-cache-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-util-common</artifactId>
+            <artifactId>est-cache-memory</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

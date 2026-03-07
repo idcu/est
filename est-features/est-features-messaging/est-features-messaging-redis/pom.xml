@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-redis</artifactId>
 
-    <name>EST Features Messaging Redis</name>
-    <description>EST Features Messaging Redis - Redis Pub/Sub messaging implementation</description>
+    <name>EST Features redis (Deprecated)</name>
+    <description>EST Features redis - DEPRECATED, use est-messaging-redis instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-redis</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

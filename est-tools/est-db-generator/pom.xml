@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-data-api</artifactId>
+            <artifactId>est-data-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>

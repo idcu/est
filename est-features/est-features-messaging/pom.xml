@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>ltd.idcu</groupId>
-        <artifactId>est-features</artifactId>
-        <version>1.3.0-SNAPSHOT</version>
-    </parent>
-
-    <artifactId>est-features-messaging</artifactId>
-    <packaging>pom</packaging>
-
-    <name>EST Features Messaging</name>
-    <description>EST Features Messaging - Messaging functionality</description>
-
-    <modules>
-        <module>est-features-messaging-api</module>
-        <module>est-features-messaging-local</module>
-        <module>est-features-messaging-amqp</module>
-        <module>est-features-messaging-mqtt</module>
-        <module>est-features-messaging-kafka</module>
-        <module>est-features-messaging-stomp</module>
-        <module>est-features-messaging-redis</module>
-        <module>est-features-messaging-nats</module>
-        <module>est-features-messaging-zeromq</module>
-        <module>est-features-messaging-pulsar</module>
-        <module>est-features-messaging-rocketmq</module>
-        <module>est-features-messaging-activemq</module>
-        <module>est-features-messaging-websocket</module>
-    </modules>
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>ltd.idcu</groupId>
+    <artifactId>est-features</artifactId>
+    <version>1.3.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>est-features-messaging</artifactId>
+  <packaging>pom</packaging>
+  <name>EST Features messaging (Deprecated)</name>
+  <description>EST Features messaging - DEPRECATED, use est-messaging instead</description>
+  <dependencies>
+    <dependency>
+      <groupId>ltd.idcu</groupId>
+      <artifactId>est-messaging</artifactId>
+      <version>${project.version}</version>
+      <type>pom</type>
+    </dependency>
+  </dependencies>
+  <modules xmlns="">
+    <module>est-features-messaging-api</module>
+    <module>est-features-messaging-local</module>
+    <module>est-features-messaging-amqp</module>
+    <module>est-features-messaging-mqtt</module>
+    <module>est-features-messaging-kafka</module>
+    <module>est-features-messaging-stomp</module>
+    <module>est-features-messaging-redis</module>
+    <module>est-features-messaging-nats</module>
+    <module>est-features-messaging-zeromq</module>
+    <module>est-features-messaging-pulsar</module>
+    <module>est-features-messaging-rocketmq</module>
+    <module>est-features-messaging-activemq</module>
+    <module>est-features-messaging-websocket</module>
+  </modules>
 </project>

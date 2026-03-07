@@ -12,13 +12,14 @@
 
     <artifactId>est-features-hotreload-api</artifactId>
 
-    <name>EST Features Hot Reload API</name>
-    <description>EST Features Hot Reload API - Hot reload interfaces</description>
+    <name>EST Features api (Deprecated)</name>
+    <description>EST Features api - DEPRECATED, use est-hotreload-api instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-api</artifactId>
+            <artifactId>est-hotreload-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

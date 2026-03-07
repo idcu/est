@@ -12,17 +12,14 @@
 
     <artifactId>est-features-security-jwt</artifactId>
 
-    <name>EST Features Security JWT</name>
-    <description>EST Features Security JWT - JWT security implementation</description>
+    <name>EST Features jwt (Deprecated)</name>
+    <description>EST Features jwt - DEPRECATED, use est-security-jwt instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-security-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-security-basic</artifactId>
+            <artifactId>est-security-jwt</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

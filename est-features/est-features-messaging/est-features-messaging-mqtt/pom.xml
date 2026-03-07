@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-mqtt</artifactId>
 
-    <name>EST Features Messaging MQTT</name>
-    <description>EST Features Messaging MQTT - MQTT messaging implementation</description>
+    <name>EST Features mqtt (Deprecated)</name>
+    <description>EST Features mqtt - DEPRECATED, use est-messaging-mqtt instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-mqtt</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

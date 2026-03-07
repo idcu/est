@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-zeromq</artifactId>
 
-    <name>EST Features Messaging ZeroMQ</name>
-    <description>EST Features Messaging ZeroMQ - ZeroMQ messaging implementation</description>
+    <name>EST Features zeromq (Deprecated)</name>
+    <description>EST Features zeromq - DEPRECATED, use est-messaging-zeromq instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-zeromq</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

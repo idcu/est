@@ -12,17 +12,14 @@
 
     <artifactId>est-features-ai-impl</artifactId>
 
-    <name>EST Features AI Impl</name>
-    <description>EST Features AI Impl - AI assistant implementation</description>
+    <name>EST Features impl (Deprecated)</name>
+    <description>EST Features impl - DEPRECATED, use est-ai-impl instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-ai-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-impl</artifactId>
+            <artifactId>est-ai-impl</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

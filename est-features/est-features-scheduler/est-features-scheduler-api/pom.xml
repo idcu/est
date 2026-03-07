@@ -12,13 +12,14 @@
 
     <artifactId>est-features-scheduler-api</artifactId>
 
-    <name>EST Features Scheduler API</name>
-    <description>EST Features Scheduler API - Scheduling interfaces</description>
+    <name>EST Features api (Deprecated)</name>
+    <description>EST Features api - DEPRECATED, use est-scheduler-api instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-api</artifactId>
+            <artifactId>est-scheduler-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

@@ -38,11 +38,11 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-logging-api</artifactId>
+            <artifactId>est-logging-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-logging-console</artifactId>
+            <artifactId>est-logging-console</artifactId>
         </dependency>
         <dependency>
             <groupId>org.java-websocket</groupId>

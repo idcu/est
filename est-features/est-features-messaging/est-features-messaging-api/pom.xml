@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-api</artifactId>
 
-    <name>EST Features Messaging API</name>
-    <description>EST Features Messaging API - Messaging interfaces</description>
+    <name>EST Features api (Deprecated)</name>
+    <description>EST Features api - DEPRECATED, use est-messaging-api instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-api</artifactId>
+            <artifactId>est-messaging-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

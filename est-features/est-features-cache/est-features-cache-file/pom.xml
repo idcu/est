@@ -12,17 +12,14 @@
 
     <artifactId>est-features-cache-file</artifactId>
 
-    <name>EST Features Cache File</name>
-    <description>EST Features Cache File - File-based cache implementation</description>
+    <name>EST Features file (Deprecated)</name>
+    <description>EST Features file - DEPRECATED, use est-cache-file instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-cache-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-util-io</artifactId>
+            <artifactId>est-cache-file</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

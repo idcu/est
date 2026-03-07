@@ -18,11 +18,11 @@
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-ai-api</artifactId>
+            <artifactId>est-ai-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-ai-impl</artifactId>
+            <artifactId>est-ai-impl</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>

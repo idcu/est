@@ -12,13 +12,14 @@
 
     <artifactId>est-features-monitor-jvm</artifactId>
 
-    <name>EST Features Monitor JVM</name>
-    <description>EST Features Monitor JVM - JVM monitoring implementation</description>
+    <name>EST Features jvm (Deprecated)</name>
+    <description>EST Features jvm - DEPRECATED, use est-monitor-jvm instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-monitor-api</artifactId>
+            <artifactId>est-monitor-jvm</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

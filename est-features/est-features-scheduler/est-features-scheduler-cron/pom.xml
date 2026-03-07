@@ -12,17 +12,14 @@
 
     <artifactId>est-features-scheduler-cron</artifactId>
 
-    <name>EST Features Scheduler Cron</name>
-    <description>EST Features Scheduler Cron - Cron scheduling implementation</description>
+    <name>EST Features cron (Deprecated)</name>
+    <description>EST Features cron - DEPRECATED, use est-scheduler-cron instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-scheduler-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-util-common</artifactId>
+            <artifactId>est-scheduler-cron</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

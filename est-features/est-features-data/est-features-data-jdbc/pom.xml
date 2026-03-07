@@ -12,27 +12,14 @@
 
     <artifactId>est-features-data-jdbc</artifactId>
 
-    <name>EST Features Data JDBC</name>
-    <description>EST Features Data JDBC - JDBC data implementation</description>
+    <name>EST Features jdbc (Deprecated)</name>
+    <description>EST Features jdbc - DEPRECATED, use est-data-jdbc instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-data-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-util-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-test-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-test-impl</artifactId>
-            <scope>test</scope>
+            <artifactId>est-data-jdbc</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

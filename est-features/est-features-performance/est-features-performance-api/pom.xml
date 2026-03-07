@@ -11,15 +11,16 @@
     </parent>
 
     <artifactId>est-features-performance-api</artifactId>
-    <packaging>jar</packaging>
-    <name>EST Features Performance API</name>
-    <description>Performance optimization and GC tuning API for EST Framework</description>
+
+    <name>EST Features api (Deprecated)</name>
+    <description>EST Features api - DEPRECATED, use est-performance-api instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-api</artifactId>
+            <artifactId>est-performance-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 </project>

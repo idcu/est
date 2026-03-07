@@ -12,17 +12,14 @@
 
     <artifactId>est-features-logging-file</artifactId>
 
-    <name>EST Features Logging File</name>
-    <description>EST Features Logging File - File logging implementation</description>
+    <name>EST Features file (Deprecated)</name>
+    <description>EST Features file - DEPRECATED, use est-logging-file instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-logging-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-util-io</artifactId>
+            <artifactId>est-logging-file</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

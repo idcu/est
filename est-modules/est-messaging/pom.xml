@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-modules</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>est-messaging</artifactId>
+    <packaging>pom</packaging>
+
+    <name>EST Messaging</name>
+    <description>EST Messaging - Messaging functionality</description>
+
+    <modules>
+        <module>est-messaging-api</module>
+        <module>est-messaging-local</module>
+        <module>est-messaging-amqp</module>
+        <module>est-messaging-mqtt</module>
+        <module>est-messaging-kafka</module>
+        <module>est-messaging-stomp</module>
+        <module>est-messaging-redis</module>
+        <module>est-messaging-nats</module>
+        <module>est-messaging-zeromq</module>
+        <module>est-messaging-pulsar</module>
+        <module>est-messaging-rocketmq</module>
+        <module>est-messaging-activemq</module>
+        <module>est-messaging-websocket</module>
+    </modules>
+
+</project>

@@ -12,17 +12,14 @@
 
     <artifactId>est-features-hotreload-impl</artifactId>
 
-    <name>EST Features Hot Reload Implementation</name>
-    <description>EST Features Hot Reload Implementation - Hot reload implementation</description>
+    <name>EST Features impl (Deprecated)</name>
+    <description>EST Features impl - DEPRECATED, use est-hotreload-impl instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-hotreload-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-core-impl</artifactId>
+            <artifactId>est-hotreload-impl</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

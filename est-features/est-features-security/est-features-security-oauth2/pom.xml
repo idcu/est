@@ -12,13 +12,14 @@
 
     <artifactId>est-features-security-oauth2</artifactId>
 
-    <name>EST Features Security OAuth2</name>
-    <description>EST Features Security OAuth2 - OAuth2 authentication implementation</description>
+    <name>EST Features oauth2 (Deprecated)</name>
+    <description>EST Features oauth2 - DEPRECATED, use est-security-oauth2 instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-security-api</artifactId>
+            <artifactId>est-security-oauth2</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

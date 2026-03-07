@@ -12,13 +12,14 @@
 
     <artifactId>est-features-cache-redis</artifactId>
 
-    <name>EST Features Cache Redis</name>
-    <description>EST Features Cache Redis - Redis cache implementation</description>
+    <name>EST Features redis (Deprecated)</name>
+    <description>EST Features redis - DEPRECATED, use est-cache-redis instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-cache-api</artifactId>
+            <artifactId>est-cache-redis</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

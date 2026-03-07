@@ -12,17 +12,14 @@
 
     <artifactId>est-features-event-local</artifactId>
 
-    <name>EST Features Event Local</name>
-    <description>EST Features Event Local - Local event implementation</description>
+    <name>EST Features local (Deprecated)</name>
+    <description>EST Features local - DEPRECATED, use est-event-local instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-event-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-util-common</artifactId>
+            <artifactId>est-event-local</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

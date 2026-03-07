@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-stomp</artifactId>
 
-    <name>EST Features Messaging STOMP</name>
-    <description>EST Features Messaging STOMP - STOMP messaging implementation</description>
+    <name>EST Features stomp (Deprecated)</name>
+    <description>EST Features stomp - DEPRECATED, use est-messaging-stomp instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-stomp</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

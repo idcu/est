@@ -38,7 +38,7 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-monitor-api</artifactId>
+            <artifactId>est-monitor-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>

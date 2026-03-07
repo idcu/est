@@ -12,13 +12,14 @@
 
     <artifactId>est-features-messaging-amqp</artifactId>
 
-    <name>EST Features Messaging AMQP</name>
-    <description>EST Features Messaging AMQP - AMQP messaging implementation</description>
+    <name>EST Features amqp (Deprecated)</name>
+    <description>EST Features amqp - DEPRECATED, use est-messaging-amqp instead</description>
 
     <dependencies>
         <dependency>
             <groupId>ltd.idcu</groupId>
-            <artifactId>est-features-messaging-api</artifactId>
+            <artifactId>est-messaging-amqp</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
