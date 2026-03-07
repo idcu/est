@@ -1,7 +1,7 @@
 package ltd.idcu.est.test.benchmark;
 
-import ltd.idcu.est.core.api.Container;
-import ltd.idcu.est.core.impl.DefaultContainer;
+import ltd.idcu.est.core.container.api.Container;
+import ltd.idcu.est.core.container.impl.DefaultContainer;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;

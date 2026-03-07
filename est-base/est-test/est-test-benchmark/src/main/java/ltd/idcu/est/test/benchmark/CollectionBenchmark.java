@@ -1,7 +1,7 @@
 package ltd.idcu.est.test.benchmark;
 
-import ltd.idcu.est.collection.api.Collection;
-import ltd.idcu.est.collection.impl.CollectionFactory;
+import ltd.idcu.est.collection.api.Seq;
+import ltd.idcu.est.collection.impl.Seqs;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.ArrayList;
@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 @State(Scope.Benchmark)
 public class CollectionBenchmark {
 
-    private Collection<Integer> estCollection;
+    private Seq<Integer> estCollection;
     private List<Integer> javaList;
 
     @Setup(Level.Iteration)
     public void setup() {
-        estCollection = CollectionFactory.fromIterable(new ArrayList<>());
+        estCollection = Seqs.from(new ArrayList<>());
         javaList = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             estCollection = estCollection.plus(i);
@@ -41,7 +41,7 @@ public class CollectionBenchmark {
     }
 
     @Benchmark
-    public Collection<Integer> estCollection_map() {
+    public Seq<Integer> estCollection_map() {
         return estCollection.map(i -> i * 2);
     }
 
@@ -62,7 +62,7 @@ public class CollectionBenchmark {
     }
 
     @Benchmark
-    public Collection<Integer> estCollection_filter() {
+    public Seq<Integer> estCollection_filter() {
         return estCollection.filter(i -> i % 2 == 0);
     }
 
@@ -85,7 +85,7 @@ public class CollectionBenchmark {
     }
 
     @Benchmark
-    public Collection<Integer> estCollection_chain() {
+    public Seq<Integer> estCollection_chain() {
         return estCollection
             .filter(i -> i % 2 == 0)
             .map(i -> i * 2)
@@ -134,22 +134,22 @@ public class CollectionBenchmark {
     }
 
     @Benchmark
-    public Collection<Integer> estCollection_distinct() {
+    public Seq<Integer> estCollection_distinct() {
         return estCollection.distinct();
     }
 
     @Benchmark
-    public Collection<Integer> estCollection_take() {
+    public Seq<Integer> estCollection_take() {
         return estCollection.take(100);
     }
 
     @Benchmark
-    public Collection<Integer> estCollection_drop() {
+    public Seq<Integer> estCollection_drop() {
         return estCollection.drop(100);
     }
 
     @Benchmark
-    public Collection<Integer> estCollection_groupBy() {
+    public Seq<Integer> estCollection_groupBy() {
         return estCollection.map(i -> i % 10);
     }
 
@@ -159,13 +159,13 @@ public class CollectionBenchmark {
     }
 
     @Benchmark
-    public Collection<Integer> estCollection_partition_map() {
+    public Seq<Integer> estCollection_partition_map() {
         var partitioned = estCollection.partition(i -> i % 2 == 0);
         return partitioned.getKey().map(i -> i * 2);
     }
 
     @Benchmark
-    public Collection<Integer> estCollection_zipWithIndex() {
+    public Seq<Integer> estCollection_zipWithIndex() {
         return estCollection.zipWithIndex().map(p -> p.getKey() + p.getValue());
     }
 }

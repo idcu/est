@@ -11,10 +11,10 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>est-db-generator</artifactId>
+    <artifactId>est-codegen</artifactId>
     <packaging>jar</packaging>
-    <name>EST DB Generator</name>
-    <description>Database code generator for EST framework - Generate Entity, Repository, Service, Controller from database tables</description>
+    <name>EST Code Generator</name>
+    <description>Code generator for EST framework - Generate database code and more</description>
 
     <dependencies>
         <dependency>

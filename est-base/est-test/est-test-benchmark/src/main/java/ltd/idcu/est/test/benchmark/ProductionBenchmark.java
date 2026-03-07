@@ -1,16 +1,16 @@
 package ltd.idcu.est.test.benchmark;
 
-import ltd.idcu.est.core.api.Container;
-import ltd.idcu.est.core.api.annotation.Component;
-import ltd.idcu.est.core.api.annotation.Inject;
-import ltd.idcu.est.core.api.annotation.Repository;
-import ltd.idcu.est.core.api.annotation.Service;
-import ltd.idcu.est.core.impl.DefaultContainer;
-import ltd.idcu.est.features.event.api.Event;
-import ltd.idcu.est.features.event.api.EventBus;
-import ltd.idcu.est.features.event.api.EventListener;
-import ltd.idcu.est.features.event.local.LocalEventBus;
-import ltd.idcu.est.features.event.local.LocalEvents;
+import ltd.idcu.est.core.container.api.Container;
+import ltd.idcu.est.core.container.api.annotation.Component;
+import ltd.idcu.est.core.container.api.annotation.Inject;
+import ltd.idcu.est.core.container.api.annotation.Repository;
+import ltd.idcu.est.core.container.api.annotation.Service;
+import ltd.idcu.est.core.container.impl.DefaultContainer;
+import ltd.idcu.est.event.api.Event;
+import ltd.idcu.est.event.api.EventBus;
+import ltd.idcu.est.event.api.EventListener;
+import ltd.idcu.est.event.local.LocalEventBus;
+import ltd.idcu.est.event.local.LocalEvents;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
