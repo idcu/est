@@ -1,7 +1,7 @@
 package ltd.idcu.est.web.api;
 
 import ltd.idcu.est.core.api.Config;
-import ltd.idcu.est.core.lifecycle.api.Lifecycle;
+import ltd.idcu.est.core.api.lifecycle.Lifecycle;
 import ltd.idcu.est.features.hotreload.api.HotReloadListener;
 
 import java.nio.file.Path;

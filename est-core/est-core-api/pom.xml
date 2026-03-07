@@ -6,17 +6,16 @@
 
     <parent>
         <groupId>ltd.idcu</groupId>
-        <artifactId>est-app</artifactId>
+        <artifactId>est-core</artifactId>
         <version>2.0.0</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>est-microservice</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>est-core-api</artifactId>
 
-    <name>EST Microservice</name>
-    <description>EST Microservice - Microservices framework</description>
+    <name>EST Core API</name>
+    <description>EST Core API - Core interfaces for the framework</description>
 
-
+    <dependencies>
+    </dependencies>
 
 </project>

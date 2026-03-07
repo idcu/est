@@ -17,6 +17,8 @@
     <description>EST Core Module - Core interfaces and implementations</description>
 
     <modules>
+        <module>est-core-api</module>
+        <module>est-core-impl</module>
         <module>est-core-container</module>
         <module>est-core-config</module>
         <module>est-core-lifecycle</module>

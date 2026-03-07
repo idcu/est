@@ -6,16 +6,20 @@
 
     <parent>
         <groupId>ltd.idcu</groupId>
-        <artifactId>est-modules</artifactId>
+        <artifactId>est-core</artifactId>
         <version>2.0.0</version>
     </parent>
 
-    <artifactId>est-gateway</artifactId>
+    <artifactId>est-core-impl</artifactId>
 
-    <name>EST Gateway</name>
-    <description>EST Gateway - API gateway implementation</description>
+    <name>EST Core Implementation</name>
+    <description>EST Core Implementation - Core functionality implementations</description>
 
     <dependencies>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-util-common</artifactId>
@@ -23,10 +27,6 @@
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-util-io</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ltd.idcu</groupId>
-            <artifactId>est-collection-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
@@ -39,5 +39,15 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

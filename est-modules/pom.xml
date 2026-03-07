@@ -32,7 +32,7 @@
         <module>est-performance</module>
         <module>est-hotreload</module>
         <module>est-plugin</module>
-        <module>est-gateway</module>
+        <!-- <module>est-gateway</module> -->
     </modules>
 
 </project>
