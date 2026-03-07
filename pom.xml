@@ -455,11 +455,6 @@
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
-                <artifactId>est-microservice-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ltd.idcu</groupId>
                 <artifactId>est-cli</artifactId>
                 <version>${project.version}</version>
             </dependency>
