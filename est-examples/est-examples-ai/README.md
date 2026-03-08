@@ -63,30 +63,56 @@ mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.AiQuickStartExample"
 
 | 示例 | 说明 | 知识点 | 难度 |
 |------|------|--------|------|
+| [Main](src/main/java/ltd/idcu/est/examples/ai/Main.java) | AI 示例主入口 | 示例导航 | ⭐ |
 | [AiQuickStartExample](src/main/java/ltd/idcu/est/examples/ai/AiQuickStartExample.java) | AI 快速开始 | AI 基础 | ⭐⭐ |
-| [CompleteAiExample](src/main/java/ltd/idcu/est/examples/ai/CompleteAiExample.java) | 完整 AI 示例 | 所有 AI 功能 | ⭐⭐⭐ |
-| [AiWebAssistantExample](src/main/java/ltd/idcu/est/examples/ai/AiWebAssistantExample.java) | AI 助手 Web 应用 | AI + Web | ⭐⭐⭐ |
+| [ComprehensiveAiExample](src/main/java/ltd/idcu/est/examples/ai/ComprehensiveAiExample.java) | 综合 AI 示例 | 所有 AI 功能 | ⭐⭐⭐ |
+| [StorageExample](src/main/java/ltd/idcu/est/examples/ai/StorageExample.java) | 存储系统示例 | 内存/文件存储、模板/Skill持久化 | ⭐⭐⭐ |
+| [ConfigExample](src/main/java/ltd/idcu/est/examples/ai/ConfigExample.java) | 配置管理示例 | YAML/环境变量、LLM配置 | ⭐⭐⭐ |
+| [AiAssistantWebExample](src/main/java/ltd/idcu/est/examples/ai/AiAssistantWebExample.java) | AI 助手 Web 应用 | AI + Web | ⭐⭐⭐ |
 | [CodeGeneratorExample](src/main/java/ltd/idcu/est/examples/ai/CodeGeneratorExample.java) | 代码生成示例 | 代码生成 | ⭐⭐⭐ |
 | [PromptTemplateExample](src/main/java/ltd/idcu/est/examples/ai/PromptTemplateExample.java) | 提示词模板示例 | 提示词工程 | ⭐⭐⭐ |
-| [MidtermFeaturesExample](src/main/java/ltd/idcu/est/examples/ai/MidtermFeaturesExample.java) | 中期功能演示 | 重构助手、架构顾问、LLM集成 | ⭐⭐⭐⭐ |
+| [LlmIntegrationExample](src/main/java/ltd/idcu/est/examples/ai/LlmIntegrationExample.java) | LLM 集成示例 | 多提供商LLM | ⭐⭐⭐⭐ |
+| [AdvancedAiExample](src/main/java/ltd/idcu/est/examples/ai/AdvancedAiExample.java) | 高级 AI 示例 | Skill/MCP/LLM | ⭐⭐⭐⭐ |
+| [MidTermFeaturesExample](src/main/java/ltd/idcu/est/examples/ai/MidTermFeaturesExample.java) | 中期功能演示 | 重构助手、架构顾问 | ⭐⭐⭐⭐ |
 | [LongTermFeaturesExample](src/main/java/ltd/idcu/est/examples/ai/LongTermFeaturesExample.java) | 长期目标功能演示 | 需求解析、架构设计、测试部署 | ⭐⭐⭐⭐⭐ |
 
 ---
 
 ## 如何运行示例
 
-### 运行 AiQuickStartExample（推荐）
+### 运行 Main - 查看所有示例（推荐首先运行）
+
+```bash
+cd est-examples/est-examples-ai
+mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.Main"
+```
+
+### 运行 AiQuickStartExample - AI 快速开始
 
 ```bash
 cd est-examples/est-examples-ai
 mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.AiQuickStartExample"
 ```
 
-### 运行 CompleteAiExample - 完整 AI 示例
+### 运行 ComprehensiveAiExample - 综合 AI 示例
 
 ```bash
 cd est-examples/est-examples-ai
-mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.CompleteAiExample"
+mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.ComprehensiveAiExample"
+```
+
+### 运行 StorageExample - 存储系统示例
+
+```bash
+cd est-examples/est-examples-ai
+mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.StorageExample"
+```
+
+### 运行 ConfigExample - 配置管理示例
+
+```bash
+cd est-examples/est-examples-ai
+mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.ConfigExample"
 ```
 
 ### 运行 AiWebAssistantExample - AI Web 助手

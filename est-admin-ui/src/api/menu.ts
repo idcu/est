@@ -1,53 +1,44 @@
 import request from '@/utils/request'
 
-export interface Menu {
-  id?: string
-  parentId: string
+export interface MenuInfo {
+  id: string
+  parentId: string | null
   name: string
-  icon?: string
-  sort: number
-  path?: string
-  component?: string
-  permission?: string
+  path: string
+  component: string
+  icon: string
   type: number
-  status: number
-  remark?: string
-  children?: Menu[]
+  sort: number
+  permissions: string[]
+  visible: boolean
+  cache: boolean
+  children?: MenuInfo[]
 }
 
-export function listMenus() {
-  return request<Menu[]>({
-    url: '/admin/api/menus',
-    method: 'get'
-  })
+export function getMenuList() {
+  return request.get<MenuInfo[]>('/admin/api/menus')
+}
+
+export function getMenuTree() {
+  return request.get<MenuInfo[]>('/admin/api/menus/tree')
+}
+
+export function getUserMenus() {
+  return request.get<MenuInfo[]>('/admin/api/menus/user')
 }
 
 export function getMenu(id: string) {
-  return request<Menu>({
-    url: `/admin/api/menus/${id}`,
-    method: 'get'
-  })
+  return request.get<MenuInfo>(`/admin/api/menus/${id}`)
 }
 
-export function createMenu(data: Partial<Menu>) {
-  return request({
-    url: '/admin/api/menus',
-    method: 'post',
-    data
-  })
+export function createMenu(data: any) {
+  return request.post('/admin/api/menus', data)
 }
 
-export function updateMenu(data: Partial<Menu>) {
-  return request({
-    url: `/admin/api/menus/${data.id}`,
-    method: 'put',
-    data
-  })
+export function updateMenu(id: string, data: any) {
+  return request.put(`/admin/api/menus/${id}`, data)
 }
 
 export function deleteMenu(id: string) {
-  return request({
-    url: `/admin/api/menus/${id}`,
-    method: 'delete'
-  })
+  return request.delete(`/admin/api/menus/${id}`)
 }

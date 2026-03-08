@@ -6,6 +6,8 @@ import ltd.idcu.est.codegen.db.database.DatabaseType;
 import ltd.idcu.est.codegen.db.generator.ControllerGenerator;
 import ltd.idcu.est.codegen.db.generator.DtoGenerator;
 import ltd.idcu.est.codegen.db.generator.EntityGenerator;
+import ltd.idcu.est.codegen.db.generator.FrontendApiGenerator;
+import ltd.idcu.est.codegen.db.generator.FrontendListViewGenerator;
 import ltd.idcu.est.codegen.db.generator.MapperXmlGenerator;
 import ltd.idcu.est.codegen.db.generator.RepositoryGenerator;
 import ltd.idcu.est.codegen.db.generator.ServiceGenerator;
@@ -33,6 +35,8 @@ public class DatabaseCodeGenerator implements CodeGenerator {
     private final DtoGenerator dtoGenerator;
     private final TestGenerator testGenerator;
     private final MapperXmlGenerator mapperXmlGenerator;
+    private final FrontendApiGenerator frontendApiGenerator;
+    private final FrontendListViewGenerator frontendListViewGenerator;
 
     public DatabaseCodeGenerator(GeneratorConfig config) {
         this(config, DatabaseType.fromJdbcUrl(config.getJdbcUrl()));
@@ -48,6 +52,8 @@ public class DatabaseCodeGenerator implements CodeGenerator {
         this.dtoGenerator = new DtoGenerator(config);
         this.testGenerator = new TestGenerator(config);
         this.mapperXmlGenerator = new MapperXmlGenerator(config);
+        this.frontendApiGenerator = new FrontendApiGenerator(config);
+        this.frontendListViewGenerator = new FrontendListViewGenerator(config);
     }
 
     @Override
@@ -153,6 +159,53 @@ public class DatabaseCodeGenerator implements CodeGenerator {
             FileWriterUtil.writeFile(testPath, testCode, false);
             System.out.println("  Generated Test: " + testPath);
         }
+        
+        if (config.isGenerateFrontend()) {
+            generateFrontendForTable(table);
+        }
+    }
+    
+    private void generateFrontendForTable(Table table) throws IOException {
+        String frontendOutputDir = config.getFrontendOutputDir() != null 
+            ? config.getFrontendOutputDir() 
+            : config.getOutputDir();
+        Path outputDir = Paths.get(frontendOutputDir);
+        String kebabName = toKebabCase(table.getClassName());
+        
+        if (config.isGenerateApi()) {
+            String apiCode = frontendApiGenerator.generate(table);
+            String apiFileName = kebabName + ".ts";
+            Path apiPath = outputDir.resolve(toPath(config.getFrontendApiPackage())).resolve(apiFileName);
+            FileWriterUtil.writeFile(apiPath, apiCode, false);
+            System.out.println("  Generated Frontend API: " + apiPath);
+        }
+        
+        if (config.isGenerateListView()) {
+            String listViewCode = frontendListViewGenerator.generate(table);
+            String listViewFileName = "index.vue";
+            Path listViewPath = outputDir.resolve(toPath(config.getFrontendViewsPackage())).resolve(kebabName).resolve(listViewFileName);
+            FileWriterUtil.writeFile(listViewPath, listViewCode, false);
+            System.out.println("  Generated Frontend List View: " + listViewPath);
+        }
+    }
+    
+    private String toKebabCase(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (Character.isUpperCase(c)) {
+                if (i > 0) {
+                    result.append("-");
+                }
+                result.append(Character.toLowerCase(c));
+            } else {
+                result.append(c);
+            }
+        }
+        return result.toString();
     }
 
     private String toPath(String packageName) {

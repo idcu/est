@@ -4,6 +4,8 @@ import ltd.idcu.est.admin.Admin;
 import ltd.idcu.est.admin.api.ApiResponse;
 import ltd.idcu.est.admin.api.Menu;
 import ltd.idcu.est.admin.api.MenuService;
+import ltd.idcu.est.admin.api.RequirePermission;
+import ltd.idcu.est.admin.api.User;
 import ltd.idcu.est.web.api.Request;
 import ltd.idcu.est.web.api.Response;
 
@@ -21,6 +23,7 @@ public class MenuController {
         this.menuService = Admin.createMenuService();
     }
     
+    @RequirePermission("system:menu:list")
     public void list(Request req, Response res) {
         try {
             List<Menu> menus = menuService.getAllMenus();
@@ -35,6 +38,42 @@ public class MenuController {
         }
     }
     
+    public void tree(Request req, Response res) {
+        try {
+            List<Menu> menus = menuService.getMenuTree();
+            List<Map<String, Object>> menuTree = new ArrayList<>();
+            for (Menu menu : menus) {
+                menuTree.add(toMenuMapWithChildren(menu));
+            }
+            res.json(ApiResponse.success(menuTree));
+        } catch (Exception e) {
+            res.setStatus(500);
+            res.json(ApiResponse.error(e.getMessage()));
+        }
+    }
+    
+    public void userMenus(Request req, Response res) {
+        try {
+            User currentUser = (User) req.getAttribute("currentUser");
+            if (currentUser == null) {
+                res.setStatus(401);
+                res.json(ApiResponse.unauthorized("Not authenticated"));
+                return;
+            }
+            
+            List<Menu> menus = menuService.getUserMenus(currentUser);
+            List<Map<String, Object>> menuTree = new ArrayList<>();
+            for (Menu menu : menus) {
+                menuTree.add(toMenuMapWithChildren(menu));
+            }
+            res.json(ApiResponse.success(menuTree));
+        } catch (Exception e) {
+            res.setStatus(500);
+            res.json(ApiResponse.error(e.getMessage()));
+        }
+    }
+    
+    @RequirePermission("system:menu:query")
     public void get(Request req, Response res) {
         try {
             String id = req.getPathVariable("id");
@@ -51,6 +90,7 @@ public class MenuController {
         }
     }
     
+    @RequirePermission("system:menu:add")
     public void create(Request req, Response res) {
         try {
             String name = req.getParameter("name");
@@ -77,6 +117,7 @@ public class MenuController {
         }
     }
     
+    @RequirePermission("system:menu:edit")
     public void update(Request req, Response res) {
         try {
             String id = req.getPathVariable("id");
@@ -103,6 +144,7 @@ public class MenuController {
         }
     }
     
+    @RequirePermission("system:menu:delete")
     public void delete(Request req, Response res) {
         try {
             String id = req.getPathVariable("id");
@@ -127,6 +169,19 @@ public class MenuController {
         map.put("permissions", menu.getPermissions());
         map.put("visible", menu.isVisible());
         map.put("cache", menu.isCache());
+        return map;
+    }
+    
+    private Map<String, Object> toMenuMapWithChildren(Menu menu) {
+        Map<String, Object> map = toMenuMap(menu);
+        List<Menu> children = menu.getChildren();
+        if (children != null && !children.isEmpty()) {
+            List<Map<String, Object>> childMaps = new ArrayList<>();
+            for (Menu child : children) {
+                childMaps.add(toMenuMapWithChildren(child));
+            }
+            map.put("children", childMaps);
+        }
         return map;
     }
 }

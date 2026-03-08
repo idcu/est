@@ -20,6 +20,14 @@
             <groupId>ltd.idcu</groupId>
             <artifactId>est-core-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-llm-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-ai-config-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -46,6 +46,7 @@ EST 从设计之初就考虑了 AI 友好性：
 - [短期目标实施报告](short-term-goals-implementation-report.md) - LLM生态系统、AI助手增强
 - [中期目标实施报告](mid-term-goals-implementation-report.md) - 智能代码补全、AI重构助手、架构顾问
 - [长期目标实施报告](long-term-goals-implementation-report.md) - 需求解析、架构设计、测试部署
+- [当前状态评估与未来发展计划](current-status-evaluation-and-future-plan.md) - 模块现状评估和下一步发展建议
 
 ---
 

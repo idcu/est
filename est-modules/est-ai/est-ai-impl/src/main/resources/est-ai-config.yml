@@ -1,0 +1,72 @@
+# EST AI配置文件示例
+default-llm-provider: zhipuai
+log-level: INFO
+request-logging-enabled: false
+
+llm-providers:
+  zhipuai:
+    enabled: true
+    model: glm-4
+    endpoint: https://open.bigmodel.cn/api/paas/v4
+    timeout: 30
+    max-retries: 3
+  
+  openai:
+    enabled: false
+    model: gpt-4
+    endpoint: https://api.openai.com/v1
+    timeout: 30
+    max-retries: 3
+  
+  qwen:
+    enabled: false
+    model: qwen-plus
+    endpoint: https://dashscope.aliyuncs.com/api/v1
+    timeout: 30
+    max-retries: 3
+  
+  ernie:
+    enabled: false
+    model: ernie-4.0
+    endpoint: https://aip.baidubce.com/rpc/2.0/ai_custom/v1
+    timeout: 30
+    max-retries: 3
+  
+  doubao:
+    enabled: false
+    model: doubao-pro-32k
+    endpoint: https://ark.cn-beijing.volces.com/api/v3
+    timeout: 30
+    max-retries: 3
+  
+  kimi:
+    enabled: false
+    model: moonshot-v1-8k
+    endpoint: https://api.moonshot.cn/v1
+    timeout: 30
+    max-retries: 3
+  
+  ollama:
+    enabled: false
+    model: llama2
+    endpoint: http://localhost:11434/api
+    timeout: 60
+    max-retries: 3
+
+features:
+  code-completion:
+    enabled: true
+    use-llm: true
+    max-suggestions: 5
+  
+  refactor-assistant:
+    enabled: true
+    show-diff: true
+  
+  architecture-advisor:
+    enabled: true
+    suggest-patterns: true
+  
+  test-generator:
+    enabled: true
+    coverage-target: 80

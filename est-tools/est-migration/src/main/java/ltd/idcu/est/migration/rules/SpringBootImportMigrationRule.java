@@ -24,14 +24,14 @@ public class SpringBootImportMigrationRule extends AbstractMigrationRule {
         IMPORT_MAPPINGS.put("org.springframework.web.bind.annotation.ResponseBody", "ltd.idcu.est.web.api.ResponseBody");
         IMPORT_MAPPINGS.put("org.springframework.stereotype.Component", "ltd.idcu.est.core.api.annotation.Component");
         IMPORT_MAPPINGS.put("org.springframework.stereotype.Service", "ltd.idcu.est.core.api.annotation.Component");
-        IMPORT_MAPPINGS.put("org.springframework.stereotype.Repository", "ltd.idcu.est.features.data.api.Repository");
+        IMPORT_MAPPINGS.put("org.springframework.stereotype.Repository", "ltd.idcu.est.data.api.Repository");
         IMPORT_MAPPINGS.put("org.springframework.context.annotation.Configuration", "ltd.idcu.est.core.api.annotation.Configuration");
         IMPORT_MAPPINGS.put("org.springframework.beans.factory.annotation.Autowired", "ltd.idcu.est.core.api.annotation.Inject");
         IMPORT_MAPPINGS.put("org.springframework.beans.factory.annotation.Value", "ltd.idcu.est.core.api.annotation.Value");
-        IMPORT_MAPPINGS.put("org.springframework.transaction.annotation.Transactional", "ltd.idcu.est.features.data.api.Transactional");
-        IMPORT_MAPPINGS.put("org.springframework.scheduling.annotation.Scheduled", "ltd.idcu.est.features.scheduler.api.Scheduled");
-        IMPORT_MAPPINGS.put("org.springframework.context.event.EventListener", "ltd.idcu.est.features.event.api.EventListener");
-        IMPORT_MAPPINGS.put("org.springframework.cache.annotation.Cacheable", "ltd.idcu.est.features.cache.api.Cacheable");
+        IMPORT_MAPPINGS.put("org.springframework.transaction.annotation.Transactional", "ltd.idcu.est.data.api.Transactional");
+        IMPORT_MAPPINGS.put("org.springframework.scheduling.annotation.Scheduled", "ltd.idcu.est.scheduler.api.Scheduled");
+        IMPORT_MAPPINGS.put("org.springframework.context.event.EventListener", "ltd.idcu.est.event.api.EventListener");
+        IMPORT_MAPPINGS.put("org.springframework.cache.annotation.Cacheable", "ltd.idcu.est.cache.api.Cacheable");
     }
 
     public SpringBootImportMigrationRule() {

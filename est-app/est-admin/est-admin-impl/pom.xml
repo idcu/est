@@ -30,6 +30,14 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-aop-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-security-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
             <artifactId>est-security-jwt</artifactId>
         </dependency>
         <dependency>
@@ -51,6 +59,14 @@
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-config-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-ai-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-ai-impl</artifactId>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>

@@ -56,6 +56,102 @@ const routes: RouteRecordRaw[] = [
             name: 'Tenant',
             component: () => import('@/views/system/Tenant.vue'),
             meta: { title: '租户管理', requiresAuth: true }
+          },
+          {
+            path: 'operation-log',
+            name: 'OperationLog',
+            component: () => import('@/views/system/OperationLog.vue'),
+            meta: { title: '操作日志', requiresAuth: true }
+          },
+          {
+            path: 'login-log',
+            name: 'LoginLog',
+            component: () => import('@/views/system/LoginLog.vue'),
+            meta: { title: '登录日志', requiresAuth: true }
+          }
+        ]
+      },
+      {
+        path: 'monitor',
+        name: 'Monitor',
+        redirect: '/monitor/service',
+        meta: { title: '系统监控', requiresAuth: true },
+        children: [
+          {
+            path: 'service',
+            name: 'ServiceMonitor',
+            component: () => import('@/views/monitor/ServiceMonitor.vue'),
+            meta: { title: '服务监控', requiresAuth: true }
+          },
+          {
+            path: 'online-user',
+            name: 'OnlineUser',
+            component: () => import('@/views/monitor/OnlineUser.vue'),
+            meta: { title: '在线用户', requiresAuth: true }
+          },
+          {
+            path: 'cache',
+            name: 'CacheMonitor',
+            component: () => import('@/views/monitor/CacheMonitor.vue'),
+            meta: { title: '缓存监控', requiresAuth: true }
+          }
+        ]
+      },
+      {
+        path: 'integration',
+        name: 'Integration',
+        redirect: '/integration/email',
+        meta: { title: '第三方集成', requiresAuth: true },
+        children: [
+          {
+            path: 'email',
+            name: 'Email',
+            component: () => import('@/views/integration/Email.vue'),
+            meta: { title: '邮件服务', requiresAuth: true }
+          },
+          {
+            path: 'sms',
+            name: 'Sms',
+            component: () => import('@/views/integration/Sms.vue'),
+            meta: { title: '短信服务', requiresAuth: true }
+          },
+          {
+            path: 'oss',
+            name: 'Oss',
+            component: () => import('@/views/integration/Oss.vue'),
+            meta: { title: '对象存储', requiresAuth: true }
+          }
+        ]
+      },
+      {
+        path: 'ai',
+        name: 'Ai',
+        redirect: '/ai/chat',
+        meta: { title: 'AI 助手', requiresAuth: true },
+        children: [
+          {
+            path: 'chat',
+            name: 'AiChat',
+            component: () => import('@/views/ai/Chat.vue'),
+            meta: { title: 'AI 对话', requiresAuth: true }
+          },
+          {
+            path: 'code',
+            name: 'AiCode',
+            component: () => import('@/views/ai/Code.vue'),
+            meta: { title: '代码生成', requiresAuth: true }
+          },
+          {
+            path: 'reference',
+            name: 'AiReference',
+            component: () => import('@/views/ai/Reference.vue'),
+            meta: { title: '开发参考', requiresAuth: true }
+          },
+          {
+            path: 'template',
+            name: 'AiTemplate',
+            component: () => import('@/views/ai/Template.vue'),
+            meta: { title: '提示模板', requiresAuth: true }
           }
         ]
       }

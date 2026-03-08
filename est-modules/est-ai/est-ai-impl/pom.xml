@@ -26,6 +26,30 @@
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
+            <artifactId>est-util-format-yaml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-util-format-json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-llm-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-llm-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-ai-config-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-ai-config-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
             <artifactId>est-test-api</artifactId>
             <scope>test</scope>
         </dependency>

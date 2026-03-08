@@ -3,9 +3,9 @@ package ltd.idcu.est.admin;
 import ltd.idcu.est.admin.api.AdminException;
 import ltd.idcu.est.admin.api.AuthService;
 import ltd.idcu.est.admin.api.User;
-import ltd.idcu.est.features.security.api.Token;
-import ltd.idcu.est.features.security.jwt.JwtSecurity;
-import ltd.idcu.est.features.security.jwt.JwtTokenProvider;
+import ltd.idcu.est.security.api.Token;
+import ltd.idcu.est.security.jwt.JwtSecurity;
+import ltd.idcu.est.security.jwt.JwtTokenProvider;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

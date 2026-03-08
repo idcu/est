@@ -1,9 +1,9 @@
 package ltd.idcu.est.test.benchmark;
 
-import ltd.idcu.est.features.data.api.ConnectionPool;
-import ltd.idcu.est.features.data.api.DataConfig;
-import ltd.idcu.est.features.data.jdbc.DefaultConnectionPool;
-import ltd.idcu.est.features.data.jdbc.OptimizedConnectionPool;
+import ltd.idcu.est.data.api.ConnectionPool;
+import ltd.idcu.est.data.api.DataConfig;
+import ltd.idcu.est.data.jdbc.DefaultConnectionPool;
+import ltd.idcu.est.data.jdbc.OptimizedConnectionPool;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;

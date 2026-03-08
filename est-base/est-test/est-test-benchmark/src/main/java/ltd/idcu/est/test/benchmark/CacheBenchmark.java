@@ -1,7 +1,7 @@
 package ltd.idcu.est.test.benchmark;
 
-import ltd.idcu.est.features.cache.api.Cache;
-import ltd.idcu.est.features.cache.memory.MemoryCache;
+import ltd.idcu.est.cache.api.Cache;
+import ltd.idcu.est.cache.memory.MemoryCache;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;

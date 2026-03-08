@@ -1,6 +1,6 @@
 package ltd.idcu.est.web;
 
-import ltd.idcu.est.features.monitor.api.Metrics;
+import ltd.idcu.est.monitor.api.Metrics;
 import ltd.idcu.est.web.api.Middleware;
 import ltd.idcu.est.web.api.Request;
 import ltd.idcu.est.web.api.Response;

@@ -23,13 +23,13 @@ public class SolonImportMigrationRule extends AbstractMigrationRule {
         IMPORT_MAPPINGS.put("org.noear.solon.annotation.Body", "ltd.idcu.est.web.api.RequestBody");
         IMPORT_MAPPINGS.put("org.noear.solon.annotation.Component", "ltd.idcu.est.core.api.annotation.Component");
         IMPORT_MAPPINGS.put("org.noear.solon.annotation.Service", "ltd.idcu.est.core.api.annotation.Component");
-        IMPORT_MAPPINGS.put("org.noear.solon.annotation.Dao", "ltd.idcu.est.features.data.api.Repository");
+        IMPORT_MAPPINGS.put("org.noear.solon.annotation.Dao", "ltd.idcu.est.data.api.Repository");
         IMPORT_MAPPINGS.put("org.noear.solon.annotation.Configuration", "ltd.idcu.est.core.api.annotation.Configuration");
         IMPORT_MAPPINGS.put("org.noear.solon.annotation.Inject", "ltd.idcu.est.core.api.annotation.Inject");
         IMPORT_MAPPINGS.put("org.noear.solon.cloud.annotation.CloudConfig", "ltd.idcu.est.core.api.annotation.Value");
-        IMPORT_MAPPINGS.put("org.noear.solon.annotation.Transaction", "ltd.idcu.est.features.data.api.Transactional");
-        IMPORT_MAPPINGS.put("org.noear.solon.scheduling.annotation.Scheduled", "ltd.idcu.est.features.scheduler.api.Scheduled");
-        IMPORT_MAPPINGS.put("org.noear.solon.annotation.EventListener", "ltd.idcu.est.features.event.api.EventListener");
+        IMPORT_MAPPINGS.put("org.noear.solon.annotation.Transaction", "ltd.idcu.est.data.api.Transactional");
+        IMPORT_MAPPINGS.put("org.noear.solon.scheduling.annotation.Scheduled", "ltd.idcu.est.scheduler.api.Scheduled");
+        IMPORT_MAPPINGS.put("org.noear.solon.annotation.EventListener", "ltd.idcu.est.event.api.EventListener");
     }
 
     public SolonImportMigrationRule() {

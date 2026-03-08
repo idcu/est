@@ -1,7 +1,7 @@
 package ltd.idcu.est.workflow.core;
 
-import ltd.idcu.est.features.event.api.EventBus;
-import ltd.idcu.est.features.scheduler.api.Scheduler;
+import ltd.idcu.est.event.api.EventBus;
+import ltd.idcu.est.scheduler.api.Scheduler;
 import ltd.idcu.est.workflow.api.Edge;
 import ltd.idcu.est.workflow.api.WorkflowContext;
 import ltd.idcu.est.workflow.api.WorkflowDefinition;

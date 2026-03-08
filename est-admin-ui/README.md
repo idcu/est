@@ -24,11 +24,17 @@ est-admin-ui/
 │   │   ├── role.ts        # 角色管理 API
 │   │   ├── menu.ts        # 菜单管理 API
 │   │   ├── department.ts  # 部门管理 API
-│   │   └── tenant.ts      # 租户管理 API
+│   │   ├── tenant.ts      # 租户管理 API
+│   │   ├── log.ts         # 日志管理 API
+│   │   ├── monitor.ts     # 监控管理 API
+│   │   ├── integration.ts # 第三方集成 API
+│   │   └── ai.ts          # AI 助手 API
 │   ├── assets/            # 资源文件
 │   ├── components/        # 公共组件
 │   │   └── layout/       # 布局组件
 │   │       └── Layout.vue
+│   ├── directives/        # 自定义指令
+│   │   └── permission.ts  # 权限指令
 │   ├── router/            # 路由配置
 │   │   └── index.ts
 │   ├── stores/            # Pinia 状态管理
@@ -39,12 +45,27 @@ est-admin-ui/
 │   ├── views/             # 页面组件
 │   │   ├── login/         # 登录页面
 │   │   ├── dashboard/     # 仪表板
-│   │   └── system/        # 系统管理
-│   │       ├── User.vue
-│   │       ├── Role.vue
-│   │       ├── Menu.vue
-│   │       ├── Department.vue
-│   │       └── Tenant.vue
+│   │   ├── system/        # 系统管理
+│   │   │   ├── User.vue
+│   │   │   ├── Role.vue
+│   │   │   ├── Menu.vue
+│   │   │   ├── Department.vue
+│   │   │   ├── Tenant.vue
+│   │   │   ├── OperationLog.vue
+│   │   │   └── LoginLog.vue
+│   │   ├── monitor/       # 系统监控
+│   │   │   ├── ServiceMonitor.vue
+│   │   │   ├── OnlineUser.vue
+│   │   │   └── CacheMonitor.vue
+│   │   ├── integration/   # 第三方集成
+│   │   │   ├── Email.vue
+│   │   │   ├── Sms.vue
+│   │   │   └── Oss.vue
+│   │   └── ai/            # AI 助手
+│   │       ├── Chat.vue
+│   │       ├── Code.vue
+│   │       ├── Reference.vue
+│   │       └── Template.vue
 │   ├── App.vue            # 根组件
 │   └── main.ts            # 应用入口
 ├── .env.development       # 开发环境变量
@@ -52,6 +73,7 @@ est-admin-ui/
 ├── index.html
 ├── package.json
 ├── tsconfig.json
+├── tsconfig.node.json
 ├── vite.config.ts
 └── README.md
 ```
@@ -103,12 +125,36 @@ npm run preview
 - 菜单管理 (树形结构)
 - 部门管理 (树形结构)
 - 租户管理 (三种模式)
+- 操作日志管理
+- 登录日志管理
+
+### 系统监控
+- 服务监控 (JVM、系统指标)
+- 在线用户管理
+- 缓存监控
+
+### 第三方集成
+- 邮件服务配置
+- 短信服务配置
+- 对象存储 (OSS) 配置
+
+### AI 助手
+- AI 对话聊天
+- 代码生成
+- 代码解释
+- 代码优化
+- 开发参考查询
+- 最佳实践查询
+- 教程查询
+- 提示模板管理
 
 ### 其他特性
 - 响应式布局
 - 状态管理
 - API 请求封装
 - 统一错误处理
+- 权限指令
+- 权限检查
 
 ## 环境变量
 
@@ -126,15 +172,73 @@ VITE_API_BASE_URL=https://your-api-domain.com/admin/api
 
 后端需要运行在 8080 端口，提供以下 API:
 
+### 认证接口
 - `POST /admin/api/auth/login` - 登录
 - `POST /admin/api/auth/logout` - 登出
 - `GET /admin/api/auth/current` - 获取当前用户
 - `POST /admin/api/auth/refresh-token` - 刷新 Token
+
+### 系统管理接口
 - `GET /admin/api/users` - 用户列表
+- `POST /admin/api/users` - 创建用户
+- `PUT /admin/api/users/:id` - 更新用户
+- `DELETE /admin/api/users/:id` - 删除用户
 - `GET /admin/api/roles` - 角色列表
+- `POST /admin/api/roles` - 创建角色
+- `PUT /admin/api/roles/:id` - 更新角色
+- `DELETE /admin/api/roles/:id` - 删除角色
 - `GET /admin/api/menus` - 菜单列表
+- `POST /admin/api/menus` - 创建菜单
+- `PUT /admin/api/menus/:id` - 更新菜单
+- `DELETE /admin/api/menus/:id` - 删除菜单
 - `GET /admin/api/departments` - 部门列表
+- `POST /admin/api/departments` - 创建部门
+- `PUT /admin/api/departments/:id` - 更新部门
+- `DELETE /admin/api/departments/:id` - 删除部门
 - `GET /admin/api/tenants` - 租户列表
+- `POST /admin/api/tenants` - 创建租户
+- `PUT /admin/api/tenants/:id` - 更新租户
+- `DELETE /admin/api/tenants/:id` - 删除租户
+
+### 日志管理接口
+- `GET /admin/api/operation-logs` - 操作日志列表
+- `GET /admin/api/operation-logs/:id` - 获取操作日志详情
+- `DELETE /admin/api/operation-logs/:id` - 删除操作日志
+- `DELETE /admin/api/operation-logs` - 清空操作日志
+- `GET /admin/api/login-logs` - 登录日志列表
+- `GET /admin/api/login-logs/:id` - 获取登录日志详情
+- `DELETE /admin/api/login-logs/:id` - 删除登录日志
+- `DELETE /admin/api/login-logs` - 清空登录日志
+
+### 监控接口
+- `GET /admin/api/monitor/jvm` - JVM 监控指标
+- `GET /admin/api/monitor/system` - 系统监控指标
+- `GET /admin/api/monitor/health` - 健康检查
+- `GET /admin/api/monitor/metrics` - 所有监控指标
+- `GET /admin/api/online-users` - 在线用户列表
+- `GET /admin/api/online-users/count` - 在线用户数
+- `GET /admin/api/cache/statistics` - 缓存统计
+- `GET /admin/api/cache/keys` - 缓存键列表
+
+### 第三方集成接口
+- `GET /admin/api/integration/email` - 获取邮件配置
+- `PUT /admin/api/integration/email` - 更新邮件配置
+- `GET /admin/api/integration/sms` - 获取短信配置
+- `PUT /admin/api/integration/sms` - 更新短信配置
+- `GET /admin/api/integration/oss` - 获取 OSS 配置
+- `PUT /admin/api/integration/oss` - 更新 OSS 配置
+
+### AI 助手接口
+- `POST /admin/api/ai/chat` - AI 对话
+- `POST /admin/api/ai/code/generate` - 代码生成
+- `POST /admin/api/ai/code/suggest` - 代码建议
+- `POST /admin/api/ai/code/explain` - 代码解释
+- `POST /admin/api/ai/code/optimize` - 代码优化
+- `GET /admin/api/ai/reference` - 开发参考
+- `GET /admin/api/ai/bestpractice` - 最佳实践
+- `GET /admin/api/ai/tutorial` - 教程
+- `GET /admin/api/ai/templates` - 提示模板列表
+- `POST /admin/api/ai/templates/generate` - 生成提示
 
 ## 开发指南
 

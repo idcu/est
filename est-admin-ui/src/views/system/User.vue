@@ -25,7 +25,7 @@
       <template #header>
         <div class="card-header">
           <span>用户列表</span>
-          <el-button type="primary" @click="handleAdd">新增用户</el-button>
+          <el-button type="primary" @click="handleAdd" v-permission="['system:user:add']">新增用户</el-button>
         </div>
       </template>
       <el-table :data="tableData" border stripe style="width: 100%">

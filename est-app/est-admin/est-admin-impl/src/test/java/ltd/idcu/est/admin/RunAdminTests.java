@@ -17,7 +17,8 @@ public class RunAdminTests {
             DefaultRoleServiceTest.class,
             DefaultTenantServiceTest.class,
             DefaultMenuServiceTest.class,
-            DefaultDepartmentServiceTest.class
+            DefaultDepartmentServiceTest.class,
+            PhaseThreeTest.class
         );
 
         System.out.println();

@@ -1,6 +1,6 @@
 package ltd.idcu.est.admin;
 
-import ltd.idcu.est.features.security.api.User;
+import ltd.idcu.est.security.api.User;
 
 import java.util.Set;
 

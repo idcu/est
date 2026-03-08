@@ -90,10 +90,10 @@ public class ESTTemplateRegistry {
                 "repository",
                 "EST Repository",
                 "Create a data repository",
-                "import ltd.idcu.est.features.data.api.Repository;\n" +
-                "import ltd.idcu.est.features.data.api.Entity;\n" +
-                "import ltd.idcu.est.features.data.api.Id;\n" +
-                "import ltd.idcu.est.features.data.api.Column;\n" +
+                "import ltd.idcu.est.data.api.Repository;\n" +
+                "import ltd.idcu.est.data.api.Entity;\n" +
+                "import ltd.idcu.est.data.api.Id;\n" +
+                "import ltd.idcu.est.data.api.Column;\n" +
                 "\n" +
                 "@Repository\n" +
                 "public class ${NAME}Repository {\n" +
@@ -121,9 +121,9 @@ public class ESTTemplateRegistry {
                 "entity",
                 "EST Entity",
                 "Create a database entity",
-                "import ltd.idcu.est.features.data.api.Entity;\n" +
-                "import ltd.idcu.est.features.data.api.Id;\n" +
-                "import ltd.idcu.est.features.data.api.Column;\n" +
+                "import ltd.idcu.est.data.api.Entity;\n" +
+                "import ltd.idcu.est.data.api.Id;\n" +
+                "import ltd.idcu.est.data.api.Column;\n" +
                 "\n" +
                 "@Entity(table = \"${NAME.toLowerCase()}\")\n" +
                 "public class ${NAME} {\n" +
@@ -178,7 +178,7 @@ public class ESTTemplateRegistry {
                 "EST Scheduled Task",
                 "Create a scheduled task",
                 "import ltd.idcu.est.core.api.annotation.Component;\n" +
-                "import ltd.idcu.est.features.scheduler.api.Scheduled;\n" +
+                "import ltd.idcu.est.scheduler.api.Scheduled;\n" +
                 "\n" +
                 "@Component\n" +
                 "public class ${NAME}Task {\n" +
@@ -200,7 +200,7 @@ public class ESTTemplateRegistry {
                 "EST Event Listener",
                 "Create an event listener",
                 "import ltd.idcu.est.core.api.annotation.Component;\n" +
-                "import ltd.idcu.est.features.event.api.EventListener;\n" +
+                "import ltd.idcu.est.event.api.EventListener;\n" +
                 "\n" +
                 "@Component\n" +
                 "public class ${NAME}EventListener {\n" +

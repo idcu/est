@@ -32,6 +32,10 @@
             <groupId>ltd.idcu</groupId>
             <artifactId>est-security-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-ai-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

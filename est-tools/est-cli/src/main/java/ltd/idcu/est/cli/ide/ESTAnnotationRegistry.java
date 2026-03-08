@@ -107,32 +107,32 @@ public class ESTAnnotationRegistry {
     private static void registerDataAnnotations() {
         annotations.put("Repository", new AnnotationInfo(
                 "Repository",
-                "ltd.idcu.est.features.data.api.Repository",
+                "ltd.idcu.est.data.api.Repository",
                 "Mark a class as a data repository"
         ));
 
         annotations.put("Entity", new AnnotationInfo(
                 "Entity",
-                "ltd.idcu.est.features.data.api.Entity",
+                "ltd.idcu.est.data.api.Entity",
                 "Mark a class as a database entity"
         ).addAttribute("table", "String", "", false, "Database table name"));
 
         annotations.put("Id", new AnnotationInfo(
                 "Id",
-                "ltd.idcu.est.features.data.api.Id",
+                "ltd.idcu.est.data.api.Id",
                 "Mark a field as the primary key"
         ));
 
         annotations.put("Column", new AnnotationInfo(
                 "Column",
-                "ltd.idcu.est.features.data.api.Column",
+                "ltd.idcu.est.data.api.Column",
                 "Map a field to a database column"
         ).addAttribute("name", "String", "", false, "Column name")
          .addAttribute("nullable", "boolean", "true", false, "Whether the column is nullable"));
 
         annotations.put("Transactional", new AnnotationInfo(
                 "Transactional",
-                "ltd.idcu.est.features.data.api.Transactional",
+                "ltd.idcu.est.data.api.Transactional",
                 "Mark a method as transactional"
         ).addAttribute("readOnly", "boolean", "false", false, "Whether the transaction is read-only"));
     }
@@ -140,21 +140,21 @@ public class ESTAnnotationRegistry {
     private static void registerFeatureAnnotations() {
         annotations.put("Cacheable", new AnnotationInfo(
                 "Cacheable",
-                "ltd.idcu.est.features.cache.api.Cacheable",
+                "ltd.idcu.est.cache.api.Cacheable",
                 "Cache the result of a method invocation"
         ).addAttribute("key", "String", "", false, "Cache key")
          .addAttribute("ttl", "long", "3600", false, "Time to live in seconds"));
 
         annotations.put("Scheduled", new AnnotationInfo(
                 "Scheduled",
-                "ltd.idcu.est.features.scheduler.api.Scheduled",
+                "ltd.idcu.est.scheduler.api.Scheduled",
                 "Mark a method to be scheduled"
         ).addAttribute("cron", "String", "", false, "Cron expression")
          .addAttribute("fixedRate", "long", "-1", false, "Fixed rate in milliseconds"));
 
         annotations.put("EventListener", new AnnotationInfo(
                 "EventListener",
-                "ltd.idcu.est.features.event.api.EventListener",
+                "ltd.idcu.est.event.api.EventListener",
                 "Mark a method as an event listener"
         ).addAttribute("async", "boolean", "false", false, "Whether to execute asynchronously"));
 

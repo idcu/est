@@ -30,6 +30,15 @@ public class GeneratorConfig {
     private boolean useSwagger = false;
     private boolean useMybatisPlus = false;
     private boolean useRelations = false;
+    
+    private boolean generateFrontend = false;
+    private String frontendOutputDir;
+    private String frontendApiPackage;
+    private String frontendViewsPackage;
+    private boolean generateApi = true;
+    private boolean generateListView = true;
+    private boolean generateFormView = true;
+    private boolean generateDetailView = false;
 
     public String getJdbcUrl() {
         return jdbcUrl;
@@ -245,6 +254,70 @@ public class GeneratorConfig {
 
     public void setUseRelations(boolean useRelations) {
         this.useRelations = useRelations;
+    }
+
+    public boolean isGenerateFrontend() {
+        return generateFrontend;
+    }
+
+    public void setGenerateFrontend(boolean generateFrontend) {
+        this.generateFrontend = generateFrontend;
+    }
+
+    public String getFrontendOutputDir() {
+        return frontendOutputDir;
+    }
+
+    public void setFrontendOutputDir(String frontendOutputDir) {
+        this.frontendOutputDir = frontendOutputDir;
+    }
+
+    public String getFrontendApiPackage() {
+        return frontendApiPackage != null ? frontendApiPackage : "api";
+    }
+
+    public void setFrontendApiPackage(String frontendApiPackage) {
+        this.frontendApiPackage = frontendApiPackage;
+    }
+
+    public String getFrontendViewsPackage() {
+        return frontendViewsPackage != null ? frontendViewsPackage : "views";
+    }
+
+    public void setFrontendViewsPackage(String frontendViewsPackage) {
+        this.frontendViewsPackage = frontendViewsPackage;
+    }
+
+    public boolean isGenerateApi() {
+        return generateApi;
+    }
+
+    public void setGenerateApi(boolean generateApi) {
+        this.generateApi = generateApi;
+    }
+
+    public boolean isGenerateListView() {
+        return generateListView;
+    }
+
+    public void setGenerateListView(boolean generateListView) {
+        this.generateListView = generateListView;
+    }
+
+    public boolean isGenerateFormView() {
+        return generateFormView;
+    }
+
+    public void setGenerateFormView(boolean generateFormView) {
+        this.generateFormView = generateFormView;
+    }
+
+    public boolean isGenerateDetailView() {
+        return generateDetailView;
+    }
+
+    public void setGenerateDetailView(boolean generateDetailView) {
+        this.generateDetailView = generateDetailView;
     }
 
     public boolean shouldGenerateTable(String tableName) {

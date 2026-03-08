@@ -3,6 +3,7 @@ package ltd.idcu.est.admin.controller;
 import ltd.idcu.est.admin.Admin;
 import ltd.idcu.est.admin.api.ApiResponse;
 import ltd.idcu.est.admin.api.AuthService;
+import ltd.idcu.est.admin.api.LoginLogService;
 import ltd.idcu.est.admin.api.User;
 import ltd.idcu.est.web.api.Request;
 import ltd.idcu.est.web.api.Response;
@@ -18,14 +19,18 @@ import java.util.Map;
 public class AdminController {
     
     private final AuthService authService;
+    private final LoginLogService loginLogService;
     
     public AdminController() {
         this.authService = Admin.createAuthService();
+        this.loginLogService = Admin.createLoginLogService();
     }
     
     public void login(Request req, Response res) {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        String ip = getClientIp(req);
+        String userAgent = getUserAgent(req);
         
         try {
             User user = authService.authenticate(username, password);
@@ -46,11 +51,26 @@ public class AdminController {
             data.put("token", token);
             data.put("user", userData);
             
+            loginLogService.createLoginLog(user.getId(), user.getUsername(), ip, userAgent, 1, null);
             res.json(ApiResponse.success("Login successful", data));
         } catch (Exception e) {
+            loginLogService.createLoginLog(null, username, ip, userAgent, 0, e.getMessage());
             res.setStatus(401);
             res.json(ApiResponse.unauthorized(e.getMessage()));
         }
+    }
+    
+    private String getClientIp(Request req) {
+        String xForwardedFor = req.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+        return "127.0.0.1";
+    }
+    
+    private String getUserAgent(Request req) {
+        String userAgent = req.getHeader("User-Agent");
+        return userAgent != null ? userAgent : "Unknown";
     }
     
     public void logout(Request req, Response res) {
@@ -88,6 +108,8 @@ public class AdminController {
             res.json(ApiResponse.unauthorized("Invalid or expired token"));
             return;
         }
+        
+        req.setAttribute("currentUser", user);
         
         Map<String, Object> userData = new HashMap<>();
         userData.put("id", user.getId());

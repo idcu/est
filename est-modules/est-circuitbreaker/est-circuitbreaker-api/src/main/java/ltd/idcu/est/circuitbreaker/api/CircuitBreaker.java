@@ -9,11 +9,7 @@ public interface CircuitBreaker {
 
     <T> T execute(Supplier<T> supplier) throws Exception;
 
-    <T> T execute(Supplier<T> supplier, Supplier<T> fallback) throws Exception;
-
     void execute(Runnable runnable) throws Exception;
-
-    void execute(Runnable runnable, Runnable fallback) throws Exception;
 
     void reset();
 

@@ -2,6 +2,8 @@ package ltd.idcu.est.admin.controller;
 
 import ltd.idcu.est.admin.Admin;
 import ltd.idcu.est.admin.api.ApiResponse;
+import ltd.idcu.est.admin.api.OperationLogAnnotation;
+import ltd.idcu.est.admin.api.RequirePermission;
 import ltd.idcu.est.admin.api.User;
 import ltd.idcu.est.admin.api.UserService;
 import ltd.idcu.est.web.api.Request;
@@ -21,6 +23,7 @@ public class UserController {
         this.userService = Admin.createUserService();
     }
     
+    @RequirePermission("system:user:list")
     public void list(Request req, Response res) {
         try {
             List<User> users = userService.getAllUsers();
@@ -34,6 +37,7 @@ public class UserController {
         }
     }
     
+    @RequirePermission("system:user:query")
     public void get(Request req, Response res) {
         try {
             String id = req.getPathVariable("id");
@@ -50,6 +54,8 @@ public class UserController {
         }
     }
     
+    @RequirePermission("system:user:add")
+    @OperationLogAnnotation(module = "用户管理", operation = "新增用户")
     public void create(Request req, Response res) {
         try {
             String username = req.getParameter("username");
@@ -70,6 +76,8 @@ public class UserController {
         }
     }
     
+    @RequirePermission("system:user:edit")
+    @OperationLogAnnotation(module = "用户管理", operation = "更新用户")
     public void update(Request req, Response res) {
         try {
             String id = req.getPathVariable("id");
@@ -89,6 +97,8 @@ public class UserController {
         }
     }
     
+    @RequirePermission("system:user:delete")
+    @OperationLogAnnotation(module = "用户管理", operation = "删除用户")
     public void delete(Request req, Response res) {
         try {
             String id = req.getPathVariable("id");
@@ -100,6 +110,7 @@ public class UserController {
         }
     }
     
+    @RequirePermission("system:user:password")
     public void changePassword(Request req, Response res) {
         try {
             String id = req.getPathVariable("id");
@@ -114,6 +125,7 @@ public class UserController {
         }
     }
     
+    @RequirePermission("system:user:password")
     public void resetPassword(Request req, Response res) {
         try {
             String id = req.getPathVariable("id");
@@ -127,6 +139,7 @@ public class UserController {
         }
     }
     
+    @RequirePermission("system:user:role")
     public void assignRoles(Request req, Response res) {
         try {
             String id = req.getPathVariable("id");
@@ -141,6 +154,7 @@ public class UserController {
         }
     }
     
+    @RequirePermission("system:user:permission")
     public void assignPermissions(Request req, Response res) {
         try {
             String id = req.getPathVariable("id");

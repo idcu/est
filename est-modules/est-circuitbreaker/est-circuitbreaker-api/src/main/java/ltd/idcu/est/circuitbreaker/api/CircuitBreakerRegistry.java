@@ -1,39 +1,37 @@
 package ltd.idcu.est.circuitbreaker.api;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
-public interface CircuitBreakerRegistry {
-    CircuitBreaker create(String name);
+public class CircuitBreakerRegistry {
+    private final Map<String, CircuitBreaker> circuitBreakers = new ConcurrentHashMap<>();
 
-    CircuitBreaker create(String name, CircuitBreakerConfig config);
+    public CircuitBreaker create(String name) {
+        return create(name, new CircuitBreakerConfig());
+    }
 
-    Optional<CircuitBreaker> get(String name);
+    public CircuitBreaker create(String name, CircuitBreakerConfig config) {
+        return circuitBreakers.computeIfAbsent(name, k -> new DefaultCircuitBreaker(name, config));
+    }
 
-    CircuitBreaker getOrCreate(String name);
+    public Optional<CircuitBreaker> get(String name) {
+        return Optional.ofNullable(circuitBreakers.get(name));
+    }
 
-    void remove(String name);
+    public CircuitBreaker getOrCreate(String name) {
+        return circuitBreakers.computeIfAbsent(name, k -> new DefaultCircuitBreaker(name));
+    }
 
-    Map<String, CircuitBreaker> getAll();
+    public void remove(String name) {
+        circuitBreakers.remove(name);
+    }
 
-    void clear();
+    public Map<String, CircuitBreaker> getAll() {
+        return new ConcurrentHashMap<>(circuitBreakers);
+    }
 
-    void saveToJson(String path) throws IOException;
-
-    void saveToJson(OutputStream outputStream) throws IOException;
-
-    void loadFromJson(String path) throws IOException;
-
-    void loadFromJson(InputStream inputStream) throws IOException;
-
-    void setAutoSave(boolean enabled);
-
-    void setAutoSavePath(String path);
-
-    boolean isAutoSaveEnabled();
-
-    String getAutoSavePath();
+    public void clear() {
+        circuitBreakers.clear();
+    }
 }

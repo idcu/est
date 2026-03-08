@@ -2,9 +2,9 @@ package ltd.idcu.est.web;
 
 import ltd.idcu.est.core.api.Config;
 import ltd.idcu.est.core.api.lifecycle.LifecycleListener;
-import ltd.idcu.est.features.hotreload.api.HotReload;
-import ltd.idcu.est.features.hotreload.api.HotReloadListener;
-import ltd.idcu.est.features.hotreload.api.HotReloadService;
+import ltd.idcu.est.hotreload.api.HotReload;
+import ltd.idcu.est.hotreload.api.HotReloadListener;
+import ltd.idcu.est.hotreload.api.HotReloadService;
 import ltd.idcu.est.web.api.*;
 import ltd.idcu.est.web.api.Controller;
 import ltd.idcu.est.web.api.RouteHandler;

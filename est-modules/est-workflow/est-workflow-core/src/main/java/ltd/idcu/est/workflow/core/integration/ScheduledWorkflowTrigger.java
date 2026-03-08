@@ -1,8 +1,8 @@
 package ltd.idcu.est.workflow.core.integration;
 
-import ltd.idcu.est.features.scheduler.api.Scheduler;
-import ltd.idcu.est.features.scheduler.api.Task;
-import ltd.idcu.est.features.scheduler.fixed.FixedRateSchedulers;
+import ltd.idcu.est.scheduler.api.Scheduler;
+import ltd.idcu.est.scheduler.api.Task;
+import ltd.idcu.est.scheduler.fixed.FixedRateSchedulers;
 import ltd.idcu.est.workflow.api.WorkflowContext;
 import ltd.idcu.est.workflow.api.WorkflowEngine;
 import ltd.idcu.est.workflow.api.WorkflowException;

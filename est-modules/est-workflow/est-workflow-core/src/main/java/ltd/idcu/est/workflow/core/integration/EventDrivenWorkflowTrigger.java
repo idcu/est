@@ -1,8 +1,8 @@
 package ltd.idcu.est.workflow.core.integration;
 
-import ltd.idcu.est.features.event.api.Event;
-import ltd.idcu.est.features.event.api.EventBus;
-import ltd.idcu.est.features.event.api.EventListener;
+import ltd.idcu.est.event.api.Event;
+import ltd.idcu.est.event.api.EventBus;
+import ltd.idcu.est.event.api.EventListener;
 import ltd.idcu.est.workflow.api.WorkflowContext;
 import ltd.idcu.est.workflow.api.WorkflowEngine;
 import ltd.idcu.est.workflow.api.WorkflowException;

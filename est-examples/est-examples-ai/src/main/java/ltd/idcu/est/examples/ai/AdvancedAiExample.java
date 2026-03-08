@@ -1,12 +1,12 @@
 package ltd.idcu.est.examples.ai;
 
-import ltd.idcu.est.features.ai.api.AiAssistant;
-import ltd.idcu.est.features.ai.api.mcp.McpServer;
-import ltd.idcu.est.features.ai.api.mcp.McpToolResult;
-import ltd.idcu.est.features.ai.api.skill.SkillResult;
-import ltd.idcu.est.features.ai.impl.DefaultAiAssistant;
-import ltd.idcu.est.features.ai.impl.llm.ZhipuAiLlmClient;
-import ltd.idcu.est.features.ai.impl.mcp.DefaultMcpServer;
+import ltd.idcu.est.ai.api.AiAssistant;
+import ltd.idcu.est.ai.api.mcp.McpServer;
+import ltd.idcu.est.ai.api.mcp.McpToolResult;
+import ltd.idcu.est.ai.api.skill.SkillResult;
+import ltd.idcu.est.ai.impl.DefaultAiAssistant;
+import ltd.idcu.est.ai.impl.llm.ZhipuAiLlmClient;
+import ltd.idcu.est.ai.impl.mcp.DefaultMcpServer;
 
 import java.util.List;
 import java.util.Map;

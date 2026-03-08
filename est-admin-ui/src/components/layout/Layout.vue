@@ -17,32 +17,30 @@
           <el-icon><DataLine /></el-icon>
           <template #title>仪表板</template>
         </el-menu-item>
-        <el-sub-menu index="/system">
-          <template #title>
-            <el-icon><Setting /></el-icon>
-            <span>系统管理</span>
+        <template v-for="menu in userStore.menus" :key="menu.id">
+          <template v-if="menu.children && menu.children.length > 0">
+            <el-sub-menu :index="menu.path">
+              <template #title>
+                <el-icon><component :is="getMenuIcon(menu.icon)" /></el-icon>
+                <span>{{ menu.name }}</span>
+              </template>
+              <el-menu-item
+                v-for="child in menu.children"
+                :key="child.id"
+                :index="child.path"
+              >
+                <el-icon><component :is="getMenuIcon(child.icon)" /></el-icon>
+                <template #title>{{ child.name }}</template>
+              </el-menu-item>
+            </el-sub-menu>
           </template>
-          <el-menu-item index="/system/user">
-            <el-icon><User /></el-icon>
-            <template #title>用户管理</template>
-          </el-menu-item>
-          <el-menu-item index="/system/role">
-            <el-icon><UserFilled /></el-icon>
-            <template #title>角色管理</template>
-          </el-menu-item>
-          <el-menu-item index="/system/menu">
-            <el-icon><Menu /></el-icon>
-            <template #title>菜单管理</template>
-          </el-menu-item>
-          <el-menu-item index="/system/department">
-            <el-icon><OfficeBuilding /></el-icon>
-            <template #title>部门管理</template>
-          </el-menu-item>
-          <el-menu-item index="/system/tenant">
-            <el-icon><House /></el-icon>
-            <template #title>租户管理</template>
-          </el-menu-item>
-        </el-sub-menu>
+          <template v-else>
+            <el-menu-item :index="menu.path">
+              <el-icon><component :is="getMenuIcon(menu.icon)" /></el-icon>
+              <template #title>{{ menu.name }}</template>
+            </el-menu-item>
+          </template>
+        </template>
       </el-menu>
     </el-aside>
 
@@ -58,7 +56,7 @@
           <el-dropdown>
             <span class="user-info">
               <el-icon><Avatar /></el-icon>
-              <span>Admin</span>
+              <span>{{ userStore.userInfo?.nickname || 'Admin' }}</span>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
@@ -79,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, markRaw } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '@/stores/app'
 import { useUserStore } from '@/stores/user'
@@ -103,6 +101,21 @@ const userStore = useUserStore()
 
 const sidebarCollapsed = computed(() => appStore.sidebarCollapsed)
 const activeMenu = computed(() => route.path)
+
+const iconMap: Record<string, any> = {
+  setting: markRaw(Setting),
+  user: markRaw(User),
+  team: markRaw(UserFilled),
+  menu: markRaw(Menu),
+  tree: markRaw(OfficeBuilding),
+  office: markRaw(OfficeBuilding),
+  house: markRaw(House),
+  home: markRaw(House)
+}
+
+function getMenuIcon(icon: string) {
+  return iconMap[icon] || markRaw(Setting)
+}
 
 function toggleSidebar() {
   appStore.toggleSidebar()

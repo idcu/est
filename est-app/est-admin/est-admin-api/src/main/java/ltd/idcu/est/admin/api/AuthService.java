@@ -8,6 +8,10 @@ public interface AuthService {
     
     User validateToken(String token);
     
+    String refreshToken(String token);
+    
+    void invalidateToken(String token);
+    
     boolean hasPermission(User user, String permission);
     
     boolean hasRole(User user, String role);

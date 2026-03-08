@@ -7,6 +7,10 @@ import ltd.idcu.est.admin.controller.RoleController;
 import ltd.idcu.est.admin.controller.MenuController;
 import ltd.idcu.est.admin.controller.DepartmentController;
 import ltd.idcu.est.admin.controller.TenantController;
+import ltd.idcu.est.admin.controller.LogController;
+import ltd.idcu.est.admin.controller.MonitorController;
+import ltd.idcu.est.admin.controller.IntegrationController;
+import ltd.idcu.est.admin.controller.AiController;
 import ltd.idcu.est.web.Web;
 import ltd.idcu.est.web.api.WebApplication;
 import ltd.idcu.est.web.api.Router;
@@ -23,6 +27,10 @@ public class DefaultAdminApplication implements AdminApplication {
     private final MenuController menuController;
     private final DepartmentController departmentController;
     private final TenantController tenantController;
+    private final LogController logController;
+    private final MonitorController monitorController;
+    private final IntegrationController integrationController;
+    private final AiController aiController;
     
     public DefaultAdminApplication() {
         this("EST Admin Console");
@@ -37,6 +45,14 @@ public class DefaultAdminApplication implements AdminApplication {
         this.menuController = new MenuController();
         this.departmentController = new DepartmentController();
         this.tenantController = new TenantController();
+        this.logController = new LogController();
+        this.monitorController = new MonitorController(
+            Admin.createMonitorService(),
+            Admin.createOnlineUserService(),
+            Admin.createCacheMonitorService()
+        );
+        this.integrationController = new IntegrationController();
+        this.aiController = new AiController();
         this.running = false;
         setupRoutes();
     }
@@ -78,6 +94,8 @@ public class DefaultAdminApplication implements AdminApplication {
             
             router.group("/admin/api/menus", (r, group) -> {
                 r.get("", (RouteHandler) menuController::list);
+                r.get("/tree", (RouteHandler) menuController::tree);
+                r.get("/user", (RouteHandler) menuController::userMenus);
                 r.post("", (RouteHandler) menuController::create);
                 r.get("/{id}", (RouteHandler) menuController::get);
                 r.put("/{id}", (RouteHandler) menuController::update);
@@ -103,6 +121,54 @@ public class DefaultAdminApplication implements AdminApplication {
                 r.delete("/{id}", (RouteHandler) tenantController::delete);
                 r.post("/{id}/set-current", (RouteHandler) tenantController::setCurrent);
                 r.post("/clear-current", (RouteHandler) tenantController::clearCurrent);
+            });
+            
+            router.group("/admin/api/logs", (r, group) -> {
+                r.get("/operations", (RouteHandler) logController::listOperationLogs);
+                r.get("/operations/{id}", (RouteHandler) logController::getOperationLog);
+                r.delete("/operations/{id}", (RouteHandler) logController::deleteOperationLog);
+                r.post("/operations/clear", (RouteHandler) logController::clearOperationLogs);
+                r.get("/logins", (RouteHandler) logController::listLoginLogs);
+                r.get("/logins/{id}", (RouteHandler) logController::getLoginLog);
+                r.delete("/logins/{id}", (RouteHandler) logController::deleteLoginLog);
+                r.post("/logins/clear", (RouteHandler) logController::clearLoginLogs);
+            });
+            
+            router.group("/admin/api/monitor", (r, group) -> {
+                r.get("/jvm", (RouteHandler) monitorController::getJvmMetrics);
+                r.get("/system", (RouteHandler) monitorController::getSystemMetrics);
+                r.get("/health", (RouteHandler) monitorController::getHealthChecks);
+                r.get("/all", (RouteHandler) monitorController::getAllMetrics);
+                r.get("/online-users", (RouteHandler) monitorController::getOnlineUsers);
+                r.post("/online-users/{sessionId}/force-logout", (RouteHandler) monitorController::forceLogout);
+                r.get("/cache", (RouteHandler) monitorController::getCacheStatistics);
+                r.get("/cache/keys", (RouteHandler) monitorController::getCacheKeys);
+                r.post("/cache/{cacheName}/clear", (RouteHandler) monitorController::clearCache);
+                r.post("/cache/clear-all", (RouteHandler) monitorController::clearAllCaches);
+            });
+            
+            router.group("/admin/api/integration", (r, group) -> {
+                r.post("/email/send", (RouteHandler) integrationController::sendEmail);
+                r.get("/email/templates", (RouteHandler) integrationController::listEmailTemplates);
+                r.post("/sms/send", (RouteHandler) integrationController::sendSms);
+                r.get("/sms/templates", (RouteHandler) integrationController::listSmsTemplates);
+                r.get("/oss/buckets", (RouteHandler) integrationController::listBuckets);
+                r.get("/oss/files", (RouteHandler) integrationController::listFiles);
+                r.post("/oss/upload", (RouteHandler) integrationController::uploadFile);
+                r.post("/oss/delete", (RouteHandler) integrationController::deleteFile);
+            });
+            
+            router.group("/admin/api/ai", (r, group) -> {
+                r.post("/chat", (RouteHandler) aiController::chat);
+                r.post("/code/generate", (RouteHandler) aiController::generateCode);
+                r.post("/code/suggest", (RouteHandler) aiController::suggestCode);
+                r.post("/code/explain", (RouteHandler) aiController::explainCode);
+                r.post("/code/optimize", (RouteHandler) aiController::optimizeCode);
+                r.get("/reference", (RouteHandler) aiController::getQuickReference);
+                r.get("/bestpractice", (RouteHandler) aiController::getBestPractice);
+                r.get("/tutorial", (RouteHandler) aiController::getTutorial);
+                r.get("/templates", (RouteHandler) aiController::listTemplates);
+                r.post("/templates/generate", (RouteHandler) aiController::generatePrompt);
             });
         });
     }

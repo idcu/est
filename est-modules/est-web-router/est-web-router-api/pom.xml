@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-web-router</artifactId>
+        <version>2.0.0</version>
+    </parent>
+
+    <artifactId>est-web-router-api</artifactId>
+
+    <name>EST Web Router API</name>
+    <description>EST Web Router API - Routing interfaces</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-util-common</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
