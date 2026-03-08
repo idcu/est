@@ -125,6 +125,7 @@ est/
 
 ### 鍏ラ棬鎸囧崡
 - [蹇€熷紑濮媇(docs/getting-started/README.md) - 鍒涘缓浣犵殑绗竴涓簲鐢?- [婕旂ず搴旂敤](est-demo/README.md) - 瀹屾暣鐨勫姛鑳芥紨绀?- [蹇€熷紑濮嬫寚鍗梋(est-demo/QUICKSTART.md) - 5鍒嗛挓涓婃墜
+- [编码规范](ENCODING_GUIDELINES.md) - 项目编码规范和最佳实践
 
 ### 鏁欑▼绯诲垪
 - [鍏ラ棬鏁欑▼](docs/tutorials/beginner/) - 閫傚悎鍒濆鑰?- [Web 寮€鍙戞暀绋媇(docs/tutorials/) - 瀛︿範 Web 寮€鍙?

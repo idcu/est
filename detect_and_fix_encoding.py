@@ -46,4 +46,30 @@ def fix_file_encoding(file_path):
         return False
 
 def main():
-    # Find
+    # Find all .md files
+    md_files = glob.glob('**/*.md', recursive=True)
+    print(f"Found {len(md_files)} .md files")
+    
+    success_count = 0
+    fail_count = 0
+    
+    for file_path in md_files:
+        if fix_file_encoding(file_path):
+            success_count += 1
+        else:
+            fail_count += 1
+    
+    print(f"\n=== Summary ===")
+    print(f"Successfully processed: {success_count}")
+    print(f"Failed: {fail_count}")
+
+if __name__ == "__main__":
+    try:
+        import chardet
+    except ImportError:
+        print("Installing chardet...")
+        import subprocess
+        subprocess.check_call(['pip', 'install', 'chardet'])
+        import chardet
+    
+    main()
