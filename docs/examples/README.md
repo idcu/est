@@ -1,4 +1,4 @@
-# Examples
+﻿# Examples
 
 This section contains practical examples for using the EST Framework.
 
