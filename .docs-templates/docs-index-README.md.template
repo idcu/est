@@ -1,0 +1,66 @@
+# {PROJECT_SHORT_NAME} 文档中心
+
+欢迎来到{PROJECT_SHORT_NAME}框架文档中心！
+
+## 目录
+
+- [概述](#概述)
+- [架构](#架构)
+- [入门指南](#入门指南)
+- [模块文档](#模块文档)
+- [示例](#示例)
+
+---
+
+## 概述
+
+{PROJECT_SHORT_NAME}是一个{PROJECT_DESCRIPTION}。
+
+## 架构
+
+框架遵循清晰的分层架构：
+
+```
+{ARCHITECTURE_DIAGRAM}
+```
+
+## 入门指南
+
+- [快速开始](./getting-started/README.md) - 安装和基本使用
+- [教程](./tutorials/) - 完整的教程系列
+  - [入门教程](./tutorials/beginner/) - 适合初学者
+  - [Web开发教程](./tutorials/web/) - Web开发
+- [最佳实践](./best-practices/) - 开发最佳实践
+
+## 模块文档
+
+- [核心模块](./modules/core/) - 核心功能模块
+- [功能模块](./modules/features/) - 功能模块文档
+  - [基础设施](./modules/foundation/)
+  - [数据访问](./modules/data/)
+  - [安全权限](./modules/security/)
+  - [Web框架](./modules/web/)
+  - [AI套件](./modules/ai/)
+
+## API 参考
+
+- [API 文档](./api/) - 完整的 API 参考文档
+- [架构设计](./architecture/) - 架构设计文档
+
+## 示例
+
+- [示例代码](../{EXAMPLES_PATH}/) - 丰富的示例代码
+  - [基础示例](../{EXAMPLES_PATH}/{BASIC_EXAMPLE_DIR}/)
+  - [Web示例](../{EXAMPLES_PATH}/{WEB_EXAMPLE_DIR}/)
+  - [高级示例](../{EXAMPLES_PATH}/{ADVANCED_EXAMPLE_DIR}/)
+
+## 相关资源
+
+- [GitHub 仓库]({REPO_URL})
+- [问题反馈]({ISSUES_URL})
+- [社区讨论]({DISCUSSIONS_URL})
+
+---
+
+**文档版本**: {DOC_VERSION}  
+**最后更新**: {LAST_UPDATE}

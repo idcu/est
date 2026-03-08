@@ -1,20 +1,20 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: est-web-app-hpa
+  name: est-demo-hpa
   namespace: est
   labels:
-    app: est-web-app
-    app.kubernetes.io/name: est-web-app
-    app.kubernetes.io/instance: est-web-app
-    app.kubernetes.io/version: "1.3.0"
+    app: est-demo
+    app.kubernetes.io/name: est-demo
+    app.kubernetes.io/instance: est-demo
+    app.kubernetes.io/version: "2.0.0"
     app.kubernetes.io/component: web
     app.kubernetes.io/part-of: est-framework
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: est-web-app
+    name: est-demo
   minReplicas: 2
   maxReplicas: 10
   metrics:

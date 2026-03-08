@@ -567,6 +567,21 @@
                 <artifactId>est-ai-config-impl</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-workflow-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-llm-core-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-llm-core-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

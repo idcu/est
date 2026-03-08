@@ -6,10 +6,11 @@
 
 ```
 deploy/
-├── docker/          # Docker 相关配置
-│   ├── Dockerfile
-│   └── docker-compose.yml
-├── k8s/             # Kubernetes 相关配置
+├── docker/              # Docker 相关配置
+│   ├── Dockerfile       # Docker 镜像构建文件
+│   ├── docker-compose.yml  # Docker Compose 配置
+│   └── .dockerignore    # Docker 构建忽略文件
+├── k8s/                 # Kubernetes 相关配置
 │   ├── namespace.yaml         # 命名空间配置
 │   ├── serviceaccount.yaml    # 服务账户配置
 │   ├── rbac.yaml              # 权限控制配置
@@ -21,39 +22,62 @@ deploy/
 │   ├── pdb.yaml               # Pod 中断预算
 │   ├── ingress.yaml           # 入口配置
 │   └── kustomization.yaml     # Kustomize 配置
-└── README.md        # 本文件
+├── servicemesh/         # Service Mesh (Istio) 配置
+├── scripts/             # 部署脚本
+│   ├── build-docker.bat      # Windows Docker 构建脚本
+│   ├── build-docker.sh        # Linux/Mac Docker 构建脚本
+│   ├── deploy-k8s.bat        # Windows Kubernetes 部署脚本
+│   ├── deploy-k8s.sh          # Linux/Mac Kubernetes 部署脚本
+│   ├── undeploy-k8s.bat      # Windows Kubernetes 卸载脚本
+│   └── undeploy-k8s.sh        # Linux/Mac Kubernetes 卸载脚本
+└── README.md            # 本文件
 ```
 
 ---
 
-## Docker 部署
+## 快速开始
 
-### 前置要求
+### Docker 部署
+
+#### 前置要求
 
 - Docker 20.10+
 - Docker Compose 2.0+ (可选)
 
-### 快速开始
+#### 方式一：使用脚本构建（推荐）
 
-#### 1. 构建镜像
+**Windows:**
+```bash
+cd deploy/scripts
+build-docker.bat 2.0.0
+```
+
+**Linux/Mac:**
+```bash
+cd deploy/scripts
+chmod +x build-docker.sh
+./build-docker.sh 2.0.0
+```
+
+#### 方式二：手动构建
 
 ```bash
 cd deploy/docker
-docker build -t est-web-app:latest -f Dockerfile ../..
+docker build -t est-demo:2.0.0 -f Dockerfile ../..
 ```
 
-#### 2. 运行容器
+#### 运行容器
 
 ```bash
 docker run -d \
-  --name est-web-app \
+  --name est-demo \
   -p 8080:8080 \
   -e JAVA_OPTS="-Xms512m -Xmx2g" \
   -e APP_ENV=production \
-  est-web-app:latest
+  est-demo:2.0.0
 ```
 
-#### 3. 使用 Docker Compose
+#### 使用 Docker Compose
 
 ```bash
 cd deploy/docker
@@ -64,10 +88,10 @@ docker-compose up -d
 
 | 变量名 | 默认值 | 说明 |
 |--------|--------|------|
-| JAVA_OPTS | -Xms512m -Xmx2g | JVM 参数 |
+| JAVA_OPTS | -Xms512m -Xmx2g -XX:+UseG1GC | JVM 参数 |
 | APP_ENV | production | 应用环境 |
-| APP_NAME | est-web-app | 应用名称 |
-| APP_VERSION | 1.3.0 | 应用版本 |
+| APP_NAME | est-demo | 应用名称 |
+| APP_VERSION | 2.0.0 | 应用版本 |
 | LOG_LEVEL | INFO | 日志级别 |
 
 ---
@@ -84,7 +108,34 @@ docker-compose up -d
 
 ### 快速开始
 
-#### 方式一: 使用 kubectl 直接应用
+#### 方式一：使用脚本部署（推荐）
+
+**Windows:**
+```bash
+cd deploy/scripts
+deploy-k8s.bat
+```
+
+**Linux/Mac:**
+```bash
+cd deploy/scripts
+chmod +x deploy-k8s.sh
+./deploy-k8s.sh
+```
+
+#### 方式二：使用 Kustomize 部署
+
+```bash
+cd deploy/k8s
+
+# 预览配置
+kubectl kustomize .
+
+# 应用配置
+kubectl apply -k .
+```
+
+#### 方式三：使用 kubectl 直接应用
 
 ```bash
 cd deploy/k8s
@@ -114,18 +165,6 @@ kubectl apply -f pdb.yaml
 
 # 8. 创建入口 (可选)
 kubectl apply -f ingress.yaml
-```
-
-#### 方式二: 使用 Kustomize (推荐)
-
-```bash
-cd deploy/k8s
-
-# 预览配置
-kubectl kustomize .
-
-# 应用配置
-kubectl apply -k .
 ```
 
 ### 配置说明
@@ -191,7 +230,7 @@ Ingress 配置，特性包括:
 kubectl get pods -n est
 
 # 查看 Pod 日志
-kubectl logs -f deployment/est-web-app -n est
+kubectl logs -f deployment/est-demo -n est
 
 # 检查服务
 kubectl get svc -n est
@@ -203,7 +242,7 @@ kubectl get hpa -n est
 kubectl get ingress -n est
 
 # 端口转发访问应用
-kubectl port-forward svc/est-web-app-service 8080:80 -n est
+kubectl port-forward svc/est-demo-service 8080:80 -n est
 ```
 
 访问 http://localhost:8080 或 http://localhost:8080/health 验证应用是否正常运行。
@@ -212,19 +251,19 @@ kubectl port-forward svc/est-web-app-service 8080:80 -n est
 
 #### 手动扩缩容
 ```bash
-kubectl scale deployment est-web-app --replicas=5 -n est
+kubectl scale deployment est-demo --replicas=5 -n est
 ```
 
 #### 查看 HPA 状态
 ```bash
-kubectl describe hpa est-web-app-hpa -n est
+kubectl describe hpa est-demo-hpa -n est
 ```
 
 ### 更新部署
 
 #### 更新镜像
 ```bash
-kubectl set image deployment/est-web-app est-web-app=est-web-app:v2.0.0 -n est
+kubectl set image deployment/est-demo est-demo=est-demo:2.1.0 -n est
 ```
 
 #### 更新配置
@@ -233,22 +272,38 @@ kubectl set image deployment/est-web-app est-web-app=est-web-app:v2.0.0 -n est
 kubectl apply -f configmap.yaml
 
 # 触发滚动更新
-kubectl rollout restart deployment/est-web-app -n est
+kubectl rollout restart deployment/est-demo -n est
 ```
 
 #### 查看更新状态
 ```bash
-kubectl rollout status deployment/est-web-app -n est
-kubectl rollout history deployment/est-web-app -n est
+kubectl rollout status deployment/est-demo -n est
+kubectl rollout history deployment/est-demo -n est
 ```
 
 #### 回滚
 ```bash
-kubectl rollout undo deployment/est-web-app -n est
+kubectl rollout undo deployment/est-demo -n est
 ```
 
-### 删除部署
+### 卸载部署
 
+#### 使用脚本卸载（推荐）
+
+**Windows:**
+```bash
+cd deploy/scripts
+undeploy-k8s.bat
+```
+
+**Linux/Mac:**
+```bash
+cd deploy/scripts
+chmod +x undeploy-k8s.sh
+./undeploy-k8s.sh
+```
+
+#### 手动卸载
 ```bash
 # 使用 Kustomize 删除
 kubectl delete -k deploy/k8s
@@ -284,7 +339,7 @@ annotations:
 ### 1. 修改默认密码
 ```bash
 # 生成强密码
-kubectl create secret generic est-web-app-secret \
+kubectl create secret generic est-demo-secret \
   --from-literal=db.password=$(openssl rand -base64 32) \
   --from-literal=jwt.secret=$(openssl rand -base64 64) \
   -n est \
@@ -319,8 +374,8 @@ kubectl exec -it <pod-name> -n est -- curl http://localhost:8080/health
 
 ### 服务无法访问
 ```bash
-kubectl get endpoints est-web-app-service -n est
-kubectl port-forward svc/est-web-app-service 8080:80 -n est
+kubectl get endpoints est-demo-service -n est
+kubectl port-forward svc/est-demo-service 8080:80 -n est
 ```
 
 ---
@@ -346,3 +401,12 @@ kubectl port-forward svc/est-web-app-service 8080:80 -n est
 - [Kubernetes 官方文档](https://kubernetes.io/docs/)
 - [EST 框架文档](../docs/README.md)
 - [Docker 官方文档](https://docs.docker.com/)
+- [Istio 官方文档](https://istio.io/docs/)
+
+---
+
+## 版本信息
+
+- **EST 框架版本**: 2.0.0
+- **文档版本**: 2.0.0
+- **最后更新**: 2026-03-08

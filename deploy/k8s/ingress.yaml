@@ -1,13 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: est-web-app-ingress
+  name: est-demo-ingress
   namespace: est
   labels:
-    app: est-web-app
-    app.kubernetes.io/name: est-web-app
-    app.kubernetes.io/instance: est-web-app
-    app.kubernetes.io/version: "1.3.0"
+    app: est-demo
+    app.kubernetes.io/name: est-demo
+    app.kubernetes.io/instance: est-demo
+    app.kubernetes.io/version: "2.0.0"
     app.kubernetes.io/component: web
     app.kubernetes.io/part-of: est-framework
   annotations:
@@ -27,16 +27,16 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - est-app.example.com
-    secretName: est-web-app-tls
+    - est-demo.example.com
+    secretName: est-demo-tls
   rules:
-  - host: est-app.example.com
+  - host: est-demo.example.com
     http:
       paths:
       - path: /(.*)
         pathType: Prefix
         backend:
           service:
-            name: est-web-app-service
+            name: est-demo-service
             port:
               number: 80

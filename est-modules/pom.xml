@@ -17,32 +17,14 @@
     <description>EST Modules - Feature modules for the framework</description>
 
     <modules>
-        <module>est-cache</module>
-        <module>est-event</module>
-        <module>est-logging</module>
-        <module>est-data</module>
-        <module>est-security</module>
-        <module>est-messaging</module>
-        <module>est-monitor</module>
-        <module>est-scheduler</module>
-        <module>est-llm</module>
-        <!-- <module>est-llm-core</module> -->
-        <module>est-ai-config</module>
-        <module>est-ai</module>
-        <module>est-discovery</module>
-        <module>est-config</module>
-        <module>est-circuitbreaker</module>
-        <module>est-performance</module>
-        <module>est-hotreload</module>
-        <module>est-plugin</module>
-        <module>est-rbac</module>
-        <module>est-audit</module>
-        <module>est-integration</module>
-        <module>est-web-router</module>
-        <module>est-web-middleware</module>
-        <module>est-web-session</module>
-        <module>est-web-template</module>
-        <!-- <module>est-gateway</module> -->
+        <module>est-foundation</module>
+        <module>est-data-group</module>
+        <module>est-security-group</module>
+        <module>est-integration-group</module>
+        <module>est-web-group</module>
+        <module>est-ai-suite</module>
+        <module>est-microservices</module>
+        <module>est-extensions</module>
     </modules>
 
 </project>

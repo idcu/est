@@ -1,127 +1,212 @@
-# EST AI 开发者专区
-> EST - 为 AI 编程工具首选的 Java 开发框架
-欢迎来到 EST AI 开发者专区！这里是你学习和使用 EST AI 功能的起点。
----
+# EST AI 文档
 
-## 🌟 为什么选择 EST 进行 AI 开发？
+欢迎来到 EST AI 文档专区！这里提供关于 EST 框架 AI 功能的完整文档。
 
-EST 从设计之初就考虑了 AI 友好性：
+## 目录
 
-| 特性 | 说明 |
-|------|------|
-| **零依赖** | 仅使用 Java 标准库，AI 更容易生成可运行的代码 |
-| **递进式模块** | 清晰的模块层次结构，AI 能快速理解 |
-| **简洁 API** | 直观的接口设计，AI 更容易学习和使用 |
-| **完整示例** | 丰富的示例代码，AI 有大量参考 |
-| **AI 原生模块** | 专门的 AI 功能模块，与 AI 编程工具深度集成 |
+- [AI 概述](#ai-概述)
+- [快速开始](#快速开始)
+- [核心功能](#核心功能)
+- [LLM 提供商](#llm-提供商)
+- [示例代码](#示例代码)
+- [API 参考](#api-参考)
 
 ---
 
-## 📚 文档导航
+## AI 概述
 
-### 🚀 入门
+EST AI Suite 是 EST 框架的 AI 和 LLM（大语言模型）相关模块集合，提供了开箱即用的 AI 功能支持。
 
-- [为什么选择 EST 进行 AI 开发？](why-est.md) - 了解 EST 的 AI 友好特性
-- [EST AI 发展规划](roadmap.md) - 了解 EST 的 AI 愿景
-- [快速入门](quickstart.md) - 5 分钟开始使用 EST AI
+### 主要特性
 
-### 📖 核心指南
-
-- [AI 模块架构](architecture.md) - 了解 AI 模块的设计
-- [AI 助手使用指南](ai-assistant.md) - 学习使用 AI 助手
-- [代码生成器指南](code-generator.md) - 自动生成各种代码
-- [提示词工程](prompt-engineering.md) - 编写有效的提示词
-
-### 🔧 进阶
-
-- [Skill 系统](skill-system.md) - 可组合的 AI 能力单元
-- [MCP Server](mcp-server.md) - 与 Cursor、Windsurf 等 AI 工具集成
-- [LLM 集成](llm-integration.md) - 与智谱 AI 等大语言模型集成
-- [与 AI 编程工具集成](integration.md) - 与 Copilot、Cursor 等配合使用
-- [最佳实践](best-practices.md) - AI 开发的最佳实践
-- [常见问题](faq.md) - FAQ 解答
-
-### 📊 实施报告
-
-- [短期目标实施报告](short-term-goals-implementation-report.md) - LLM生态系统、AI助手增强
-- [中期目标实施报告](mid-term-goals-implementation-report.md) - 智能代码补全、AI重构助手、架构顾问
-- [长期目标实施报告](long-term-goals-implementation-report.md) - 需求解析、架构设计、测试部署
-- [当前状态评估与未来发展计划](current-status-evaluation-and-future-plan.md) - 模块现状评估和下一步发展建议
+- 🎯 **简单易用** - 几行代码就能用上 AI
+- 🔌 **多提供商支持** - 支持 OpenAI、智谱、通义千问、文心一言等主流 LLM
+- 🧩 **模块化设计** - 按需引入，灵活组合
+- 🛠️ **高级功能** - 代码生成、提示词模板、AI 助手等
+- 🔧 **可扩展** - 轻松添加自定义 LLM 提供商
 
 ---
 
-## 🎯 快速开始
-### 三步开始使用 EST AI
+## 快速开始
 
-#### 1. 添加依赖
+### 1. 添加依赖
 
 ```xml
 <dependency>
-    <groupId>ltd.idcu.est</groupId>
-    <artifactId>est-ai-api</artifactId>
-    <version>2.0.0</version>
-</dependency>
-<dependency>
-    <groupId>ltd.idcu.est</groupId>
-    <artifactId>est-ai-impl</artifactId>
+    <groupId>ltd.idcu</groupId>
+    <artifactId>est-ai-assistant</artifactId>
     <version>2.0.0</version>
 </dependency>
 ```
 
-#### 2. 创建 AI 助手
+### 2. 创建 AI 助手
 
 ```java
-import ltd.idcu.est.features.ai.api.AiAssistant;
-import ltd.idcu.est.features.ai.impl.DefaultAiAssistant;
+import ltd.idcu.est.ai.api.AiAssistant;
+import ltd.idcu.est.ai.impl.DefaultAiAssistant;
 
-public class FirstAiProgram {
+public class AiQuickStart {
     public static void main(String[] args) {
         AiAssistant assistant = new DefaultAiAssistant();
         
-        String code = assistant.suggestCode("创建一个 UserService");
-        System.out.println(code);
+        String result = assistant.chat("你好，请介绍一下 EST 框架");
+        System.out.println(result);
     }
 }
 ```
 
-#### 3. 运行示例
+### 3. 配置 LLM
 
-```bash
-cd est-examples/est-examples-ai
-mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.AiQuickStartExample"
+```java
+import ltd.idcu.est.llm.api.LlmClient;
+import ltd.idcu.est.llm.api.LlmConfig;
+import ltd.idcu.est.llm.impl.openai.OpenAiLlmClient;
+
+LlmConfig config = new LlmConfig();
+config.setApiKey("your-api-key");
+config.setModel("gpt-4");
+
+LlmClient client = new OpenAiLlmClient(config);
+String response = client.complete("Hello, world!");
 ```
 
 ---
 
-## 🗂️ 更多资源
+## 核心功能
 
-- [EST 主 README](../../README.md) - 框架概览
-- [AI 模块文档](../../est-modules/est-ai/README.md) - AI 模块详细介绍
-- [AI 示例代码](../../est-examples/est-examples-ai/README.md) - AI 功能示例
-- [架构文档](../architecture/README.md) - 深入了解 EST 架构
-- [最佳实践课程](../best-practices/course/README.md) - 从入门到精通
+### 1. AI 助手
+
+提供快速参考、最佳实践、教程获取、代码建议、代码解释、代码优化等功能。
+
+```java
+AiAssistant assistant = new DefaultAiAssistant();
+
+// 获取快速参考
+String ref = assistant.getQuickReference("web开发");
+
+// 获取最佳实践
+String bestPractice = assistant.getBestPractice("代码风格");
+
+// 获取教程
+String tutorial = assistant.getTutorial("第一个应用");
+
+// 建议代码
+String code = assistant.suggestCode("创建一个 UserService");
+
+// 解释代码
+String explanation = assistant.explainCode(code);
+
+// 优化代码
+String optimized = assistant.optimizeCode(code);
+```
+
+### 2. 代码生成器
+
+自动生成 Entity、Service、Controller、Repository、pom.xml 等代码。
+
+```java
+import ltd.idcu.est.ai.api.CodeGenerator;
+import ltd.idcu.est.ai.impl.DefaultCodeGenerator;
+
+CodeGenerator generator = new DefaultCodeGenerator();
+
+// 生成 Entity
+String entity = generator.generateEntity("Product", "com.example.entity",
+    Map.of("fields", List.of("id:Long", "name:String", "price:BigDecimal")));
+
+// 生成 Repository
+String repo = generator.generateRepository("ProductRepository", "com.example.repository", Map.of());
+
+// 生成 Service
+String service = generator.generateService("ProductService", "com.example.service", Map.of());
+
+// 生成 pom.xml
+String pom = generator.generatePomXml("MyProject", "com.example", "my-app", "1.0.0");
+```
+
+### 3. 提示词模板
+
+使用预定义的提示词模板，提升 AI 输出质量。
+
+```java
+import ltd.idcu.est.ai.api.PromptTemplate;
+import ltd.idcu.est.ai.api.PromptTemplateEngine;
+import ltd.idcu.est.ai.impl.DefaultPromptTemplateEngine;
+
+PromptTemplateEngine engine = new DefaultPromptTemplateEngine();
+
+// 使用内置模板
+String prompt = engine.render("code-review", Map.of(
+    "code", codeToReview,
+    "language", "Java"
+));
+
+// 自定义模板
+PromptTemplate template = new PromptTemplate();
+template.setName("my-template");
+template.setContent("你是一个 ${role}，请处理以下内容：${content}");
+engine.registerTemplate(template);
+```
+
 ---
 
-## 🤝 参与贡献
+## LLM 提供商
 
-我们欢迎社区参与 EST AI 的开发：
+EST AI Suite 支持以下 LLM 提供商：
 
-1. 试用 EST AI 模块，提供反馈
-2. 提交 Issue 报告问题或提出想法
-3. 提交 Pull Request 贡献代码
-4. 分享你的使用经验
-5. 宣传推广 EST
+| 提供商 | 模型 | 状态 |
+|--------|------|------|
+| OpenAI | GPT-4, GPT-3.5 | ✅ 已支持 |
+| 智谱 AI | GLM-4, GLM-3 | ✅ 已支持 |
+| 通义千问 | Qwen-Turbo, Qwen-Plus | ✅ 已支持 |
+| 文心一言 | Ernie-4.0, Ernie-3.5 | ✅ 已支持 |
+| 豆包 | Doubao-Pro | ✅ 已支持 |
+| Kimi | Moonshot-v1 | ✅ 已支持 |
+| Ollama | 本地模型 | ✅ 已支持 |
 
-查看 [贡献指南](../contributing/README.md) 了解更多。
+### 通用使用方式
+
+```java
+import ltd.idcu.est.llm.api.LlmClient;
+import ltd.idcu.est.llm.api.LlmConfig;
+
+// 配置
+LlmConfig config = new LlmConfig();
+config.setProvider("openai"); // 或 zhipu, qwen, ernie, doubao, kimi, ollama
+config.setApiKey("your-api-key");
+config.setModel("gpt-4");
+config.setBaseUrl("https://api.openai.com/v1");
+
+// 创建客户端
+LlmClient client = LlmClientFactory.create(config);
+
+// 发送请求
+String response = client.complete("你好！");
+```
+
 ---
 
-## 📄 许可证
-MIT License
+## 示例代码
+
+查看以下示例了解更多用法：
+
+- [AI 快速开始示例](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/AiQuickStartExample.java)
+- [综合 AI 示例](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/ComprehensiveAiExample.java)
+- [AI 助手 Web 应用](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/AiAssistantWebExample.java)
+- [代码生成示例](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/CodeGeneratorExample.java)
+
+---
+
+## API 参考
+
+详细的 API 文档请参考：
+
+- [AI 助手 API](./api/ai-assistant.md)
+- [代码生成器 API](./api/code-generator.md)
+- [LLM 客户端 API](./api/llm-client.md)
+- [提示词模板 API](./api/prompt-template.md)
 
 ---
 
 **文档版本**: 2.0  
-**最后更新**: 2026-03-07  
-**维护者**: EST 架构团队
-
-> EST - 为成为 AI 编程工具首选的 Java 开发框架而努力！🚀
+**最后更新**: 2026-03-08

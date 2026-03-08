@@ -1,0 +1,118 @@
+# {PROJECT_NAME}
+
+{PROJECT_DESCRIPTION}
+
+- **版本**: {VERSION}
+- **项目**: {PROJECT_SHORT_NAME}
+- **作者**: {AUTHOR}
+- **许可证**: {LICENSE}
+
+---
+
+## ✨ 核心特性
+
+### 🏗️ 特性一
+- {FEATURE_1_DESCRIPTION}
+
+### 🚀 特性二
+- {FEATURE_2_DESCRIPTION}
+
+### 🤖 特性三
+- {FEATURE_3_DESCRIPTION}
+
+### 🌐 特性四
+- {FEATURE_4_DESCRIPTION}
+
+---
+
+## 🚀 快速开始
+
+### 环境要求
+- **{REQUIREMENT_1}**（必须）
+- **{REQUIREMENT_2}**（必须）
+- **{REQUIREMENT_3}**（可选）
+
+### 构建项目
+```bash
+# 克隆项目
+git clone {REPO_URL}
+cd {PROJECT_DIR}
+
+# 构建所有模块
+{BUILD_COMMAND}
+
+# 跳过测试（更快）
+{BUILD_COMMAND_SKIP_TESTS}
+```
+
+### 运行 Demo 应用
+```bash
+cd {DEMO_DIR}
+{RUN_DEMO_COMMAND}
+```
+
+访问 {DEMO_URL} 即可看到 Demo 应用。
+
+---
+
+## 📁 项目结构
+
+```
+{PROJECT_DIR}/
+├── {DIR_1}/              # {DIR_1_DESCRIPTION}
+├── {DIR_2}/              # {DIR_2_DESCRIPTION}
+├── {DIR_3}/              # {DIR_3_DESCRIPTION}
+└── docs/                  # 文档
+```
+
+---
+
+## 📚 文档导航
+
+### 入门指南
+- [快速开始]({DOCS_PATH}/getting-started/README.md) - 创建你的第一个应用
+- [演示应用]({DEMO_PATH}/README.md) - 完整的功能演示
+
+### 教程系列
+- [入门教程]({DOCS_PATH}/tutorials/beginner/) - 适合初学者
+
+### 模块文档
+- [核心模块]({CORE_MODULE_PATH}/README.md)
+- [功能模块]({MODULES_PATH}/README.md)
+
+### 部署指南
+- [Docker 部署]({DEPLOY_PATH}/README.md)
+
+### API 参考
+- [API 文档中心]({DOCS_PATH}/README.md) - 完整的文档导航
+- [示例代码]({EXAMPLES_PATH}/) - 丰富的示例代码
+
+---
+
+## 🎯 代码示例
+
+### {EXAMPLE_1_TITLE}
+```java
+{EXAMPLE_1_CODE}
+```
+
+### {EXAMPLE_2_TITLE}
+```java
+{EXAMPLE_2_CODE}
+```
+
+---
+
+## 🤝 贡献
+
+欢迎贡献代码！请查看项目文档了解如何参与项目开发。
+
+---
+
+## 📄 许可证
+
+[{LICENSE}](LICENSE)
+
+---
+
+**祝你使用 {PROJECT_NAME} 愉快！** 🎉

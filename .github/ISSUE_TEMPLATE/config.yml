@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 文档中心
+    url: https://github.com/idcu/est/tree/main/docs
+    about: 查看 EST 框架的完整文档
+  - name: ❓ 提问与讨论
+    url: https://github.com/idcu/est/discussions
+    about: 在 GitHub Discussions 中提问和讨论
+  - name: 🐦 社区支持
+    url: https://github.com/idcu/est
+    about: 加入我们的社区获取支持

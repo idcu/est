@@ -1,0 +1,115 @@
+name: 🐛 Bug Report
+description: 报告一个 bug 来帮助我们改进 EST 框架
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您抽出时间报告这个 bug！请填写以下信息，帮助我们更快地定位和修复问题。
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 问题描述
+      description: 清晰简洁地描述这个 bug 是什么。
+      placeholder: "请描述您遇到的问题..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: 复现步骤
+      description: 请描述如何复现这个问题。
+      value: |
+        1. 首先...
+        2. 然后...
+        3. 最后...
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 预期行为
+      description: 您期望的正常行为是什么？
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: 实际行为
+      description: 实际发生了什么？
+
+  - type: dropdown
+    id: est-version
+    attributes:
+      label: EST 框架版本
+      description: 您使用的是哪个版本的 EST 框架？
+      options:
+        - "2.0.0 (最新)"
+        - "2.0.0-SNAPSHOT"
+        - "1.x.x"
+        - "其他（请在下方说明）"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: java-version
+    attributes:
+      label: Java 版本
+      description: 您使用的是哪个 Java 版本？
+      options:
+        - "21 (推荐)"
+        - "17"
+        - "11"
+        - "其他"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: 操作系统
+      description: 您在哪个操作系统上运行？
+      options:
+        - "Windows"
+        - "macOS"
+        - "Linux"
+        - "其他"
+
+  - type: textarea
+    id: code-snippet
+    attributes:
+      label: 代码示例
+      description: 如果可能的话，提供一个最小的可复现代码示例。
+      render: java
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志输出
+      description: 请提供相关的错误日志或堆栈跟踪。
+      render: shell
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: 其他信息
+      description: 还有其他我们需要了解的信息吗？
+
+  - type: checkboxes
+    id: requirements
+    attributes:
+      label: 确认
+      description: 请确认您已经完成了以下操作
+      options:
+        - label: 我已搜索现有的 Issues，没有找到类似的问题
+          required: true
+        - label: 我已提供了清晰的问题描述和复现步骤
+          required: true

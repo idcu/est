@@ -1,0 +1,93 @@
+# {EXAMPLE_NAME} - {PROJECT_SHORT_NAME} 示例
+
+这是{PROJECT_SHORT_NAME}框架的{EXAMPLE_TYPE}示例，展示了{PROJECT_SHORT_NAME}框架的{FEATURES}功能。
+
+## 项目概述
+
+{EXAMPLE_NAME}是一个{EXAMPLE_DESCRIPTION}，展示了{PROJECT_SHORT_NAME}框架的以下功能：
+- {FEATURE_1}
+- {FEATURE_2}
+- {FEATURE_3}
+- {FEATURE_4}
+
+## 快速开始
+
+### 环境要求
+- {REQUIREMENT_1}
+- {REQUIREMENT_2}
+
+### 构建项目
+```bash
+cd {EXAMPLE_DIR}
+{BUILD_COMMAND}
+```
+
+### 运行应用
+```bash
+{RUN_COMMAND}
+```
+
+## 功能特性
+
+### 1. {FEATURE_1_NAME}
+
+{FEATURE_1_DESCRIPTION}
+
+```java
+{FEATURE_1_CODE}
+```
+
+### 2. {FEATURE_2_NAME}
+
+{FEATURE_2_DESCRIPTION}
+
+```java
+{FEATURE_2_CODE}
+```
+
+### 3. {FEATURE_3_NAME}
+
+{FEATURE_3_DESCRIPTION}
+
+```java
+{FEATURE_3_CODE}
+```
+
+## 项目结构
+
+```
+{EXAMPLE_DIR}/
+├── pom.xml                          # Maven配置文件
+├── README.md                        # 本文件
+├── {SCRIPT_1}                       # {SCRIPT_1_DESCRIPTION}
+├── {SCRIPT_2}                       # {SCRIPT_2_DESCRIPTION}
+└── src/
+    └── main/
+        └── java/
+            └── {PACKAGE_PATH}/
+                └── {MAIN_CLASS}.java  # 主应用类
+```
+
+## 依赖的模块
+
+示例应用依赖以下{PROJECT_SHORT_NAME}模块：
+- {DEPENDENCY_1} - {DEPENDENCY_1_DESCRIPTION}
+- {DEPENDENCY_2} - {DEPENDENCY_2_DESCRIPTION}
+- {DEPENDENCY_3} - {DEPENDENCY_3_DESCRIPTION}
+
+## 下一步
+
+查看{PROJECT_SHORT_NAME}框架的其他模块，了解更多功能：
+- {NEXT_STEP_1}
+- {NEXT_STEP_2}
+- {NEXT_STEP_3}
+
+## 许可证
+
+{LICENSE}
+
+## 相关链接
+
+- [{PROJECT_SHORT_NAME}框架主文档](../README.md)
+- [{RELATED_MODULE_1}文档](../{RELATED_MODULE_1_PATH}/README.md)
+- [{RELATED_MODULE_2}文档](../{RELATED_MODULE_2_PATH}/README.md)

@@ -1,118 +1,134 @@
-# Container API
+# 容器 API
 
-`Container` 是 EST 框架的依赖注入容器，用于管理组件的注册和获取。
+## Container 接口
 
-## 接口定义
+依赖注入容器接口。
 
 ```java
-package ltd.idcu.est.core.api;
-
 public interface Container {
-    <T> void register(Class<T> type, Class<? extends T> implementation);
-    <T> void registerSingleton(Class<T> type, T instance);
-    <T> void registerSupplier(Class<T> type, Supplier<T> supplier);
-    
     <T> T get(Class<T> type);
-    <T> Optional<T> getIfPresent(Class<T> type);
-    <T> boolean contains(Class<T> type);
+    <T> T get(Class<T> type, String name);
+    <T> List<T> getAll(Class<T> type);
+    void register(Class<?> type);
+    void register(Class<?> type, String name);
+    void register(Object instance);
+    void register(Object instance, String name);
+    boolean contains(Class<?> type);
+    boolean contains(String name);
 }
 ```
 
-## 方法详解
+### 方法说明
 
-### register
-
-注册类型与实现类。
+#### get(Class&lt;T&gt; type)
+根据类型获取组件。
 
 **参数：**
-- `type` - 类型接口或基类
-- `implementation` - 实现类
+- `type` - 组件类型
+
+**返回值：** 组件实例
 
 **示例：**
 ```java
-container.register(UserService.class, UserServiceImpl.class);
+UserService userService = container.get(UserService.class);
 ```
 
 ---
 
-### registerSingleton
-
-注册单例实例。
+#### get(Class&lt;T&gt; type, String name)
+根据类型和名称获取组件。
 
 **参数：**
-- `type` - 类型
-- `instance` - 单例实例
+- `type` - 组件类型
+- `name` - 组件名称
+
+**返回值：** 组件实例
 
 **示例：**
 ```java
-container.registerSingleton(Config.class, new Config());
+UserService userService = container.get(UserService.class, "userService");
 ```
 
 ---
 
-### registerSupplier
-
-注册供应者函数，用于延迟创建实例。
+#### getAll(Class&lt;T&gt; type)
+获取指定类型的所有组件。
 
 **参数：**
-- `type` - 类型
-- `supplier` - 供应者函数
+- `type` - 组件类型
+
+**返回值：** 组件实例列表
 
 **示例：**
 ```java
-container.registerSupplier(Database.class, () -> {
-    Database db = new Database();
-    db.connect();
-    return db;
-});
+List<Plugin> plugins = container.getAll(Plugin.class);
 ```
 
 ---
 
-### get
-
-获取类型的实例，不存在则创建。
+#### register(Class&lt;?&gt; type)
+注册组件类型。
 
 **参数：**
-- `type` - 要获取的类型
-
-**返回：**
-- 类型实例
+- `type` - 组件类型
 
 **示例：**
 ```java
-UserService service = container.get(UserService.class);
+container.register(UserService.class);
 ```
 
 ---
 
-### getIfPresent
-
-安全获取，返回 Optional。
+#### register(Class&lt;?&gt; type, String name)
+注册组件类型并指定名称。
 
 **参数：**
-- `type` - 要获取的类型
-
-**返回：**
-- Optional 包装的实例
+- `type` - 组件类型
+- `name` - 组件名称
 
 **示例：**
 ```java
-Optional<UserService> service = container.getIfPresent(UserService.class);
-service.ifPresent(s -> s.doSomething());
+container.register(UserService.class, "userService");
 ```
 
 ---
 
-### contains
-
-检查类型是否已注册。
+#### register(Object instance)
+注册组件实例。
 
 **参数：**
-- `type` - 要检查的类型
+- `instance` - 组件实例
 
-**返回：**
-- 是否已注册
+**示例：**
+```java
+UserService service = new UserService();
+container.register(service);
+```
+
+---
+
+#### register(Object instance, String name)
+注册组件实例并指定名称。
+
+**参数：**
+- `instance` - 组件实例
+- `name` - 组件名称
+
+**示例：**
+```java
+UserService service = new UserService();
+container.register(service, "userService");
+```
+
+---
+
+#### contains(Class&lt;?&gt; type)
+检查容器中是否包含指定类型的组件。
+
+**参数：**
+- `type` - 组件类型
+
+**返回值：** 如果包含返回 true，否则返回 false
 
 **示例：**
 ```java
@@ -121,19 +137,92 @@ if (container.contains(UserService.class)) {
 }
 ```
 
-## DefaultContainer 实现
+---
 
-`DefaultContainer` 是 `Container` 接口的默认实现，使用三层 Map 结构：
+#### contains(String name)
+检查容器中是否包含指定名称的组件。
 
+**参数：**
+- `name` - 组件名称
+
+**返回值：** 如果包含返回 true，否则返回 false
+
+**示例：**
 ```java
-public class DefaultContainer implements Container {
-    private final Map<Class<?>, Supplier<?>> registrations;
-    private final Map<Class<?>, Object> instances;
-    private final Map<Class<?>, Object> cachedInstances;
+if (container.contains("userService")) {
+    // ...
 }
 ```
 
-**特性：**
-- 线程安全（使用 ConcurrentHashMap）
-- 支持单例和非单例
-- 支持延迟初始化
+---
+
+## DefaultContainer 实现
+
+默认的容器实现类。
+
+### 构造函数
+
+```java
+public DefaultContainer()
+```
+
+**示例：**
+```java
+Container container = new DefaultContainer();
+```
+
+---
+
+## 注解
+
+### @Component
+标记类为组件。
+
+```java
+@Component
+public class UserService {
+    // ...
+}
+```
+
+### @Inject
+标记构造函数或字段进行依赖注入。
+
+```java
+@Component
+public class UserController {
+    private final UserService userService;
+    
+    @Inject
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+}
+```
+
+### @Named
+指定组件名称。
+
+```java
+@Component
+@Named("userService")
+public class UserService {
+    // ...
+}
+```
+
+### @Singleton
+标记组件为单例。
+
+```java
+@Component
+@Singleton
+public class UserService {
+    // ...
+}
+```
+
+---
+
+**文档版本**: 2.0  
+**最后更新**: 2026-03-08

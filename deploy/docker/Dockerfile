@@ -1,41 +1,46 @@
-FROM openjdk:21-jdk-slim as builder
+FROM maven:3.9-eclipse-temurin-21 AS builder
 
 WORKDIR /build
 
 COPY pom.xml .
 COPY est-core ./est-core
-COPY est-patterns ./est-patterns
-COPY est-utils ./est-utils
-COPY est-test ./est-test
-COPY est-collection ./est-collection
-COPY est-features ./est-features
-COPY est-plugin ./est-plugin
-COPY est-web ./est-web
-COPY est-scaffold ./est-scaffold
-COPY est-examples ./est-examples
+COPY est-base ./est-base
+COPY est-modules ./est-modules
+COPY est-app ./est-app
+COPY est-tools ./est-tools
+COPY est-demo ./est-demo
 
-RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
+RUN mvn clean package -DskipTests -Dmaven.javadoc.skip=true
 
-RUN mvn clean package -DskipTests
-
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jre-slim
 
 LABEL maintainer="idcu"
-LABEL description="EST Framework Web Application"
+LABEL description="EST Framework Demo Application"
+LABEL version="2.0.0"
 
 RUN groupadd -r appgroup && useradd -r -g appgroup appuser
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /opt/app
 
-COPY --from=builder /build/est-examples/est-examples-web/target/est-examples-web-1.3.0-SNAPSHOT.jar app.jar
+COPY --from=builder /build/est-demo/target/est-demo-2.0.0.jar app.jar
 
-RUN chown -R appuser:appgroup /opt/app
+RUN mkdir -p /opt/app/logs /opt/app/config \
+    && chown -R appuser:appgroup /opt/app
 
 USER appuser
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD java -cp app.jar ltd.idcu.est.examples.web.BasicWebAppExample || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:8080/health || exit 1
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENV JAVA_OPTS="-Xms512m -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.hprof"
+ENV APP_ENV=production
+ENV APP_NAME=est-demo
+ENV APP_VERSION=2.0.0
+
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

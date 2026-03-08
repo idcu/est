@@ -19,39 +19,11 @@ resources:
   - pdb.yaml
   - ingress.yaml
 
-configMapGenerator:
-- name: est-web-app-config
-  files:
-    - application.properties=configmap.yaml
-  options:
-    disableNameSuffixHash: true
-
-secretGenerator:
-- name: est-web-app-secret
-  literals:
-    - db.user=est_user
-    - db.password=change_this_password_in_production
-  options:
-    disableNameSuffixHash: true
-
 images:
-- name: est-web-app
-  newName: est-web-app
+- name: est-demo
+  newName: est-demo
   newTag: latest
 
 replicas:
-- name: est-web-app
+- name: est-demo
   count: 3
-
-patchesStrategicMerge:
-  - |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: est-web-app
-    spec:
-      template:
-        spec:
-          containers:
-          - name: est-web-app
-            image: est-web-app:latest

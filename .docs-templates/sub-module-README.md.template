@@ -1,0 +1,94 @@
+# {SUBMODULE_NAME}
+
+{SUBMODULE_DESCRIPTION}
+
+## 概述
+
+{OVERVIEW}
+
+## 核心特性
+
+- ✨ {FEATURE_1}
+- ⚡ {FEATURE_2}
+- 🔧 {FEATURE_3}
+- 🔒 {FEATURE_4}
+
+## 快速开始
+
+### 依赖配置
+
+```xml
+<dependency>
+    <groupId>{GROUP_ID}</groupId>
+    <artifactId>{ARTIFACT_ID}</artifactId>
+    <version>{VERSION}</version>
+</dependency>
+```
+
+### 基本用法
+
+```java
+{BASIC_USAGE_CODE}
+```
+
+## 核心 API
+
+### {API_CLASS_1}
+
+{API_CLASS_1_DESCRIPTION}
+
+```java
+{API_CLASS_1_EXAMPLE}
+```
+
+### {API_CLASS_2}
+
+{API_CLASS_2_DESCRIPTION}
+
+```java
+{API_CLASS_2_EXAMPLE}
+```
+
+## 配置选项
+
+| 配置项 | 类型 | 默认值 | 说明 |
+|--------|------|--------|------|
+| {CONFIG_1} | {CONFIG_1_TYPE} | {CONFIG_1_DEFAULT} | {CONFIG_1_DESCRIPTION} |
+| {CONFIG_2} | {CONFIG_2_TYPE} | {CONFIG_2_DEFAULT} | {CONFIG_2_DESCRIPTION} |
+
+## 高级用法
+
+### {ADVANCED_TOPIC_1}
+
+```java
+{ADVANCED_TOPIC_1_CODE}
+```
+
+### {ADVANCED_TOPIC_2}
+
+```java
+{ADVANCED_TOPIC_2_CODE}
+```
+
+## 最佳实践
+
+1. {BEST_PRACTICE_1}
+2. {BEST_PRACTICE_2}
+3. {BEST_PRACTICE_3}
+
+## 示例代码
+
+完整示例代码请参考：
+- [{EXAMPLE_1_PATH}]({EXAMPLE_1_URL})
+- [{EXAMPLE_2_PATH}]({EXAMPLE_2_URL})
+
+## 相关资源
+
+- [父模块文档](../README.md)
+- [API 参考](../../docs/api/{API_REF_PATH})
+- [示例项目](../../{EXAMPLES_PATH}/)
+
+---
+
+**版本**: {VERSION}  
+**最后更新**: {LAST_UPDATE}

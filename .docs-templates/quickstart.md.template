@@ -1,0 +1,202 @@
+# 快速开始指南 - {PROJECT_SHORT_NAME}
+
+欢迎使用{PROJECT_SHORT_NAME}框架！本指南将帮助你在5分钟内创建并运行你的第一个{PROJECT_SHORT_NAME}应用。
+
+## 目录
+
+1. [环境准备](#环境准备)
+2. [创建项目](#创建项目)
+3. [编写代码](#编写代码)
+4. [运行应用](#运行应用)
+5. [下一步](#下一步)
+
+---
+
+## 环境准备
+
+在开始之前，请确保你的开发环境满足以下要求：
+
+### 必需软件
+
+- **{REQUIREMENT_1}** - {REQUIREMENT_1_DESCRIPTION}
+  - 下载地址：{REQUIREMENT_1_DOWNLOAD_URL}
+  - 安装后验证：
+    ```bash
+    {REQUIREMENT_1_CHECK_COMMAND}
+    ```
+
+- **{REQUIREMENT_2}** - {REQUIREMENT_2_DESCRIPTION}
+  - 下载地址：{REQUIREMENT_2_DOWNLOAD_URL}
+  - 安装后验证：
+    ```bash
+    {REQUIREMENT_2_CHECK_COMMAND}
+    ```
+
+### 可选软件
+
+- **{OPTIONAL_1}** - {OPTIONAL_1_DESCRIPTION}
+- **{OPTIONAL_2}** - {OPTIONAL_2_DESCRIPTION}
+
+---
+
+## 创建项目
+
+### 方式一：使用脚手架生成器（推荐）
+
+```bash
+# 使用{PROJECT_SHORT_NAME}脚手架创建新项目
+{SCAFFOLD_COMMAND}
+```
+
+按照提示输入项目信息：
+- 项目名称：{PROJECT_NAME_EXAMPLE}
+- 项目包名：{PACKAGE_NAME_EXAMPLE}
+- 项目版本：{VERSION_EXAMPLE}
+
+### 方式二：手动创建
+
+#### 1. 创建项目目录
+
+```bash
+mkdir {PROJECT_NAME_EXAMPLE}
+cd {PROJECT_NAME_EXAMPLE}
+```
+
+#### 2. 创建 pom.xml
+
+```xml
+{POM_XML_CONTENT}
+```
+
+#### 3. 创建目录结构
+
+```bash
+mkdir -p src/main/java/{PACKAGE_PATH_EXAMPLE}
+mkdir -p src/main/resources
+```
+
+---
+
+## 编写代码
+
+### 创建主类
+
+在 `src/main/java/{PACKAGE_PATH_EXAMPLE}/` 目录下创建 `{MAIN_CLASS_EXAMPLE}.java`：
+
+```java
+{MAIN_CLASS_CODE}
+```
+
+### 代码说明
+
+让我们解释一下这段代码：
+
+1. **{CODE_EXPLANATION_1}** - {CODE_EXPLANATION_1_DESCRIPTION}
+2. **{CODE_EXPLANATION_2}** - {CODE_EXPLANATION_2_DESCRIPTION}
+3. **{CODE_EXPLANATION_3}** - {CODE_EXPLANATION_3_DESCRIPTION}
+
+---
+
+## 运行应用
+
+### 编译项目
+
+```bash
+{BUILD_COMMAND}
+```
+
+### 运行应用
+
+```bash
+{RUN_COMMAND}
+```
+
+### 验证应用
+
+打开浏览器访问：{VERIFY_URL}
+
+你应该能看到：
+```
+{EXPECTED_OUTPUT}
+```
+
+恭喜！你已经成功运行了你的第一个{PROJECT_SHORT_NAME}应用！
+
+---
+
+## 添加更多功能
+
+### 1. {FEATURE_1_NAME}
+
+```java
+{FEATURE_1_CODE}
+```
+
+### 2. {FEATURE_2_NAME}
+
+```java
+{FEATURE_2_CODE}
+```
+
+### 3. {FEATURE_3_NAME}
+
+```java
+{FEATURE_3_CODE}
+```
+
+---
+
+## 项目结构
+
+此时你的项目结构应该是这样的：
+
+```
+{PROJECT_NAME_EXAMPLE}/
+├── pom.xml
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── {PACKAGE_PATH_EXAMPLE}/
+│       │       └── {MAIN_CLASS_EXAMPLE}.java
+│       └── resources/
+└── README.md
+```
+
+---
+
+## 下一步
+
+现在你已经成功创建了第一个{PROJECT_SHORT_NAME}应用，接下来可以：
+
+1. 📚 [阅读完整文档](./README.md) - 了解更多功能
+2. 🎓 [查看教程](./tutorials/) - 深入学习
+3. 💡 [探索示例](../{EXAMPLES_PATH}/) - 查看更多示例
+4. 🔧 [使用脚手架](../{TOOLS_PATH}/{SCAFFOLD_DIR}/) - 快速生成项目
+5. 🤝 [参与贡献](../CONTRIBUTING.md) - 加入社区
+
+---
+
+## 常见问题
+
+### Q: {FAQ_1_QUESTION}
+
+A: {FAQ_1_ANSWER}
+
+### Q: {FAQ_2_QUESTION}
+
+A: {FAQ_2_ANSWER}
+
+### Q: {FAQ_3_QUESTION}
+
+A: {FAQ_3_ANSWER}
+
+---
+
+需要帮助？请访问：
+- [GitHub Issues]({ISSUES_URL})
+- [社区讨论]({DISCUSSIONS_URL})
+- [文档中心](./README.md)
+
+---
+
+**祝你使用{PROJECT_SHORT_NAME}愉快！** 🎉

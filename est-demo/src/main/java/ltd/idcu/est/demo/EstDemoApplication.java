@@ -26,6 +26,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class EstDemoApplication {
@@ -47,7 +48,11 @@ public class EstDemoApplication {
     private static final Repository<String, User> userRepository = new MemoryRepository<>();
     
     private static final Map<String, Todo> todos = new ConcurrentHashMap<>();
+    private static final Map<String, Product> products = new ConcurrentHashMap<>();
+    private static final List<LogEntry> logEntries = Collections.synchronizedList(new ArrayList<>());
+    
     private static final AtomicInteger requestCount = new AtomicInteger(0);
+    private static final AtomicLong totalRequestTime = new AtomicLong(0);
 
     static {
         userRepository.save("1", new User("1", "Alice", "alice@example.com", "admin"));
@@ -58,19 +63,31 @@ public class EstDemoApplication {
         todos.put("2", new Todo("2", "创建第一个Web应用", "使用EST创建一个简单的Web应用", true, "medium"));
         todos.put("3", new Todo("3", "探索更多功能", "了解EST的其他功能模块", false, "low"));
         
+        products.put("1", new Product("1", "EST Framework Pro", "企业级框架授权", 999.0, 100));
+        products.put("2", new Product("2", "EST AI Suite", "AI工具套件", 499.0, 50));
+        products.put("3", new Product("3", "EST Training", "培训课程", 199.0, 200));
+        
         localEventBus.subscribe(UserCreatedEvent.class, event -> {
             consoleLogger.info("收到用户创建事件: {}", event.getUsername());
             fileLogger.info("用户 {} 创建成功", event.getUsername());
+            addLogEntry("USER_CREATED", "User created: " + event.getUsername());
+        });
+        
+        localEventBus.subscribe(ProductEvent.class, event -> {
+            consoleLogger.info("收到产品事件: {} - {}", event.getAction(), event.getProductName());
+            addLogEntry("PRODUCT_" + event.getAction().toUpperCase(), "Product " + event.getAction() + ": " + event.getProductName());
         });
         
         asyncEventBus.subscribe(TaskEvent.class, event -> {
             consoleLogger.info("异步处理任务: {}", event.getTaskName());
+            addLogEntry("TASK_STARTED", "Task started: " + event.getTaskName());
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
             consoleLogger.info("任务 {} 处理完成", event.getTaskName());
+            addLogEntry("TASK_COMPLETED", "Task completed: " + event.getTaskName());
         });
         
         scheduler.scheduleAtFixedRate(() -> {
@@ -78,6 +95,15 @@ public class EstDemoApplication {
         }, 10, 30, TimeUnit.SECONDS);
         
         memoryCache.put("system:startup", System.currentTimeMillis());
+        addLogEntry("SYSTEM_STARTUP", "EST Demo Application started");
+    }
+    
+    private static void addLogEntry(String type, String message) {
+        LogEntry entry = new LogEntry(UUID.randomUUID().toString(), type, message, System.currentTimeMillis());
+        logEntries.add(entry);
+        if (logEntries.size() > 100) {
+            logEntries.remove(0);
+        }
     }
 
     public static void main(String[] args) {
@@ -95,6 +121,7 @@ public class EstDemoApplication {
             consoleLogger.info("Request: {} {}", req.getMethod(), req.getPath());
             next.handle();
             long duration = System.currentTimeMillis() - startTime;
+            totalRequestTime.addAndGet(duration);
             consoleLogger.info("Response: {} {} - {}ms", req.getMethod(), req.getPath(), duration);
         });
 
@@ -119,6 +146,14 @@ public class EstDemoApplication {
                     todoRouter.patch("/:id/complete", EstDemoApplication::toggleComplete);
                 });
                 
+                apiRouter.group("/products", (productRouter, productGroup) -> {
+                    productRouter.get("", EstDemoApplication::listProducts);
+                    productRouter.get("/:id", EstDemoApplication::getProduct);
+                    productRouter.post("", EstDemoApplication::createProduct);
+                    productRouter.put("/:id", EstDemoApplication::updateProduct);
+                    productRouter.delete("/:id", EstDemoApplication::deleteProduct);
+                });
+                
                 apiRouter.group("/cache", (cacheRouter, cacheGroup) -> {
                     cacheRouter.get("/memory/:key", EstDemoApplication::getMemoryCache);
                     cacheRouter.put("/memory/:key", EstDemoApplication::setMemoryCache);
@@ -139,7 +174,13 @@ public class EstDemoApplication {
                     monitorRouter.get("/stats", EstDemoApplication::getAppStats);
                 });
                 
+                apiRouter.group("/logs", (logsRouter, logsGroup) -> {
+                    logsRouter.get("", EstDemoApplication::listLogs);
+                    logsRouter.delete("", EstDemoApplication::clearLogs);
+                });
+                
                 apiRouter.get("/hello", EstDemoApplication::helloHandler);
+                apiRouter.post("/echo", EstDemoApplication::echoHandler);
             });
         });
 
@@ -149,6 +190,7 @@ public class EstDemoApplication {
         System.out.println("Available endpoints:");
         System.out.println("  - GET  /                          - Home page with UI");
         System.out.println("  - GET  /api/hello                 - Hello with name parameter");
+        System.out.println("  - POST /api/echo                  - Echo request body");
         System.out.println();
         System.out.println("  Users API:");
         System.out.println("  - GET  /api/users                 - List all users");
@@ -164,6 +206,13 @@ public class EstDemoApplication {
         System.out.println("  - PUT  /api/todos/:id             - Update todo");
         System.out.println("  - DELETE /api/todos/:id           - Delete todo");
         System.out.println("  - PATCH /api/todos/:id/complete   - Toggle todo complete");
+        System.out.println();
+        System.out.println("  Products API:");
+        System.out.println("  - GET  /api/products              - List all products");
+        System.out.println("  - GET  /api/products/:id          - Get product by ID");
+        System.out.println("  - POST /api/products              - Create product");
+        System.out.println("  - PUT  /api/products/:id          - Update product");
+        System.out.println("  - DELETE /api/products/:id        - Delete product");
         System.out.println();
         System.out.println("  Cache API:");
         System.out.println("  - GET  /api/cache/memory          - List memory cache");
@@ -182,6 +231,10 @@ public class EstDemoApplication {
         System.out.println("  - GET  /api/monitor/system        - Get system metrics");
         System.out.println("  - GET  /api/monitor/stats         - Get app stats");
         System.out.println();
+        System.out.println("  Logs API:");
+        System.out.println("  - GET  /api/logs                  - List recent logs");
+        System.out.println("  - DELETE /api/logs                - Clear all logs");
+        System.out.println();
         System.out.println("Open your browser and visit: http://localhost:8080");
         System.out.println("Press Ctrl+C to stop the server.");
         System.out.println();
@@ -199,55 +252,62 @@ public class EstDemoApplication {
                 <style>
                     * { box-sizing: border-box; margin: 0; padding: 0; }
                     body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-                    .container { max-width: 1200px; margin: 0 auto; }
+                    .container { max-width: 1400px; margin: 0 auto; }
                     .header { background: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
                     .header h1 { color: #333; margin-bottom: 10px; }
                     .header p { color: #666; }
-                    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+                    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
                     .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
                     .card h2 { color: #333; margin-bottom: 15px; font-size: 1.3em; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
-                    .stats { display: flex; gap: 15px; margin-bottom: 20px; }
-                    .stat { flex: 1; text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px; }
-                    .stat-number { font-size: 28px; font-weight: bold; color: #667eea; }
-                    .stat-label { color: #666; font-size: 14px; margin-top: 5px; }
+                    .stats { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+                    .stat { flex: 1; min-width: 120px; text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px; }
+                    .stat-number { font-size: 24px; font-weight: bold; color: #667eea; }
+                    .stat-label { color: #666; font-size: 12px; margin-top: 5px; }
                     .form-group { margin-bottom: 15px; }
-                    .form-group label { display: block; margin-bottom: 5px; color: #555; font-weight: 500; }
+                    .form-group label { display: block; margin-bottom: 5px; color: #555; font-weight: 500; font-size: 14px; }
                     .form-group input, .form-group select { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 5px; font-size: 14px; transition: border-color 0.3s; }
                     .form-group input:focus, .form-group select:focus { outline: none; border-color: #667eea; }
-                    .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.3s; }
+                    .btn { padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s; }
                     .btn-primary { background: #667eea; color: white; }
                     .btn-primary:hover { background: #5568d3; }
                     .btn-success { background: #4CAF50; color: white; }
                     .btn-success:hover { background: #45a049; }
                     .btn-danger { background: #ff4444; color: white; }
                     .btn-danger:hover { background: #cc0000; }
-                    .btn-group { display: flex; gap: 10px; }
+                    .btn-warning { background: #ff9800; color: white; }
+                    .btn-warning:hover { background: #e68a00; }
+                    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
                     .list { list-style: none; }
                     .list-item { padding: 12px; border: 1px solid #e0e0e0; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
                     .list-item.completed { opacity: 0.6; }
                     .list-item.completed .item-text { text-decoration: line-through; color: #999; }
                     .item-content { flex: 1; }
-                    .item-text { font-weight: 500; }
-                    .item-desc { color: #666; font-size: 13px; margin-top: 3px; }
-                    .priority { padding: 3px 8px; border-radius: 3px; font-size: 12px; margin-right: 10px; }
+                    .item-text { font-weight: 500; font-size: 14px; }
+                    .item-desc { color: #666; font-size: 12px; margin-top: 3px; }
+                    .priority { padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-right: 8px; }
                     .priority-high { background: #ff4444; color: white; }
                     .priority-medium { background: #ffaa00; color: white; }
                     .priority-low { background: #4CAF50; color: white; }
-                    .metric-box { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; }
-                    .metric-key { color: #666; font-size: 13px; }
-                    .metric-value { color: #333; font-weight: 600; font-size: 16px; margin-top: 5px; }
-                    .tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #e0e0e0; }
-                    .tab { padding: 10px 20px; cursor: pointer; border: none; background: transparent; color: #666; font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+                    .metric-box { background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
+                    .metric-key { color: #666; font-size: 12px; }
+                    .metric-value { color: #333; font-weight: 600; font-size: 14px; margin-top: 4px; word-break: break-all; }
+                    .tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #e0e0e0; flex-wrap: wrap; }
+                    .tab { padding: 8px 16px; cursor: pointer; border: none; background: transparent; color: #666; font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -2px; font-size: 13px; }
                     .tab.active { color: #667eea; border-bottom-color: #667eea; }
                     .tab-content { display: none; }
                     .tab-content.active { display: block; }
+                    .log-item { padding: 10px; border-left: 4px solid #667eea; background: #f8f9fa; margin-bottom: 8px; border-radius: 0 5px 5px 0; }
+                    .log-type { font-weight: bold; font-size: 12px; color: #667eea; }
+                    .log-message { font-size: 13px; margin-top: 4px; }
+                    .log-time { font-size: 11px; color: #999; margin-top: 4px; }
+                    .price-tag { font-weight: bold; color: #4CAF50; }
                 </style>
             </head>
             <body>
                 <div class="container">
                     <div class="header">
                         <h1>🚀 EST Framework Demo</h1>
-                        <p>Enhanced with logging, caching, events, scheduling, monitoring, and more!</p>
+                        <p>Enhanced with logging, caching, events, scheduling, monitoring, products, and logs!</p>
                     </div>
                     
                     <div class="grid">
@@ -256,19 +316,31 @@ public class EstDemoApplication {
                             <div class="stats">
                                 <div class="stat">
                                     <div class="stat-number" id="requestCount">0</div>
-                                <div class="stat-label">Requests</div>
+                                    <div class="stat-label">Requests</div>
                                 </div>
                                 <div class="stat">
                                     <div class="stat-number" id="userCount">0</div>
-                                <div class="stat-label">Users</div>
+                                    <div class="stat-label">Users</div>
                                 </div>
                                 <div class="stat">
                                     <div class="stat-number" id="todoCount">0</div>
-                                <div class="stat-label">Todos</div>
+                                    <div class="stat-label">Todos</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number" id="productCount">0</div>
+                                    <div class="stat-label">Products</div>
                                 </div>
                                 <div class="stat">
                                     <div class="stat-number" id="cacheCount">0</div>
-                                <div class="stat-label">Cache Items</div>
+                                    <div class="stat-label">Cache Items</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number" id="logCount">0</div>
+                                    <div class="stat-label">Log Entries</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number" id="avgTime">0</div>
+                                    <div class="stat-label">Avg Time (ms)</div>
                                 </div>
                             </div>
                         </div>
@@ -318,6 +390,28 @@ public class EstDemoApplication {
                     </div>
                     
                     <div class="card">
+                        <h2>📦 Products</h2>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="productName" placeholder="Enter product name">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" id="productDesc" placeholder="Enter description">
+                        </div>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="number" id="productPrice" placeholder="Enter price" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <input type="number" id="productStock" placeholder="Enter stock" value="0">
+                        </div>
+                        <button class="btn btn-primary" onclick="addProduct()">Add Product</button>
+                        <ul class="list" id="productList" style="margin-top: 20px;"></ul>
+                    </div>
+                    
+                    <div class="card">
                         <h2>💾 Cache</h2>
                         <div class="form-group">
                             <label>Key</label>
@@ -359,19 +453,34 @@ public class EstDemoApplication {
                         <div id="systemTab" class="tab-content"></div>
                         <div id="statsTab" class="tab-content"></div>
                     </div>
+                    
+                    <div class="card" style="grid-column: 1 / -1;">
+                        <h2>📋 Logs</h2>
+                        <div class="btn-group" style="margin-bottom: 15px;">
+                            <button class="btn btn-primary" onclick="loadLogs('')">All</button>
+                            <button class="btn btn-primary" onclick="loadLogs('USER_CREATED')">User Events</button>
+                            <button class="btn btn-primary" onclick="loadLogs('PRODUCT')">Product Events</button>
+                            <button class="btn btn-primary" onclick="loadLogs('TASK')">Tasks</button>
+                            <button class="btn btn-danger" onclick="clearLogs()">Clear All</button>
+                        </div>
+                        <div id="logsList"></div>
+                    </div>
                 </div>
             </div>
             
             <script>
                 let users = [];
                 let todos = [];
+                let products = [];
                 let stats = {};
                 
                 async function loadAll() {
                     await Promise.all([
                         loadUsers(),
                         loadTodos(),
-                        loadStats()
+                        loadProducts(),
+                        loadStats(),
+                        loadLogs('')
                     ]);
                 }
                 
@@ -388,6 +497,22 @@ public class EstDemoApplication {
                     const data = await res.json();
                     todos = data.data || [];
                     renderTodos();
+                    updateStats();
+                }
+                
+                async function loadProducts() {
+                    const res = await fetch('/api/products');
+                    const data = await res.json();
+                    products = data.data || [];
+                    renderProducts();
+                    updateStats();
+                }
+                
+                async function loadLogs(type) {
+                    const url = type ? '/api/logs?type=' + encodeURIComponent(type) : '/api/logs';
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    renderLogs(data.data || []);
                     updateStats();
                 }
                 
@@ -417,12 +542,27 @@ public class EstDemoApplication {
                 
                 function renderMetrics(tabId, data) {
                     const container = document.getElementById(tabId);
-                    container.innerHTML = Object.entries(data).map(([key, value]) => \`
+                    container.innerHTML = Object.entries(data).map(([key, value]) => \\`
                         <div class="metric-box">
-                            <div class="metric-key">\${key}</div>
-                            <div class="metric-value">\${typeof value === 'object' ? JSON.stringify(value, null, 2) : value}</div>
+                            <div class="metric-key">\\${key}</div>
+                            <div class="metric-value">\\${typeof value === 'object' ? JSON.stringify(value, null, 2) : value}</div>
                         </div>
-                    \`).join('');
+                    \\`).join('');
+                }
+                
+                function renderLogs(logs) {
+                    const container = document.getElementById('logsList');
+                    if (!logs || logs.length === 0) {
+                        container.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">No logs found</div>';
+                        return;
+                    }
+                    container.innerHTML = logs.slice().reverse().map(log => \\`
+                        <div class="log-item">
+                            <div class="log-type">\\${escapeHtml(log.type)}</div>
+                            <div class="log-message">\\${escapeHtml(log.message)}</div>
+                            <div class="log-time">\\${new Date(log.timestamp).toLocaleString()}</div>
+                        </div>
+                    \\`).join('');
                 }
                 
                 function switchTab(tab) {
@@ -440,7 +580,10 @@ public class EstDemoApplication {
                     document.getElementById('requestCount').textContent = stats.requestCount || 0;
                     document.getElementById('userCount').textContent = users.length;
                     document.getElementById('todoCount').textContent = todos.length;
+                    document.getElementById('productCount').textContent = products.length;
                     document.getElementById('cacheCount').textContent = stats.cacheSize || 0;
+                    document.getElementById('logCount').textContent = stats.logCount || 0;
+                    document.getElementById('avgTime').textContent = stats.avgRequestTimeMs || 0;
                 }
                 
                 async function addUser() {
@@ -468,15 +611,15 @@ public class EstDemoApplication {
                 
                 function renderUsers() {
                     const list = document.getElementById('userList');
-                    list.innerHTML = users.map(user => \`
+                    list.innerHTML = users.map(user => \\`
                         <li class="list-item">
                             <div class="item-content">
-                                <div class="item-text">\${escapeHtml(user.name)}</div>
-                                <div class="item-desc">\${escapeHtml(user.email)} - \${user.role}</div>
+                                <div class="item-text">\\${escapeHtml(user.name)}</div>
+                                <div class="item-desc">\\${escapeHtml(user.email)} - \\${user.role}</div>
                             </div>
-                            <button class="btn btn-danger" onclick="deleteUser('\${user.id}')">Delete</button>
+                            <button class="btn btn-danger" onclick="deleteUser('\\\\${user.id}')">Delete</button>
                         </li>
-                    \`).join('');
+                    \\`).join('');
                 }
                 
                 async function addTodo() {
@@ -509,18 +652,61 @@ public class EstDemoApplication {
                 
                 function renderTodos() {
                     const list = document.getElementById('todoList');
-                    list.innerHTML = todos.map(todo => \`
-                        <li class="list-item \${todo.completed ? 'completed' : ''}">
-                            <input type="checkbox" \${todo.completed ? 'checked' : ''} 
-                                onchange="toggleTodo('\${todo.id}')" style="margin-right: 10px;">
+                    list.innerHTML = todos.map(todo => \\`
+                        <li class="list-item \\${todo.completed ? 'completed' : ''}">
+                            <input type="checkbox" \\${todo.completed ? 'checked' : ''} 
+                                onchange="toggleTodo('\\\\${todo.id}')" style="margin-right: 10px;">
                             <div class="item-content">
-                                <div class="item-text">\${escapeHtml(todo.title)}</div>
-                                <div class="item-desc">\${escapeHtml(todo.description || '')}</div>
+                                <div class="item-text">\\${escapeHtml(todo.title)}</div>
+                                <div class="item-desc">\\${escapeHtml(todo.description || '')}</div>
                             </div>
-                            <span class="priority priority-\${todo.priority}">\${todo.priority}</span>
-                            <button class="btn btn-danger" onclick="deleteTodo('\${todo.id}')">Delete</button>
+                            <span class="priority priority-\\${todo.priority}">\\${todo.priority}</span>
+                            <button class="btn btn-danger" onclick="deleteTodo('\\\\${todo.id}')">Delete</button>
                         </li>
-                    \`).join('');
+                    \\`).join('');
+                }
+                
+                async function addProduct() {
+                    const name = document.getElementById('productName').value;
+                    const desc = document.getElementById('productDesc').value;
+                    const price = document.getElementById('productPrice').value;
+                    const stock = document.getElementById('productStock').value;
+                    
+                    if (!name || !price) return;
+                    
+                    const formData = new FormData();
+                    formData.append('name', name);
+                    formData.append('description', desc);
+                    formData.append('price', price);
+                    formData.append('stock', stock);
+                    
+                    await fetch('/api/products', { method: 'POST', body: formData });
+                    document.getElementById('productName').value = '';
+                    document.getElementById('productDesc').value = '';
+                    document.getElementById('productPrice').value = '';
+                    loadProducts();
+                }
+                
+                async function deleteProduct(id) {
+                    await fetch('/api/products/' + id, { method: 'DELETE' });
+                    loadProducts();
+                }
+                
+                function renderProducts() {
+                    const list = document.getElementById('productList');
+                    list.innerHTML = products.map(product => \\`
+                        <li class="list-item">
+                            <div class="item-content">
+                                <div class="item-text">\\${escapeHtml(product.name)}</div>
+                                <div class="item-desc">\\${escapeHtml(product.description || '')}</div>
+                                <div class="item-desc">
+                                    <span class="price-tag">$\\${product.price.toFixed(2)}</span>
+                                    <span style="margin-left: 15px;">Stock: \\${product.stock}</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-danger" onclick="deleteProduct('\\\\${product.id}')">Delete</button>
+                        </li>
+                    \\`).join('');
                 }
                 
                 async function setCache() {
@@ -559,6 +745,7 @@ public class EstDemoApplication {
                     formData.append('name', name);
                     await fetch('/api/events/local', { method: 'POST', body: formData });
                     document.getElementById('eventResult').textContent = 'Local event published: ' + name;
+                    loadLogs('');
                 }
                 
                 async function publishAsyncEvent() {
@@ -567,6 +754,12 @@ public class EstDemoApplication {
                     formData.append('name', name);
                     await fetch('/api/events/async', { method: 'POST', body: formData });
                     document.getElementById('eventResult').textContent = 'Async event published: ' + name;
+                    loadLogs('');
+                }
+                
+                async function clearLogs() {
+                    await fetch('/api/logs', { method: 'DELETE' });
+                    loadLogs('');
                 }
                 
                 function escapeHtml(text) {
@@ -576,7 +769,7 @@ public class EstDemoApplication {
                 }
                 
                 loadAll();
-                setInterval(loadStats, 5000);
+                setInterval(() => { loadStats(); loadLogs(''); }, 5000);
             </script>
             </body>
             </html>
@@ -881,9 +1074,144 @@ public class EstDemoApplication {
         stats.put("requestCount", requestCount.get());
         stats.put("userCount", userRepository.count());
         stats.put("todoCount", todos.size());
+        stats.put("productCount", products.size());
         stats.put("cacheSize", memoryCache.size());
+        stats.put("logCount", logEntries.size());
         stats.put("uptime", System.currentTimeMillis() - (Long) memoryCache.get("system:startup"));
+        long avgTime = requestCount.get() > 0 ? totalRequestTime.get() / requestCount.get() : 0;
+        stats.put("avgRequestTimeMs", avgTime);
         res.json(stats);
+    }
+    
+    private static void echoHandler(Request req, Response res) {
+        String body = req.getBody();
+        Map<String, Object> result = new HashMap<>();
+        result.put("method", req.getMethod());
+        result.put("path", req.getPath());
+        result.put("body", body);
+        result.put("timestamp", System.currentTimeMillis());
+        res.json(result);
+    }
+    
+    private static void listProducts(Request req, Response res) {
+        res.json(Map.of(
+            "success", true,
+            "data", new ArrayList<>(products.values())
+        ));
+    }
+    
+    private static void getProduct(Request req, Response res) {
+        String id = req.getPathVariable("id");
+        Product product = products.get(id);
+        if (product != null) {
+            res.json(Map.of("success", true, "data", product));
+        } else {
+            res.setStatus(404);
+            res.json(Map.of("success", false, "message", "Product not found"));
+        }
+    }
+    
+    private static void createProduct(Request req, Response res) {
+        String name = req.getParameter("name");
+        String description = req.getParameterOrDefault("description", "");
+        String priceStr = req.getParameter("price");
+        String stockStr = req.getParameterOrDefault("stock", "0");
+        
+        if (name == null || name.isBlank() || priceStr == null) {
+            res.setStatus(400);
+            res.json(Map.of("success", false, "message", "Name and price are required"));
+            return;
+        }
+        
+        try {
+            double price = Double.parseDouble(priceStr);
+            int stock = Integer.parseInt(stockStr);
+            
+            String id = UUID.randomUUID().toString();
+            Product product = new Product(id, name, description, price, stock);
+            products.put(id, product);
+            
+            localEventBus.publish(new ProductEvent("created", name));
+            
+            res.setStatus(201);
+            res.json(Map.of(
+                "success", true,
+                "message", "Product created successfully",
+                "data", product
+            ));
+        } catch (NumberFormatException e) {
+            res.setStatus(400);
+            res.json(Map.of("success", false, "message", "Invalid number format"));
+        }
+    }
+    
+    private static void updateProduct(Request req, Response res) {
+        String id = req.getPathVariable("id");
+        Product product = products.get(id);
+        
+        if (product == null) {
+            res.setStatus(404);
+            res.json(Map.of("success", false, "message", "Product not found"));
+            return;
+        }
+        
+        String name = req.getParameter("name");
+        String description = req.getParameter("description");
+        String priceStr = req.getParameter("price");
+        String stockStr = req.getParameter("stock");
+        
+        if (name != null) product.name = name;
+        if (description != null) product.description = description;
+        if (priceStr != null) {
+            try {
+                product.price = Double.parseDouble(priceStr);
+            } catch (NumberFormatException ignored) {}
+        }
+        if (stockStr != null) {
+            try {
+                product.stock = Integer.parseInt(stockStr);
+            } catch (NumberFormatException ignored) {}
+        }
+        
+        localEventBus.publish(new ProductEvent("updated", product.name));
+        
+        res.json(Map.of(
+            "success", true,
+            "message", "Product updated successfully",
+            "data", product
+        ));
+    }
+    
+    private static void deleteProduct(Request req, Response res) {
+        String id = req.getPathVariable("id");
+        Product product = products.remove(id);
+        if (product != null) {
+            localEventBus.publish(new ProductEvent("deleted", product.name));
+            res.json(Map.of("success", true, "message", "Product deleted successfully"));
+        } else {
+            res.setStatus(404);
+            res.json(Map.of("success", false, "message", "Product not found"));
+        }
+    }
+    
+    private static void listLogs(Request req, Response res) {
+        String type = req.getParameter("type");
+        List<LogEntry> filteredLogs = logEntries;
+        if (type != null && !type.isBlank()) {
+            filteredLogs = logEntries.stream()
+                .filter(log -> log.type.equalsIgnoreCase(type) || log.type.startsWith(type))
+                .collect(Collectors.toList());
+        }
+        res.json(Map.of(
+            "success", true,
+            "data", filteredLogs
+        ));
+    }
+    
+    private static void clearLogs(Request req, Response res) {
+        logEntries.clear();
+        addLogEntry("LOGS_CLEARED", "All logs cleared");
+        res.json(Map.of("success", true, "message", "Logs cleared successfully"));
     }
 
     static class User {
@@ -919,6 +1247,38 @@ public class EstDemoApplication {
             this.createdAt = System.currentTimeMillis();
         }
     }
+    
+    static class Product {
+        public String id;
+        public String name;
+        public String description;
+        public double price;
+        public int stock;
+        public long createdAt;
+
+        public Product(String id, String name, String description, double price, int stock) {
+            this.id = id;
+            this.name = name;
+            this.description = description;
+            this.price = price;
+            this.stock = stock;
+            this.createdAt = System.currentTimeMillis();
+        }
+    }
+    
+    static class LogEntry {
+        public String id;
+        public String type;
+        public String message;
+        public long timestamp;
+
+        public LogEntry(String id, String type, String message, long timestamp) {
+            this.id = id;
+            this.type = type;
+            this.message = message;
+            this.timestamp = timestamp;
+        }
+    }
 
     static class UserCreatedEvent implements Event {
         private final String username;
@@ -931,6 +1291,19 @@ public class EstDemoApplication {
 
         public String getUsername() { return username; }
         public String getEmail() { return email; }
+    }
+    
+    static class ProductEvent implements Event {
+        private final String action;
+        private final String productName;
+
+        public ProductEvent(String action, String productName) {
+            this.action = action;
+            this.productName = productName;
+        }
+
+        public String getAction() { return action; }
+        public String getProductName() { return productName; }
     }
 
     static class TaskEvent implements Event {

@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: est-web-app
+  name: est-demo
   namespace: est
   labels:
-    app: est-web-app
-    app.kubernetes.io/name: est-web-app
-    app.kubernetes.io/instance: est-web-app
-    app.kubernetes.io/version: "1.3.0"
+    app: est-demo
+    app.kubernetes.io/name: est-demo
+    app.kubernetes.io/instance: est-demo
+    app.kubernetes.io/version: "2.0.0"
     app.kubernetes.io/component: web
     app.kubernetes.io/part-of: est-framework
     app.kubernetes.io/managed-by: kustomize
   annotations:
-    description: "EST Framework Web Application"
+    description: "EST Framework Demo Application"
 spec:
   replicas: 3
   revisionHistoryLimit: 10
@@ -23,26 +23,26 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: est-web-app
+      app: est-demo
   template:
     metadata:
       labels:
-        app: est-web-app
-        app.kubernetes.io/name: est-web-app
-        app.kubernetes.io/instance: est-web-app
+        app: est-demo
+        app.kubernetes.io/name: est-demo
+        app.kubernetes.io/instance: est-demo
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
         prometheus.io/path: "/metrics"
     spec:
-      serviceAccountName: est-web-app-sa
+      serviceAccountName: est-demo-sa
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         fsGroup: 1000
       containers:
-      - name: est-web-app
-        image: est-web-app:latest
+      - name: est-demo
+        image: est-demo:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -57,47 +57,47 @@ spec:
         - name: APP_ENV
           valueFrom:
             configMapKeyRef:
-              name: est-web-app-config
+              name: est-demo-config
               key: app.env
         - name: APP_NAME
           valueFrom:
             configMapKeyRef:
-              name: est-web-app-config
+              name: est-demo-config
               key: app.name
         - name: APP_VERSION
           valueFrom:
             configMapKeyRef:
-              name: est-web-app-config
+              name: est-demo-config
               key: app.version
         - name: LOG_LEVEL
           valueFrom:
             configMapKeyRef:
-              name: est-web-app-config
+              name: est-demo-config
               key: log.level
         - name: DB_HOST
           valueFrom:
             secretKeyRef:
-              name: est-web-app-secret
+              name: est-demo-secret
               key: db.host
               optional: true
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: est-web-app-secret
+              name: est-demo-secret
               key: db.user
               optional: true
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: est-web-app-secret
+              name: est-demo-secret
               key: db.password
               optional: true
         envFrom:
         - configMapRef:
-            name: est-web-app-config
+            name: est-demo-config
             optional: true
         - secretRef:
-            name: est-web-app-secret
+            name: est-demo-secret
             optional: true
         resources:
           requests:
@@ -147,7 +147,7 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: est-web-app-config
+          name: est-demo-config
           items:
           - key: application.properties
             path: application.properties
@@ -165,7 +165,7 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - est-web-app
+                  - est-demo
               topologyKey: kubernetes.io/hostname
       tolerations:
       - key: "node-role.kubernetes.io/worker"

@@ -1,0 +1,42 @@
+# 自动标签配置
+
+ai:
+  - changed-files:
+    - any-glob-to-any-file: 'est-modules/est-ai-suite/**/*'
+
+core:
+  - changed-files:
+    - any-glob-to-any-file: 'est-core/**/*'
+
+web:
+  - changed-files:
+    - any-glob-to-any-file: 'est-modules/est-web-group/**/*'
+    - any-glob-to-any-file: 'est-app/est-web/**/*'
+
+security:
+  - changed-files:
+    - any-glob-to-any-file: 'est-modules/est-security-group/**/*'
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file: 'docs/**/*'
+    - any-glob-to-any-file: '**/README.md'
+
+tests:
+  - changed-files:
+    - any-glob-to-any-file: '**/src/test/**/*'
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file: 'pom.xml'
+    - any-glob-to-any-file: '**/pom.xml'
+    - any-glob-to-any-file: 'est-admin-ui/package.json'
+
+frontend:
+  - changed-files:
+    - any-glob-to-any-file: 'est-admin-ui/**/*'
+
+ci:
+  - changed-files:
+    - any-glob-to-any-file: '.github/workflows/**/*'
+    - any-glob-to-any-file: '.github/**/*.yml'

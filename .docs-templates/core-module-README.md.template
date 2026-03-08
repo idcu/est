@@ -1,0 +1,178 @@
+# {MODULE_NAME} 核心模块 - 小白从入门到精通
+
+## 目录
+1. [什么是 {MODULE_NAME}？](#什么是-{MODULE_NAME_LOWER})
+2. [快速入门：5分钟上手](#快速入门5分钟上手)
+3. [基础篇](#基础篇)
+4. [进阶篇](#进阶篇)
+5. [高级篇](#高级篇)
+6. [与其他模块集成](#与其他模块集成)
+7. [最佳实践](#最佳实践)
+
+---
+
+## 什么是 {MODULE_NAME}？
+
+### 用大白话理解
+
+{MODULE_NAME} 就像是一个"{METAPHOR}。想象一下{SCENARIO}...
+
+**传统方式**：{TRADITIONAL_WAY}
+
+**{MODULE_NAME} 方式**：{MODULE_WAY}
+
+### 核心特点
+
+- 🎯 **{FEATURE_1}** - {FEATURE_1_DESCRIPTION}
+- ⚡ **{FEATURE_2}** - {FEATURE_2_DESCRIPTION}
+- 🔒 **{FEATURE_3}** - {FEATURE_3_DESCRIPTION}
+- 🎨 **{FEATURE_4}** - {FEATURE_4_DESCRIPTION}
+
+---
+
+## 快速入门：5分钟上手
+
+### 第一步：引入依赖
+
+在你的 Maven pom.xml 中添加：
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>{GROUP_ID}</groupId>
+        <artifactId>{ARTIFACT_ID}-api</artifactId>
+        <version>{VERSION}</version>
+    </dependency>
+    <dependency>
+        <groupId>{GROUP_ID}</groupId>
+        <artifactId>{ARTIFACT_ID}-impl</artifactId>
+        <version>{VERSION}</version>
+    </dependency>
+</dependencies>
+```
+
+### 第二步：你的第一个程序
+
+```java
+{FIRST_EXAMPLE_CODE}
+```
+
+运行这个程序，你会看到：
+```
+{EXAMPLE_OUTPUT}
+```
+
+恭喜你！你已经成功使用 {MODULE_NAME} 了！
+
+---
+
+## 基础篇
+
+### 1. {BASIC_TOPIC_1}
+
+#### {BASIC_TOPIC_1_SUBTOPIC_1}
+
+```java
+{BASIC_TOPIC_1_CODE_1}
+```
+
+#### {BASIC_TOPIC_1_SUBTOPIC_2}
+
+```java
+{BASIC_TOPIC_1_CODE_2}
+```
+
+### 2. {BASIC_TOPIC_2}
+
+```java
+{BASIC_TOPIC_2_CODE}
+```
+
+---
+
+## 进阶篇
+
+### 1. {ADVANCED_TOPIC_1}
+
+```java
+{ADVANCED_TOPIC_1_CODE}
+```
+
+### 2. {ADVANCED_TOPIC_2}
+
+```java
+{ADVANCED_TOPIC_2_CODE}
+```
+
+---
+
+## 高级篇
+
+### 1. {ADVANCED_HIGH_TOPIC_1}
+
+```java
+{ADVANCED_HIGH_TOPIC_1_CODE}
+```
+
+### 2. {ADVANCED_HIGH_TOPIC_2}
+
+```java
+{ADVANCED_HIGH_TOPIC_2_CODE}
+```
+
+---
+
+## 与其他模块集成
+
+{MODULE_NAME} 和 {OTHER_MODULE_NAME} 可以完美配合使用！
+
+### 场景：{INTEGRATION_SCENARIO}
+
+```java
+{INTEGRATION_EXAMPLE_CODE}
+```
+
+运行输出：
+```
+{INTEGRATION_OUTPUT}
+```
+
+---
+
+## 最佳实践
+
+### 1. {BEST_PRACTICE_1}
+
+```java
+// ✅ 推荐：{BEST_PRACTICE_1_GOOD}
+{BEST_PRACTICE_1_GOOD_CODE}
+
+// ❌ 不推荐：{BEST_PRACTICE_1_BAD}
+{BEST_PRACTICE_1_BAD_CODE}
+```
+
+### 2. {BEST_PRACTICE_2}
+
+```java
+{BEST_PRACTICE_2_CODE}
+```
+
+---
+
+## 常见问题
+
+### Q: {FAQ_1_QUESTION}
+
+A: {FAQ_1_ANSWER}
+
+### Q: {FAQ_2_QUESTION}
+
+A: {FAQ_2_ANSWER}
+
+---
+
+## 下一步
+
+- 学习 [{NEXT_STEP_1}]({NEXT_STEP_1_PATH}) - {NEXT_STEP_1_DESCRIPTION}
+- 查看 [{NEXT_STEP_2}]({NEXT_STEP_2_PATH}) - {NEXT_STEP_2_DESCRIPTION}
+- 阅读 [API 文档](../{API_DOCS_PATH}) 了解更多细节

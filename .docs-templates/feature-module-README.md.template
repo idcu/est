@@ -1,0 +1,186 @@
+# {MODULE_GROUP_NAME} 功能模块 - 小白从入门到精通
+
+## 目录
+1. [什么是 {MODULE_GROUP_NAME}？](#什么是-{MODULE_GROUP_NAME_LOWER})
+2. [快速入门：5分钟上手](#快速入门5分钟上手)
+3. [模块概览](#模块概览)
+4. [最佳实践](#最佳实践)
+
+---
+
+## 什么是 {MODULE_GROUP_NAME}？
+
+### 用大白话理解
+
+{MODULE_GROUP_NAME} 就像是一个"{METAPHOR}。想象一下{SCENARIO}...
+
+**传统方式**：{TRADITIONAL_WAY}
+
+**{MODULE_GROUP_NAME} 方式**：{MODULE_GROUP_WAY}
+
+### 核心特点
+
+- 🎯 **{FEATURE_1}** - {FEATURE_1_DESCRIPTION}
+- ⚡ **{FEATURE_2}** - {FEATURE_2_DESCRIPTION}
+- 🔧 **{FEATURE_3}** - {FEATURE_3_DESCRIPTION}
+- 🔒 **{FEATURE_4}** - {FEATURE_4_DESCRIPTION}
+
+---
+
+## 快速入门：5分钟上手
+
+### 第一步：引入依赖
+
+在你的 Maven pom.xml 中添加需要的模块：
+
+```xml
+<dependencies>
+    <!-- {SUBMODULE_1_NAME} -->
+    <dependency>
+        <groupId>{GROUP_ID}</groupId>
+        <artifactId>{SUBMODULE_1_ARTIFACT_ID}</artifactId>
+        <version>{VERSION}</version>
+    </dependency>
+    
+    <!-- {SUBMODULE_2_NAME} -->
+    <dependency>
+        <groupId>{GROUP_ID}</groupId>
+        <artifactId>{SUBMODULE_2_ARTIFACT_ID}</artifactId>
+        <version>{VERSION}</version>
+    </dependency>
+    
+    <!-- {SUBMODULE_3_NAME} -->
+    <dependency>
+        <groupId>{GROUP_ID}</groupId>
+        <artifactId>{SUBMODULE_3_ARTIFACT_ID}</artifactId>
+        <version>{VERSION}</version>
+    </dependency>
+</dependencies>
+```
+
+### 第二步：使用模块
+
+```java
+{FIRST_EXAMPLE_CODE}
+```
+
+---
+
+## 模块概览
+
+### 1. {SUBMODULE_1_NAME}
+
+{SUBMODULE_1_DESCRIPTION}
+
+详细文档请参考：[{SUBMODULE_1_NAME} README](./{SUBMODULE_1_DIR}/README.md)
+
+#### 包含内容
+
+- **{SUBMODULE_1_FEATURE_1}** - {SUBMODULE_1_FEATURE_1_DESCRIPTION}
+- **{SUBMODULE_1_FEATURE_2}** - {SUBMODULE_1_FEATURE_2_DESCRIPTION}
+
+#### 快速示例
+
+```java
+{SUBMODULE_1_EXAMPLE_CODE}
+```
+
+### 2. {SUBMODULE_2_NAME}
+
+{SUBMODULE_2_DESCRIPTION}
+
+详细文档请参考：[{SUBMODULE_2_NAME} README](./{SUBMODULE_2_DIR}/README.md)
+
+#### 包含内容
+
+- **{SUBMODULE_2_FEATURE_1}** - {SUBMODULE_2_FEATURE_1_DESCRIPTION}
+- **{SUBMODULE_2_FEATURE_2}** - {SUBMODULE_2_FEATURE_2_DESCRIPTION}
+
+#### 快速示例
+
+```java
+{SUBMODULE_2_EXAMPLE_CODE}
+```
+
+### 3. {SUBMODULE_3_NAME}
+
+{SUBMODULE_3_DESCRIPTION}
+
+详细文档请参考：[{SUBMODULE_3_NAME} README](./{SUBMODULE_3_DIR}/README.md)
+
+#### 包含内容
+
+- **{SUBMODULE_3_FEATURE_1}** - {SUBMODULE_3_FEATURE_1_DESCRIPTION}
+- **{SUBMODULE_3_FEATURE_2}** - {SUBMODULE_3_FEATURE_2_DESCRIPTION}
+
+#### 快速示例
+
+```java
+{SUBMODULE_3_EXAMPLE_CODE}
+```
+
+---
+
+## 最佳实践
+
+### 1. {BEST_PRACTICE_1}
+
+```xml
+<!-- ✅ 推荐：只引入需要的模块 -->
+<dependencies>
+    <dependency>
+        <groupId>{GROUP_ID}</groupId>
+        <artifactId>{SUBMODULE_1_ARTIFACT_ID}</artifactId>
+        <version>{VERSION}</version>
+    </dependency>
+    <dependency>
+        <groupId>{GROUP_ID}</groupId>
+        <artifactId>{SUBMODULE_2_ARTIFACT_ID}</artifactId>
+        <version>{VERSION}</version>
+    </dependency>
+</dependencies>
+
+<!-- ❌ 不推荐：引入所有模块 -->
+<!-- 会增加不必要的依赖和体积 -->
+```
+
+### 2. {BEST_PRACTICE_2}
+
+```java
+{BEST_PRACTICE_2_CODE}
+```
+
+### 3. {BEST_PRACTICE_3}
+
+```
+{MODULE_GROUP_DIR}/
+├── {SUBMODULE_1_DIR}/    # {SUBMODULE_1_DESCRIPTION}
+├── {SUBMODULE_2_DIR}/    # {SUBMODULE_2_DESCRIPTION}
+└── {SUBMODULE_3_DIR}/    # {SUBMODULE_3_DESCRIPTION}
+```
+
+---
+
+## 模块结构
+
+```
+{MODULE_GROUP_DIR}/
+├── {SUBMODULE_1_DIR}/        # {SUBMODULE_1_DESCRIPTION}
+├── {SUBMODULE_2_DIR}/        # {SUBMODULE_2_DESCRIPTION}
+└── {SUBMODULE_3_DIR}/        # {SUBMODULE_3_DESCRIPTION}
+```
+
+---
+
+## 相关资源
+
+- [{SUBMODULE_1_NAME} README](./{SUBMODULE_1_DIR}/README.md) - {SUBMODULE_1_NAME}详细文档
+- [{SUBMODULE_2_NAME} README](./{SUBMODULE_2_DIR}/README.md) - {SUBMODULE_2_NAME}详细文档
+- [示例代码](../{EXAMPLES_PATH}/) - 示例代码
+- [{RELATED_MODULE_1}](../{RELATED_MODULE_1_PATH}/README.md) - {RELATED_MODULE_1_DESCRIPTION}
+- [{RELATED_MODULE_2}](../{RELATED_MODULE_2_PATH}/README.md) - {RELATED_MODULE_2_DESCRIPTION}
+
+---
+
+**文档版本**: {DOC_VERSION}  
+**最后更新**: {LAST_UPDATE}
