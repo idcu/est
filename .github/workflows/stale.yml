@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: 标记并关闭陈旧的 Issues 和 PR
-        uses: actions/stale@v9
+        uses: actions/stale@v10
         with:
           stale-issue-message: '这个 Issue 已经 60 天没有活动了，将被标记为陈旧。如果在 7 天内没有进一步活动，它将被自动关闭。'
           stale-pr-message: '这个 Pull Request 已经 30 天没有活动了，将被标记为陈旧。如果在 7 天内没有进一步活动，它将被自动关闭。'
