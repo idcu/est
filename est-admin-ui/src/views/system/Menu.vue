@@ -25,7 +25,7 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="status" label="状�? width="100">
           <template #default="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'danger'">
               {{ row.status === 1 ? '显示' : '隐藏' }}
@@ -67,31 +67,31 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="菜单名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入菜单名称" />
+          <el-input v-model="formData.name" placeholder="请输入菜单名�? />
         </el-form-item>
         <el-form-item label="图标" prop="icon" v-if="formData.type !== 2">
-          <el-input v-model="formData.icon" placeholder="请输入图标名称" />
+          <el-input v-model="formData.icon" placeholder="请输入图标名�? />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
           <el-input-number v-model="formData.sort" :min="0" />
         </el-form-item>
         <el-form-item label="路由路径" prop="path" v-if="formData.type !== 2">
-          <el-input v-model="formData.path" placeholder="请输入路由路径" />
+          <el-input v-model="formData.path" placeholder="请输入路由路�? />
         </el-form-item>
         <el-form-item label="组件路径" prop="component" v-if="formData.type === 1">
-          <el-input v-model="formData.component" placeholder="请输入组件路径" />
+          <el-input v-model="formData.component" placeholder="请输入组件路�? />
         </el-form-item>
         <el-form-item label="权限标识" prop="permission">
-          <el-input v-model="formData.permission" placeholder="请输入权限标识" />
+          <el-input v-model="formData.permission" placeholder="请输入权限标�? />
         </el-form-item>
-        <el-form-item label="显示状态" prop="status">
+        <el-form-item label="显示状�? prop="status">
           <el-radio-group v-model="formData.status">
             <el-radio :label="1">显示</el-radio>
             <el-radio :label="0">隐藏</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备�? />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -136,7 +136,7 @@ const formData = reactive({
 
 const formRules: FormRules = {
   name: [
-    { required: true, message: '请输入菜单名称', trigger: 'blur' }
+    { required: true, message: '请输入菜单名�?, trigger: 'blur' }
   ]
 }
 
@@ -145,7 +145,7 @@ const loadData = async () => {
     const res = await listMenus()
     tableData.value = res.data || []
     menuTreeData.value = [
-      { id: 0, name: '根目录', children: res.data || [] }
+      { id: 0, name: '根目�?, children: res.data || [] }
     ]
   } catch (error) {
     console.error('加载菜单列表失败', error)

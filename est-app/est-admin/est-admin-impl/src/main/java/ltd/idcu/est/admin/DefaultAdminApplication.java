@@ -184,14 +184,14 @@ public class DefaultAdminApplication implements AdminApplication {
         webApplication.onStartup(() -> {
             System.out.println("\n".repeat(2));
             System.out.println("=".repeat(80));
-            System.out.println("✓ EST Admin Console 启动成功！");
+            System.out.println("�?EST Admin Console 启动成功�?);
             System.out.println("=".repeat(80));
-            System.out.println("\n访问地址：");
+            System.out.println("\n访问地址�?);
             System.out.println("  - http://localhost:" + port + "/admin          (管理后台)");
-            System.out.println("\n默认登录账号：");
-            System.out.println("  - 用户名: admin");
+            System.out.println("\n默认登录账号�?);
+            System.out.println("  - 用户�? admin");
             System.out.println("  - 密码: admin123");
-            System.out.println("\n按 Ctrl+C 停止服务器");
+            System.out.println("\n�?Ctrl+C 停止服务�?);
             System.out.println("=".repeat(80));
         });
         

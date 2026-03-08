@@ -127,7 +127,7 @@ public class DefaultMenuServiceTest {
         Set<String> permissions = new HashSet<>();
         Menu menu = menuService.createMenu(
             null, 
-            "待删除菜单", 
+            "待删除菜�?, 
             "/delete", 
             "DeleteView", 
             "delete", 
@@ -151,7 +151,7 @@ public class DefaultMenuServiceTest {
         Set<String> permissions = new HashSet<>();
         Menu parentMenu = menuService.createMenu(
             null, 
-            "父菜单", 
+            "父菜�?, 
             "/parent", 
             "ParentView", 
             "parent", 
@@ -164,7 +164,7 @@ public class DefaultMenuServiceTest {
         
         Menu subMenu = menuService.createMenu(
             parentMenu.getId(), 
-            "子菜单", 
+            "子菜�?, 
             "/parent/sub", 
             "SubView", 
             "sub", 

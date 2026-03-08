@@ -26,7 +26,7 @@ public class PermissionAspect {
         Optional<User> userOpt = securityContext.getCurrentUser();
         
         if (userOpt.isEmpty()) {
-            throw new AdminException("用户未登�?);
+            throw new AdminException("User not logged in");
         }
 
         User currentUser = userOpt.get();
@@ -38,7 +38,7 @@ public class PermissionAspect {
         boolean hasPermission = checkPermissions(userPermissions, requiredPermissions, logical);
 
         if (!hasPermission) {
-            throw new AdminException("权限不足，需要权�? " + Arrays.toString(requiredPermissions));
+            throw new AdminException("Insufficient permissions, required: " + Arrays.toString(requiredPermissions));
         }
 
         return joinPoint.proceed();

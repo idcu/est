@@ -38,7 +38,7 @@ This section contains documentation for all EST Framework modules.
 - [est-llm](./ai-suite/llm.md) - LLM provider implementations
 - [est-ai-assistant](./ai-suite/ai-assistant.md) - AI assistant functionality
 
-### est-microservices (微服务)
+### est-microservices (微服�?
 - [est-discovery](./microservices/discovery.md) - Service discovery
 - [est-circuitbreaker](./microservices/circuitbreaker.md) - Circuit breaker
 - [est-performance](./microservices/performance.md) - Performance monitoring

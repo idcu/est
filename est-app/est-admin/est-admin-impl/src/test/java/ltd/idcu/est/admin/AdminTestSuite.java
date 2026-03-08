@@ -22,7 +22,7 @@ public class AdminTestSuite {
 
         System.out.println();
         System.out.println("========================================");
-        System.out.println("  测试汇总");
+        System.out.println("  测试汇�?);
         System.out.println("========================================");
         
         int totalPassed = 0;
@@ -36,15 +36,15 @@ public class AdminTestSuite {
         }
         
         System.out.println("总通过: " + totalPassed);
-        System.out.println("总失败: " + totalFailed);
-        System.out.println("总跳过: " + totalSkipped);
+        System.out.println("总失�? " + totalFailed);
+        System.out.println("总跳�? " + totalSkipped);
         System.out.println("总计: " + (totalPassed + totalFailed + totalSkipped));
         System.out.println();
         
         if (totalFailed == 0) {
-            System.out.println("✓ 所有测试通过！");
+            System.out.println("�?所有测试通过�?);
         } else {
-            System.out.println("✗ 有测试失败，请检查输出！");
+            System.out.println("�?有测试失败，请检查输出！");
         }
     }
 }

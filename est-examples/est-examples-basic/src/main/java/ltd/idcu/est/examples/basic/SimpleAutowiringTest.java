@@ -66,7 +66,7 @@ public class SimpleAutowiringTest {
     }
 
     public static void main(String[] args) {
-        System.out.println("=== 开始测试自动装配机制 ===\n");
+        System.out.println("=== 开始测试自动装配机�?===\n");
         
         Container container = new DefaultContainer();
 

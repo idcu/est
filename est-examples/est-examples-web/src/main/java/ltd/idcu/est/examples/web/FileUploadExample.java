@@ -35,15 +35,15 @@ public class FileUploadExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n✓ 文件上传服务器启动成功！");
-            System.out.println("\n访问地址：");
+            System.out.println("\n�?文件上传服务器启动成功！");
+            System.out.println("\n访问地址�?);
             System.out.println("  - http://localhost:8080          (文件管理界面)");
-            System.out.println("\nAPI 端点：");
+            System.out.println("\nAPI 端点�?);
             System.out.println("  - GET    /api/files             - 获取文件列表");
             System.out.println("  - POST   /api/upload            - 上传文件");
             System.out.println("  - GET    /api/download/:id     - 下载文件");
             System.out.println("  - DELETE /api/files/:id        - 删除文件");
-            System.out.println("\n按 Ctrl+C 停止服务器");
+            System.out.println("\n�?Ctrl+C 停止服务�?);
             System.out.println("=".repeat(80));
         });
         
@@ -145,7 +145,7 @@ public class FileUploadExample {
                             container.innerHTML = \`
                                 <div class="empty-state">
                                     <div class="icon">📭</div>
-                                    <p>暂无文件，快去上传吧！</p>
+                                    <p>暂无文件，快去上传吧�?/p>
                                 </div>
                             \`;
                             return;
@@ -175,13 +175,13 @@ public class FileUploadExample {
                             </div>
                             <div class="stat-card">
                                 <div class="stat-number">\${formatSize(totalSize)}</div>
-                                <div class="stat-label">总大小</div>
+                                <div class="stat-label">总大�?/div>
                             </div>
                         \`;
                     }
                     
                     function getFileIcon(type) {
-                        if (type.startsWith('image/')) return '🖼️';
+                        if (type.startsWith('image/')) return '🖼�?;
                         if (type.startsWith('video/')) return '🎬';
                         if (type.startsWith('audio/')) return '🎵';
                         if (type.includes('pdf')) return '📄';
@@ -227,7 +227,7 @@ public class FileUploadExample {
                             
                             loadFiles();
                         } catch (error) {
-                            alert('上传失败：' + error.message);
+                            alert('上传失败�? + error.message);
                             progressBar.classList.remove('active');
                         }
                     }
@@ -237,7 +237,7 @@ public class FileUploadExample {
                     }
                     
                     async function deleteFile(id) {
-                        if (confirm('确定要删除这个文件吗？')) {
+                        if (confirm('确定要删除这个文件吗�?)) {
                             await fetch('/api/files/' + id, { method: 'DELETE' });
                             loadFiles();
                         }
@@ -315,7 +315,7 @@ public class FileUploadExample {
                 "data", uploadedFile
             ));
         } catch (Exception e) {
-            res.status(500).json(Map.of("success", false, "message", "上传失败：" + e.getMessage()));
+            res.status(500).json(Map.of("success", false, "message", "上传失败�? + e.getMessage()));
         }
     }
     
@@ -323,7 +323,7 @@ public class FileUploadExample {
         String id = req.param("id");
         UploadedFile file = files.get(id);
         if (file == null) {
-            res.status(404).json(Map.of("success", false, "message", "文件不存在"));
+            res.status(404).json(Map.of("success", false, "message", "文件不存�?));
             return;
         }
         
@@ -337,7 +337,7 @@ public class FileUploadExample {
         if (files.remove(id) != null) {
             res.json(Map.of("success", true, "message", "文件删除成功"));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "文件不存在"));
+            res.status(404).json(Map.of("success", false, "message", "文件不存�?));
         }
     }
     

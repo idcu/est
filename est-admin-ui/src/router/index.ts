@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/Dashboard.vue'),
-        meta: { title: '仪表板', requiresAuth: true }
+        meta: { title: '仪表�?, requiresAuth: true }
       },
       {
         path: 'system',
@@ -101,7 +101,7 @@ const routes: RouteRecordRaw[] = [
         path: 'integration',
         name: 'Integration',
         redirect: '/integration/email',
-        meta: { title: '第三方集成', requiresAuth: true },
+        meta: { title: '第三方集�?, requiresAuth: true },
         children: [
           {
             path: 'email',
@@ -145,7 +145,7 @@ const routes: RouteRecordRaw[] = [
             path: 'reference',
             name: 'AiReference',
             component: () => import('@/views/ai/Reference.vue'),
-            meta: { title: '开发参考', requiresAuth: true }
+            meta: { title: '开发参�?, requiresAuth: true }
           },
           {
             path: 'template',

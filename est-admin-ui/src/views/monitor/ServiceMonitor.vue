@@ -26,7 +26,7 @@
                 </el-statistic>
               </el-col>
               <el-col :span="6">
-                <el-statistic title="线程数" :value="jvmData.metrics['jvm.thread.count']" />
+                <el-statistic title="线程�? :value="jvmData.metrics['jvm.thread.count']" />
               </el-col>
               <el-col :span="6">
                 <el-statistic title="GC 次数" :value="jvmData.metrics['jvm.gc.count']" />
@@ -39,14 +39,14 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-card>
-                  <template #header>堆内存</template>
+                  <template #header>堆内�?/template>
                   <el-progress 
                     :percentage="Math.round(jvmData.metrics['jvm.heap.usage'] * 100)" 
                     :status="jvmData.metrics['jvm.heap.usage'] > 0.8 ? 'warning' : 'success'"
                   />
                   <div class="memory-details">
                     <span>已用: {{ formatBytes(jvmData.metrics['jvm.heap.used']) }}</span>
-                    <span>最大: {{ formatBytes(jvmData.metrics['jvm.heap.max']) }}</span>
+                    <span>最�? {{ formatBytes(jvmData.metrics['jvm.heap.max']) }}</span>
                   </div>
                 </el-card>
               </el-col>
@@ -55,7 +55,7 @@
                   <template #header>非堆内存</template>
                   <div class="memory-details">
                     <span>已用: {{ formatBytes(jvmData.metrics['jvm.nonheap.used']) }}</span>
-                    <span>最大: {{ formatBytes(jvmData.metrics['jvm.nonheap.max']) }}</span>
+                    <span>最�? {{ formatBytes(jvmData.metrics['jvm.nonheap.max']) }}</span>
                   </div>
                 </el-card>
               </el-col>
@@ -66,7 +66,7 @@
             <h4>详细指标</h4>
             <el-table :data="getMetricList(jvmData.metrics)" style="width: 100%">
               <el-table-column prop="name" label="指标名称" width="250" />
-              <el-table-column prop="value" label="值" />
+              <el-table-column prop="value" label="�? />
             </el-table>
           </div>
         </el-tab-pane>
@@ -84,17 +84,17 @@
             <h4>详细指标</h4>
             <el-table :data="getMetricList(systemData.metrics)" style="width: 100%">
               <el-table-column prop="name" label="指标名称" width="250" />
-              <el-table-column prop="value" label="值" />
+              <el-table-column prop="value" label="�? />
             </el-table>
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="健康检查" name="health">
+        <el-tab-pane label="健康检�? name="health">
           <div v-if="healthData" class="monitor-content">
-            <h4>JVM 健康检查</h4>
+            <h4>JVM 健康检�?/h4>
             <el-table :data="healthData.jvm" style="width: 100%">
               <el-table-column prop="name" label="检查项" width="200" />
-              <el-table-column prop="status" label="状态" width="100">
+              <el-table-column prop="status" label="状�? width="100">
                 <template #default="{ row }">
                   <el-tag :type="getStatusType(row.status)">{{ row.status }}</el-tag>
                 </template>
@@ -104,10 +104,10 @@
             
             <el-divider />
             
-            <h4>系统健康检查</h4>
+            <h4>系统健康检�?/h4>
             <el-table :data="healthData.system" style="width: 100%">
               <el-table-column prop="name" label="检查项" width="200" />
-              <el-table-column prop="status" label="状态" width="100">
+              <el-table-column prop="status" label="状�? width="100">
                 <template #default="{ row }">
                   <el-tag :type="getStatusType(row.status)">{{ row.status }}</el-tag>
                 </template>
@@ -170,7 +170,7 @@ const formatUptime = (ms: number) => {
   const minutes = Math.floor(seconds / 60)
   const hours = Math.floor(minutes / 60)
   const days = Math.floor(hours / 24)
-  return `${days}天 ${hours % 24}小时 ${minutes % 60}分钟`
+  return `${days}�?${hours % 24}小时 ${minutes % 60}分钟`
 }
 
 const formatBytes = (bytes: number) => {

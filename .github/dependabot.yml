@@ -21,8 +21,7 @@ updates:
       prefix: "build"
       include: "scope"
 
-  # GitHub Actions 工作流更新
-  - package-ecosystem: "github-actions"
+  # GitHub Actions 工作流更�?  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"

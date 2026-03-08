@@ -7,7 +7,7 @@ set -e
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 DOCKERFILE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/../docker" && pwd)/Dockerfile"
 IMAGE_NAME="est-demo"
-DEFAULT_VERSION="2.0.0"
+DEFAULT_VERSION="2.1.0"
 VERSION=${1:-$DEFAULT_VERSION}
 
 echo "========================================"

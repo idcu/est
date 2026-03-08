@@ -9,7 +9,7 @@ public class ProjectConfig {
     private String version = "1.0.0-SNAPSHOT";
     private String packageName;
     private String description;
-    private String estVersion = "2.0.0";
+    private String estVersion = "2.1.0";
     private int javaVersion = 21;
     private boolean gitInit = false;
     private boolean dryRun = false;

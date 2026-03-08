@@ -347,19 +347,19 @@ Please refer to EST's MICROSERVICES_ARCHITECTURE.md, providing complete microser
             
             System.out.println(ConsoleColors.yellow("EST Framework Usage:"));
             if (analysis.usesEstWeb) {
-                System.out.println(ConsoleColors.green("  âœ“ EST Web module"));
+                System.out.println(ConsoleColors.green("  âœ?EST Web module"));
             }
             if (analysis.usesEstCore) {
-                System.out.println(ConsoleColors.green("  âœ“ EST Core module"));
+                System.out.println(ConsoleColors.green("  âœ?EST Core module"));
             }
             if (analysis.usesEstFeatures) {
-                System.out.println(ConsoleColors.green("  âœ“ EST Features module"));
+                System.out.println(ConsoleColors.green("  âœ?EST Features module"));
             }
             System.out.println();
             
             System.out.println(ConsoleColors.yellow("Suggestions:"));
             for (String suggestion : analysis.suggestions) {
-                System.out.println("  â€¢ " + suggestion);
+                System.out.println("  â€?" + suggestion);
             }
             
         } catch (IOException e) {
@@ -420,7 +420,7 @@ Please refer to EST's MICROSERVICES_ARCHITECTURE.md, providing complete microser
                 System.out.println(ConsoleColors.green("No refactoring suggestions at this time."));
             } else {
                 for (String suggestion : suggestions) {
-                    System.out.println(ConsoleColors.yellow("  â€¢ " + suggestion));
+                    System.out.println(ConsoleColors.yellow("  â€?" + suggestion));
                 }
             }
             

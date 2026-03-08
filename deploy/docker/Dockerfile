@@ -16,7 +16,7 @@ FROM eclipse-temurin:21-jre-slim
 
 LABEL maintainer="idcu"
 LABEL description="EST Framework Demo Application"
-LABEL version="2.0.0"
+LABEL version="2.1.0"
 
 RUN groupadd -r appgroup && useradd -r -g appgroup appuser
 
@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /opt/app
 
-COPY --from=builder /build/est-demo/target/est-demo-2.0.0.jar app.jar
+COPY --from=builder /build/est-demo/target/est-demo-2.1.0.jar app.jar
 
 RUN mkdir -p /opt/app/logs /opt/app/config \
     && chown -R appuser:appgroup /opt/app
@@ -41,6 +41,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 ENV JAVA_OPTS="-Xms512m -Xmx2g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.hprof"
 ENV APP_ENV=production
 ENV APP_NAME=est-demo
-ENV APP_VERSION=2.0.0
+ENV APP_VERSION=2.1.0
 
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

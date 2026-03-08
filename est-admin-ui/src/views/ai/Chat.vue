@@ -18,7 +18,7 @@
             <el-icon v-else><Cpu /></el-icon>
           </div>
           <div class="message-content">
-            <div class="message-role">{{ msg.role === 'user' ? '我' : 'AI 助手' }}</div>
+            <div class="message-role">{{ msg.role === 'user' ? '�? : 'AI 助手' }}</div>
             <div class="message-text">{{ msg.content }}</div>
           </div>
         </div>
@@ -34,7 +34,7 @@
         />
         <div class="input-actions">
           <el-button type="primary" @click="sendMessage" :loading="loading">
-            发送 (Ctrl+Enter)
+            发�?(Ctrl+Enter)
           </el-button>
         </div>
       </div>
@@ -68,7 +68,7 @@ const scrollToBottom = () => {
 
 const sendMessage = async () => {
   if (!inputMessage.value.trim()) {
-    ElMessage.warning('请输入消息')
+    ElMessage.warning('请输入消�?)
     return
   }
   
@@ -94,7 +94,7 @@ const sendMessage = async () => {
       scrollToBottom()
     }
   } catch (error) {
-    ElMessage.error('发送消息失败')
+    ElMessage.error('发送消息失�?)
   } finally {
     loading.value = false
   }
@@ -108,7 +108,7 @@ onMounted(() => {
   messages.value = [
     {
       role: 'assistant',
-      content: '您好！我是 EST AI 助手，有什么可以帮助您的吗？'
+      content: '您好！我�?EST AI 助手，有什么可以帮助您的吗�?
     }
   ]
 })

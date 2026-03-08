@@ -91,7 +91,7 @@ public class BenchmarkResult {
         System.out.printf("总耗时: %.2f s%n", durationMs / 1000.0);
         System.out.printf("迭代次数: %d%n", iterations);
         System.out.printf("平均耗时: %.4f ms%n", avgDurationMs);
-        System.out.printf("吞吐量: %.2f ops/s%n", opsPerSecond);
+        System.out.printf("吞吐�? %.2f ops/s%n", opsPerSecond);
         System.out.printf("最小耗时: %d ms%n", minDurationMs);
         System.out.printf("最大耗时: %d ms%n", maxDurationMs);
         System.out.printf("P50: %.2f ms%n", p50Ms);

@@ -8,20 +8,20 @@
       </template>
       
       <el-tabs v-model="activeTab">
-        <el-tab-pane label="发送邮件" name="send">
+        <el-tab-pane label="发送邮�? name="send">
           <el-form :model="emailForm" label-width="100px" style="max-width: 600px;">
-            <el-form-item label="收件人">
+            <el-form-item label="收件�?>
               <el-input v-model="emailForm.to" placeholder="请输入收件人邮箱" />
             </el-form-item>
             <el-form-item label="主题">
-              <el-input v-model="emailForm.subject" placeholder="请输入邮件主题" />
+              <el-input v-model="emailForm.subject" placeholder="请输入邮件主�? />
             </el-form-item>
             <el-form-item label="内容">
               <el-input
                 v-model="emailForm.content"
                 type="textarea"
                 :rows="8"
-                placeholder="请输入邮件内容"
+                placeholder="请输入邮件内�?
               />
             </el-form-item>
             <el-form-item label="HTML格式">
@@ -29,8 +29,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleSendEmail" :loading="sending">
-                发送邮件
-              </el-button>
+                发送邮�?              </el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -43,7 +42,7 @@
             <el-table-column prop="html" label="HTML格式" width="100">
               <template #default="{ row }">
                 <el-tag :type="row.html ? 'success' : 'info'">
-                  {{ row.html ? '是' : '否' }}
+                  {{ row.html ? '�? : '�? }}
                 </el-tag>
               </template>
             </el-table-column>
@@ -84,7 +83,7 @@ const handleSendEmail = async () => {
   try {
     const res = await sendEmail(emailForm.value)
     if (res.data.success) {
-      ElMessage.success('邮件发送成功')
+      ElMessage.success('邮件发送成�?)
       emailForm.value = {
         to: '',
         subject: '',
@@ -93,7 +92,7 @@ const handleSendEmail = async () => {
       }
     }
   } catch (error) {
-    ElMessage.error('邮件发送失败')
+    ElMessage.error('邮件发送失�?)
   } finally {
     sending.value = false
   }

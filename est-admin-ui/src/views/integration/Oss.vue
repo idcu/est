@@ -13,7 +13,7 @@
             <el-card class="bucket-card">
               <template #header>
                 <div class="card-header">
-                  <span>存储桶</span>
+                  <span>存储�?/span>
                   <el-button type="primary" size="small" @click="loadBuckets">
                     刷新
                   </el-button>
@@ -60,7 +60,7 @@
               </template>
               
               <el-table :data="files" style="width: 100%" v-loading="loading">
-                <el-table-column prop="fileName" label="文件名" />
+                <el-table-column prop="fileName" label="文件�? />
                 <el-table-column prop="filePath" label="路径" show-overflow-tooltip />
                 <el-table-column prop="size" label="大小" width="120">
                   <template #default="{ row }">
@@ -114,7 +114,7 @@ const loadBuckets = async () => {
       }
     }
   } catch (error) {
-    ElMessage.error('加载存储桶失败')
+    ElMessage.error('加载存储桶失�?)
   }
 }
 
@@ -173,7 +173,7 @@ const previewFile = (file: OssFile) => {
 
 const handleDelete = async (file: OssFile) => {
   try {
-    await ElMessageBox.confirm('确定要删除这个文件吗？', '提示', {
+    await ElMessageBox.confirm('确定要删除这个文件吗�?, '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'

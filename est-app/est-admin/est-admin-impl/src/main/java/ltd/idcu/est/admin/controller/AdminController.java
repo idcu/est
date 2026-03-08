@@ -350,7 +350,7 @@ public class AdminController {
             </head>
             <body>
                 <div class="header">
-                    <h1>🎛️ EST Admin Console</h1>
+                    <h1>🎛�?EST Admin Console</h1>
                 </div>
                 
                 <div class="container">
@@ -360,7 +360,7 @@ public class AdminController {
                     
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <div class="stat-label">堆内存使用</div>
+                            <div class="stat-label">堆内存使�?/div>
                             <div>
                                 <span class="stat-value" id="heapUsed">0</span>
                                 <span class="stat-unit">MB</span>
@@ -371,7 +371,7 @@ public class AdminController {
                         </div>
                         
                         <div class="stat-card">
-                            <div class="stat-label">线程数</div>
+                            <div class="stat-label">线程�?/div>
                             <div class="stat-value" id="threadCount">0</div>
                         </div>
                         
@@ -383,7 +383,7 @@ public class AdminController {
                         <div class="stat-card">
                             <div class="stat-label">运行时间</div>
                             <div class="stat-value" id="uptime">0</div>
-                            <span class="stat-unit">秒</span>
+                            <span class="stat-unit">�?/span>
                         </div>
                     </div>
                     
@@ -395,7 +395,7 @@ public class AdminController {
                                 <span class="detail-value" id="heapUsedDetail">0 MB</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">堆内存最大值</span>
+                                <span class="detail-label">堆内存最大�?/span>
                                 <span class="detail-value" id="heapMaxDetail">0 MB</span>
                             </div>
                             <div class="detail-item">
@@ -403,13 +403,13 @@ public class AdminController {
                                 <span class="detail-value" id="heapCommittedDetail">0 MB</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">非堆内存已使用</span>
+                                <span class="detail-label">非堆内存已使�?/span>
                                 <span class="detail-value" id="nonHeapUsedDetail">0 MB</span>
                             </div>
                         </div>
                         
                         <div class="panel">
-                            <div class="panel-title">🖥️ 系统信息</div>
+                            <div class="panel-title">🖥�?系统信息</div>
                             <div class="detail-item">
                                 <span class="detail-label">操作系统</span>
                                 <span class="detail-value" id="osName">-</span>
@@ -419,7 +419,7 @@ public class AdminController {
                                 <span class="detail-value" id="osVersion">-</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">可用处理器</span>
+                                <span class="detail-label">可用处理�?/span>
                                 <span class="detail-value" id="availableProcessors">0</span>
                             </div>
                             <div class="detail-item">

@@ -4,7 +4,7 @@
 
 EST Framework uses a clean, six-layer architecture:
 
-### 1. est-base (基础层)
+### 1. est-base (基础�?
 The foundation layer providing basic utilities, collections, patterns, and test support.
 
 **Modules:**
@@ -13,7 +13,7 @@ The foundation layer providing basic utilities, collections, patterns, and test 
 - est-patterns: Design pattern implementations
 - est-test: Testing support
 
-### 2. est-core (核心层)
+### 2. est-core (核心�?
 The core framework capabilities including DI container, configuration, lifecycle management, AOP, and transactions.
 
 **Modules:**
@@ -24,7 +24,7 @@ The core framework capabilities including DI container, configuration, lifecycle
 - est-core-aop: AOP support
 - est-core-tx: Transaction management
 
-### 3. est-modules (模块层)
+### 3. est-modules (模块�?
 Feature modules organized into functional groups.
 
 **Groups:**
@@ -37,7 +37,7 @@ Feature modules organized into functional groups.
 - **est-microservices**: Microservices support (discovery, circuitbreaker, performance)
 - **est-extensions**: Additional features (scheduler, plugin, hotreload)
 
-### 4. est-app (应用层)
+### 4. est-app (应用�?
 Application frameworks that assemble modules into usable applications.
 
 **Modules:**
@@ -45,7 +45,7 @@ Application frameworks that assemble modules into usable applications.
 - est-admin: Administration console
 - est-console: Console application framework
 
-### 5. est-tools (工具层)
+### 5. est-tools (工具�?
 Development tools and utilities.
 
 **Modules:**
@@ -54,7 +54,7 @@ Development tools and utilities.
 - est-migration: Migration tools
 - est-cli: Command-line interface
 
-### 6. est-examples (示例层)
+### 6. est-examples (示例�?
 Example applications demonstrating framework usage.
 
 ## Key Design Principles

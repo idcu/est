@@ -9,7 +9,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-value">{{ stats.userCount }}</div>
-              <div class="stat-label">用户数</div>
+              <div class="stat-label">用户�?/div>
             </div>
           </div>
         </el-card>
@@ -22,7 +22,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-value">{{ stats.roleCount }}</div>
-              <div class="stat-label">角色数</div>
+              <div class="stat-label">角色�?/div>
             </div>
           </div>
         </el-card>
@@ -35,7 +35,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-value">{{ stats.menuCount }}</div>
-              <div class="stat-label">菜单数</div>
+              <div class="stat-label">菜单�?/div>
             </div>
           </div>
         </el-card>
@@ -48,7 +48,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-value">{{ stats.tenantCount }}</div>
-              <div class="stat-label">租户数</div>
+              <div class="stat-label">租户�?/div>
             </div>
           </div>
         </el-card>
@@ -67,7 +67,7 @@
             <h3>🎉 欢迎，Admin</h3>
             <p>这是一个现代化的企业级后台管理系统</p>
             <el-divider />
-            <h4>快速导航</h4>
+            <h4>快速导�?/h4>
             <div class="quick-nav">
               <el-button type="primary" @click="$router.push('/system/user')">
                 <el-icon><User /></el-icon>
@@ -102,7 +102,7 @@
           </template>
           <div class="system-info">
             <el-descriptions :column="1" border>
-              <el-descriptions-item label="框架版本">EST 2.0.0</el-descriptions-item>
+              <el-descriptions-item label="框架版本">EST 2.1.0</el-descriptions-item>
               <el-descriptions-item label="Vue 版本">3.4.x</el-descriptions-item>
               <el-descriptions-item label="Element Plus">2.4.x</el-descriptions-item>
               <el-descriptions-item label="构建工具">Vite 5.x</el-descriptions-item>

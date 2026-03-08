@@ -21,7 +21,7 @@ public class AdminE2ETestSuite {
 
         System.out.println();
         System.out.println("========================================");
-        System.out.println("  E2E 测试汇总");
+        System.out.println("  E2E 测试汇�?);
         System.out.println("========================================");
         
         int totalPassed = 0;
@@ -35,15 +35,15 @@ public class AdminE2ETestSuite {
         }
         
         System.out.println("总通过: " + totalPassed);
-        System.out.println("总失败: " + totalFailed);
-        System.out.println("总跳过: " + totalSkipped);
+        System.out.println("总失�? " + totalFailed);
+        System.out.println("总跳�? " + totalSkipped);
         System.out.println("总计: " + (totalPassed + totalFailed + totalSkipped));
         System.out.println();
         
         if (totalFailed == 0) {
-            System.out.println("✓ 所有 E2E 测试通过！");
+            System.out.println("�?所�?E2E 测试通过�?);
         } else {
-            System.out.println("✗ 有 E2E 测试失败，请检查输出！");
+            System.out.println("�?�?E2E 测试失败，请检查输出！");
         }
     }
 }

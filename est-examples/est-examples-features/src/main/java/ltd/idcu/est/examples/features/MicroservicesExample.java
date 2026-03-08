@@ -38,7 +38,7 @@ public class MicroservicesExample {
                 .addMetadata("version", "1.0.0")
                 .addMetadata("region", "us-east-1");
         ServiceInstance userService = new ServiceInstance("user-service", "user-1", "192.168.1.20", 8081)
-                .addMetadata("version", "2.0.0")
+                .addMetadata("version", "2.1.0")
                 .addMetadata("region", "us-east-1");
         
         serviceRegistry.register(orderService1);

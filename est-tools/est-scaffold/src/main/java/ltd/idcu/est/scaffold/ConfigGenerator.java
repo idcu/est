@@ -104,7 +104,7 @@ public class ConfigGenerator {
                 <maven.compiler.source>%s</maven.compiler.source>
                 <maven.compiler.target>%s</maven.compiler.target>
                 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                <est.version>2.0.0</est.version>
+                <est.version>2.1.0</est.version>
             </properties>
             
             <dependencies>
@@ -234,7 +234,7 @@ public class ConfigGenerator {
         
         %s
         
-        ## 快速开始
+        ## 快速开�?
         
         ### 前置要求
         - JDK %s+
@@ -252,7 +252,7 @@ public class ConfigGenerator {
         mvn exec:java -Dexec.mainClass="%s.Main"
         ```
         
-        或者运行打包后的 JAR：
+        或者运行打包后�?JAR�?
         
         ```bash
         java -jar target/%s-%s.jar
@@ -263,30 +263,30 @@ public class ConfigGenerator {
         ```
         %s/
         ├── src/
-        │   ├── main/
-        │   │   ├── java/
-        │   │   │   └── %s/
-        │   │   │       └── Main.java
-        │   │   └── resources/
-        │   │       └── application.yml
-        │   └── test/
-        │       └── java/
+        �?  ├── main/
+        �?  �?  ├── java/
+        �?  �?  �?  └── %s/
+        �?  �?  �?      └── Main.java
+        �?  �?  └── resources/
+        �?  �?      └── application.yml
+        �?  └── test/
+        �?      └── java/
         ├── pom.xml
         └── README.md
         ```
         
         ## 配置
         
-        应用配置位于 `src/main/resources/application.yml`。
+        应用配置位于 `src/main/resources/application.yml`�?
         
         ## 技术栈
         
         - EST Framework %s
         - Java %s
         
-        ## 许可证
+        ## 许可�?
         
-        本项目使用 EST Framework。
+        本项目使�?EST Framework�?
         """,
             config.getArtifactId(),
             projectType.getChineseDescription(),
@@ -296,7 +296,7 @@ public class ConfigGenerator {
             config.getVersion(),
             config.getArtifactId(),
             config.getPackageName().replace(".", "/"),
-            "2.0.0",
+            "2.1.0",
             config.getJavaVersion()
         );
     }

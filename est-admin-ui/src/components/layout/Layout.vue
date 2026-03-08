@@ -15,7 +15,7 @@
       >
         <el-menu-item index="/dashboard">
           <el-icon><DataLine /></el-icon>
-          <template #title>仪表板</template>
+          <template #title>仪表�?/template>
         </el-menu-item>
         <template v-for="menu in userStore.menus" :key="menu.id">
           <template v-if="menu.children && menu.children.length > 0">
@@ -62,7 +62,7 @@
               <el-dropdown-menu>
                 <el-dropdown-item>个人中心</el-dropdown-item>
                 <el-dropdown-item>修改密码</el-dropdown-item>
-                <el-dropdown-item divided @click="handleLogout">退出登录</el-dropdown-item>
+                <el-dropdown-item divided @click="handleLogout">退出登�?/el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>

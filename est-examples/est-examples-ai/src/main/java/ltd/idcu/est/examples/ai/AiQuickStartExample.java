@@ -5,13 +5,13 @@ import ltd.idcu.est.ai.impl.Ai;
 public class AiQuickStartExample {
     
     public static void main(String[] args) {
-        System.out.println("=== EST AI 助手快速开始示例 ===\n");
+        System.out.println("=== EST AI 助手快速开始示�?===\n");
         
-        System.out.println("1. 获取快速参考:");
+        System.out.println("1. 获取快速参�?");
         System.out.println(Ai.quickRef("web"));
         System.out.println();
         
-        System.out.println("2. 获取最佳实践:");
+        System.out.println("2. 获取最佳实�?");
         System.out.println(Ai.bestPractice("error-handling"));
         System.out.println();
         

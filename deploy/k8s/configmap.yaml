@@ -7,13 +7,13 @@ metadata:
     app: est-demo
     app.kubernetes.io/name: est-demo
     app.kubernetes.io/instance: est-demo
-    app.kubernetes.io/version: "2.0.0"
+    app.kubernetes.io/version: "2.1.0"
     app.kubernetes.io/component: web
     app.kubernetes.io/part-of: est-framework
 data:
   app.env: "production"
   app.name: "est-demo"
-  app.version: "2.0.0"
+  app.version: "2.1.0"
   app.port: "8080"
   log.level: "INFO"
   log.format: "json"
@@ -36,7 +36,7 @@ data:
   application.properties: |
     # EST Framework Application Configuration
     app.name=est-demo
-    app.version=2.0.0
+    app.version=2.1.0
     app.env=production
     
     # Server Configuration

@@ -112,11 +112,11 @@ public class FrontendListViewGenerator {
         sb.append("}\n\n");
         
         sb.append("function handleAdd() {\n");
-        sb.append("  ElMessage.info('新增功能待实现')\n");
+        sb.append("  ElMessage.info('新增功能待实�?)\n");
         sb.append("}\n\n");
         
         sb.append("function handleEdit(row: ").append(className).append("Info) {\n");
-        sb.append("  ElMessage.info('编辑功能待实现')\n");
+        sb.append("  ElMessage.info('编辑功能待实�?)\n");
         sb.append("}\n\n");
         
         sb.append("async function handleDelete(row: ").append(className).append("Info) {\n");

@@ -3,13 +3,13 @@
     <el-card class="search-card">
       <el-form :inline="true" :model="searchForm" class="search-form">
         <el-form-item label="租户名称">
-          <el-input v-model="searchForm.name" placeholder="请输入租户名称" clearable />
+          <el-input v-model="searchForm.name" placeholder="请输入租户名�? clearable />
         </el-form-item>
         <el-form-item label="租户编码">
-          <el-input v-model="searchForm.code" placeholder="请输入租户编码" clearable />
+          <el-input v-model="searchForm.code" placeholder="请输入租户编�? clearable />
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
+        <el-form-item label="状�?>
+          <el-select v-model="searchForm.status" placeholder="请选择状�? clearable>
             <el-option label="启用" :value="1" />
             <el-option label="禁用" :value="0" />
           </el-select>
@@ -39,9 +39,9 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="contactName" label="联系人" width="120" />
+        <el-table-column prop="contactName" label="联系�? width="120" />
         <el-table-column prop="contactPhone" label="联系电话" width="130" />
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="status" label="状�? width="100">
           <template #default="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'danger'">
               {{ row.status === 1 ? '启用' : '禁用' }}
@@ -81,26 +81,26 @@
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="120px">
         <el-form-item label="租户名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入租户名称" />
+          <el-input v-model="formData.name" placeholder="请输入租户名�? />
         </el-form-item>
         <el-form-item label="租户编码" prop="code">
-          <el-input v-model="formData.code" placeholder="请输入租户编码" :disabled="isEdit" />
+          <el-input v-model="formData.code" placeholder="请输入租户编�? :disabled="isEdit" />
         </el-form-item>
         <el-form-item label="租户类型" prop="type">
           <el-select v-model="formData.type" placeholder="请选择租户类型">
-            <el-option label="COLUMN (字段级)" :value="1" />
-            <el-option label="SCHEMA (模式级)" :value="2" />
+            <el-option label="COLUMN (字段�?" :value="1" />
+            <el-option label="SCHEMA (模式�?" :value="2" />
             <el-option label="DATABASE (数据库级)" :value="3" />
           </el-select>
         </el-form-item>
-        <el-form-item label="联系人" prop="contactName">
+        <el-form-item label="联系�? prop="contactName">
           <el-input v-model="formData.contactName" placeholder="请输入联系人" />
         </el-form-item>
         <el-form-item label="联系电话" prop="contactPhone">
-          <el-input v-model="formData.contactPhone" placeholder="请输入联系电话" />
+          <el-input v-model="formData.contactPhone" placeholder="请输入联系电�? />
         </el-form-item>
         <el-form-item label="联系邮箱" prop="contactEmail">
-          <el-input v-model="formData.contactEmail" placeholder="请输入联系邮箱" />
+          <el-input v-model="formData.contactEmail" placeholder="请输入联系邮�? />
         </el-form-item>
         <el-form-item label="过期时间" prop="expireTime">
           <el-date-picker
@@ -110,14 +110,14 @@
             style="width: 100%"
           />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item label="状�? prop="status">
           <el-radio-group v-model="formData.status">
             <el-radio :label="1">启用</el-radio>
             <el-radio :label="0">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备�? />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -166,10 +166,10 @@ const formData = reactive({
 
 const formRules: FormRules = {
   name: [
-    { required: true, message: '请输入租户名称', trigger: 'blur' }
+    { required: true, message: '请输入租户名�?, trigger: 'blur' }
   ],
   code: [
-    { required: true, message: '请输入租户编码', trigger: 'blur' }
+    { required: true, message: '请输入租户编�?, trigger: 'blur' }
   ],
   type: [
     { required: true, message: '请选择租户类型', trigger: 'change' }
@@ -260,7 +260,7 @@ const handleStatus = async (row: any) => {
     ElMessage.success(newStatus === 1 ? '启用成功' : '禁用成功')
     loadData()
   } catch (error) {
-    console.error('状态更新失败', error)
+    console.error('状态更新失�?, error)
   }
 }
 

@@ -17,8 +17,8 @@ public class DefaultSmsService implements SmsService {
     private void initializeDefaultTemplates() {
         DefaultSmsTemplate verifyCodeTemplate = new DefaultSmsTemplate(
             "VERIFY_CODE",
-            "验证码",
-            "您的验证码是：${code}，5分钟内有效。",
+            "验证�?,
+            "您的验证码是�?{code}�?分钟内有效�?,
             "mock"
         );
         templates.put("VERIFY_CODE", verifyCodeTemplate);
@@ -26,7 +26,7 @@ public class DefaultSmsService implements SmsService {
         DefaultSmsTemplate loginTemplate = new DefaultSmsTemplate(
             "LOGIN_NOTICE",
             "登录通知",
-            "您的账号于${time}在${ip}登录，如非本人操作请及时修改密码。",
+            "您的账号�?{time}�?{ip}登录，如非本人操作请及时修改密码�?,
             "mock"
         );
         templates.put("LOGIN_NOTICE", loginTemplate);

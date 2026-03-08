@@ -2,14 +2,14 @@
   <div class="user-page">
     <el-card class="search-card">
       <el-form :inline="true" :model="searchForm" class="search-form">
-        <el-form-item label="用户名">
+        <el-form-item label="用户�?>
           <el-input v-model="searchForm.username" placeholder="请输入用户名" clearable />
         </el-form-item>
         <el-form-item label="昵称">
-          <el-input v-model="searchForm.nickname" placeholder="请输入昵称" clearable />
+          <el-input v-model="searchForm.nickname" placeholder="请输入昵�? clearable />
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
+        <el-form-item label="状�?>
+          <el-select v-model="searchForm.status" placeholder="请选择状�? clearable>
             <el-option label="启用" :value="1" />
             <el-option label="禁用" :value="0" />
           </el-select>
@@ -30,11 +30,11 @@
       </template>
       <el-table :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="username" label="用户名" width="150" />
+        <el-table-column prop="username" label="用户�? width="150" />
         <el-table-column prop="nickname" label="昵称" width="150" />
         <el-table-column prop="email" label="邮箱" width="200" />
-        <el-table-column prop="phone" label="手机号" width="130" />
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="phone" label="手机�? width="130" />
+        <el-table-column prop="status" label="状�? width="100">
           <template #default="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'danger'">
               {{ row.status === 1 ? '启用' : '禁用' }}
@@ -72,29 +72,29 @@
       destroy-on-close
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px">
-        <el-form-item label="用户名" prop="username">
+        <el-form-item label="用户�? prop="username">
           <el-input v-model="formData.username" placeholder="请输入用户名" :disabled="isEdit" />
         </el-form-item>
         <el-form-item label="密码" prop="password" v-if="!isEdit">
-          <el-input v-model="formData.password" type="password" placeholder="请输入密码" show-password />
+          <el-input v-model="formData.password" type="password" placeholder="请输入密�? show-password />
         </el-form-item>
         <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="formData.nickname" placeholder="请输入昵称" />
+          <el-input v-model="formData.nickname" placeholder="请输入昵�? />
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="formData.email" placeholder="请输入邮箱" />
+          <el-input v-model="formData.email" placeholder="请输入邮�? />
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
+        <el-form-item label="手机�? prop="phone">
           <el-input v-model="formData.phone" placeholder="请输入手机号" />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item label="状�? prop="status">
           <el-radio-group v-model="formData.status">
             <el-radio :label="1">启用</el-radio>
             <el-radio :label="0">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备�? />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -142,14 +142,14 @@ const formData = reactive({
 const formRules: FormRules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 20, message: '用户名长度在 3 到 20 个字符', trigger: 'blur' }
+    { min: 3, max: 20, message: '用户名长度在 3 �?20 个字�?, trigger: 'blur' }
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 20, message: '密码长度在 6 到 20 个字符', trigger: 'blur' }
+    { required: true, message: '请输入密�?, trigger: 'blur' },
+    { min: 6, max: 20, message: '密码长度�?6 �?20 个字�?, trigger: 'blur' }
   ],
   nickname: [
-    { required: true, message: '请输入昵称', trigger: 'blur' }
+    { required: true, message: '请输入昵�?, trigger: 'blur' }
   ]
 }
 
@@ -235,7 +235,7 @@ const handleStatus = async (row: any) => {
     ElMessage.success(newStatus === 1 ? '启用成功' : '禁用成功')
     loadData()
   } catch (error) {
-    console.error('状态更新失败', error)
+    console.error('状态更新失�?, error)
   }
 }
 

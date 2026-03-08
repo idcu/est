@@ -23,20 +23,20 @@ public class TestReporter {
 
     public void reportClassStart(String className) {
         System.out.println();
-        System.out.println(bold("▶ " + className));
-        System.out.println("  " + "─".repeat(50));
+        System.out.println(bold("> " + className));
+        System.out.println("  " + "-".repeat(50));
     }
 
     public void reportClassEnd(String className, int passed, int failed, int skipped, long duration) {
-        System.out.println("  " + "─".repeat(50));
+        System.out.println("  " + "-".repeat(50));
         StringBuilder summary = new StringBuilder();
         summary.append("  Results: ");
-        summary.append(green("✓ " + passed + " passed"));
+        summary.append(green("[" + passed + " passed]"));
         if (failed > 0) {
-            summary.append(", ").append(red("✗ " + failed + " failed"));
+            summary.append(", ").append(red("[" + failed + " failed]"));
         }
         if (skipped > 0) {
-            summary.append(", ").append(yellow("○ " + skipped + " skipped"));
+            summary.append(", ").append(yellow("[" + skipped + " skipped]"));
         }
         summary.append(" (" + duration + "ms)");
         System.out.println(summary);
@@ -46,11 +46,11 @@ public class TestReporter {
     }
 
     public void reportTestPassed(String testName, long duration) {
-        System.out.println("  " + green("✓") + " " + testName + " (" + duration + "ms)");
+        System.out.println("  " + green("[PASS]") + " " + testName + " (" + duration + "ms)");
     }
 
     public void reportTestFailed(String testName, Throwable failure, long duration) {
-        System.out.println("  " + red("✗") + " " + testName + " (" + duration + "ms)");
+        System.out.println("  " + red("[FAIL]") + " " + testName + " (" + duration + "ms)");
         System.out.println("    " + red(failure.getClass().getSimpleName() + ": " + failure.getMessage()));
         if (failure.getStackTrace().length > 0) {
             System.out.println("        at " + failure.getStackTrace()[0]);
@@ -58,18 +58,18 @@ public class TestReporter {
     }
 
     public void reportTestSkipped(String testName) {
-        System.out.println("  " + yellow("○") + " " + testName + " (skipped)");
+        System.out.println("  " + yellow("[SKIP]") + " " + testName + " (skipped)");
     }
 
     public void reportError(String message) {
-        System.out.println("  " + red("⚠ ERROR: " + message));
+        System.out.println("  " + red("[ERROR]: " + message));
     }
 
     public void printSummary(List<TestResult> results) {
         System.out.println();
-        System.out.println(bold("═══════════════════════════════════════════════════════════════"));
+        System.out.println(bold("========================================================"));
         System.out.println(bold("                           SUMMARY                             "));
-        System.out.println(bold("═══════════════════════════════════════════════════════════════"));
+        System.out.println(bold("========================================================"));
 
         int totalPassed = 0;
         int totalFailed = 0;
@@ -97,9 +97,9 @@ public class TestReporter {
 
         System.out.println();
         if (totalFailed == 0) {
-            System.out.println(bold(green("  ✓ ALL TESTS PASSED")));
+            System.out.println(bold(green("  [OK] ALL TESTS PASSED")));
         } else {
-            System.out.println(bold(red("  ✗ SOME TESTS FAILED")));
+            System.out.println(bold(red("  [ERROR] SOME TESTS FAILED")));
         }
         System.out.println();
     }

@@ -12,19 +12,19 @@
       </template>
       
       <div class="stats-bar">
-        <el-statistic title="在线用户数" :value="userCount" />
+        <el-statistic title="在线用户�? :value="userCount" />
       </div>
       
       <el-table :data="users" style="width: 100%" v-loading="loading">
-        <el-table-column prop="username" label="用户名" width="120" />
+        <el-table-column prop="username" label="用户�? width="120" />
         <el-table-column prop="ip" label="IP地址" width="140" />
-        <el-table-column prop="browser" label="浏览器" min-width="200" show-overflow-tooltip />
+        <el-table-column prop="browser" label="浏览�? min-width="200" show-overflow-tooltip />
         <el-table-column prop="loginTime" label="登录时间" width="180">
           <template #default="{ row }">
             {{ formatDate(row.loginTime) }}
           </template>
         </el-table-column>
-        <el-table-column prop="lastActivityTime" label="最后活动" width="180">
+        <el-table-column prop="lastActivityTime" label="最后活�? width="180">
           <template #default="{ row }">
             {{ formatDate(row.lastActivityTime) }}
           </template>
@@ -70,7 +70,7 @@ const loadUsers = async () => {
 
 const forceLogoutUser = async (user: OnlineUser) => {
   try {
-    await ElMessageBox.confirm(`确定要强制下线用户 ${user.username} 吗？`, '提示', {
+    await ElMessageBox.confirm(`确定要强制下线用�?${user.username} 吗？`, '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'

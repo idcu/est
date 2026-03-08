@@ -80,7 +80,7 @@
                     :key="name"
                     :label="name"
                   >
-                    <el-input v-model="variables[name]" :placeholder="'请输入 ' + name" />
+                    <el-input v-model="variables[name]" :placeholder="'请输�?' + name" />
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="handleGeneratePrompt" :loading="generateLoading">
@@ -108,7 +108,7 @@
             </div>
             
             <div v-else class="no-template">
-              <el-empty description="请选择一个模板" />
+              <el-empty description="请选择一个模�? />
             </div>
           </el-card>
         </el-col>
@@ -155,7 +155,7 @@ const selectTemplate = (name: string) => {
 
 const handleGeneratePrompt = async () => {
   if (!currentTemplate.value) {
-    ElMessage.warning('请选择一个模板')
+    ElMessage.warning('请选择一个模�?)
     return
   }
   
@@ -181,7 +181,7 @@ const handleGeneratePrompt = async () => {
 
 const copyGeneratedPrompt = () => {
   navigator.clipboard.writeText(generatedPrompt.value)
-  ElMessage.success('已复制到剪贴板')
+  ElMessage.success('已复制到剪贴�?)
 }
 
 onMounted(() => {

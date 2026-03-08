@@ -15,7 +15,7 @@
           <el-input
             v-model="loginForm.password"
             type="password"
-            placeholder="请输入密码"
+            placeholder="请输入密�?
             size="large"
             prefix-icon="Lock"
             show-password
@@ -55,7 +55,7 @@ const loginForm = reactive({
 
 const rules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+  password: [{ required: true, message: '请输入密�?, trigger: 'blur' }]
 }
 
 async function handleLogin() {
@@ -67,7 +67,7 @@ async function handleLogin() {
     ElMessage.success('登录成功')
     router.push('/')
   } catch (error: any) {
-    ElMessage.error(error.message || '登录失败，请检查用户名和密码')
+    ElMessage.error(error.message || '登录失败，请检查用户名和密�?)
   } finally {
     loading.value = false
   }

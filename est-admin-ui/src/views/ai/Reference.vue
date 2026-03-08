@@ -3,26 +3,25 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>开发参考</span>
+          <span>开发参�?/span>
         </div>
       </template>
       
       <el-tabs v-model="activeTab">
-        <el-tab-pane label="快速参考" name="reference">
+        <el-tab-pane label="快速参�? name="reference">
           <el-form label-width="100px">
             <el-form-item label="主题">
-              <el-input v-model="referenceTopic" placeholder="请输入主题" />
+              <el-input v-model="referenceTopic" placeholder="请输入主�? />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleGetReference" :loading="referenceLoading">
-                获取参考
-              </el-button>
+                获取参�?              </el-button>
             </el-form-item>
           </el-form>
           
           <div v-if="referenceResult" class="result-container">
             <div class="result-header">
-              <span>参考内容</span>
+              <span>参考内�?/span>
               <el-button link @click="copyReferenceResult">
                 <el-icon><DocumentCopy /></el-icon>
                 复制
@@ -37,21 +36,20 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="最佳实践" name="bestpractice">
+        <el-tab-pane label="最佳实�? name="bestpractice">
           <el-form label-width="100px">
             <el-form-item label="分类">
-              <el-input v-model="practiceCategory" placeholder="请输入分类" />
+              <el-input v-model="practiceCategory" placeholder="请输入分�? />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleGetBestPractice" :loading="practiceLoading">
-                获取最佳实践
-              </el-button>
+                获取最佳实�?              </el-button>
             </el-form-item>
           </el-form>
           
           <div v-if="practiceResult" class="result-container">
             <div class="result-header">
-              <span>最佳实践</span>
+              <span>最佳实�?/span>
               <el-button link @click="copyPracticeResult">
                 <el-icon><DocumentCopy /></el-icon>
                 复制
@@ -69,7 +67,7 @@
         <el-tab-pane label="教程" name="tutorial">
           <el-form label-width="100px">
             <el-form-item label="主题">
-              <el-input v-model="tutorialTopic" placeholder="请输入主题" />
+              <el-input v-model="tutorialTopic" placeholder="请输入主�? />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleGetTutorial" :loading="tutorialLoading">
@@ -120,7 +118,7 @@ const tutorialResult = ref('')
 
 const handleGetReference = async () => {
   if (!referenceTopic.value.trim()) {
-    ElMessage.warning('请输入主题')
+    ElMessage.warning('请输入主�?)
     return
   }
   
@@ -131,7 +129,7 @@ const handleGetReference = async () => {
       referenceResult.value = res.data.data
     }
   } catch (error) {
-    ElMessage.error('获取参考失败')
+    ElMessage.error('获取参考失�?)
   } finally {
     referenceLoading.value = false
   }
@@ -139,7 +137,7 @@ const handleGetReference = async () => {
 
 const handleGetBestPractice = async () => {
   if (!practiceCategory.value.trim()) {
-    ElMessage.warning('请输入分类')
+    ElMessage.warning('请输入分�?)
     return
   }
   
@@ -150,7 +148,7 @@ const handleGetBestPractice = async () => {
       practiceResult.value = res.data.data
     }
   } catch (error) {
-    ElMessage.error('获取最佳实践失败')
+    ElMessage.error('获取最佳实践失�?)
   } finally {
     practiceLoading.value = false
   }
@@ -158,7 +156,7 @@ const handleGetBestPractice = async () => {
 
 const handleGetTutorial = async () => {
   if (!tutorialTopic.value.trim()) {
-    ElMessage.warning('请输入主题')
+    ElMessage.warning('请输入主�?)
     return
   }
   
@@ -177,17 +175,17 @@ const handleGetTutorial = async () => {
 
 const copyReferenceResult = () => {
   navigator.clipboard.writeText(referenceResult.value)
-  ElMessage.success('已复制到剪贴板')
+  ElMessage.success('已复制到剪贴�?)
 }
 
 const copyPracticeResult = () => {
   navigator.clipboard.writeText(practiceResult.value)
-  ElMessage.success('已复制到剪贴板')
+  ElMessage.success('已复制到剪贴�?)
 }
 
 const copyTutorialResult = () => {
   navigator.clipboard.writeText(tutorialResult.value)
-  ElMessage.success('已复制到剪贴板')
+  ElMessage.success('已复制到剪贴�?)
 }
 </script>
 

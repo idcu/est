@@ -15,7 +15,7 @@ const permission: Directive = {
         el.parentNode?.removeChild(el)
       }
     } else {
-      throw new Error('需要权限！如 v-permission="[\'system:user:add\']"')
+      throw new Error('需要权限！�?v-permission="[\'system:user:add\']"')
     }
   }
 }

@@ -37,7 +37,7 @@ public class DefaultDepartmentServiceTest {
         
         Department dept = departmentService.createDepartment(
             null, 
-            "市场部", 
+            "市场�?, 
             "MARKET", 
             2, 
             "李四", 
@@ -50,7 +50,7 @@ public class DefaultDepartmentServiceTest {
         
         Assertions.assertNotNull(foundDept);
         Assertions.assertEquals(dept.getId(), foundDept.getId());
-        Assertions.assertEquals("市场部", foundDept.getName());
+        Assertions.assertEquals("市场�?, foundDept.getName());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class DefaultDepartmentServiceTest {
             "更新后的部门", 
             "UPDATED", 
             5, 
-            "新领导", 
+            "新领�?, 
             "13900000000", 
             "updated@example.com", 
             false
@@ -97,7 +97,7 @@ public class DefaultDepartmentServiceTest {
         Assertions.assertEquals("更新后的部门", updatedDept.getName());
         Assertions.assertEquals("UPDATED", updatedDept.getCode());
         Assertions.assertEquals(5, updatedDept.getSort());
-        Assertions.assertEquals("新领导", updatedDept.getLeader());
+        Assertions.assertEquals("新领�?, updatedDept.getLeader());
         Assertions.assertEquals("13900000000", updatedDept.getPhone());
         Assertions.assertEquals("updated@example.com", updatedDept.getEmail());
         Assertions.assertFalse(updatedDept.isActive());
@@ -109,7 +109,7 @@ public class DefaultDepartmentServiceTest {
         
         Department dept = departmentService.createDepartment(
             null, 
-            "待删除部门", 
+            "待删除部�?, 
             "DELETE", 
             1, 
             "领导", 
@@ -130,10 +130,10 @@ public class DefaultDepartmentServiceTest {
         
         Department parentDept = departmentService.createDepartment(
             null, 
-            "总公司", 
+            "总公�?, 
             "HEAD", 
             1, 
-            "总经理", 
+            "总经�?, 
             "13800000000", 
             "head@example.com", 
             true
@@ -141,10 +141,10 @@ public class DefaultDepartmentServiceTest {
         
         Department subDept = departmentService.createDepartment(
             parentDept.getId(), 
-            "分公司", 
+            "分公�?, 
             "BRANCH", 
             1, 
-            "分公司经理", 
+            "分公司经�?, 
             "13900000000", 
             "branch@example.com", 
             true
@@ -171,7 +171,7 @@ public class DefaultDepartmentServiceTest {
         
         Department inactiveDept = departmentService.createDepartment(
             null, 
-            "非活跃部门", 
+            "非活跃部�?, 
             "INACTIVE", 
             2, 
             "领导", 

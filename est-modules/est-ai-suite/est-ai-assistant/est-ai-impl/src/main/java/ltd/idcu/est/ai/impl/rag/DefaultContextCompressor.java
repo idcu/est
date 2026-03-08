@@ -60,7 +60,7 @@ public class DefaultContextCompressor implements ContextCompressor {
         
         for (int i = 0; i < compressed.size(); i++) {
             DocumentChunk chunk = compressed.get(i);
-            sb.append("--- 上下文 ").append(i + 1).append(" ---\n");
+            sb.append("--- 上下�?").append(i + 1).append(" ---\n");
             sb.append(chunk.getContent()).append("\n\n");
         }
         

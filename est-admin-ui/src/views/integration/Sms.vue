@@ -8,9 +8,9 @@
       </template>
       
       <el-tabs v-model="activeTab">
-        <el-tab-pane label="发送短信" name="send">
+        <el-tab-pane label="发送短�? name="send">
           <el-form :model="smsForm" label-width="100px" style="max-width: 600px;">
-            <el-form-item label="手机号">
+            <el-form-item label="手机�?>
               <el-input v-model="smsForm.phone" placeholder="请输入手机号" />
             </el-form-item>
             <el-form-item label="内容">
@@ -18,13 +18,12 @@
                 v-model="smsForm.content"
                 type="textarea"
                 :rows="4"
-                placeholder="请输入短信内容"
+                placeholder="请输入短信内�?
               />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleSendSms" :loading="sending">
-                发送短信
-              </el-button>
+                发送短�?              </el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -34,7 +33,7 @@
             <el-table-column prop="code" label="模板编码" width="150" />
             <el-table-column prop="name" label="模板名称" width="150" />
             <el-table-column prop="content" label="内容" show-overflow-tooltip />
-            <el-table-column prop="provider" label="服务商" width="120" />
+            <el-table-column prop="provider" label="服务�? width="120" />
             <el-table-column prop="createdAt" label="创建时间" width="180">
               <template #default="{ row }">
                 {{ formatDate(row.createdAt) }}
@@ -70,14 +69,14 @@ const handleSendSms = async () => {
   try {
     const res = await sendSms(smsForm.value)
     if (res.data.success) {
-      ElMessage.success('短信发送成功')
+      ElMessage.success('短信发送成�?)
       smsForm.value = {
         phone: '',
         content: ''
       }
     }
   } catch (error) {
-    ElMessage.error('短信发送失败')
+    ElMessage.error('短信发送失�?)
   } finally {
     sending.value = false
   }

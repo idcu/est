@@ -10,15 +10,13 @@ env:
 
 jobs:
   release:
-    name: 发布新版本
-    runs-on: ubuntu-latest
+    name: 发布新版�?    runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
 
     steps:
-      - name: 检出代码
-        uses: actions/checkout@v4
+      - name: 检出代�?        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -42,8 +40,7 @@ jobs:
       - name: 构建项目
         run: mvn clean package -DskipTests
 
-      - name: 获取版本号
-        id: get_version
+      - name: 获取版本�?        id: get_version
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "version=$VERSION" >> $GITHUB_OUTPUT
@@ -61,5 +58,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 部署到 GitHub Packages
+      - name: 部署�?GitHub Packages
         run: mvn deploy -DskipTests

@@ -132,7 +132,7 @@ public class DefaultTenantServiceTest {
         Assertions.assertNotNull(defaultTenant);
         
         tenantService.createTenant(
-            "另一个租户", 
+            "另一个租�?, 
             "another", 
             "another.example.com", 
             Tenant.TenantMode.COLUMN, 
@@ -198,7 +198,7 @@ public class DefaultTenantServiceTest {
         TenantService tenantService = new DefaultTenantService();
         
         Tenant tenant = tenantService.createTenant(
-            "非活跃租户", 
+            "非活跃租�?, 
             "inactive", 
             "inactive.example.com", 
             Tenant.TenantMode.COLUMN, 

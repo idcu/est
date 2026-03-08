@@ -5,7 +5,7 @@ REM Usage: build-docker.bat [version]
 set PROJECT_ROOT=%~dp0..\..
 set DOCKERFILE_PATH=%~dp0..\docker\Dockerfile
 set IMAGE_NAME=est-demo
-set DEFAULT_VERSION=2.0.0
+set DEFAULT_VERSION=2.1.0
 
 if "%1"=="" (
     set VERSION=%DEFAULT_VERSION%

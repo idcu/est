@@ -3,13 +3,13 @@
     <el-card class="search-card">
       <el-form :inline="true" :model="searchForm" class="search-form">
         <el-form-item label="角色名称">
-          <el-input v-model="searchForm.name" placeholder="请输入角色名称" clearable />
+          <el-input v-model="searchForm.name" placeholder="请输入角色名�? clearable />
         </el-form-item>
         <el-form-item label="角色编码">
-          <el-input v-model="searchForm.code" placeholder="请输入角色编码" clearable />
+          <el-input v-model="searchForm.code" placeholder="请输入角色编�? clearable />
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
+        <el-form-item label="状�?>
+          <el-select v-model="searchForm.status" placeholder="请选择状�? clearable>
             <el-option label="启用" :value="1" />
             <el-option label="禁用" :value="0" />
           </el-select>
@@ -33,7 +33,7 @@
         <el-table-column prop="name" label="角色名称" width="150" />
         <el-table-column prop="code" label="角色编码" width="150" />
         <el-table-column prop="sort" label="排序" width="100" />
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="status" label="状�? width="100">
           <template #default="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'danger'">
               {{ row.status === 1 ? '启用' : '禁用' }}
@@ -74,22 +74,22 @@
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px">
         <el-form-item label="角色名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入角色名称" />
+          <el-input v-model="formData.name" placeholder="请输入角色名�? />
         </el-form-item>
         <el-form-item label="角色编码" prop="code">
-          <el-input v-model="formData.code" placeholder="请输入角色编码" :disabled="isEdit" />
+          <el-input v-model="formData.code" placeholder="请输入角色编�? :disabled="isEdit" />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
           <el-input-number v-model="formData.sort" :min="0" />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item label="状�? prop="status">
           <el-radio-group v-model="formData.status">
             <el-radio :label="1">启用</el-radio>
             <el-radio :label="0">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备�? />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -165,10 +165,10 @@ const formData = reactive({
 
 const formRules: FormRules = {
   name: [
-    { required: true, message: '请输入角色名称', trigger: 'blur' }
+    { required: true, message: '请输入角色名�?, trigger: 'blur' }
   ],
   code: [
-    { required: true, message: '请输入角色编码', trigger: 'blur' }
+    { required: true, message: '请输入角色编�?, trigger: 'blur' }
   ]
 }
 
@@ -191,7 +191,7 @@ const loadMenuTree = async () => {
     const res = await listMenus()
     menuTreeData.value = res.data || []
   } catch (error) {
-    console.error('加载菜单树失败', error)
+    console.error('加载菜单树失�?, error)
   }
 }
 
@@ -273,7 +273,7 @@ const handleStatus = async (row: any) => {
     ElMessage.success(newStatus === 1 ? '启用成功' : '禁用成功')
     loadData()
   } catch (error) {
-    console.error('状态更新失败', error)
+    console.error('状态更新失�?, error)
   }
 }
 

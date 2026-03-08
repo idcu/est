@@ -247,9 +247,9 @@ public class ScaffoldGenerator {
         
         System.out.println();
         if (config.isDryRun()) {
-            System.out.println(ConsoleColors.bold(ConsoleColors.yellow("âœ“ Dry run completed!")));
+            System.out.println(ConsoleColors.bold(ConsoleColors.yellow("âœ?Dry run completed!")));
         } else {
-            System.out.println(ConsoleColors.bold(ConsoleColors.green("âœ“ Project created successfully!")));
+            System.out.println(ConsoleColors.bold(ConsoleColors.green("âœ?Project created successfully!")));
             System.out.println();
             System.out.println(ConsoleColors.cyan("Location: " + basePath.toAbsolutePath()));
             System.out.println();
@@ -317,7 +317,7 @@ public class ScaffoldGenerator {
     }
     
     private static void printProgress(int current, int total, String message) {
-        System.out.println("[" + current + "/" + total + "] " + message + "... " + ConsoleColors.green("âœ“"));
+        System.out.println("[" + current + "/" + total + "] " + message + "... " + ConsoleColors.green("âœ?));
     }
 
     private static void createProjectStructure(Path basePath, ProjectConfig config, ProjectType type, boolean dryRun) throws IOException {
@@ -494,7 +494,7 @@ public class ScaffoldGenerator {
         System.out.println();
         
         FileWriterUtil.writeFile(outputPath, code, false);
-        System.out.println(ConsoleColors.bold(ConsoleColors.green("âœ“ Code snippet generated successfully!")));
+        System.out.println(ConsoleColors.bold(ConsoleColors.green("âœ?Code snippet generated successfully!")));
     }
 
     private static void printSnippetUsage() {
