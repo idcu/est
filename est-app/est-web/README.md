@@ -1,85 +1,85 @@
-# EST Web - Web 搴旂敤妗嗘灦
+# EST Web - Web 应用容器
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
-EST Web 鏄?EST 妗嗘灦鐨?Web 搴旂敤妯″潡锛屽熀浜?Java 鍐呯疆 HttpServer锛屾彁渚涘畬鏁寸殑 Web 搴旂敤寮€鍙戝姛鑳姐€?
+EST Web 是 EST 框架的 Web 应用模块，基于 Java 内置 HttpServer，提供完整的 Web 应用开发功能。
 
 ---
 
-## 馃摎 鐩綍
+## 📑 目录
 
-- [蹇€熷叆闂╙(#蹇€熷叆闂?
-- [鍩虹绡囷細璺敱绯荤粺](#鍩虹绡囪矾鐢辩郴缁?
-- [鍩虹绡囷細璇锋眰鍝嶅簲](#鍩虹绡囪姹傚搷搴?
-- [杩涢樁绡囷細涓棿浠禲(#杩涢樁绡囦腑闂翠欢)
-- [杩涢樁绡囷細浼氳瘽绠＄悊](#杩涢樁绡囦細璇濈鐞?
-- [鏈€浣冲疄璺礭(#鏈€浣冲疄璺?
+- [快速入门](#快速入门)
+- [核心组件：路由系统](#核心组件路由系统)
+- [核心组件：请求响应](#核心组件请求响应)
+- [进阶指南：中间件](#进阶指南中间件)
+- [进阶指南：会话管理](#进阶指南会话管理)
+- [最佳实践](#最佳实践)
 
 ---
 
-## 馃殌 蹇€熷叆闂?
+## 🏃 快速入门
 
-### 浠€涔堟槸 Web 妗嗘灦锛?
+### 什么是 Web 容器？
 
-鎯宠薄浣犺寮€涓€瀹跺晢搴楋紝闇€瑕侊細
-- 馃彧 闂ㄥ簵锛堟湇鍔″櫒锛?
-- 馃搵 鑿滃崟锛堣矾鐢憋級
-- 馃懆鈥嶐煃?鍚庡帹锛堝鐞嗛€昏緫锛?
-- 馃Ь 璐﹀崟锛堝搷搴旓級
+想象你要开一家商店，需要：
+- 🏪 店铺（服务器）
+- 📋 菜单（路由）
+- 🧑‍🍳 后厨（处理逻辑）
+- 📦 订单（响应）
 
-**EST Web** 灏辨槸甯綘寮€搴楃殑宸ュ叿鍖咃紒
+**EST Web** 就是帮你开店的工具箱！
 
-### 5鍒嗛挓涓婃墜
+### 5分钟上手
 
 ```java
 import ltd.idcu.est.web.WebApplication;
 
 public class FirstExample {
     public static void main(String[] args) {
-        System.out.println("=== EST Web 5鍒嗛挓涓婃墜 ===");
+        System.out.println("=== EST Web 5分钟上手 ===");
         System.out.println();
 
-        WebApplication app = WebApplication.create("鎴戠殑绗竴涓綉绔?, "1.0.0");
+        WebApplication app = WebApplication.create("我的第一个网站", "1.0.0");
         
         app.get("/", (req, res) -> {
             res.send("Hello, EST Web!");
         });
         
-        System.out.println("鏈嶅姟鍣ㄥ凡鍚姩锛岃闂? http://localhost:8080");
+        System.out.println("服务器已启动，访问：http://localhost:8080");
         app.run(8080);
     }
 }
 ```
 
-杩愯鍚庯紝鍦ㄦ祻瑙堝櫒鎵撳紑 http://localhost:8080 灏辫兘鐪嬪埌浣犵殑绗竴涓綉椤典簡锛?馃帀
+运行后，在浏览器打开 http://localhost:8080 就能看到你的第一个网页了！🎉
 
 ---
 
-## 馃敯 鍩虹绡囷細璺敱绯荤粺
+## 🧩 核心组件：路由系统
 
-### 鐢熸椿绫绘瘮
+### 生活类比
 
-璺敱灏卞儚鍟嗗簵鐨勮彍鍗曪紝瀹汉鐐逛粈涔堣彍锛屼綘灏辩粰浠€涔堣彍銆?
+路由就像商店的菜单，顾客点什么菜，你就给什么菜。
 
-### 鍩烘湰璺敱
+### 基本路由
 
 ```java
 import ltd.idcu.est.web.WebApplication;
 
 public class RouterExample {
     public static void main(String[] args) {
-        WebApplication app = WebApplication.create("璺敱绀轰緥", "1.0.0");
+        WebApplication app = WebApplication.create("路由示例", "1.0.0");
         
         app.get("/", (req, res) -> {
-            res.send("棣栭〉");
+            res.send("首页");
         });
         
         app.get("/about", (req, res) -> {
-            res.send("鍏充簬鎴戜滑");
+            res.send("关于我们");
         });
         
         app.get("/contact", (req, res) -> {
-            res.send("鑱旂郴鏂瑰紡");
+            res.send("联系方式");
         });
         
         app.run(8080);
@@ -87,53 +87,53 @@ public class RouterExample {
 }
 ```
 
-### HTTP 鏂规硶
+### HTTP 方法
 
 ```java
 app.get("/users", (req, res) -> {
-    res.send("鑾峰彇鐢ㄦ埛鍒楄〃");
+    res.send("获取用户列表");
 });
 
 app.post("/users", (req, res) -> {
-    res.send("鍒涘缓鏂扮敤鎴?);
+    res.send("创建新用户");
 });
 
 app.put("/users/:id", (req, res) -> {
     String id = req.getPathParam("id");
-    res.send("鏇存柊鐢ㄦ埛: " + id);
+    res.send("更新用户: " + id);
 });
 
 app.delete("/users/:id", (req, res) -> {
     String id = req.getPathParam("id");
-    res.send("鍒犻櫎鐢ㄦ埛: " + id);
+    res.send("删除用户: " + id);
 });
 ```
 
 ---
 
-## 馃敯 鍩虹绡囷細璇锋眰鍝嶅簲
+## 🧩 核心组件：请求响应
 
-### 鐢熸椿绫绘瘮
+### 生活类比
 
-璇锋眰灏辨槸瀹汉鐐圭殑鑿滐紝鍝嶅簲灏辨槸浣犵涓婃鐨勮彍銆?
+请求就是顾客点的菜，响应就是你端上桌的菜。
 
-### 鑾峰彇璇锋眰鍙傛暟
+### 获取请求参数
 
 ```java
 import ltd.idcu.est.web.WebApplication;
 
 public class RequestExample {
     public static void main(String[] args) {
-        WebApplication app = WebApplication.create("璇锋眰绀轰緥", "1.0.0");
+        WebApplication app = WebApplication.create("请求示例", "1.0.0");
         
         app.get("/greet", (req, res) -> {
-            String name = req.getQueryParam("name", "璁垮");
-            res.send("浣犲ソ, " + name + "!");
+            String name = req.getQueryParam("name", "访客");
+            res.send("你好, " + name + "!");
         });
         
         app.get("/user/:id", (req, res) -> {
             String userId = req.getPathParam("id");
-            res.send("鐢ㄦ埛ID: " + userId);
+            res.send("用户ID: " + userId);
         });
         
         app.run(8080);
@@ -141,11 +141,11 @@ public class RequestExample {
 }
 ```
 
-### 杩斿洖鍝嶅簲
+### 返回响应
 
 ```java
 app.get("/text", (req, res) -> {
-    res.send("鏅€氭枃鏈?);
+    res.send("普通文本");
 });
 
 app.get("/json", (req, res) -> {
@@ -156,38 +156,38 @@ app.get("/json", (req, res) -> {
 });
 
 app.get("/status", (req, res) -> {
-    res.status(200).send("鎴愬姛");
+    res.status(200).send("成功");
 });
 
 app.get("/error", (req, res) -> {
-    res.status(500).send("鏈嶅姟鍣ㄩ敊璇?);
+    res.status(500).send("服务器错误");
 });
 ```
 
 ---
 
-## 馃搱 杩涢樁绡囷細涓棿浠?
+## 🔍 进阶指南：中间件
 
-### 鐢熸椿绫绘瘮
+### 生活类比
 
-涓棿浠跺氨鍍忛鍘呯殑鏈嶅姟鍛橈紝鍦ㄥ浜虹偣鍗曞拰涓婅彍涔嬮棿鍋氫竴浜涘鐞嗭細姣斿璁板綍璁㈠崟銆佹鏌ュ骇浣嶇瓑銆?
+中间件就像餐厅的服务员，在顾客点菜和上菜之间做一些处理：比如记录订单、检查身份等。
 
-### 鏃ュ織涓棿浠?
+### 日志中间件
 
 ```java
 import ltd.idcu.est.web.WebApplication;
 
 public class MiddlewareExample {
     public static void main(String[] args) {
-        WebApplication app = WebApplication.create("涓棿浠剁ず渚?, "1.0.0");
+        WebApplication app = WebApplication.create("中间件示例", "1.0.0");
         
         app.middleware((req, res) -> {
-            System.out.println("璇锋眰: " + req.getMethod() + " " + req.getPath());
+            System.out.println("请求: " + req.getMethod() + " " + req.getPath());
             return true;
         });
         
         app.get("/", (req, res) -> {
-            res.send("棣栭〉");
+            res.send("首页");
         });
         
         app.useLogging();
@@ -196,23 +196,23 @@ public class MiddlewareExample {
 }
 ```
 
-### 鍐呯疆涓棿浠?
+### 内置中间件
 
 ```java
-app.useLogging();           // 鏃ュ織涓棿浠?
-app.useCors();              // CORS 璺ㄥ煙涓棿浠?
-app.usePerformanceMonitor(); // 鎬ц兘鐩戞帶涓棿浠?
+app.useLogging();           // 日志中间件
+app.useCors();              // CORS 跨域中间件
+app.usePerformanceMonitor(); // 性能监控中间件
 ```
 
 ---
 
-## 馃搱 杩涢樁绡囷細浼氳瘽绠＄悊
+## 🔍 进阶指南：会话管理
 
-### 鐢熸椿绫绘瘮
+### 生活类比
 
-浼氳瘽灏卞儚椁愬巺鐨勪細鍛樺崱锛岃褰曞浜虹殑淇℃伅锛屼笅娆℃潵杩樿兘璁ゅ嚭浣犮€?
+会话就像餐厅的会员卡，记录顾客的信息，下次来还能认出你。
 
-### 鐧诲綍鍜屼細璇?
+### 登录和会话
 
 ```java
 import ltd.idcu.est.web.WebApplication;
@@ -220,21 +220,21 @@ import ltd.idcu.est.web.api.Session;
 
 public class SessionExample {
     public static void main(String[] args) {
-        WebApplication app = WebApplication.create("浼氳瘽绀轰緥", "1.0.0");
+        WebApplication app = WebApplication.create("会话示例", "1.0.0");
         
         app.get("/login", (req, res) -> {
             Session session = req.getSession(true);
-            session.setAttribute("username", "灏忔槑");
-            res.send("鐧诲綍鎴愬姛锛?);
+            session.setAttribute("username", "小明");
+            res.send("登录成功！");
         });
         
         app.get("/profile", (req, res) -> {
             Session session = req.getSession(false);
             if (session != null) {
                 String username = (String) session.getAttribute("username");
-                res.send("娆㈣繋鍥炴潵, " + username);
+                res.send("欢迎回来, " + username);
             } else {
-                res.status(401).send("璇峰厛鐧诲綍");
+                res.status(401).send("请先登录");
             }
         });
         
@@ -243,7 +243,7 @@ public class SessionExample {
             if (session != null) {
                 session.invalidate();
             }
-            res.send("宸查€€鍑虹櫥褰?);
+            res.send("已退出登录");
         });
         
         app.run(8080);
@@ -253,28 +253,28 @@ public class SessionExample {
 
 ---
 
-## 鉁?鏈€浣冲疄璺?
+## ✅ 最佳实践
 
-### 1. 璺敱鍒嗙粍
+### 1. 路由分组
 
 ```java
 app.routes(router -> {
     router.group("/api", (r, group) -> {
-        r.get("/users", (req, res) -> res.send("鐢ㄦ埛鍒楄〃"));
-        r.post("/users", (req, res) -> res.send("鍒涘缓鐢ㄦ埛"));
+        r.get("/users", (req, res) -> res.send("用户列表"));
+        r.post("/users", (req, res) -> res.send("创建用户"));
     });
 });
 ```
 
-### 2. 閿欒澶勭悊
+### 2. 错误处理
 
 ```java
 app.error((req, res, e) -> {
-    res.status(500).send("鍑洪敊浜? " + e.getMessage());
+    res.status(500).send("出错了：" + e.getMessage());
 });
 ```
 
-### 3. 闈欐€佹枃浠?
+### 3. 静态文件
 
 ```java
 app.serveStatic("/static", "./public");
@@ -282,9 +282,9 @@ app.serveStatic("/static", "./public");
 
 ---
 
-## 馃摝 妯″潡闆嗘垚
+## 📦 模块集成
 
-### 涓?est-collection 闆嗘垚
+### 与 est-collection 集成
 
 ```java
 import ltd.idcu.est.web.WebApplication;
@@ -292,7 +292,7 @@ import ltd.idcu.est.collection.impl.Seqs;
 
 public class CollectionIntegration {
     public static void main(String[] args) {
-        WebApplication app = WebApplication.create("闆嗘垚绀轰緥", "1.0.0");
+        WebApplication app = WebApplication.create("集成示例", "1.0.0");
         
         app.get("/users", (req, res) -> {
             List<User> users = getUsersFromDB();
@@ -309,12 +309,12 @@ public class CollectionIntegration {
 
 ---
 
-## 馃摎 鏇村鍐呭
+## 📑 更多内容
 
-- [EST 椤圭洰涓婚〉](https://github.com/idcu/est)
+- [EST 项目主页](https://github.com/idcu/est)
 - [EST Core](../../est-foundation/est-core/README.md)
 - [EST Collection](../../est-foundation/est-collection/README.md)
 
 ---
 
-**绁濅綘浣跨敤鎰夊揩锛?* 馃帀
+**祝你使用愉快！** 🎉

@@ -1,42 +1,42 @@
-# EST Base 鍩虹妯″潡 - 灏忕櫧浠庡叆闂ㄥ埌绮鹃€?
+# EST Base 核心模块 - 小白从入门到精通
 
-## 鐩綍
-1. [浠€涔堟槸 EST Base锛焆(#浠€涔堟槸-est-base)
-2. [蹇€熷叆闂細5鍒嗛挓涓婃墜](#蹇€熷叆闂?鍒嗛挓涓婃墜)
-3. [鍩虹绡嘳(#鍩虹绡?
-4. [杩涢樁绡嘳(#杩涢樁绡?
-5. [鏈€浣冲疄璺礭(#鏈€浣冲疄璺?
-
----
-
-## 浠€涔堟槸 EST Base锛?
-
-### 鐢ㄥぇ鐧借瘽鐞嗚В
-
-EST Base 灏卞儚鏄竴涓?宸ュ叿绠?銆傛兂璞′竴涓嬩綘鍦ㄥ仛瀹跺姟锛岄渶瑕佸悇绉嶅伐鍏凤細铻轰笣鍒€銆佹壋鎵嬨€佸嵎灏恒€佸壀鍒€...
-
-**浼犵粺鏂瑰紡**锛氭瘡娆￠渶瑕佷粈涔堝伐鍏烽兘鑷繁鍘讳拱锛屽緢楹荤儲銆?
-
-**EST Base 鏂瑰紡**锛氱粰浣犱竴涓婊″父鐢ㄥ伐鍏风殑宸ュ叿绠憋紝閲岄潰鏈夛細
-- 馃敡 **宸ュ叿闆?* - JSON銆乆ML銆乊AML銆両O 绛夊父鐢ㄥ伐鍏?
-- 馃搻 **璁捐妯″紡** - 鍗曚緥銆佸伐鍘傘€佽瀵熻€呯瓑甯哥敤璁捐妯″紡
-- 馃摝 **闆嗗悎妗嗘灦** - 鏇村己澶х殑闆嗗悎鎿嶄綔
-- 馃И **娴嬭瘯鏀寔** - 鍗曞厓娴嬭瘯鍜屽熀鍑嗘祴璇?
-
-### 鏍稿績鐗圭偣
-
-- 馃幆 **绠€鍗曟槗鐢?* - 寮€绠卞嵆鐢紝闆朵緷璧?
-- 鈿?**楂樻€ц兘** - 绾?Java 瀹炵幇锛屾€ц兘浼樼
-- 馃敀 **闆朵緷璧?* - 涓嶄緷璧栦换浣曠涓夋柟搴?
-- 馃帹 **涓板瘜鍔熻兘** - 娑电洊甯哥敤宸ュ叿鍜岃璁℃ā寮?
+## 目录
+1. [什么是 EST Base？](#什么是-est-base)
+2. [快速入门：5分钟上手](#快速入门-5分钟上手)
+3. [核心组件](#核心组件)
+4. [进阶指南](#进阶指南)
+5. [最佳实践](#最佳实践)
 
 ---
 
-## 蹇€熷叆闂細5鍒嗛挓涓婃墜
+## 什么是 EST Base？
 
-### 绗竴姝ワ細寮曞叆渚濊禆
+### 用大白话理解
 
-鍦ㄤ綘鐨?Maven pom.xml 涓坊鍔狅細
+EST Base 就像是一个「工具箱」。想象一下你在做业务，需要各种工具：锤子、螺丝刀、尺子、剪刀...
+
+**传统方式**：每次需要什么工具都自己去买，很麻烦。
+
+**EST Base 方式**：给你一个装满常用工具的工具箱，里面有：
+- 👨‍💼 **工具类** - JSON、XML、YAML、IO 等常用工具
+- 🔧 **设计模式** - 单例、工厂、观察者等常用设计模式
+- 📦 **集合容器** - 强大的集合操作
+- 🧪 **测试支持** - 单元测试和基准测试
+
+### 核心特点
+
+- 📦 **简单易用** - 开箱即用，开箱即用
+- 🔧 **高性能** - 纯 Java 实现，性能优异
+- 🔄 **开箱即用** - 不依赖任何第三方库
+- 🚀 **丰富功能** - 覆盖常用工具和配置方案
+
+---
+
+## 快速入门：5分钟上手
+
+### 第一步：引入依赖
+
+在你的 Maven pom.xml 中添加：
 
 ```xml
 <dependencies>
@@ -53,7 +53,7 @@ EST Base 灏卞儚鏄竴涓?宸ュ叿绠?銆傛兂璞′竴涓嬩綘鍦ㄥ仛
 </dependencies>
 ```
 
-### 绗簩姝ワ細浣犵殑绗竴涓▼搴?
+### 第二步：你的第一个程序
 
 ```java
 import ltd.idcu.est.collection.api.Seq;
@@ -62,169 +62,170 @@ import ltd.idcu.est.util.common.StringUtils;
 
 public class FirstExample {
     public static void main(String[] args) {
-        System.out.println("=== EST Base 绗竴涓ず渚?===\n");
+        System.out.println("=== EST Base 第一个示例 ===\n");
         
-        System.out.println("--- 1. 浣跨敤宸ュ叿绫?---");
+        System.out.println("--- 1. 使用工具类 ---\n");
         String str = "  Hello, EST!  ";
-        System.out.println("鍘熷瓧绗︿覆: '" + str + "'");
-        System.out.println("鍘婚櫎绌虹櫧: '" + StringUtils.trim(str) + "'");
-        System.out.println("鏄惁涓虹┖: " + StringUtils.isEmpty(str));
+        System.out.println("原字符串: '" + str + "'");
+        System.out.println("去除空白: '" + StringUtils.trim(str) + "'");
+        System.out.println("是否为空: " + StringUtils.isEmpty(str));
         
-        System.out.println("\n--- 2. 浣跨敤闆嗗悎妗嗘灦 ---");
+        System.out.println("\n--- 2. 使用集合容器 ---");
         Seq<Integer> numbers = Seqs.of(1, 2, 3, 4, 5);
         Seq<Integer> evenNumbers = numbers.where(n -> n % 2 == 0);
-        System.out.println("鍋舵暟: " + evenNumbers.toList());
+        System.out.println("偶数: " + evenNumbers.toList());
         
-        System.out.println("\n鎭枩浣狅紒浣犲凡缁忔垚鍔熶娇鐢?EST Base 浜嗭紒");
+        System.out.println("\n喜欢你！你已经成功使用 EST Base 了！");
     }
 }
 ```
 
-杩愯杩欎釜绋嬪簭锛屼綘浼氱湅鍒帮細
+运行这个程序，你会看到：
 ```
-=== EST Base 绗竴涓ず渚?===
+=== EST Base 第一个示例 ===
 
---- 1. 浣跨敤宸ュ叿绫?---
-鍘熷瓧绗︿覆: '  Hello, EST!  '
-鍘婚櫎绌虹櫧: 'Hello, EST!'
-鏄惁涓虹┖: false
+--- 1. 使用工具类 ---
 
---- 2. 浣跨敤闆嗗悎妗嗘灦 ---
-鍋舵暟: [2, 4]
+原字符串: '  Hello, EST!  '
+去除空白: 'Hello, EST!'
+是否为空: false
 
-鎭枩浣狅紒浣犲凡缁忔垚鍔熶娇鐢?EST Base 浜嗭紒
+--- 2. 使用集合容器 ---
+偶数: [2, 4]
+
+喜欢你！你已经成功使用 EST Base 了！
 ```
 
 ---
 
-## 鍩虹绡?
+## 核心组件
 
-### 1. est-utils 宸ュ叿妯″潡
+### 1. est-utils 工具模块
 
-EST Utils 鎻愪緵浜嗗父鐢ㄧ殑宸ュ叿绫伙紝璁╀綘涓嶇敤閲嶅閫犺疆瀛愩€?
+EST Utils 提供了常用的工具类，让你不用重复造轮子。
 
-#### est-util-common 甯哥敤宸ュ叿
+#### est-util-common 常用工具
 
 ```java
 import ltd.idcu.est.util.common.StringUtils;
 import ltd.idcu.est.util.common.NumberUtils;
 import ltd.idcu.est.util.common.DateUtils;
 
-// 瀛楃涓插伐鍏?
+// 字符串工具
 String str = "Hello, World!";
 boolean isBlank = StringUtils.isBlank(str);
 String reversed = StringUtils.reverse(str);
 
-// 鏁板瓧宸ュ叿
+// 数字工具
 String numStr = "123";
 int num = NumberUtils.toInt(numStr, 0);
 boolean isNumber = NumberUtils.isNumber(numStr);
 
-// 鏃ユ湡宸ュ叿
+// 日期工具
 String now = DateUtils.formatNow("yyyy-MM-dd HH:mm:ss");
 ```
 
-#### est-util-format 鏍煎紡宸ュ叿
+#### est-util-format 格式工具
 
 ```java
 import ltd.idcu.est.util.format.json.JsonUtils;
 import ltd.idcu.est.util.format.xml.XmlUtils;
 import ltd.idcu.est.util.format.yaml.YamlUtils;
 
-// JSON 澶勭悊
+// JSON 处理
 String json = JsonUtils.toJson(user);
 User user = JsonUtils.fromJson(json, User.class);
 
-// XML 澶勭悊
+// XML 处理
 String xml = XmlUtils.toXml(user);
 User user = XmlUtils.fromXml(xml, User.class);
 
-// YAML 澶勭悊
+// YAML 处理
 String yaml = YamlUtils.toYaml(config);
 Config config = YamlUtils.fromYaml(yaml, Config.class);
 ```
 
-#### est-util-io IO 宸ュ叿
+#### est-util-io IO 工具
 
 ```java
 import ltd.idcu.est.util.io.FileUtils;
 import ltd.idcu.est.util.io.IOUtils;
 
-// 鏂囦欢鎿嶄綔
+// 文件操作
 String content = FileUtils.readFileToString("data.txt");
 FileUtils.writeStringToFile("output.txt", "Hello!");
 
-// IO 娴佹搷浣?
+// IO 流操作
 InputStream is = ...;
 String text = IOUtils.toString(is);
 ```
 
-### 2. est-collection 闆嗗悎妯″潡
+### 2. est-collection 集合模块
 
-EST Collection 鎻愪緵浜嗘洿寮哄ぇ鐨勯泦鍚堟搷浣滐紝鍍忚璇濅竴鏍峰啓浠ｇ爜锛?
+EST Collection 提供了更强大的集合操作，像说话一样写代码：
 
-璇︾粏鏂囨。璇峰弬鑰冿細[est-collection README](./est-collection/README.md)
+详细文档请参考：[est-collection README](./est-collection/README.md)
 
 ```java
 import ltd.idcu.est.collection.api.Seq;
 import ltd.idcu.est.collection.impl.Seqs;
 
-// 鍒涘缓搴忓垪
-Seq<String> fruits = Seqs.of("鑻规灉", "棣欒晧", "姗欏瓙", "钁¤悇");
+// 创建序列
+Seq<String> fruits = Seqs.of("苹果", "香蕉", "橙子", "葡萄");
 
-// 閾惧紡鎿嶄綔
+// 链式操作
 Seq<String> result = fruits
-    .where(fruit -> fruit.length() > 2)  // 绛涢€?
-    .sorted()                               // 鎺掑簭
-    .take(3);                               // 鍙栧墠3涓?
+    .where(fruit -> fruit.length() > 2)  // 过滤
+    .sorted()                               // 排序
+    .take(3);                               // 取前3个
 
-System.out.println(result.toList());  // [姗欏瓙, 钁¤悇, 棣欒晧]
+System.out.println(result.toList());  // [橙子, 葡萄, 香蕉]
 ```
 
-### 3. est-patterns 璁捐妯″紡妯″潡
+### 3. est-patterns 设计模式模块
 
-EST Patterns 鎻愪緵浜嗗父鐢ㄨ璁℃ā寮忕殑寮€绠卞嵆鐢ㄥ疄鐜般€?
+EST Patterns 提供了常用设计模式的开箱即用实现。
 
-璇︾粏鏂囨。璇峰弬鑰冿細[est-patterns README](./est-patterns/README.md)
+详细文档请参考：[est-patterns README](./est-patterns/README.md)
 
 ```java
 import ltd.idcu.est.patterns.api.creational.Singleton;
 import ltd.idcu.est.patterns.impl.creational.DefaultSingleton;
 
-// 鍗曚緥妯″紡
+// 单例模式
 Singleton<DatabaseConnection> singleton = DefaultSingleton.of(DatabaseConnection::new);
 DatabaseConnection conn1 = singleton.getInstance();
 DatabaseConnection conn2 = singleton.getInstance();
 System.out.println(conn1 == conn2);  // true
 ```
 
-### 4. est-test 娴嬭瘯妯″潡
+### 4. est-test 测试模块
 
-EST Test 鎻愪緵浜嗘祴璇曟敮鎸佸拰鍩哄噯娴嬭瘯銆?
+EST Test 提供了测试支持和标准测试。
 
-璇︾粏鏂囨。璇峰弬鑰冿細[est-test README](./est-test/README.md)
+详细文档请参考：[est-test README](./est-test/README.md)
 
 ```java
 import ltd.idcu.est.test.api.Assertions;
 import ltd.idcu.est.test.api.Tests;
 
-// 鏂█
+// 断言
 Assertions.assertEquals(2, 1 + 1);
 Assertions.assertTrue(true);
 
-// 娴嬭瘯杩愯
+// 测试运行
 Tests.run(MyTestSuite.class);
 ```
 
 ---
 
-## 杩涢樁绡?
+## 进阶指南
 
-### 1. 宸ュ叿妯″潡杩涢樁
+### 1. 工具模块进阶
 
-#### 鑷畾涔夊伐鍏风被
+#### 自定义工具类
 
-浣犲彲浠ュ熀浜?EST Utils 鍒涘缓鑷繁鐨勫伐鍏风被锛?
+你可以基于 EST Utils 创建自己的工具类：
 
 ```java
 public class MyStringUtils {
@@ -238,7 +239,7 @@ public class MyStringUtils {
 }
 ```
 
-#### 閾惧紡宸ュ叿璋冪敤
+#### 链式工具调用
 
 ```java
 String result = StringUtils.trim(str)
@@ -246,43 +247,43 @@ String result = StringUtils.trim(str)
     .replace(" ", "-");
 ```
 
-### 2. 闆嗗悎妯″潡杩涢樁
+### 2. 集合模块进阶
 
-璇︾粏鍐呭璇峰弬鑰冿細[est-collection 杩涢樁绡嘳(./est-collection/README.md)
+详细内容请参考：[est-collection 进阶指南](./est-collection/README.md)
 
-### 3. 璁捐妯″紡杩涢樁
+### 3. 设计模式进阶
 
-璇︾粏鍐呭璇峰弬鑰冿細[est-patterns 杩涢樁绡嘳(./est-patterns/README.md)
+详细内容请参考：[est-patterns 进阶指南](./est-patterns/README.md)
 
 ---
 
-## 鏈€浣冲疄璺?
+## 最佳实践
 
-### 1. 浼樺厛浣跨敤宸ュ叿绫?
+### 1. 优先使用工具类
 
 ```java
-// 鉁?鎺ㄨ崘锛氫娇鐢ㄥ伐鍏风被
+// ✅ 推荐：使用工具类
 if (StringUtils.isBlank(str)) {
     // ...
 }
 
-// 鉂?涓嶆帹鑽愶細鑷繁鍐?
+// ❌ 不推荐：自己手写
 if (str == null || str.trim().isEmpty()) {
     // ...
 }
 ```
 
-### 2. 鍚堢悊浣跨敤闆嗗悎鎿嶄綔
+### 2. 合理使用集合操作
 
 ```java
-// 鉁?鎺ㄨ崘锛氫娇鐢ㄩ摼寮忔搷浣?
+// ✅ 推荐：使用链式操作
 List<String> result = users
     .where(User::isActive)
     .sortBy(User::getName)
     .pluck(User::getEmail)
     .toList();
 
-// 鉂?涓嶆帹鑽愶細鎵嬪啓寰幆
+// ❌ 不推荐：手写循环
 List<String> result = new ArrayList<>();
 for (User user : users) {
     if (user.isActive()) {
@@ -292,47 +293,47 @@ for (User user : users) {
 Collections.sort(result);
 ```
 
-### 3. 涓嶈杩囧害璁捐
+### 3. 不要过度设计
 
 ```java
-// 鉁?绠€鍗曠洿鎺?
+// ✅ 简单直接
 if (type == TYPE_A) {
     doA();
 } else {
     doB();
 }
 
-// 鉂?杩囧害璁捐锛堥櫎闈炵‘瀹為渶瑕侊級
-// 涓虹畝鍗曞満鏅娇鐢ㄥ鏉傜殑璁捐妯″紡
+// ❌ 过度设计（除非确实需要）
+// 简单场景使用复杂的设计模式
 ```
 
 ---
 
-## 妯″潡缁撴瀯
+## 模块结构
 
 ```
 est-base/
-鈹溾攢鈹€ est-utils/              # 宸ュ叿妯″潡
-鈹?  鈹溾攢鈹€ est-util-common/   # 甯哥敤宸ュ叿
-鈹?  鈹溾攢鈹€ est-util-format/   # 鏍煎紡宸ュ叿锛圝SON銆乆ML銆乊AML锛?
-鈹?  鈹斺攢鈹€ est-util-io/       # IO 宸ュ叿
-鈹溾攢鈹€ est-patterns/           # 璁捐妯″紡妯″潡
-鈹溾攢鈹€ est-collection/         # 闆嗗悎妗嗘灦妯″潡
-鈹斺攢鈹€ est-test/               # 娴嬭瘯鏀寔妯″潡
+├── est-utils/              # 工具模块
+│   ├── est-util-common/   # 常用工具
+│   ├── est-util-format/   # 格式工具（JSON、XML、YAML）
+│   └── est-util-io/       # IO 工具
+├── est-patterns/           # 设计模式模块
+├── est-collection/         # 集合容器模块
+└── est-test/               # 测试支持模块
 ```
 
 ---
 
-## 鐩稿叧璧勬簮
+## 相关资源
 
-- [est-utils README](./est-utils/README.md) - 宸ュ叿妯″潡璇︾粏鏂囨。
-- [est-collection README](./est-collection/README.md) - 闆嗗悎妯″潡璇︾粏鏂囨。
-- [est-patterns README](./est-patterns/README.md) - 璁捐妯″紡璇︾粏鏂囨。
-- [est-test README](./est-test/README.md) - 娴嬭瘯妯″潡璇︾粏鏂囨。
-- [EST Core](../est-core/README.md) - 鏍稿績妯″潡
-- [绀轰緥浠ｇ爜](../est-examples/est-examples-basic/) - 绀轰緥浠ｇ爜
+- [est-utils README](./est-utils/README.md) - 工具模块详细文档
+- [est-collection README](./est-collection/README.md) - 集合模块详细文档
+- [est-patterns README](./est-patterns/README.md) - 设计模式详细文档
+- [est-test README](./est-test/README.md) - 测试模块详细文档
+- [EST Core](../est-core/README.md) - 核心模块
+- [示例代码](../est-examples/est-examples-basic/) - 示例代码
 
 ---
 
-**鏂囨。鐗堟湰**: 2.0  
-**鏈€鍚庢洿鏂?*: 2026-03-08
+**文档版本**：2.0  
+**最后更新**：2026-03-08

@@ -1,35 +1,35 @@
-# EST AI 鏂囨。
+# EST AI 文档
 
-娆㈣繋鏉ュ埌 EST AI 鏂囨。涓撳尯锛佽繖閲屾彁渚涘叧浜?EST 妗嗘灦 AI 鍔熻兘鐨勫畬鏁存枃妗ｃ€?
+欢迎来到 EST AI 文档专区，这里提供关于 EST 框架 AI 功能的完整文档。
 
-## 鐩綍
+## 目录
 
-- [AI 姒傝堪](#ai-姒傝堪)
-- [蹇€熷紑濮媇(#蹇€熷紑濮?
-- [鏍稿績鍔熻兘](#鏍稿績鍔熻兘)
-- [LLM 鎻愪緵鍟哴(#llm-鎻愪緵鍟?
-- [绀轰緥浠ｇ爜](#绀轰緥浠ｇ爜)
-- [API 鍙傝€僝(#api-鍙傝€?
-
----
-
-## AI 姒傝堪
-
-EST AI Suite 鏄?EST 妗嗘灦鐨?AI 鍜?LLM锛堝ぇ璇█妯″瀷锛夌浉鍏虫ā鍧楅泦鍚堬紝鎻愪緵浜嗗紑绠卞嵆鐢ㄧ殑 AI 鍔熻兘鏀寔銆?
-
-### 涓昏鐗规€?
-
-- 馃幆 **绠€鍗曟槗鐢?* - 鍑犺浠ｇ爜灏辫兘鐢ㄤ笂 AI
-- 馃攲 **澶氭彁渚涘晢鏀寔** - 鏀寔 OpenAI銆佹櫤璋便€侀€氫箟鍗冮棶銆佹枃蹇冧竴瑷€绛変富娴?LLM
-- 馃З **妯″潡鍖栬璁?* - 鎸夐渶寮曞叆锛岀伒娲荤粍鍚?
-- 馃洜锔?**楂樼骇鍔熻兘** - 浠ｇ爜鐢熸垚銆佹彁绀鸿瘝妯℃澘銆丄I 鍔╂墜绛?
-- 馃敡 **鍙墿灞?* - 杞绘澗娣诲姞鑷畾涔?LLM 鎻愪緵鍟?
+- [AI 介绍](#ai-介绍)
+- [快速开始](#快速开始)
+- [核心功能](#核心功能)
+- [LLM 提供商](#llm-提供商)
+- [示例代码](#示例代码)
+- [API 参考](#api-参考)
 
 ---
 
-## 蹇€熷紑濮?
+## AI 介绍
 
-### 1. 娣诲姞渚濊禆
+EST AI Suite 是 EST 框架的 AI 和 LLM（大语言模型）相关组件集合，提供了开箱即用的 AI 功能支持。
+
+### 主要特性
+
+- 🛠️ **简单易用** - 几行代码就能用上 AI
+- 🌐 **多提供商支持** - 支持 OpenAI、智谱、通义千问、文心一言等主流 LLM
+- 🧩 **模块化设计** - 按需引入，灵活组合
+- 👨‍💻 **高级功能** - 代码生成、提示词模板、AI 助手等
+- 🔌 **可扩展** - 轻松添加自定义 LLM 提供商
+
+---
+
+## 快速开始
+
+### 1. 添加依赖
 
 ```xml
 <dependency>
@@ -39,7 +39,7 @@ EST AI Suite 鏄?EST 妗嗘灦鐨?AI 鍜?LLM锛堝ぇ璇█妯″瀷锛夌浉
 </dependency>
 ```
 
-### 2. 鍒涘缓 AI 鍔╂墜
+### 2. 创建 AI 助手
 
 ```java
 import ltd.idcu.est.ai.api.AiAssistant;
@@ -49,13 +49,13 @@ public class AiQuickStart {
     public static void main(String[] args) {
         AiAssistant assistant = new DefaultAiAssistant();
         
-        String result = assistant.chat("浣犲ソ锛岃浠嬬粛涓€涓?EST 妗嗘灦");
+        String result = assistant.chat("你好，请介绍一下 EST 框架");
         System.out.println(result);
     }
 }
 ```
 
-### 3. 閰嶇疆 LLM
+### 3. 配置 LLM
 
 ```java
 import ltd.idcu.est.llm.api.LlmClient;
@@ -72,37 +72,37 @@ String response = client.complete("Hello, world!");
 
 ---
 
-## 鏍稿績鍔熻兘
+## 核心功能
 
-### 1. AI 鍔╂墜
+### 1. AI 助手
 
-鎻愪緵蹇€熷弬鑰冦€佹渶浣冲疄璺点€佹暀绋嬭幏鍙栥€佷唬鐮佸缓璁€佷唬鐮佽В閲娿€佷唬鐮佷紭鍖栫瓑鍔熻兘銆?
+提供快速参考、最佳实践、教程获取、代码建议、代码解释、代码优化等功能。
 
 ```java
 AiAssistant assistant = new DefaultAiAssistant();
 
-// 鑾峰彇蹇€熷弬鑰?
-String ref = assistant.getQuickReference("web寮€鍙?);
+// 获取快速参考
+String ref = assistant.getQuickReference("web开发");
 
-// 鑾峰彇鏈€浣冲疄璺?
-String bestPractice = assistant.getBestPractice("浠ｇ爜椋庢牸");
+// 获取最佳实践
+String bestPractice = assistant.getBestPractice("代码风格");
 
-// 鑾峰彇鏁欑▼
-String tutorial = assistant.getTutorial("绗竴涓簲鐢?);
+// 获取教程
+String tutorial = assistant.getTutorial("第一个应用");
 
-// 寤鸿浠ｇ爜
-String code = assistant.suggestCode("鍒涘缓涓€涓?UserService");
+// 建议代码
+String code = assistant.suggestCode("创建一个 UserService");
 
-// 瑙ｉ噴浠ｇ爜
+// 解释代码
 String explanation = assistant.explainCode(code);
 
-// 浼樺寲浠ｇ爜
+// 优化代码
 String optimized = assistant.optimizeCode(code);
 ```
 
-### 2. 浠ｇ爜鐢熸垚鍣?
+### 2. 代码生成器
 
-鑷姩鐢熸垚 Entity銆丼ervice銆丆ontroller銆丷epository銆乸om.xml 绛変唬鐮併€?
+自动生成 Entity、Service、Controller、Repository、pom.xml 等代码。
 
 ```java
 import ltd.idcu.est.ai.api.CodeGenerator;
@@ -110,23 +110,23 @@ import ltd.idcu.est.ai.impl.DefaultCodeGenerator;
 
 CodeGenerator generator = new DefaultCodeGenerator();
 
-// 鐢熸垚 Entity
+// 生成 Entity
 String entity = generator.generateEntity("Product", "com.example.entity",
     Map.of("fields", List.of("id:Long", "name:String", "price:BigDecimal")));
 
-// 鐢熸垚 Repository
+// 生成 Repository
 String repo = generator.generateRepository("ProductRepository", "com.example.repository", Map.of());
 
-// 鐢熸垚 Service
+// 生成 Service
 String service = generator.generateService("ProductService", "com.example.service", Map.of());
 
-// 鐢熸垚 pom.xml
+// 生成 pom.xml
 String pom = generator.generatePomXml("MyProject", "com.example", "my-app", "1.0.0");
 ```
 
-### 3. 鎻愮ず璇嶆ā鏉?
+### 3. 提示词模板
 
-浣跨敤棰勫畾涔夌殑鎻愮ず璇嶆ā鏉匡紝鎻愬崌 AI 杈撳嚭璐ㄩ噺銆?
+使用预定义的提示词模板，提升 AI 输出质量。
 
 ```java
 import ltd.idcu.est.ai.api.PromptTemplate;
@@ -135,78 +135,78 @@ import ltd.idcu.est.ai.impl.DefaultPromptTemplateEngine;
 
 PromptTemplateEngine engine = new DefaultPromptTemplateEngine();
 
-// 浣跨敤鍐呯疆妯℃澘
+// 使用内置模板
 String prompt = engine.render("code-review", Map.of(
     "code", codeToReview,
     "language", "Java"
 ));
 
-// 鑷畾涔夋ā鏉?
+// 自定义模板
 PromptTemplate template = new PromptTemplate();
 template.setName("my-template");
-template.setContent("浣犳槸涓€涓?${role}锛岃澶勭悊浠ヤ笅鍐呭锛?{content}");
+template.setContent("你是一个 ${role}，请处理以下内容：{content}");
 engine.registerTemplate(template);
 ```
 
 ---
 
-## LLM 鎻愪緵鍟?
+## LLM 提供商
 
-EST AI Suite 鏀寔浠ヤ笅 LLM 鎻愪緵鍟嗭細
+EST AI Suite 支持以下 LLM 提供商：
 
-| 鎻愪緵鍟?| 妯″瀷 | 鐘舵€?|
+| 提供商 | 模型 | 状态 |
 |--------|------|------|
-| OpenAI | GPT-4, GPT-3.5 | 鉁?宸叉敮鎸?|
-| 鏅鸿氨 AI | GLM-4, GLM-3 | 鉁?宸叉敮鎸?|
-| 閫氫箟鍗冮棶 | Qwen-Turbo, Qwen-Plus | 鉁?宸叉敮鎸?|
-| 鏂囧績涓€瑷€ | Ernie-4.0, Ernie-3.5 | 鉁?宸叉敮鎸?|
-| 璞嗗寘 | Doubao-Pro | 鉁?宸叉敮鎸?|
-| Kimi | Moonshot-v1 | 鉁?宸叉敮鎸?|
-| Ollama | 鏈湴妯″瀷 | 鉁?宸叉敮鎸?|
+| OpenAI | GPT-4, GPT-3.5 | ✨ 已支持 |
+| 智谱 AI | GLM-4, GLM-3 | ✨ 已支持 |
+| 通义千问 | Qwen-Turbo, Qwen-Plus | ✨ 已支持 |
+| 文心一言 | Ernie-4.0, Ernie-3.5 | ✨ 已支持 |
+| 豆包 | Doubao-Pro | ✨ 已支持 |
+| Kimi | Moonshot-v1 | ✨ 已支持 |
+| Ollama | 本地模型 | ✨ 已支持 |
 
-### 閫氱敤浣跨敤鏂瑰紡
+### 通用使用方式
 
 ```java
 import ltd.idcu.est.llm.api.LlmClient;
 import ltd.idcu.est.llm.api.LlmConfig;
 
-// 閰嶇疆
+// 配置
 LlmConfig config = new LlmConfig();
-config.setProvider("openai"); // 鎴?zhipu, qwen, ernie, doubao, kimi, ollama
+config.setProvider("openai"); // 或 zhipu, qwen, ernie, doubao, kimi, ollama
 config.setApiKey("your-api-key");
 config.setModel("gpt-4");
 config.setBaseUrl("https://api.openai.com/v1");
 
-// 鍒涘缓瀹㈡埛绔?
+// 创建客户端
 LlmClient client = LlmClientFactory.create(config);
 
-// 鍙戦€佽姹?
-String response = client.complete("浣犲ソ锛?);
+// 发送请求
+String response = client.complete("你好");
 ```
 
 ---
 
-## 绀轰緥浠ｇ爜
+## 示例代码
 
-鏌ョ湅浠ヤ笅绀轰緥浜嗚В鏇村鐢ㄦ硶锛?
+查看以下示例了解更多用法：
 
-- [AI 蹇€熷紑濮嬬ず渚媇(../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/AiQuickStartExample.java)
-- [缁煎悎 AI 绀轰緥](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/ComprehensiveAiExample.java)
-- [AI 鍔╂墜 Web 搴旂敤](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/AiAssistantWebExample.java)
-- [浠ｇ爜鐢熸垚绀轰緥](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/CodeGeneratorExample.java)
-
----
-
-## API 鍙傝€?
-
-璇︾粏鐨?API 鏂囨。璇峰弬鑰冿細
-
-- [AI 鍔╂墜 API](./api/ai-assistant.md)
-- [浠ｇ爜鐢熸垚鍣?API](./api/code-generator.md)
-- [LLM 瀹㈡埛绔?API](./api/llm-client.md)
-- [鎻愮ず璇嶆ā鏉?API](./api/prompt-template.md)
+- [AI 快速开始示例](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/AiQuickStartExample.java)
+- [综合 AI 示例](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/ComprehensiveAiExample.java)
+- [AI 助手 Web 应用](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/AiAssistantWebExample.java)
+- [代码生成示例](../../est-examples/est-examples-ai/src/main/java/ltd/idcu/est/examples/ai/CodeGeneratorExample.java)
 
 ---
 
-**鏂囨。鐗堟湰**: 2.0  
-**鏈€鍚庢洿鏂?*: 2026-03-08
+## API 参考
+
+详细的 API 文档请参考：
+
+- [AI 助手 API](./api/ai-assistant.md)
+- [代码生成器 API](./api/code-generator.md)
+- [LLM 客户端 API](./api/llm-client.md)
+- [提示词模板 API](./api/prompt-template.md)
+
+---
+
+**文档版本**: 2.0  
+**最后更新**: 2026-03-08

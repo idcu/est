@@ -1,5 +1,6 @@
-# 鎻愮ず璇嶆ā鏉?API 鍙傝€?
-## PromptTemplateEngine 鎺ュ彛
+# 提示词模板 API 参考
+
+## PromptTemplateEngine 接口
 
 ```java
 public interface PromptTemplateEngine {
@@ -11,16 +12,16 @@ public interface PromptTemplateEngine {
 }
 ```
 
-### 鏂规硶璇存槑
+### 方法说明
 
-#### render(String templateName, Map&lt;String, Object&gt; variables)
-娓叉煋鎸囧畾鍚嶇О鐨勬ā鏉裤€?
-**鍙傛暟锛?*
-- `templateName` - 妯℃澘鍚嶇О
-- `variables` - 鍙橀噺鏄犲皠
+#### render(String templateName, Map<String, Object> variables)
+渲染指定名称的模板。
+**参数：**
+- `templateName` - 模板名称
+- `variables` - 变量映射
 
-**杩斿洖鍊硷細** 娓叉煋鍚庣殑鎻愮ず璇?
-**绀轰緥锛?*
+**返回值：** 渲染后的提示词
+**示例：**
 ```java
 String prompt = engine.render("code-review", Map.of(
     "code", codeToReview,
@@ -30,35 +31,35 @@ String prompt = engine.render("code-review", Map.of(
 
 ---
 
-#### render(PromptTemplate template, Map&lt;String, Object&gt; variables)
-娓叉煋缁欏畾鐨勬ā鏉垮璞°€?
-**鍙傛暟锛?*
-- `template` - 妯℃澘瀵硅薄
-- `variables` - 鍙橀噺鏄犲皠
+#### render(PromptTemplate template, Map<String, Object> variables)
+渲染给定的模板对象。
+**参数：**
+- `template` - 模板对象
+- `variables` - 变量映射
 
-**杩斿洖鍊硷細** 娓叉煋鍚庣殑鎻愮ず璇?
-**绀轰緥锛?*
+**返回值：** 渲染后的提示词
+**示例：**
 ```java
 PromptTemplate template = new PromptTemplate();
 template.setName("custom");
-template.setContent("浣犲ソ锛?{name}锛?);
+template.setContent("你好，{name}！");
 
-String prompt = engine.render(template, Map.of("name", "寮犱笁"));
+String prompt = engine.render(template, Map.of("name", "张三"));
 ```
 
 ---
 
 #### registerTemplate(PromptTemplate template)
-娉ㄥ唽涓€涓嚜瀹氫箟妯℃澘銆?
-**鍙傛暟锛?*
-- `template` - 妯℃澘瀵硅薄
+注册一个自定义模板。
+**参数：**
+- `template` - 模板对象
 
-**绀轰緥锛?*
+**示例：**
 ```java
 PromptTemplate template = new PromptTemplate();
 template.setName("my-template");
-template.setContent("浣犳槸涓€涓?${role}锛岃澶勭悊浠ヤ笅鍐呭锛?{content}");
-template.setDescription("鎴戠殑鑷畾涔夋ā鏉?);
+template.setContent("你是一个 ${role}，请处理以下内容：{content}");
+template.setDescription("我的自定义模板");
 
 engine.registerTemplate(template);
 ```
@@ -66,13 +67,13 @@ engine.registerTemplate(template);
 ---
 
 #### getTemplate(String templateName)
-鑾峰彇鎸囧畾鍚嶇О鐨勬ā鏉裤€?
-**鍙傛暟锛?*
-- `templateName` - 妯℃澘鍚嶇О
+获取指定名称的模板。
+**参数：**
+- `templateName` - 模板名称
 
-**杩斿洖鍊硷細** 妯℃澘瀵硅薄锛屽鏋滀笉瀛樺湪杩斿洖 null
+**返回值：** 模板对象，如果不存在返回 null
 
-**绀轰緥锛?*
+**示例：**
 ```java
 PromptTemplate template = engine.getTemplate("code-review");
 ```
@@ -80,103 +81,112 @@ PromptTemplate template = engine.getTemplate("code-review");
 ---
 
 #### listTemplates()
-鍒楀嚭鎵€鏈夊彲鐢ㄧ殑妯℃澘鍚嶇О銆?
-**杩斿洖鍊硷細** 妯℃澘鍚嶇О鍒楄〃
+列出所有可用的模板名称。
+**返回值：** 模板名称列表
 
-**绀轰緥锛?*
+**示例：**
 ```java
 List<String> templates = engine.listTemplates();
 ```
 
 ---
 
-## PromptTemplate 绫?
-鎻愮ず璇嶆ā鏉跨被銆?
-### 鏋勯€犲嚱鏁?
+## PromptTemplate 类
+提示词模板类。
+
+### 构造方法
 ```java
 public PromptTemplate()
 public PromptTemplate(String name, String content)
 ```
 
-### 灞炴€?
-| 灞炴€?| 绫诲瀷 | 璇存槑 |
+### 属性
+| 属性 | 类型 | 说明 |
 |------|------|------|
-| name | String | 妯℃澘鍚嶇О |
-| content | String | 妯℃澘鍐呭 |
-| description | String | 妯℃澘鎻忚堪 |
-| category | String | 妯℃澘鍒嗙被 |
+| name | String | 模板名称 |
+| content | String | 模板内容 |
+| description | String | 模板描述 |
+| category | String | 模板分类 |
 
-### 绀轰緥
+### 示例
 
 ```java
 PromptTemplate template = new PromptTemplate();
 template.setName("code-review");
 template.setContent("""
-    浣犳槸涓€涓唬鐮佸鏌ヤ笓瀹躲€?    璇峰鏌ヤ互涓嬩唬鐮侊紝鎸囧嚭闂骞舵彁渚涙敼杩涘缓璁€?    
-    浠ｇ爜锛?    ${code}
+    你是一个代码审查专家。
+    请审查以下代码，指出问题并提供改进建议。
     
-    璇█锛?{language}
+    代码：
+    ${code}
+    
+    语言：
+    {language}
     """);
-template.setDescription("浠ｇ爜瀹℃煡妯℃澘");
+template.setDescription("代码审查模板");
 template.setCategory("code");
 ```
 
 ---
 
-## DefaultPromptTemplateEngine 瀹炵幇
+## DefaultPromptTemplateEngine 实现
 
-榛樿鐨勬彁绀鸿瘝妯℃澘寮曟搸瀹炵幇绫汇€?
-### 鏋勯€犲嚱鏁?
+默认的提示词模板引擎实现类。
+
+### 构造方法
 ```java
 public DefaultPromptTemplateEngine()
 ```
 
-### 鍐呯疆妯℃澘
+### 内置模板
 
-| 妯℃澘鍚嶇О | 鍒嗙被 | 璇存槑 |
+| 模板名称 | 分类 | 说明 |
 |----------|------|------|
-| code-review | code | 浠ｇ爜瀹℃煡妯℃澘 |
-| code-explain | code | 浠ｇ爜瑙ｉ噴妯℃澘 |
-| code-optimize | code | 浠ｇ爜浼樺寲妯℃澘 |
-| code-generate | code | 浠ｇ爜鐢熸垚妯℃澘 |
-| test-generate | test | 娴嬭瘯浠ｇ爜鐢熸垚妯℃澘 |
-| doc-generate | doc | 鏂囨。鐢熸垚妯℃澘 |
-| bug-fix | debug | Bug 淇妯℃澘 |
+| code-review | code | 代码审查模板 |
+| code-explain | code | 代码解释模板 |
+| code-optimize | code | 代码优化模板 |
+| code-generate | code | 代码生成模板 |
+| test-generate | test | 测试代码生成模板 |
+| doc-generate | doc | 文档生成模板 |
+| bug-fix | debug | Bug 修复模板 |
 
-### 绀轰緥
+### 示例
 
 ```java
 PromptTemplateEngine engine = new DefaultPromptTemplateEngine();
 
-// 浣跨敤鍐呯疆妯℃澘
+// 使用内置模板
 String prompt = engine.render("code-review", Map.of(
     "code", code,
     "language", "Java"
 ));
 
-// 娉ㄥ唽鑷畾涔夋ā鏉?PromptTemplate custom = new PromptTemplate("my-template", "Hello, ${name}!");
+// 注册自定义模板
+PromptTemplate custom = new PromptTemplate("my-template", "Hello, ${name}!");
 engine.registerTemplate(custom);
 ```
 
 ---
 
-## 妯℃澘璇硶
+## 模板语法
 
-妯℃澘浣跨敤 `${variableName}` 璇硶鏉ュ紩鐢ㄥ彉閲忋€?
-### 绀轰緥
+模板使用 `${variableName}` 语法来引用变量。
+
+### 示例
 
 ```
-浣犲ソ锛?{userName}锛?
-璇峰鐞嗕互涓嬪唴瀹癸細
+你好，{userName}！
+请处理以下内容：
 ${content}
 
-鏃堕棿锛?{timestamp}
+时间：{timestamp}
 ```
 
-娓叉煋锛?```java
+渲染：
+```java
 Map<String, Object> variables = Map.of(
-    "userName", "寮犱笁",
-    "content", "杩欐槸瑕佸鐞嗙殑鍐呭",
+    "userName", "张三",
+    "content", "这是要处理的内容",
     "timestamp", LocalDateTime.now().toString()
 );
 String result = engine.render(template, variables);
@@ -184,5 +194,5 @@ String result = engine.render(template, variables);
 
 ---
 
-**鏂囨。鐗堟湰**: 2.0  
-**鏈€鍚庢洿鏂?*: 2026-03-08
+**文档版本**: 2.0  
+**最后更新**: 2026-03-08

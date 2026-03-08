@@ -1,119 +1,129 @@
-# EST Examples 绀轰緥妯″潡
+# EST Examples 示例模块
 
-鍖呭惈EST妗嗘灦鐨勫悇绉嶄娇鐢ㄧず渚嬨€?
-## 妯″潡缁撴瀯
+包含EST框架的各种使用示例。
+## 模块结构
 
 ```
 est-examples/
-鈹溾攢鈹€ est-examples-basic/          # 鍩虹绀轰緥
-鈹溾攢鈹€ est-examples-web/            # Web绀轰緥
-鈹溾攢鈹€ est-examples-features/       # 鍔熻兘绀轰緥
-鈹溾攢鈹€ est-examples-advanced/       # 楂樼骇绀轰緥
-鈹溾攢鈹€ est-examples-ai/             # AI鍔╂墜绀轰緥
-鈹溾攢鈹€ est-examples-graalvm/        # GraalVM绀轰緥
-鈹溾攢鈹€ est-examples-microservices/  # 寰湇鍔＄ず渚?鈹斺攢鈹€ pom.xml
+├── est-examples-basic/          # 基础示例
+├── est-examples-web/            # Web示例
+├── est-examples-features/       # 功能示例
+├── est-examples-advanced/       # 高级示例
+├── est-examples-ai/             # AI助手示例
+├── est-examples-graalvm/        # GraalVM示例
+├── est-examples-microservices/  # 微服务示例
+└── pom.xml
 ```
 
-## 绀轰緥鍒楄〃
+## 示例列表
 
-### 鍩虹绀轰緥 (est-examples-basic)
+### 基础示例 (est-examples-basic)
 
-- 渚濊禆娉ㄥ叆瀹瑰櫒浣跨敤
-- 閰嶇疆绠＄悊
-- 闆嗗悎鎿嶄綔
-- 璁捐妯″紡浣跨敤
-- 宸ュ叿绫讳娇鐢?
-### Web绀轰緥 (est-examples-web)
+- 依赖注入容器使用
+- 配置管理
+- 集合操作
+- 设计模式使用
+- 工具类使用
+### Web示例 (est-examples-web)
 
-- Hello World Web搴旂敤
+- Hello World Web应用
 - RESTful API
-- 璺敱鍜屾帶鍒跺櫒
-- 涓棿浠朵娇鐢?- 浼氳瘽绠＄悊
-- 妯℃澘寮曟搸
-- Todo搴旂敤
-- 鍗氬搴旂敤
-- 鐪嬫澘搴旂敤
-- 鑱婂ぉ搴旂敤
-- 鏂囦欢涓婁紶
-- Admin绠＄悊绯荤粺绀轰緥
+- 路由和过滤器
+- 中间件使用
+- 会话管理
+- 模板引擎
+- Todo应用
+- 聊天室应用
+- 看板应用
+- 日历应用
+- 文件上传
+- Admin管理系统示例
 
-### 鍔熻兘绀轰緥 (est-examples-features)
+### 功能示例 (est-examples-features)
 
-- 缂撳瓨绯荤粺
-- 浜嬩欢鎬荤嚎
-- 鏃ュ織绯荤粺
-- 鏁版嵁璁块棶锛圝DBC銆佸唴瀛樸€丮ongoDB銆丷edis锛?- 瀹夊叏璁よ瘉
-- 璋冨害绯荤粺
-- 鐩戞帶绯荤粺
-- 娑堟伅绯荤粺锛圓ctiveMQ銆並afka銆丷abbitMQ銆丷edis绛夛級
-- 鐔旀柇鍣?- 宸ヤ綔娴佸紩鎿?
-### 楂樼骇绀轰緥 (est-examples-advanced)
+- 缓存系统
+- 事件总线
+- 日志系统
+- 数据访问（JDBC、内存、MongoDB、Redis）
+- 安全认证
+- 调度系统
+- 监控系统
+- 消息系统（ActiveMQ、Kafka、RabbitMQ、Redis等）
+- 断路器
+- 工作流引擎
+### 高级示例 (est-examples-advanced)
 
-- 鎻掍欢绯荤粺
-- 瀹屾暣搴旂敤
-- 鎬ц兘浼樺寲
-- 娴嬭瘯瀹炶返
-- 妯″潡闆嗘垚
-- 澶氭ā鍧楅泦鎴?- 鏂版灦鏋勭ず渚?
-### AI鍔╂墜绀轰緥 (est-examples-ai)
+- 插件系统
+- 完整应用
+- 性能优化
+- 测试实践
+- 模块集成
+- 多模块集成
+- 新架构示例
+### AI助手示例 (est-examples-ai)
 
-- AI蹇€熷紑濮?- AI杈呭姪Web搴旂敤
-- 浠ｇ爜鐢熸垚绀轰緥
-- 鎻愮ず璇嶆ā鏉跨ず渚?- LLM闆嗘垚绀轰緥
+- AI快速开始
+- AI辅助Web应用
+- 代码生成示例
+- 提示词模板示例
+- LLM集成示例
 
-### GraalVM绀轰緥 (est-examples-graalvm)
+### GraalVM示例 (est-examples-graalvm)
 
-- Hello World鍘熺敓搴旂敤
-- Web搴旂敤鍘熺敓闀滃儚
+- Hello World原生应用
+- Web应用原生镜像
 
-### 寰湇鍔＄ず渚?(est-examples-microservices)
+### 微服务示例 (est-examples-microservices)
 
-- 寰湇鍔＄綉鍏?- 鐢ㄦ埛鏈嶅姟
-- 璁㈠崟鏈嶅姟
+- 微服务网关
+- 用户服务
+- 订单服务
 
-### Admin绠＄悊绯荤粺绀轰緥 (est-app/est-admin + est-admin-ui)
+### Admin管理系统示例 (est-app/est-admin + est-admin-ui)
 
-涓€涓畬鏁寸殑鍓嶅悗绔垎绂荤鐞嗙郴缁燂紝鍖呭惈锛?- 鍚庣 RESTful API
-- JWT Token 璁よ瘉
-- Vue 3 + Element Plus 鍓嶇
-- 鐢ㄦ埛銆佽鑹层€佽彍鍗曘€侀儴闂ㄣ€佺鎴风鐞?
-璇︾粏鏂囨。璇峰弬鑰冿細[EST Admin 鍓嶅悗绔仈璋冩寚鍗梋(../docs/guides/admin-integration.md)
+一个完整的前后端分离管理系统，包含：
+- 后端 RESTful API
+- JWT Token 认证
+- Vue 3 + Element Plus 前端
+- 用户、角色、菜单、部门、租户管理
+详细文档请参考：[EST Admin 前后端集成指南](../docs/guides/admin-integration.md)
 
-## 杩愯绀轰緥
+## 运行示例
 
 ```bash
-# 杩愯鍩虹绀轰緥
+# 运行基础示例
 cd est-examples-basic
 mvn exec:java
 
-# 杩愯Web绀轰緥
+# 运行Web示例
 cd est-examples-web
 mvn exec:java
 
-# 杩愯鍔熻兘绀轰緥
+# 运行功能示例
 cd est-examples-features
 ./run-examples.bat
 
-# 杩愯AI绀轰緥
+# 运行AI示例
 cd est-examples-ai
 mvn exec:java
 
-# 杩愯Admin绀轰緥
-# 1. 鍚姩鍚庣
+# 运行Admin示例
+# 1. 启动后端
 cd ../est-app/est-admin/est-admin-impl
 mvn compile exec:java -Dexec.mainClass="ltd.idcu.est.admin.DefaultAdminApplication"
 
-# 2. 鍚姩鍓嶇锛堟柊缁堢锛?cd ../../../est-admin-ui
+# 2. 启动前端（新终端）
+cd ../../../est-admin-ui
 npm install
 npm run dev
 ```
 
-## 渚濊禆
+## 依赖
 
-绀轰緥妯″潡渚濊禆EST妗嗘灦鐨勫叾浠栨ā鍧椼€?
-## 鏂囨。
+示例模块依赖EST框架的其他模块。
+## 文档
 
-鏇村璇︾粏鏂囨。璇锋煡鐪嬶細
-- [绀轰緥浠ｇ爜鏂囨。](../docs/examples/README.md)
-- [鍏ラ棬鎸囧崡](../docs/getting-started/README.md)
-- [Admin鑱旇皟鎸囧崡](../docs/guides/admin-integration.md)
+更多详细文档请查看：
+- [示例代码文档](../docs/examples/README.md)
+- [快速开始](../docs/getting-started/README.md)
+- [Admin配置指南](../docs/guides/admin-integration.md)

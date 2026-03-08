@@ -1,5 +1,6 @@
-# 浠ｇ爜鐢熸垚鍣?API 鍙傝€?
-## CodeGenerator 鎺ュ彛
+# 代码生成器 API 参考
+
+## CodeGenerator 接口
 
 ```java
 public interface CodeGenerator {
@@ -11,20 +12,21 @@ public interface CodeGenerator {
 }
 ```
 
-### 鏂规硶璇存槑
+### 方法说明
 
-#### generateEntity(String className, String packageName, Map&lt;String, Object&gt; options)
-鐢熸垚瀹炰綋绫讳唬鐮併€?
-**鍙傛暟锛?*
-- `className` - 瀹炰綋绫诲悕
-- `packageName` - 鍖呭悕
-- `options` - 閫夐」锛屽寘鍚細
-  - `fields` - 瀛楁鍒楄〃锛屾牸寮忎负 ["瀛楁鍚?绫诲瀷", ...]
-  - `useLombok` - 鏄惁浣跨敤 Lombok锛堝彲閫夛紝榛樿 false锛?  - `tableName` - 鏁版嵁搴撹〃鍚嶏紙鍙€夛級
+#### generateEntity(String className, String packageName, Map<String, Object> options)
+生成实体类代码。
+**参数：**
+- `className` - 实体类名
+- `packageName` - 包名
+- `options` - 选项，包括：
+  - `fields` - 字段列表，格式为 ["字段名:类型", ...]
+  - `useLombok` - 是否使用 Lombok（可选，默认 false）
+  - `tableName` - 数据库表名（可选）
 
-**杩斿洖鍊硷細** 鐢熸垚鐨勫疄浣撶被浠ｇ爜
+**返回值：** 生成的实体类代码
 
-**绀轰緥锛?*
+**示例：**
 ```java
 String entity = generator.generateEntity("Product", "com.example.entity",
     Map.of(
@@ -36,32 +38,33 @@ String entity = generator.generateEntity("Product", "com.example.entity",
 
 ---
 
-#### generateRepository(String interfaceName, String packageName, Map&lt;String, Object&gt; options)
-鐢熸垚 Repository 鎺ュ彛浠ｇ爜銆?
-**鍙傛暟锛?*
-- `interfaceName` - 鎺ュ彛鍚?- `packageName` - 鍖呭悕
-- `options` - 閫夐」
+#### generateRepository(String interfaceName, String packageName, Map<String, Object> options)
+生成 Repository 接口代码。
+**参数：**
+- `interfaceName` - 接口名
+- `packageName` - 包名
+- `options` - 选项
 
-**杩斿洖鍊硷細** 鐢熸垚鐨?Repository 鎺ュ彛浠ｇ爜
+**返回值：** 生成的 Repository 接口代码
 
-**绀轰緥锛?*
+**示例：**
 ```java
 String repo = generator.generateRepository("ProductRepository", "com.example.repository", Map.of());
 ```
 
 ---
 
-#### generateService(String className, String packageName, Map&lt;String, Object&gt; options)
-鐢熸垚 Service 绫讳唬鐮併€?
-**鍙傛暟锛?*
-- `className` - Service 绫诲悕
-- `packageName` - 鍖呭悕
-- `options` - 閫夐」
-  - `entityName` - 瀹炰綋绫诲悕锛堝彲閫夛級
-  - `repositoryName` - Repository 鎺ュ彛鍚嶏紙鍙€夛級
+#### generateService(String className, String packageName, Map<String, Object> options)
+生成 Service 类代码。
+**参数：**
+- `className` - Service 类名
+- `packageName` - 包名
+- `options` - 选项
+  - `entityName` - 实体类名（可选）
+  - `repositoryName` - Repository 接口名（可选）
 
-**杩斿洖鍊硷細** 鐢熸垚鐨?Service 绫讳唬鐮?
-**绀轰緥锛?*
+**返回值：** 生成的 Service 类代码
+**示例：**
 ```java
 String service = generator.generateService("ProductService", "com.example.service",
     Map.of(
@@ -73,17 +76,17 @@ String service = generator.generateService("ProductService", "com.example.servic
 
 ---
 
-#### generateController(String className, String packageName, Map&lt;String, Object&gt; options)
-鐢熸垚 Controller 绫讳唬鐮併€?
-**鍙傛暟锛?*
-- `className` - Controller 绫诲悕
-- `packageName` - 鍖呭悕
-- `options` - 閫夐」
-  - `serviceName` - Service 绫诲悕锛堝彲閫夛級
-  - `basePath` - 鍩虹璺緞锛堝彲閫夛級
+#### generateController(String className, String packageName, Map<String, Object> options)
+生成 Controller 类代码。
+**参数：**
+- `className` - Controller 类名
+- `packageName` - 包名
+- `options` - 选项
+  - `serviceName` - Service 类名（可选）
+  - `basePath` - 基础路径（可选）
 
-**杩斿洖鍊硷細** 鐢熸垚鐨?Controller 绫讳唬鐮?
-**绀轰緥锛?*
+**返回值：** 生成的 Controller 类代码
+**示例：**
 ```java
 String controller = generator.generateController("ProductController", "com.example.controller",
     Map.of(
@@ -96,36 +99,37 @@ String controller = generator.generateController("ProductController", "com.examp
 ---
 
 #### generatePomXml(String projectName, String groupId, String artifactId, String version)
-鐢熸垚 pom.xml 鏂囦欢鍐呭銆?
-**鍙傛暟锛?*
-- `projectName` - 椤圭洰鍚嶇О
+生成 pom.xml 文件内容。
+**参数：**
+- `projectName` - 项目名称
 - `groupId` - Maven groupId
 - `artifactId` - Maven artifactId
-- `version` - 椤圭洰鐗堟湰
+- `version` - 项目版本
 
-**杩斿洖鍊硷細** pom.xml 鍐呭
+**返回值：** pom.xml 内容
 
-**绀轰緥锛?*
+**示例：**
 ```java
 String pom = generator.generatePomXml("MyProject", "com.example", "my-app", "1.0.0");
 ```
 
 ---
 
-## DefaultCodeGenerator 瀹炵幇
+## DefaultCodeGenerator 实现
 
-榛樿鐨勪唬鐮佺敓鎴愬櫒瀹炵幇绫汇€?
-### 鏋勯€犲嚱鏁?
+默认的代码生成器实现类。
+
+### 构造方法
 ```java
 public DefaultCodeGenerator()
 ```
 
-**绀轰緥锛?*
+**示例：**
 ```java
 CodeGenerator generator = new DefaultCodeGenerator();
 ```
 
 ---
 
-**鏂囨。鐗堟湰**: 2.0  
-**鏈€鍚庢洿鏂?*: 2026-03-08
+**文档版本**: 2.0  
+**最后更新**: 2026-03-08

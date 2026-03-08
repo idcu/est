@@ -1,5 +1,6 @@
-# LLM 瀹㈡埛绔?API 鍙傝€?
-## LlmClient 鎺ュ彛
+# LLM 客户端 API 参考
+
+## LlmClient 接口
 
 ```java
 public interface LlmClient {
@@ -11,95 +12,97 @@ public interface LlmClient {
 }
 ```
 
-### 鏂规硶璇存槑
+### 方法说明
 
 #### complete(String prompt)
-鍙戦€佹彁绀鸿瘝骞惰幏鍙栧畬鎴愮粨鏋溿€?
-**鍙傛暟锛?*
-- `prompt` - 鎻愮ず璇?
-**杩斿洖鍊硷細** 瀹屾垚缁撴灉
+发送提示词并获取完成结果。
+**参数：**
+- `prompt` - 提示词
+**返回值：** 完成结果
 
-**绀轰緥锛?*
+**示例：**
 ```java
-String response = client.complete("鍐欎竴棣栧叧浜庢槬澶╃殑璇?);
+String response = client.complete("写一篇关于春天的文章");
 ```
 
 ---
 
 #### complete(String prompt, LlmOptions options)
-鍙戦€佹彁绀鸿瘝骞惰幏鍙栧畬鎴愮粨鏋滐紝浣跨敤鑷畾涔夐€夐」銆?
-**鍙傛暟锛?*
-- `prompt` - 鎻愮ず璇?- `options` - LLM 閫夐」
+发送提示词并获取完成结果，使用自定义选项。
+**参数：**
+- `prompt` - 提示词
+- `options` - LLM 选项
 
-**杩斿洖鍊硷細** 瀹屾垚缁撴灉
+**返回值：** 完成结果
 
-**绀轰緥锛?*
+**示例：**
 ```java
 LlmOptions options = new LlmOptions();
 options.setTemperature(0.7);
 options.setMaxTokens(1000);
-String response = client.complete("鍐欎竴棣栧叧浜庢槬澶╃殑璇?, options);
+String response = client.complete("写一篇关于春天的文章", options);
 ```
 
 ---
 
-#### chat(List&lt;ChatMessage&gt; messages)
-杩涜澶氳疆瀵硅瘽銆?
-**鍙傛暟锛?*
-- `messages` - 娑堟伅鍒楄〃
+#### chat(List<ChatMessage> messages)
+进行多轮对话。
+**参数：**
+- `messages` - 消息列表
 
-**杩斿洖鍊硷細** 鏇存柊鍚庣殑娑堟伅鍒楄〃
+**返回值：** 更新后的消息列表
 
-**绀轰緥锛?*
+**示例：**
 ```java
 List<ChatMessage> messages = new ArrayList<>();
-messages.add(new ChatMessage("user", "浣犲ソ"));
+messages.add(new ChatMessage("user", "你好"));
 messages = client.chat(messages);
 String assistantReply = messages.get(messages.size() - 1).getContent();
 ```
 
 ---
 
-#### chat(List&lt;ChatMessage&gt; messages, LlmOptions options)
-杩涜澶氳疆瀵硅瘽锛屼娇鐢ㄨ嚜瀹氫箟閫夐」銆?
-**鍙傛暟锛?*
-- `messages` - 娑堟伅鍒楄〃
-- `options` - LLM 閫夐」
+#### chat(List<ChatMessage> messages, LlmOptions options)
+进行多轮对话，使用自定义选项。
+**参数：**
+- `messages` - 消息列表
+- `options` - LLM 选项
 
-**杩斿洖鍊硷細** 鏇存柊鍚庣殑娑堟伅鍒楄〃
+**返回值：** 更新后的消息列表
 
 ---
 
 #### isAvailable()
-妫€鏌?LLM 鏈嶅姟鏄惁鍙敤銆?
-**杩斿洖鍊硷細** 濡傛灉鍙敤杩斿洖 true锛屽惁鍒欒繑鍥?false
+检查 LLM 服务是否可用。
+**返回值：** 如果可用返回 true，否则返回 false
 
-**绀轰緥锛?*
+**示例：**
 ```java
 if (client.isAvailable()) {
-    // 浣跨敤 client
+    // 使用 client
 }
 ```
 
 ---
 
-## LlmConfig 绫?
-LLM 閰嶇疆绫汇€?
-### 鏋勯€犲嚱鏁?
+## LlmConfig 类
+LLM 配置类。
+
+### 构造方法
 ```java
 public LlmConfig()
 ```
 
-### 灞炴€?
-| 灞炴€?| 绫诲瀷 | 璇存槑 |
+### 属性
+| 属性 | 类型 | 说明 |
 |------|------|------|
-| provider | String | 鎻愪緵鍟嗗悕绉?|
-| apiKey | String | API 瀵嗛挜 |
-| model | String | 妯″瀷鍚嶇О |
-| baseUrl | String | API 鍩虹 URL |
-| timeout | int | 瓒呮椂鏃堕棿锛堟绉掞級 |
+| provider | String | 提供商名称 |
+| apiKey | String | API 密钥 |
+| model | String | 模型名称 |
+| baseUrl | String | API 基础 URL |
+| timeout | int | 超时时间（毫秒） |
 
-### 绀轰緥
+### 示例
 
 ```java
 LlmConfig config = new LlmConfig();
@@ -112,23 +115,24 @@ config.setTimeout(30000);
 
 ---
 
-## LlmOptions 绫?
-LLM 璇锋眰閫夐」绫汇€?
-### 鏋勯€犲嚱鏁?
+## LlmOptions 类
+LLM 请求选项类。
+
+### 构造方法
 ```java
 public LlmOptions()
 ```
 
-### 灞炴€?
-| 灞炴€?| 绫诲瀷 | 榛樿鍊?| 璇存槑 |
+### 属性
+| 属性 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| temperature | double | 0.7 | 娓╁害鍙傛暟 |
-| maxTokens | int | 2000 | 鏈€澶?token 鏁?|
-| topP | double | 1.0 | top-p 鍙傛暟 |
-| frequencyPenalty | double | 0.0 | 棰戠巼鎯╃綒 |
-| presencePenalty | double | 0.0 | 瀛樺湪鎯╃綒 |
+| temperature | double | 0.7 | 温度参数 |
+| maxTokens | int | 2000 | 最大 token 数 |
+| topP | double | 1.0 | top-p 参数 |
+| frequencyPenalty | double | 0.0 | 频率惩罚 |
+| presencePenalty | double | 0.0 | 存在惩罚 |
 
-### 绀轰緥
+### 示例
 
 ```java
 LlmOptions options = new LlmOptions();
@@ -138,47 +142,50 @@ options.setMaxTokens(500);
 
 ---
 
-## ChatMessage 绫?
-瀵硅瘽娑堟伅绫汇€?
-### 鏋勯€犲嚱鏁?
+## ChatMessage 类
+对话消息类。
+
+### 构造方法
 ```java
 public ChatMessage(String role, String content)
 ```
 
-### 灞炴€?
-| 灞炴€?| 绫诲瀷 | 璇存槑 |
+### 属性
+| 属性 | 类型 | 说明 |
 |------|------|------|
-| role | String | 瑙掕壊锛坲ser/assistant/system锛?|
-| content | String | 娑堟伅鍐呭 |
+| role | String | 角色（user/assistant/system） |
+| content | String | 消息内容 |
 
-### 绀轰緥
+### 示例
 
 ```java
-ChatMessage message = new ChatMessage("user", "浣犲ソ");
+ChatMessage message = new ChatMessage("user", "你好");
 ```
 
 ---
 
-## LlmClientFactory 绫?
-LLM 瀹㈡埛绔伐鍘傜被銆?
-### 鏂规硶
+## LlmClientFactory 类
+LLM 客户端工厂类。
+
+### 方法
 
 #### create(LlmConfig config)
-鏍规嵁閰嶇疆鍒涘缓 LLM 瀹㈡埛绔€?
-**鍙傛暟锛?*
-- `config` - LLM 閰嶇疆
+根据配置创建 LLM 客户端。
+**参数：**
+- `config` - LLM 配置
 
-**杩斿洖鍊硷細** LLM 瀹㈡埛绔疄渚?
-**绀轰緥锛?*
+**返回值：** LLM 客户端实现
+**示例：**
 ```java
 LlmClient client = LlmClientFactory.create(config);
 ```
 
 ---
 
-## 鎻愪緵鍟嗗疄鐜?
+## 提供商实现
+
 ### OpenAiLlmClient
-OpenAI 瀹㈡埛绔疄鐜般€?
+OpenAI 客户端实现。
 ```java
 LlmConfig config = new LlmConfig();
 config.setApiKey("sk-xxx");
@@ -188,7 +195,7 @@ LlmClient client = new OpenAiLlmClient(config);
 ```
 
 ### ZhipuLlmClient
-鏅鸿氨 AI 瀹㈡埛绔疄鐜般€?
+智谱 AI 客户端实现。
 ```java
 LlmConfig config = new LlmConfig();
 config.setApiKey("your-api-key");
@@ -198,7 +205,7 @@ LlmClient client = new ZhipuLlmClient(config);
 ```
 
 ### QwenLlmClient
-閫氫箟鍗冮棶瀹㈡埛绔疄鐜般€?
+通义千问客户端实现。
 ```java
 LlmConfig config = new LlmConfig();
 config.setApiKey("your-api-key");
@@ -209,5 +216,5 @@ LlmClient client = new QwenLlmClient(config);
 
 ---
 
-**鏂囨。鐗堟湰**: 2.0  
-**鏈€鍚庢洿鏂?*: 2026-03-08
+**文档版本**: 2.0  
+**最后更新**: 2026-03-08
