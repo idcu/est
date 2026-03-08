@@ -57,7 +57,7 @@ public class BasicWebAppExample {
         app.get("/api/greeting", (req, res) -> {
             res.json(Map.of(
                 "message", "欢迎使用 EST Web 框架！",
-                "version", "1.3.0",
+                "version", "2.0.0",
                 "status", "success"
             ));
         });
@@ -339,7 +339,7 @@ public class BasicWebAppExample {
                 "status", "ok",
                 "timestamp", System.currentTimeMillis(),
                 "service", "EST Web Framework",
-                "version", "1.3.0"
+                "version", "2.0.0"
             ));
         });
         

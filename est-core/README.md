@@ -44,12 +44,12 @@ EST Core 就像是一个"智能管家"。想象一下你经营一家公司，有
     <dependency>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-core-api</artifactId>
-        <version>1.3.0-SNAPSHOT</version>
+        <version>2.0.0</version>
     </dependency>
     <dependency>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-core-impl</artifactId>
-        <version>1.3.0-SNAPSHOT</version>
+        <version>2.0.0</version>
     </dependency>
 </dependencies>
 ```

@@ -101,7 +101,7 @@ java -jar est-scaffold.jar web my-app --groupId=com.mycompany --package=mywebapp
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-scaffold</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 

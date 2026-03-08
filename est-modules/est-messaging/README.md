@@ -148,7 +148,7 @@ public class LocalTopicExample {
         
         // 生产者发布消息（所有订阅者都能收到）
         MessageProducer producer = topic.createProducer();
-        producer.send("重大新闻: EST 1.3 发布了！");
+        producer.send("重大新闻: EST 2.0 发布了！");
     }
 }
 ```
