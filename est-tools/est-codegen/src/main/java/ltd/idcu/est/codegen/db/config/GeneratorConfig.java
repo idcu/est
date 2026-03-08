@@ -17,11 +17,15 @@ public class GeneratorConfig {
     private boolean generateService = true;
     private boolean generateController = true;
     private boolean generateDto = true;
+    private boolean generateTest = true;
+    private boolean generateMapperXml = true;
     private String entityPackage;
     private String repositoryPackage;
     private String servicePackage;
     private String controllerPackage;
     private String dtoPackage;
+    private String testPackage;
+    private String mapperXmlPackage;
     private boolean useLombok = false;
     private boolean useSwagger = false;
     private boolean useMybatisPlus = false;
@@ -139,6 +143,22 @@ public class GeneratorConfig {
         this.generateDto = generateDto;
     }
 
+    public boolean isGenerateTest() {
+        return generateTest;
+    }
+
+    public void setGenerateTest(boolean generateTest) {
+        this.generateTest = generateTest;
+    }
+
+    public boolean isGenerateMapperXml() {
+        return generateMapperXml;
+    }
+
+    public void setGenerateMapperXml(boolean generateMapperXml) {
+        this.generateMapperXml = generateMapperXml;
+    }
+
     public String getEntityPackage() {
         return entityPackage != null ? entityPackage : (packageName != null ? packageName + ".entity" : null);
     }
@@ -177,6 +197,22 @@ public class GeneratorConfig {
 
     public void setDtoPackage(String dtoPackage) {
         this.dtoPackage = dtoPackage;
+    }
+
+    public String getTestPackage() {
+        return testPackage != null ? testPackage : (packageName != null ? packageName + ".test" : null);
+    }
+
+    public void setTestPackage(String testPackage) {
+        this.testPackage = testPackage;
+    }
+
+    public String getMapperXmlPackage() {
+        return mapperXmlPackage != null ? mapperXmlPackage : "mapper";
+    }
+
+    public void setMapperXmlPackage(String mapperXmlPackage) {
+        this.mapperXmlPackage = mapperXmlPackage;
     }
 
     public boolean isUseLombok() {

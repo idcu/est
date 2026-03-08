@@ -6,8 +6,10 @@ import ltd.idcu.est.codegen.db.database.DatabaseType;
 import ltd.idcu.est.codegen.db.generator.ControllerGenerator;
 import ltd.idcu.est.codegen.db.generator.DtoGenerator;
 import ltd.idcu.est.codegen.db.generator.EntityGenerator;
+import ltd.idcu.est.codegen.db.generator.MapperXmlGenerator;
 import ltd.idcu.est.codegen.db.generator.RepositoryGenerator;
 import ltd.idcu.est.codegen.db.generator.ServiceGenerator;
+import ltd.idcu.est.codegen.db.generator.TestGenerator;
 import ltd.idcu.est.codegen.db.metadata.Table;
 import ltd.idcu.est.codegen.db.reader.DatabaseMetadataReader;
 import ltd.idcu.est.scaffold.FileWriterUtil;
@@ -29,6 +31,8 @@ public class DatabaseCodeGenerator implements CodeGenerator {
     private final ServiceGenerator serviceGenerator;
     private final ControllerGenerator controllerGenerator;
     private final DtoGenerator dtoGenerator;
+    private final TestGenerator testGenerator;
+    private final MapperXmlGenerator mapperXmlGenerator;
 
     public DatabaseCodeGenerator(GeneratorConfig config) {
         this(config, DatabaseType.fromJdbcUrl(config.getJdbcUrl()));
@@ -42,6 +46,8 @@ public class DatabaseCodeGenerator implements CodeGenerator {
         this.serviceGenerator = new ServiceGenerator(config);
         this.controllerGenerator = new ControllerGenerator(config);
         this.dtoGenerator = new DtoGenerator(config);
+        this.testGenerator = new TestGenerator(config);
+        this.mapperXmlGenerator = new MapperXmlGenerator(config);
     }
 
     @Override
@@ -108,6 +114,14 @@ public class DatabaseCodeGenerator implements CodeGenerator {
             System.out.println("  Generated Repository: " + repoPath);
         }
         
+        if (config.isGenerateMapperXml()) {
+            String mapperXmlCode = mapperXmlGenerator.generate(table);
+            String mapperXmlFileName = table.getClassName() + "Mapper.xml";
+            Path mapperXmlPath = outputDir.resolve("resources").resolve(toPath(config.getMapperXmlPackage())).resolve(mapperXmlFileName);
+            FileWriterUtil.writeFile(mapperXmlPath, mapperXmlCode, false);
+            System.out.println("  Generated Mapper XML: " + mapperXmlPath);
+        }
+        
         if (config.isGenerateService()) {
             String serviceCode = serviceGenerator.generate(table);
             String serviceFileName = table.getClassName() + "Service.java";
@@ -130,6 +144,14 @@ public class DatabaseCodeGenerator implements CodeGenerator {
             Path dtoPath = outputDir.resolve(toPath(config.getDtoPackage())).resolve(dtoFileName);
             FileWriterUtil.writeFile(dtoPath, dtoCode, false);
             System.out.println("  Generated DTO: " + dtoPath);
+        }
+        
+        if (config.isGenerateTest()) {
+            String testCode = testGenerator.generate(table);
+            String testFileName = table.getClassName() + "ServiceTest.java";
+            Path testPath = outputDir.resolve(toPath(config.getTestPackage())).resolve(testFileName);
+            FileWriterUtil.writeFile(testPath, testCode, false);
+            System.out.println("  Generated Test: " + testPath);
         }
     }
 
