@@ -10,15 +10,15 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-public class ZhipuAiLlmClient extends AbstractLlmClient {
+public class OllamaLlmClient extends AbstractLlmClient {
 
-    public ZhipuAiLlmClient() {
+    public OllamaLlmClient() {
         super();
-        this.endpoint = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
-        this.model = "glm-4";
+        this.endpoint = "http://localhost:11434/api/chat";
+        this.model = "llama2";
     }
 
-    public ZhipuAiLlmClient(String apiKey) {
+    public OllamaLlmClient(String apiKey) {
         this();
         this.apiKey = apiKey;
     }
@@ -30,7 +30,6 @@ public class ZhipuAiLlmClient extends AbstractLlmClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(endpoint))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
 
@@ -66,8 +65,10 @@ public class ZhipuAiLlmClient extends AbstractLlmClient {
         }
         
         sb.append("  ],\n");
-        sb.append("  \"temperature\": ").append(options.getTemperature() != null ? options.getTemperature() : 0.7).append(",\n");
-        sb.append("  \"max_tokens\": ").append(options.getMaxTokens() != null ? options.getMaxTokens() : 2000).append("\n");
+        sb.append("  \"stream\": false,\n");
+        sb.append("  \"options\": {\n");
+        sb.append("    \"temperature\": ").append(options.getTemperature() != null ? options.getTemperature() : 0.7).append("\n");
+        sb.append("  }\n");
         sb.append("}");
         return sb.toString();
     }
@@ -94,6 +95,11 @@ public class ZhipuAiLlmClient extends AbstractLlmClient {
 
     @Override
     public String getName() {
-        return "Zhipu AI";
+        return "Ollama (本地模型)";
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return true;
     }
 }

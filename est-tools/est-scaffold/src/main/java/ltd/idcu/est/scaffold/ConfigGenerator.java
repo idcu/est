@@ -104,7 +104,7 @@ public class ConfigGenerator {
                 <maven.compiler.source>%s</maven.compiler.source>
                 <maven.compiler.target>%s</maven.compiler.target>
                 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                <est.version>1.3.0-SNAPSHOT</est.version>
+                <est.version>2.0.0</est.version>
             </properties>
             
             <dependencies>
@@ -296,7 +296,7 @@ public class ConfigGenerator {
             config.getVersion(),
             config.getArtifactId(),
             config.getPackageName().replace(".", "/"),
-            "1.3.0-SNAPSHOT",
+            "2.0.0",
             config.getJavaVersion()
         );
     }

@@ -2,6 +2,7 @@ package ltd.idcu.est.codegen.db.generator;
 
 import ltd.idcu.est.codegen.db.config.GeneratorConfig;
 import ltd.idcu.est.codegen.db.metadata.Column;
+import ltd.idcu.est.codegen.db.metadata.PrimaryKey;
 import ltd.idcu.est.codegen.db.metadata.Table;
 import ltd.idcu.est.codegen.db.util.NamingUtils;
 
@@ -17,6 +18,8 @@ public class MapperXmlGenerator {
         StringBuilder sb = new StringBuilder();
         String className = table.getClassName();
         String tableName = table.getName();
+        PrimaryKey primaryKey = table.getPrimaryKey();
+        Column pkColumn = primaryKey != null ? primaryKey.getFirstColumn() : null;
         
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         sb.append("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" ");
@@ -25,11 +28,11 @@ public class MapperXmlGenerator {
         
         sb.append("    <resultMap id=\"BaseResultMap\" type=\"").append(config.getEntityPackage()).append(".").append(className).append("\">\n");
         for (Column column : table.getColumns()) {
-            String property = NamingUtils.toCamelCase(column.getColumnName(), false);
+            String property = column.getFieldName();
             if (column.isPrimaryKey()) {
-                sb.append("        <id column=\"").append(column.getColumnName()).append("\" property=\"").append(property).append("\"/>\n");
+                sb.append("        <id column=\"").append(column.getName()).append("\" property=\"").append(property).append("\"/>\n");
             } else {
-                sb.append("        <result column=\"").append(column.getColumnName()).append("\" property=\"").append(property).append("\"/>\n");
+                sb.append("        <result column=\"").append(column.getName()).append("\" property=\"").append(property).append("\"/>\n");
             }
         }
         sb.append("    </resultMap>\n\n");
@@ -41,7 +44,7 @@ public class MapperXmlGenerator {
             if (!first) {
                 sb.append(", ");
             }
-            sb.append(column.getColumnName());
+            sb.append(column.getName());
             first = false;
         }
         sb.append("\n");
@@ -51,8 +54,8 @@ public class MapperXmlGenerator {
         sb.append("        SELECT\n");
         sb.append("        <include refid=\"Base_Column_List\"/>\n");
         sb.append("        FROM ").append(tableName).append("\n");
-        if (table.getPrimaryKey() != null) {
-            sb.append("        WHERE ").append(table.getPrimaryKey().getColumnName()).append(" = #{id}\n");
+        if (pkColumn != null) {
+            sb.append("        WHERE ").append(pkColumn.getName()).append(" = #{id}\n");
         }
         sb.append("    </select>\n\n");
         
@@ -63,8 +66,8 @@ public class MapperXmlGenerator {
         sb.append("    </select>\n\n");
         
         sb.append("    <insert id=\"insert\" parameterType=\"").append(config.getEntityPackage()).append(".").append(className).append("\"");
-        if (table.getPrimaryKey() != null && table.getPrimaryKey().isAutoIncrement()) {
-            sb.append(" useGeneratedKeys=\"true\" keyProperty=\"").append(NamingUtils.toCamelCase(table.getPrimaryKey().getColumnName(), false)).append("\"");
+        if (pkColumn != null && pkColumn.isAutoIncrement()) {
+            sb.append(" useGeneratedKeys=\"true\" keyProperty=\"").append(pkColumn.getFieldName()).append("\"");
         }
         sb.append(">\n");
         sb.append("        INSERT INTO ").append(tableName).append(" (\n");
@@ -76,7 +79,7 @@ public class MapperXmlGenerator {
                 } else {
                     sb.append("            ");
                 }
-                sb.append(column.getColumnName());
+                sb.append(column.getName());
                 first = false;
             }
         }
@@ -89,7 +92,7 @@ public class MapperXmlGenerator {
                 } else {
                     sb.append("            ");
                 }
-                sb.append("#{").append(NamingUtils.toCamelCase(column.getColumnName(), false)).append("}");
+                sb.append("#{").append(column.getFieldName()).append("}");
                 first = false;
             }
         }
@@ -101,21 +104,21 @@ public class MapperXmlGenerator {
         sb.append("        <set>\n");
         for (Column column : table.getColumns()) {
             if (!column.isPrimaryKey()) {
-                sb.append("            <if test=\"").append(NamingUtils.toCamelCase(column.getColumnName(), false)).append(" != null\">\n");
-                sb.append("                ").append(column.getColumnName()).append(" = #{").append(NamingUtils.toCamelCase(column.getColumnName(), false)).append("},\n");
+                sb.append("            <if test=\"").append(column.getFieldName()).append(" != null\">\n");
+                sb.append("                ").append(column.getName()).append(" = #{").append(column.getFieldName()).append("},\n");
                 sb.append("            </if>\n");
             }
         }
         sb.append("        </set>\n");
-        if (table.getPrimaryKey() != null) {
-            sb.append("        WHERE ").append(table.getPrimaryKey().getColumnName()).append(" = #{").append(NamingUtils.toCamelCase(table.getPrimaryKey().getColumnName(), false)).append("}\n");
+        if (pkColumn != null) {
+            sb.append("        WHERE ").append(pkColumn.getName()).append(" = #{").append(pkColumn.getFieldName()).append("}\n");
         }
         sb.append("    </update>\n\n");
         
         sb.append("    <delete id=\"delete\">\n");
         sb.append("        DELETE FROM ").append(tableName).append("\n");
-        if (table.getPrimaryKey() != null) {
-            sb.append("        WHERE ").append(table.getPrimaryKey().getColumnName()).append(" = #{id}\n");
+        if (pkColumn != null) {
+            sb.append("        WHERE ").append(pkColumn.getName()).append(" = #{id}\n");
         }
         sb.append("    </delete>\n\n");
         

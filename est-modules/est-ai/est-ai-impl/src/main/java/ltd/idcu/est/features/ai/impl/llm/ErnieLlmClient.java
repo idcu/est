@@ -10,15 +10,15 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-public class ZhipuAiLlmClient extends AbstractLlmClient {
+public class ErnieLlmClient extends AbstractLlmClient {
 
-    public ZhipuAiLlmClient() {
+    public ErnieLlmClient() {
         super();
-        this.endpoint = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
-        this.model = "glm-4";
+        this.endpoint = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions";
+        this.model = "ernie-4.0";
     }
 
-    public ZhipuAiLlmClient(String apiKey) {
+    public ErnieLlmClient(String apiKey) {
         this();
         this.apiKey = apiKey;
     }
@@ -28,9 +28,8 @@ public class ZhipuAiLlmClient extends AbstractLlmClient {
         try {
             String requestBody = buildRequestBody(messages, options);
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(endpoint))
+                    .uri(URI.create(endpoint + "?access_token=" + apiKey))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
 
@@ -50,7 +49,6 @@ public class ZhipuAiLlmClient extends AbstractLlmClient {
     private String buildRequestBody(List<LlmMessage> messages, LlmOptions options) {
         StringBuilder sb = new StringBuilder();
         sb.append("{\n");
-        sb.append("  \"model\": \"").append(model).append("\",\n");
         sb.append("  \"messages\": [\n");
         
         for (int i = 0; i < messages.size(); i++) {
@@ -66,17 +64,16 @@ public class ZhipuAiLlmClient extends AbstractLlmClient {
         }
         
         sb.append("  ],\n");
-        sb.append("  \"temperature\": ").append(options.getTemperature() != null ? options.getTemperature() : 0.7).append(",\n");
-        sb.append("  \"max_tokens\": ").append(options.getMaxTokens() != null ? options.getMaxTokens() : 2000).append("\n");
+        sb.append("  \"temperature\": ").append(options.getTemperature() != null ? options.getTemperature() : 0.7).append("\n");
         sb.append("}");
         return sb.toString();
     }
 
     private LlmResponse parseResponse(String jsonBody) {
         try {
-            int contentStart = jsonBody.indexOf("\"content\":\"") + 11;
+            int contentStart = jsonBody.indexOf("\"result\":\"") + 10;
             int contentEnd = jsonBody.indexOf("\"", contentStart);
-            if (contentStart > 10 && contentEnd > contentStart) {
+            if (contentStart > 9 && contentEnd > contentStart) {
                 String content = jsonBody.substring(contentStart, contentEnd);
                 return LlmResponse.success(unescapeJson(content));
             }
@@ -94,6 +91,6 @@ public class ZhipuAiLlmClient extends AbstractLlmClient {
 
     @Override
     public String getName() {
-        return "Zhipu AI";
+        return "Ernie (文心一言)";
     }
 }

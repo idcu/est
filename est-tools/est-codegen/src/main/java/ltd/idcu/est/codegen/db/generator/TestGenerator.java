@@ -2,6 +2,7 @@ package ltd.idcu.est.codegen.db.generator;
 
 import ltd.idcu.est.codegen.db.config.GeneratorConfig;
 import ltd.idcu.est.codegen.db.metadata.Column;
+import ltd.idcu.est.codegen.db.metadata.PrimaryKey;
 import ltd.idcu.est.codegen.db.metadata.Table;
 import ltd.idcu.est.codegen.db.util.NamingUtils;
 
@@ -16,7 +17,10 @@ public class TestGenerator {
     public String generate(Table table) {
         StringBuilder sb = new StringBuilder();
         String className = table.getClassName();
-        String varName = NamingUtils.toCamelCase(className, false);
+        String varName = NamingUtils.toCamelCase(className);
+        PrimaryKey primaryKey = table.getPrimaryKey();
+        Column pkColumn = primaryKey != null ? primaryKey.getFirstColumn() : null;
+        String pkGetterName = pkColumn != null ? "get" + NamingUtils.toPascalCase(pkColumn.getFieldName()) : null;
         
         sb.append("package ").append(config.getTestPackage()).append(";\n\n");
         sb.append("import org.junit.jupiter.api.Test;\n");
@@ -39,8 +43,8 @@ public class TestGenerator {
         sb.append("        ").append(className).append(" ").append(varName).append(" = createTest").append(className).append("();\n");
         sb.append("        ").append(className).append(" saved = service.create(").append(varName).append(");\n");
         sb.append("        assertNotNull(saved);\n");
-        if (table.getPrimaryKey() != null) {
-            sb.append("        assertNotNull(saved.get").append(NamingUtils.toCamelCase(table.getPrimaryKey().getColumnName(), true)).append("());\n");
+        if (pkGetterName != null) {
+            sb.append("        assertNotNull(saved.").append(pkGetterName).append("());\n");
         }
         sb.append("    }\n\n");
         
@@ -48,8 +52,8 @@ public class TestGenerator {
         sb.append("    void testFindById() {\n");
         sb.append("        ").append(className).append(" ").append(varName).append(" = createTest").append(className).append("();\n");
         sb.append("        ").append(className).append(" saved = service.create(").append(varName).append(");\n");
-        if (table.getPrimaryKey() != null) {
-            sb.append("        ").append(className).append(" found = service.findById(saved.get").append(NamingUtils.toCamelCase(table.getPrimaryKey().getColumnName(), true)).append("());\n");
+        if (pkGetterName != null) {
+            sb.append("        ").append(className).append(" found = service.findById(saved.").append(pkGetterName).append("());\n");
             sb.append("        assertNotNull(found);\n");
         }
         sb.append("    }\n\n");
@@ -74,8 +78,8 @@ public class TestGenerator {
         sb.append("    void testDelete() {\n");
         sb.append("        ").append(className).append(" ").append(varName).append(" = createTest").append(className).append("();\n");
         sb.append("        ").append(className).append(" saved = service.create(").append(varName).append(");\n");
-        if (table.getPrimaryKey() != null) {
-            sb.append("        boolean deleted = service.delete(saved.get").append(NamingUtils.toCamelCase(table.getPrimaryKey().getColumnName(), true)).append("());\n");
+        if (pkGetterName != null) {
+            sb.append("        boolean deleted = service.delete(saved.").append(pkGetterName).append("());\n");
             sb.append("        assertTrue(deleted);\n");
         }
         sb.append("    }\n\n");
@@ -85,8 +89,8 @@ public class TestGenerator {
         
         for (Column column : table.getColumns()) {
             if (!column.isPrimaryKey() || !column.isAutoIncrement()) {
-                String fieldName = NamingUtils.toCamelCase(column.getColumnName(), false);
-                String setterName = "set" + NamingUtils.toCamelCase(column.getColumnName(), true);
+                String fieldName = column.getFieldName();
+                String setterName = "set" + NamingUtils.toPascalCase(fieldName);
                 String defaultValue = getDefaultValue(column);
                 if (defaultValue != null) {
                     sb.append("        ").append(varName).append(".").append(setterName).append("(").append(defaultValue).append(");\n");
@@ -104,6 +108,9 @@ public class TestGenerator {
     
     private String getDefaultValue(Column column) {
         String javaType = column.getJavaType();
+        if (javaType == null) {
+            return null;
+        }
         switch (javaType) {
             case "String":
                 return "\"test\"";

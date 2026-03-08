@@ -48,12 +48,12 @@ EST Features Data 就像是一个"超级档案管理员"。想象一下你有很
     <dependency>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-features-data-api</artifactId>
-        <version>1.3.0-SNAPSHOT</version>
+        <version>2.0.0</version>
     </dependency>
     <dependency>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-features-data-memory</artifactId>
-        <version>1.3.0-SNAPSHOT</version>
+        <version>2.0.0</version>
     </dependency>
 </dependencies>
 ```

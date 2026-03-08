@@ -10,15 +10,15 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-public class ZhipuAiLlmClient extends AbstractLlmClient {
+public class DoubaoLlmClient extends AbstractLlmClient {
 
-    public ZhipuAiLlmClient() {
+    public DoubaoLlmClient() {
         super();
-        this.endpoint = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
-        this.model = "glm-4";
+        this.endpoint = "https://ark.cn-beijing.volces.com/api/v3/chat/completions";
+        this.model = "ep-20241203143730-6jvq9";
     }
 
-    public ZhipuAiLlmClient(String apiKey) {
+    public DoubaoLlmClient(String apiKey) {
         this();
         this.apiKey = apiKey;
     }
@@ -94,6 +94,6 @@ public class ZhipuAiLlmClient extends AbstractLlmClient {
 
     @Override
     public String getName() {
-        return "Zhipu AI";
+        return "Doubao (豆包)";
     }
 }

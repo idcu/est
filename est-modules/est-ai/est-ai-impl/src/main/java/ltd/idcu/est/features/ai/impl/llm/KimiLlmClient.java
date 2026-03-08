@@ -10,15 +10,15 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-public class ZhipuAiLlmClient extends AbstractLlmClient {
+public class KimiLlmClient extends AbstractLlmClient {
 
-    public ZhipuAiLlmClient() {
+    public KimiLlmClient() {
         super();
-        this.endpoint = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
-        this.model = "glm-4";
+        this.endpoint = "https://api.moonshot.cn/v1/chat/completions";
+        this.model = "moonshot-v1-8k";
     }
 
-    public ZhipuAiLlmClient(String apiKey) {
+    public KimiLlmClient(String apiKey) {
         this();
         this.apiKey = apiKey;
     }
@@ -94,6 +94,6 @@ public class ZhipuAiLlmClient extends AbstractLlmClient {
 
     @Override
     public String getName() {
-        return "Zhipu AI";
+        return "Kimi (月之暗面)";
     }
 }

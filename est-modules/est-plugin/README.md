@@ -108,6 +108,6 @@ public class MyPlugin implements Plugin {
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-plugin-api</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>2.0.0</version>
 </dependency>
 ```

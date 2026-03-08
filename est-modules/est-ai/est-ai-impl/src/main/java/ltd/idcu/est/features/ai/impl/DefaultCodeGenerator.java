@@ -1,10 +1,32 @@
 package ltd.idcu.est.features.ai.impl;
 
 import ltd.idcu.est.features.ai.api.CodeGenerator;
+import ltd.idcu.est.features.ai.api.LlmClient;
+import ltd.idcu.est.features.ai.impl.llm.LlmClientFactory;
 
 import java.util.Map;
 
 public class DefaultCodeGenerator implements CodeGenerator {
+    
+    private LlmClient llmClient;
+    
+    public DefaultCodeGenerator() {
+        this.llmClient = LlmClientFactory.create();
+    }
+    
+    public DefaultCodeGenerator(LlmClient llmClient) {
+        this.llmClient = llmClient;
+    }
+    
+    @Override
+    public LlmClient getLlmClient() {
+        return llmClient;
+    }
+    
+    @Override
+    public void setLlmClient(LlmClient llmClient) {
+        this.llmClient = llmClient;
+    }
     
     @Override
     public String generateWebApp(String projectName, String packageName, Map<String, Object> options) {
@@ -157,5 +179,15 @@ public class DefaultCodeGenerator implements CodeGenerator {
                 </dependencies>
             </project>
             """, groupId, artifactId, version, projectName);
+    }
+    
+    @Override
+    public String generateFromRequirement(String requirement) {
+        if (llmClient != null && llmClient.isAvailable()) {
+            String prompt = "你是一个Java开发专家，使用EST框架。请根据以下需求生成完整的Java代码：\n\n" + requirement +
+                           "\n\n请只返回代码，不要其他解释。如果需要生成多个文件，请使用=====分隔符分隔不同文件，并在每个文件前注明文件名。";
+            return llmClient.generate(prompt);
+        }
+        return "LLM not available. Please configure an LLM client first.";
     }
 }

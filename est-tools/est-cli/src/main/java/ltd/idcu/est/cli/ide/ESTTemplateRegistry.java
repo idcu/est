@@ -328,7 +328,7 @@ public class ESTTemplateRegistry {
                 "        <maven.compiler.source>17</maven.compiler.source>\n" +
                 "        <maven.compiler.target>17</maven.compiler.target>\n" +
                 "        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\n" +
-                "        <est.version>1.3.0-SNAPSHOT</est.version>\n" +
+                "        <est.version>2.0.0</est.version>\n" +
                 "    </properties>\n" +
                 "\n" +
                 "    <dependencies>\n" +

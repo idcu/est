@@ -1,5 +1,6 @@
 package ltd.idcu.est.features.ai.api;
 
+import java.util.List;
 import java.util.Map;
 
 public interface AiAssistant {
@@ -9,6 +10,10 @@ public interface AiAssistant {
     CodeGenerator getCodeGenerator();
     
     ProjectScaffold getProjectScaffold();
+    
+    LlmClient getLlmClient();
+    
+    void setLlmClient(LlmClient llmClient);
     
     String getQuickReference(String topic);
     
@@ -23,4 +28,8 @@ public interface AiAssistant {
     String explainCode(String code);
     
     String optimizeCode(String code);
+    
+    String chat(String message);
+    
+    String chat(List<LlmMessage> messages);
 }

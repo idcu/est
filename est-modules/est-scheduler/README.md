@@ -36,17 +36,17 @@
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-features-scheduler-api</artifactId>
-    <version>1.3.0</version>
+    <version>2.0.0</version>
 </dependency>
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-features-scheduler-fixed</artifactId>
-    <version>1.3.0</version>
+    <version>2.0.0</version>
 </dependency>
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-features-scheduler-cron</artifactId>
-    <version>1.3.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
