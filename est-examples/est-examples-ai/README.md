@@ -69,7 +69,7 @@ mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.AiQuickStartExample"
 | [CodeGeneratorExample](src/main/java/ltd/idcu/est/examples/ai/CodeGeneratorExample.java) | 代码生成示例 | 代码生成 | ⭐⭐⭐ |
 | [PromptTemplateExample](src/main/java/ltd/idcu/est/examples/ai/PromptTemplateExample.java) | 提示词模板示例 | 提示词工程 | ⭐⭐⭐ |
 | [MidtermFeaturesExample](src/main/java/ltd/idcu/est/examples/ai/MidtermFeaturesExample.java) | 中期功能演示 | 重构助手、架构顾问、LLM集成 | ⭐⭐⭐⭐ |
-| [LongtermVisionExample](src/main/java/ltd/idcu/est/examples/ai/LongtermVisionExample.java) | 长期愿景演示 | AI驱动开发、智能框架、低代码 | ⭐⭐⭐⭐⭐ |
+| [LongTermFeaturesExample](src/main/java/ltd/idcu/est/examples/ai/LongTermFeaturesExample.java) | 长期目标功能演示 | 需求解析、架构设计、测试部署 | ⭐⭐⭐⭐⭐ |
 
 ---
 
@@ -121,18 +121,18 @@ mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.MidtermFeaturesExample"
 - 智能代码补全 - 上下文感知的代码建议
 - LLM 客户端抽象层 - 统一的 LLM 集成接口
 
-### 运行 LongtermVisionExample - 长期愿景演示
+### 运行 LongTermFeaturesExample - 长期目标功能演示
 
 ```bash
 cd est-examples/est-examples-ai
-mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.LongtermVisionExample"
+mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.ai.LongTermFeaturesExample"
 ```
 
 演示内容：
-- AI 驱动开发 - 从需求到部署的全流程 AI 辅助
-- 智能框架 - 学习和进化能力
-- AI 开发生态 - 完整的 AI 编程工具生态系统
-- 低代码/无代码 - 让 AI 帮助更多人轻松开发
+- 需求解析器 - 解析自然语言需求、提取组件、评估复杂度
+- 架构设计器 - 设计系统架构、推荐架构模式、验证架构设计
+- 测试和部署管理器 - 生成测试用例、创建部署计划、运行测试、执行部署
+- 完整工作流程 - 从需求到部署的全流程演示
 
 ---
 
@@ -208,8 +208,10 @@ String pom = generator.generatePomXml("MyProject", "com.example", "my-app", "1.0
 ## 下一步
 
 - 🚀 从 [AiQuickStartExample](src/main/java/ltd/idcu/est/examples/ai/AiQuickStartExample.java) 开始
-- 🌟 探索 [CompleteAiExample](src/main/java/ltd/idcu/est/examples/ai/CompleteAiExample.java) 了解所有功能
-- 🌐 体验 [AiWebAssistantExample](src/main/java/ltd/idcu/est/examples/ai/AiWebAssistantExample.java) Web 界面
+- 🌟 探索 [AdvancedAiExample](src/main/java/ltd/idcu/est/examples/ai/AdvancedAiExample.java) 了解所有功能
+- 🌐 体验 [AiAssistantWebExample](src/main/java/ltd/idcu/est/examples/ai/AiAssistantWebExample.java) Web 界面
+- 🏗️ 查看中期功能 [MidTermFeaturesExample](src/main/java/ltd/idcu/est/examples/ai/MidTermFeaturesExample.java)
+- 🚀 体验长期目标 [LongTermFeaturesExample](src/main/java/ltd/idcu/est/examples/ai/LongTermFeaturesExample.java)
 - 📖 想看 Web 应用，看 [Web 示例](../est-examples-web/)
 - 💡 想了解 AI 模块详情，看 [AI 模块文档](../../est-modules/est-ai/README.md)
 - 📚 深入学习，看 [AI 开发者专区](../../docs/ai/README.md)
@@ -217,5 +219,5 @@ String pom = generator.generatePomXml("MyProject", "com.example", "my-app", "1.0
 ---
 
 **文档版本**: 2.0  
-**最后更新**: 2026-03-07  
+**最后更新**: 2026-03-08  
 **维护者**: EST 架构团队

@@ -1,6 +1,7 @@
 package ltd.idcu.est.admin.controller;
 
 import ltd.idcu.est.admin.Admin;
+import ltd.idcu.est.admin.api.ApiResponse;
 import ltd.idcu.est.admin.api.AuthService;
 import ltd.idcu.est.admin.api.User;
 import ltd.idcu.est.web.api.Request;
@@ -34,22 +35,21 @@ public class AdminController {
             session.setAttribute("authToken", token);
             session.setAttribute("currentUser", user);
             
-            res.json(Map.of(
-                "success", true,
-                "message", "Login successful",
-                "token", token,
-                "user", Map.of(
-                    "username", user.getUsername(),
-                    "email", user.getEmail(),
-                    "roles", user.getRoles()
-                )
-            ));
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("id", user.getId());
+            userData.put("username", user.getUsername());
+            userData.put("email", user.getEmail());
+            userData.put("roles", user.getRoles());
+            userData.put("permissions", user.getPermissions());
+            
+            Map<String, Object> data = new HashMap<>();
+            data.put("token", token);
+            data.put("user", userData);
+            
+            res.json(ApiResponse.success("Login successful", data));
         } catch (Exception e) {
             res.setStatus(401);
-            res.json(Map.of(
-                "success", false,
-                "message", e.getMessage()
-            ));
+            res.json(ApiResponse.unauthorized(e.getMessage()));
         }
     }
     
@@ -60,10 +60,77 @@ public class AdminController {
             session.removeAttribute("currentUser");
         }
         
-        res.json(Map.of(
-            "success", true,
-            "message", "Logout successful"
-        ));
+        res.json(ApiResponse.success("Logout successful", null));
+    }
+    
+    public void getCurrentUser(Request req, Response res) {
+        String authHeader = req.getHeader("Authorization");
+        String token = null;
+        
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        } else {
+            Session session = req.getSession(false);
+            if (session != null) {
+                token = (String) session.getAttribute("authToken");
+            }
+        }
+        
+        if (token == null) {
+            res.setStatus(401);
+            res.json(ApiResponse.unauthorized("Not authenticated"));
+            return;
+        }
+        
+        User user = authService.validateToken(token);
+        if (user == null) {
+            res.setStatus(401);
+            res.json(ApiResponse.unauthorized("Invalid or expired token"));
+            return;
+        }
+        
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("id", user.getId());
+        userData.put("username", user.getUsername());
+        userData.put("email", user.getEmail());
+        userData.put("roles", user.getRoles());
+        userData.put("permissions", user.getPermissions());
+        userData.put("active", user.isActive());
+        
+        res.json(ApiResponse.success(userData));
+    }
+    
+    public void refreshToken(Request req, Response res) {
+        String authHeader = req.getHeader("Authorization");
+        String token = null;
+        
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        } else {
+            Session session = req.getSession(false);
+            if (session != null) {
+                token = (String) session.getAttribute("authToken");
+            }
+        }
+        
+        if (token == null) {
+            res.setStatus(401);
+            res.json(ApiResponse.unauthorized("Not authenticated"));
+            return;
+        }
+        
+        User user = authService.validateToken(token);
+        if (user == null) {
+            res.setStatus(401);
+            res.json(ApiResponse.unauthorized("Invalid or expired token"));
+            return;
+        }
+        
+        String newToken = authService.generateToken(user);
+        Map<String, Object> data = new HashMap<>();
+        data.put("token", newToken);
+        
+        res.json(ApiResponse.success("Token refreshed", data));
     }
     
     public void dashboard(Request req, Response res) {

@@ -12,6 +12,9 @@ public class DefaultAiAssistant implements AiAssistant {
     private final PromptTemplateRegistry templateRegistry;
     private final CodeGenerator codeGenerator;
     private final ProjectScaffold projectScaffold;
+    private final RequirementParser requirementParser;
+    private final ArchitectureDesigner architectureDesigner;
+    private final TestAndDeployManager testAndDeployManager;
     private LlmClient llmClient;
     private final List<LlmMessage> conversationHistory;
     
@@ -19,6 +22,9 @@ public class DefaultAiAssistant implements AiAssistant {
         this.templateRegistry = new DefaultPromptTemplateRegistry();
         this.codeGenerator = new DefaultCodeGenerator();
         this.projectScaffold = new DefaultProjectScaffold();
+        this.requirementParser = new DefaultRequirementParser();
+        this.architectureDesigner = new DefaultArchitectureDesigner();
+        this.testAndDeployManager = new DefaultTestAndDeployManager();
         this.llmClient = LlmClientFactory.create();
         this.conversationHistory = new ArrayList<>();
         initializeDefaultTemplates();
@@ -127,6 +133,31 @@ public class DefaultAiAssistant implements AiAssistant {
     }
     
     @Override
+    public LlmClient getLlmClient() {
+        return llmClient;
+    }
+    
+    @Override
+    public void setLlmClient(LlmClient llmClient) {
+        this.llmClient = llmClient;
+    }
+    
+    @Override
+    public RequirementParser getRequirementParser() {
+        return requirementParser;
+    }
+    
+    @Override
+    public ArchitectureDesigner getArchitectureDesigner() {
+        return architectureDesigner;
+    }
+    
+    @Override
+    public TestAndDeployManager getTestAndDeployManager() {
+        return testAndDeployManager;
+    }
+    
+    @Override
     public String getQuickReference(String topic) {
         return switch (topic.toLowerCase()) {
             case "web" -> """
@@ -198,6 +229,11 @@ public class DefaultAiAssistant implements AiAssistant {
     
     @Override
     public String suggestCode(String requirement) {
+        if (llmClient != null && llmClient.isAvailable()) {
+            String prompt = "你是一个Java开发专家，使用EST框架。请根据以下需求生成Java代码：\n\n" + requirement +
+                           "\n\n请只返回代码，不要其他解释。";
+            return llmClient.generate(prompt);
+        }
         if (requirement.toLowerCase().contains("web") || requirement.toLowerCase().contains("http")) {
             return "建议使用EST Web模块，查看 getQuickReference(\"web\") 获取更多信息";
         } else if (requirement.toLowerCase().contains("database") || requirement.toLowerCase().contains("data")) {
@@ -210,6 +246,10 @@ public class DefaultAiAssistant implements AiAssistant {
     
     @Override
     public String explainCode(String code) {
+        if (llmClient != null && llmClient.isAvailable()) {
+            String prompt = "请详细解释以下Java代码的功能和实现逻辑：\n\n" + code;
+            return llmClient.generate(prompt);
+        }
         if (code.contains("Web.create")) {
             return "这是创建EST Web应用的标准方式，参数是应用名称和版本";
         } else if (code.contains("app.get")) {
@@ -232,17 +272,7 @@ public class DefaultAiAssistant implements AiAssistant {
                "3. 考虑添加错误处理\n" +
                "4. 遵循EST的命名约定";
     }
-
-    @Override
-    public LlmClient getLlmClient() {
-        return llmClient;
-    }
-
-    @Override
-    public void setLlmClient(LlmClient llmClient) {
-        this.llmClient = llmClient;
-    }
-
+    
     @Override
     public String chat(String message) {
         if (llmClient == null || !llmClient.isAvailable()) {
@@ -254,9 +284,9 @@ public class DefaultAiAssistant implements AiAssistant {
             conversationHistory.add(new LlmMessage("assistant", response.getContent()));
             return response.getContent();
         }
-        return "Error: " + response.getError();
+        return "Error: " + response.getErrorMessage();
     }
-
+    
     @Override
     public String chat(List<LlmMessage> messages) {
         if (llmClient == null || !llmClient.isAvailable()) {
@@ -266,42 +296,9 @@ public class DefaultAiAssistant implements AiAssistant {
         if (response.isSuccess()) {
             return response.getContent();
         }
-        return "Error: " + response.getError();
+        return "Error: " + response.getErrorMessage();
     }
-
-    @Override
-    public String suggestCode(String requirement) {
-        if (llmClient != null && llmClient.isAvailable()) {
-            String prompt = "你是一个Java开发专家，使用EST框架。请根据以下需求生成Java代码：\n\n" + requirement +
-                           "\n\n请只返回代码，不要其他解释。";
-            return llmClient.generate(prompt);
-        }
-        if (requirement.toLowerCase().contains("web") || requirement.toLowerCase().contains("http")) {
-            return "建议使用EST Web模块，查看 getQuickReference(\"web\") 获取更多信息";
-        } else if (requirement.toLowerCase().contains("database") || requirement.toLowerCase().contains("data")) {
-            return "建议使用EST Data模块，支持JDBC、MongoDB、Redis等";
-        } else if (requirement.toLowerCase().contains("security") || requirement.toLowerCase().contains("auth")) {
-            return "建议使用EST Security模块，支持JWT、Basic Auth、OAuth2等";
-        }
-        return "请提供更具体的需求，我可以给出更准确的建议";
-    }
-
-    @Override
-    public String explainCode(String code) {
-        if (llmClient != null && llmClient.isAvailable()) {
-            String prompt = "请详细解释以下Java代码的功能和实现逻辑：\n\n" + code;
-            return llmClient.generate(prompt);
-        }
-        if (code.contains("Web.create")) {
-            return "这是创建EST Web应用的标准方式，参数是应用名称和版本";
-        } else if (code.contains("app.get")) {
-            return "这是添加GET路由的方法，第一个参数是路径，第二个是处理函数";
-        } else if (code.contains("res.json")) {
-            return "这是发送JSON响应的方法，会自动设置Content-Type为application/json";
-        }
-        return "代码解释功能正在完善中";
-    }
-
+    
     public void clearConversationHistory() {
         conversationHistory.clear();
     }

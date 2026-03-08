@@ -15,7 +15,9 @@ public class AdminTestSuite {
         List<TestResult> results = Tests.run(
             DefaultUserServiceTest.class,
             DefaultRoleServiceTest.class,
-            DefaultTenantServiceTest.class
+            DefaultTenantServiceTest.class,
+            DefaultMenuServiceTest.class,
+            DefaultDepartmentServiceTest.class
         );
 
         System.out.println();

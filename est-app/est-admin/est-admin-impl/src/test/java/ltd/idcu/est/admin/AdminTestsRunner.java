@@ -11,7 +11,9 @@ public class AdminTestsRunner {
         Tests.run(
             DefaultUserServiceTest.class,
             DefaultRoleServiceTest.class,
-            DefaultTenantServiceTest.class
+            DefaultTenantServiceTest.class,
+            DefaultMenuServiceTest.class,
+            DefaultDepartmentServiceTest.class
         );
     }
 }

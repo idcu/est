@@ -41,6 +41,12 @@ EST 从设计之初就考虑了 AI 友好性：
 - [最佳实践](best-practices.md) - AI 开发的最佳实践
 - [常见问题](faq.md) - FAQ 解答
 
+### 📊 实施报告
+
+- [短期目标实施报告](short-term-goals-implementation-report.md) - LLM生态系统、AI助手增强
+- [中期目标实施报告](mid-term-goals-implementation-report.md) - 智能代码补全、AI重构助手、架构顾问
+- [长期目标实施报告](long-term-goals-implementation-report.md) - 需求解析、架构设计、测试部署
+
 ---
 
 ## 🎯 快速开始

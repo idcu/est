@@ -15,6 +15,12 @@ public interface AiAssistant {
     
     void setLlmClient(LlmClient llmClient);
     
+    RequirementParser getRequirementParser();
+    
+    ArchitectureDesigner getArchitectureDesigner();
+    
+    TestAndDeployManager getTestAndDeployManager();
+    
     String getQuickReference(String topic);
     
     String getBestPractice(String category);

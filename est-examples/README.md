@@ -6,13 +6,13 @@
 
 ```
 est-examples/
-├── est-examples-basic/      # 基础示例
-├── est-examples-web/        # Web示例
-├── est-examples-features/   # 功能示例
-├── est-examples-advanced/   # 高级示例
-├── est-examples-ai/         # AI助手示例
-├── est-examples-graalvm/    # GraalVM示例
-├── est-examples-microservices/ # 微服务示例
+├── est-examples-basic/          # 基础示例
+├── est-examples-web/            # Web示例
+├── est-examples-features/       # 功能示例
+├── est-examples-advanced/       # 高级示例
+├── est-examples-ai/             # AI助手示例
+├── est-examples-graalvm/        # GraalVM示例
+├── est-examples-microservices/  # 微服务示例
 └── pom.xml
 ```
 
@@ -39,6 +39,7 @@ est-examples/
 - 看板应用
 - 聊天应用
 - 文件上传
+- Admin管理系统示例
 
 ### 功能示例 (est-examples-features)
 
@@ -69,6 +70,7 @@ est-examples/
 - AI辅助Web应用
 - 代码生成示例
 - 提示词模板示例
+- LLM集成示例
 
 ### GraalVM示例 (est-examples-graalvm)
 
@@ -80,6 +82,16 @@ est-examples/
 - 微服务网关
 - 用户服务
 - 订单服务
+
+### Admin管理系统示例 (est-app/est-admin + est-admin-ui)
+
+一个完整的前后端分离管理系统，包含：
+- 后端 RESTful API
+- JWT Token 认证
+- Vue 3 + Element Plus 前端
+- 用户、角色、菜单、部门、租户管理
+
+详细文档请参考：[EST Admin 前后端联调指南](../docs/guides/admin-integration.md)
 
 ## 运行示例
 
@@ -99,8 +111,25 @@ cd est-examples-features
 # 运行AI示例
 cd est-examples-ai
 mvn exec:java
+
+# 运行Admin示例
+# 1. 启动后端
+cd ../est-app/est-admin/est-admin-impl
+mvn compile exec:java -Dexec.mainClass="ltd.idcu.est.admin.DefaultAdminApplication"
+
+# 2. 启动前端（新终端）
+cd ../../../est-admin-ui
+npm install
+npm run dev
 ```
 
 ## 依赖
 
 示例模块依赖EST框架的其他模块。
+
+## 文档
+
+更多详细文档请查看：
+- [示例代码文档](../docs/examples/README.md)
+- [入门指南](../docs/getting-started/README.md)
+- [Admin联调指南](../docs/guides/admin-integration.md)
