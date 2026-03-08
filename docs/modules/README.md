@@ -1,4 +1,4 @@
-﻿# Modules Documentation
+# Modules Documentation
 
 This section contains documentation for all EST Framework modules.
 

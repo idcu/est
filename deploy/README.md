@@ -1,4 +1,4 @@
-﻿# EST 妗嗘灦閮ㄧ讲閰嶇疆
+# EST 妗嗘灦閮ㄧ讲閰嶇疆
 
 鏈洰褰曞寘鍚?EST 妗嗘灦鐨勯儴缃茬浉鍏抽厤缃枃浠讹紝鏀寔 Docker銆丏ocker Compose 鍜?Kubernetes 閮ㄧ讲鏂瑰紡銆?
 ## 鐩綍缁撴瀯

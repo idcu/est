@@ -1,4 +1,4 @@
-﻿# EST Framework Documentation
+# EST Framework Documentation
 
 Welcome to the EST Framework documentation!
 

@@ -1,4 +1,4 @@
-﻿# est-core-lifecycle - 灏忕櫧浠庡叆闂ㄥ埌绮鹃€?
+# est-core-lifecycle - 灏忕櫧浠庡叆闂ㄥ埌绮鹃€?
 ## 鐩綍
 - [浠€涔堟槸 est-core-lifecycle](#浠€涔堟槸-est-core-lifecycle)
 - [蹇€熷叆闂╙(#蹇€熷叆闂?

@@ -1,219 +1,165 @@
 # EST Framework 2.0
 
-EST 是一个**零依赖**的现代 Java 框架，采用递进式模块结构设计，支持企业级应用开发、AI 集成、微服务架构等多种场景。
-- **版本**: 2.1.0
-- **项目**: EST
-- **作者**: idcu
-- **许可证**: MIT License
+EST 鏄竴涓?*闆朵緷璧?*鐨勭幇浠?Java 妗嗘灦锛岄噰鐢ㄩ€掕繘寮忔ā鍧楃粨鏋勮璁★紝鏀寔浼佷笟绾у簲鐢ㄥ紑鍙戙€丄I 闆嗘垚銆佸井鏈嶅姟鏋舵瀯绛夊绉嶅満鏅€?- **鐗堟湰**: 2.1.0
+- **椤圭洰**: EST
+- **浣滆€?*: idcu
+- **璁稿彲璇?*: MIT License
 
 ---
 
-## ✨ 核心特性
-### 🏗️ 模块化架构
-- **分层设计**：核心层 → 基础层 → 模块层 → 应用层 → 工具层
-- **按需引入**：想用哪个功能就引入哪个模块，不会有多余的代码
-- **API 与实现分离**：所有模块都采用 api/impl 分离的设计模式
+## 鉁?鏍稿績鐗规€?### 馃彈锔?妯″潡鍖栨灦鏋?- **鍒嗗眰璁捐**锛氭牳蹇冨眰 鈫?鍩虹灞?鈫?妯″潡灞?鈫?搴旂敤灞?鈫?宸ュ叿灞?- **鎸夐渶寮曞叆**锛氭兂鐢ㄥ摢涓姛鑳藉氨寮曞叆鍝釜妯″潡锛屼笉浼氭湁澶氫綑鐨勪唬鐮?- **API 涓庡疄鐜板垎绂?*锛氭墍鏈夋ā鍧楅兘閲囩敤 api/impl 鍒嗙鐨勮璁℃ā寮?
+### 馃殌 闆朵緷璧栬璁?EST 妗嗘灦涓嶄緷璧栦换浣曠涓夋柟搴擄紝鎵€鏈夊姛鑳介兘鏄敤 Java 鏍囧噯搴撳疄鐜扮殑銆?- JSON澶勭悊銆乆ML澶勭悊銆乊AML澶勭悊
+- 鍔犲瘑銆佹暟鎹簱璁块棶銆佸苟鍙戠紪绋?- HTTP鏈嶅姟鍣ㄣ€乄ebSocket鏀寔
 
-### 🚀 零依赖设计
-EST 框架不依赖任何第三方库，所有功能都是用 Java 标准库实现的。
-- JSON处理、XML处理、YAML处理
-- 加密、数据库访问、并发编程
-- HTTP服务器、WebSocket支持
+### 馃 AI 鍘熺敓鏀寔
+- LLM 澶ц瑷€妯″瀷闆嗘垚
+- AI 鍔╂墜瀵硅瘽
+- 浠ｇ爜鐢熸垚涓庝紭鍖?- 鎻愮ず妯℃澘绠＄悊
 
-### 🤖 AI 原生支持
-- LLM 大语言模型集成
-- AI 助手对话
-- 代码生成与优化
-- 提示模板管理
+### 馃寪 瀹屾暣鐨?Web 妗嗘灦
+- RESTful API 鏀寔
+- 璺敱绯荤粺銆佷腑闂翠欢鏀寔
+- 妯℃澘寮曟搸銆佷細璇濈鐞?- CORS 璺ㄥ煙鏀寔
 
-### 🌐 完整的 Web 框架
-- RESTful API 支持
-- 路由系统、中间件支持
-- 模板引擎、会话管理
-- CORS 跨域支持
+### 馃攼 浼佷笟绾у畨鍏?- JWT銆丱Auth2銆丄PI Key 璁よ瘉
+- RBAC 鏉冮檺绠＄悊
+- 瀹¤鏃ュ織
+- 澶氱鎴锋敮鎸?
+### 馃摝 涓板瘜鐨勫姛鑳芥ā鍧?- **鏁版嵁璁块棶**锛欽DBC銆丷edis銆丮ongoDB銆佸唴瀛樺瓨鍌?- **缂撳瓨绯荤粺**锛氬唴瀛樼紦瀛樸€佹枃浠剁紦瀛樸€丷edis 缂撳瓨
+- **娑堟伅绯荤粺**锛欿afka銆丷abbitMQ銆乄ebSocket銆佹湰鍦颁簨浠?- **浠诲姟璋冨害**锛氬浐瀹氶鐜囥€丆ron 琛ㄨ揪寮?- **鐩戞帶杩借釜**锛欽VM 鐩戞帶銆佺郴缁熺洃鎺с€佸垎甯冨紡杩借釜
+- **寰湇鍔?*锛氱啍鏂櫒銆佹湇鍔″彂鐜般€丄PI 缃戝叧
+- **宸ヤ綔娴?*锛氬伐浣滄祦寮曟搸鏀寔
 
-### 🔐 企业级安全
-- JWT、OAuth2、API Key 认证
-- RBAC 权限管理
-- 审计日志
-- 多租户支持
+### 馃洜锔?寮€鍙戝伐鍏?- CLI 鍛戒护琛屽伐鍏?- 浠ｇ爜鐢熸垚鍣?- 鑴氭墜鏋剁敓鎴愬櫒
+- 杩佺Щ宸ュ叿
 
-### 📦 丰富的功能模块
-- **数据访问**：JDBC、Redis、MongoDB、内存存储
-- **缓存系统**：内存缓存、文件缓存、Redis 缓存
-- **消息系统**：Kafka、RabbitMQ、WebSocket、本地事件
-- **任务调度**：固定频率、Cron 表达式
-- **监控追踪**：JVM 监控、系统监控、分布式追踪
-- **微服务**：熔断器、服务发现、API 网关
-- **工作流**：工作流引擎支持
+### 馃帹 鍚庡彴绠＄悊绯荤粺
+- 鍩轰簬 Vue 3 + Element Plus 鐨勭幇浠ｅ寲 UI
+- 鐢ㄦ埛銆佽鑹层€佽彍鍗曘€侀儴闂ㄣ€佺鎴风鐞?- 鎿嶄綔鏃ュ織銆佺櫥褰曟棩蹇?- 绯荤粺鐩戞帶銆佺紦瀛樼洃鎺?- 绗笁鏂归泦鎴愰厤缃紙閭欢銆佺煭淇°€丱SS锛?- AI 鍔╂墜闆嗘垚
 
-### 🛠️ 开发工具
-- CLI 命令行工具
-- 代码生成器
-- 脚手架生成器
-- 迁移工具
-
-### 🎨 后台管理系统
-- 基于 Vue 3 + Element Plus 的现代化 UI
-- 用户、角色、菜单、部门、租户管理
-- 操作日志、登录日志
-- 系统监控、缓存监控
-- 第三方集成配置（邮件、短信、OSS）
-- AI 助手集成
-
-### 🚀 部署支持
-- Docker 容器化部署
-- Docker Compose 编排
-- Kubernetes 部署配置
-- Service Mesh 支持
-- CI/CD 流水线
-
+### 馃殌 閮ㄧ讲鏀寔
+- Docker 瀹瑰櫒鍖栭儴缃?- Docker Compose 缂栨帓
+- Kubernetes 閮ㄧ讲閰嶇疆
+- Service Mesh 鏀寔
+- CI/CD 娴佹按绾?
 ---
 
-## 🚀 快速开始
-### 环境要求
-- **JDK 21 或更高版本**（必须）
-- **Maven 3.6 或更高版本**（用来构建项目）
-- **Node.js 18+**（可选，用于前端开发）
+## 馃殌 蹇€熷紑濮?### 鐜瑕佹眰
+- **JDK 21 鎴栨洿楂樼増鏈?*锛堝繀椤伙級
+- **Maven 3.6 鎴栨洿楂樼増鏈?*锛堢敤鏉ユ瀯寤洪」鐩級
+- **Node.js 18+**锛堝彲閫夛紝鐢ㄤ簬鍓嶇寮€鍙戯級
 
-### 构建项目
+### 鏋勫缓椤圭洰
 ```bash
-# 克隆项目
+# 鍏嬮殕椤圭洰
 git clone https://github.com/idcu/est.git
 cd est
 
-# 构建所有模块
-mvn clean install
+# 鏋勫缓鎵€鏈夋ā鍧?mvn clean install
 
-# 跳过测试（更快）
+# 璺宠繃娴嬭瘯锛堟洿蹇級
 mvn clean install -DskipTests
 ```
 
-### 运行 Demo 应用
+### 杩愯 Demo 搴旂敤
 ```bash
 cd est-demo
 mvn exec:java -Dexec.mainClass="ltd.idcu.est.demo.EstDemoApplication"
 ```
 
-访问 http://localhost:8080 即可看到 Demo 应用。
-
-### 运行后台管理系统
+璁块棶 http://localhost:8080 鍗冲彲鐪嬪埌 Demo 搴旂敤銆?
+### 杩愯鍚庡彴绠＄悊绯荤粺
 ```bash
-# 启动后端
+# 鍚姩鍚庣
 cd est-app/est-admin
-# （待实现）
-# 启动前端
+# 锛堝緟瀹炵幇锛?# 鍚姩鍓嶇
 cd est-admin-ui
 npm install
 npm run dev
 ```
 
-访问 http://localhost:3000，使用账号 `admin` / `admin123` 登录。
-
+璁块棶 http://localhost:3000锛屼娇鐢ㄨ处鍙?`admin` / `admin123` 鐧诲綍銆?
 ---
 
-## 📁 项目结构
+## 馃搧 椤圭洰缁撴瀯
 
 ```
 est/
-├── est-core/              # 核心层
-│   ├── est-core-container/    # 依赖注入容器
-│   ├── est-core-config/       # 配置管理
-│   ├── est-core-lifecycle/    # 生命周期管理
-│   ├── est-core-module/       # 模块管理
-│   ├── est-core-aop/          # AOP支持
-│   └── est-core-tx/           # 事务管理
-├── est-base/              # 基础层
-│   ├── est-utils/         # 工具模块（JSON、XML、IO等）
-│   ├── est-patterns/      # 设计模式
-│   ├── est-collection/    # 集合框架
-│   └── est-test/          # 测试支持
-├── est-modules/           # 功能模块层
-│   ├── est-foundation/    # 基础设施（缓存、日志、事件、监控等）
-│   ├── est-data-group/    # 数据访问（JDBC、Redis、MongoDB、工作流）
-│   ├── est-security-group/ # 安全权限（认证、RBAC、审计）
-│   ├── est-web-group/     # Web框架（路由、网关、会话、模板）
-│   ├── est-ai-suite/      # AI套件（LLM、AI助手、AI配置）
-│   ├── est-microservices/ # 微服务（熔断器、服务发现、性能）
-│   ├── est-integration-group/ # 集成（消息系统、第三方集成）
-│   └── est-extensions/    # 扩展功能（热加载、插件、调度）
-├── est-app/               # 应用层
-│   ├── est-web/           # Web应用框架
-│   ├── est-admin/         # 后台管理系统后端
-│   └── est-console/       # 控制台应用
-├── est-admin-ui/          # 后台管理系统前端（Vue 3）
-├── est-tools/             # 工具层
-│   ├── est-cli/           # 命令行工具
-│   ├── est-codegen/       # 代码生成
-│   ├── est-migration/     # 迁移工具
-│   └── est-scaffold/      # 脚手架生成器
-├── est-examples/          # 示例代码
-│   ├── est-examples-basic/      # 基础示例
-│   ├── est-examples-web/        # Web示例
-│   ├── est-examples-ai/         # AI示例
-│   ├── est-examples-advanced/   # 高级示例
-│   ├── est-examples-features/   # 功能示例
-│   ├── est-examples-microservices/ # 微服务示例
-│   └── est-examples-graalvm/    # GraalVM示例
-├── est-demo/              # 演示应用
-├── deploy/                # 部署配置
-│   ├── docker/            # Docker配置
-│   ├── k8s/               # Kubernetes配置
-│   └── servicemesh/       # Service Mesh配置
-├── .github/               # GitHub Actions CI/CD
-├── .config/               # 代码质量配置（Checkstyle、PMD、SpotBugs）
-└── docs/                  # 文档
+鈹溾攢鈹€ est-core/              # 鏍稿績灞?鈹?  鈹溾攢鈹€ est-core-container/    # 渚濊禆娉ㄥ叆瀹瑰櫒
+鈹?  鈹溾攢鈹€ est-core-config/       # 閰嶇疆绠＄悊
+鈹?  鈹溾攢鈹€ est-core-lifecycle/    # 鐢熷懡鍛ㄦ湡绠＄悊
+鈹?  鈹溾攢鈹€ est-core-module/       # 妯″潡绠＄悊
+鈹?  鈹溾攢鈹€ est-core-aop/          # AOP鏀寔
+鈹?  鈹斺攢鈹€ est-core-tx/           # 浜嬪姟绠＄悊
+鈹溾攢鈹€ est-base/              # 鍩虹灞?鈹?  鈹溾攢鈹€ est-utils/         # 宸ュ叿妯″潡锛圝SON銆乆ML銆両O绛夛級
+鈹?  鈹溾攢鈹€ est-patterns/      # 璁捐妯″紡
+鈹?  鈹溾攢鈹€ est-collection/    # 闆嗗悎妗嗘灦
+鈹?  鈹斺攢鈹€ est-test/          # 娴嬭瘯鏀寔
+鈹溾攢鈹€ est-modules/           # 鍔熻兘妯″潡灞?鈹?  鈹溾攢鈹€ est-foundation/    # 鍩虹璁炬柦锛堢紦瀛樸€佹棩蹇椼€佷簨浠躲€佺洃鎺х瓑锛?鈹?  鈹溾攢鈹€ est-data-group/    # 鏁版嵁璁块棶锛圝DBC銆丷edis銆丮ongoDB銆佸伐浣滄祦锛?鈹?  鈹溾攢鈹€ est-security-group/ # 瀹夊叏鏉冮檺锛堣璇併€丷BAC銆佸璁★級
+鈹?  鈹溾攢鈹€ est-web-group/     # Web妗嗘灦锛堣矾鐢便€佺綉鍏炽€佷細璇濄€佹ā鏉匡級
+鈹?  鈹溾攢鈹€ est-ai-suite/      # AI濂椾欢锛圠LM銆丄I鍔╂墜銆丄I閰嶇疆锛?鈹?  鈹溾攢鈹€ est-microservices/ # 寰湇鍔★紙鐔旀柇鍣ㄣ€佹湇鍔″彂鐜般€佹€ц兘锛?鈹?  鈹溾攢鈹€ est-integration-group/ # 闆嗘垚锛堟秷鎭郴缁熴€佺涓夋柟闆嗘垚锛?鈹?  鈹斺攢鈹€ est-extensions/    # 鎵╁睍鍔熻兘锛堢儹鍔犺浇銆佹彃浠躲€佽皟搴︼級
+鈹溾攢鈹€ est-app/               # 搴旂敤灞?鈹?  鈹溾攢鈹€ est-web/           # Web搴旂敤妗嗘灦
+鈹?  鈹溾攢鈹€ est-admin/         # 鍚庡彴绠＄悊绯荤粺鍚庣
+鈹?  鈹斺攢鈹€ est-console/       # 鎺у埗鍙板簲鐢?鈹溾攢鈹€ est-admin-ui/          # 鍚庡彴绠＄悊绯荤粺鍓嶇锛圴ue 3锛?鈹溾攢鈹€ est-tools/             # 宸ュ叿灞?鈹?  鈹溾攢鈹€ est-cli/           # 鍛戒护琛屽伐鍏?鈹?  鈹溾攢鈹€ est-codegen/       # 浠ｇ爜鐢熸垚
+鈹?  鈹溾攢鈹€ est-migration/     # 杩佺Щ宸ュ叿
+鈹?  鈹斺攢鈹€ est-scaffold/      # 鑴氭墜鏋剁敓鎴愬櫒
+鈹溾攢鈹€ est-examples/          # 绀轰緥浠ｇ爜
+鈹?  鈹溾攢鈹€ est-examples-basic/      # 鍩虹绀轰緥
+鈹?  鈹溾攢鈹€ est-examples-web/        # Web绀轰緥
+鈹?  鈹溾攢鈹€ est-examples-ai/         # AI绀轰緥
+鈹?  鈹溾攢鈹€ est-examples-advanced/   # 楂樼骇绀轰緥
+鈹?  鈹溾攢鈹€ est-examples-features/   # 鍔熻兘绀轰緥
+鈹?  鈹溾攢鈹€ est-examples-microservices/ # 寰湇鍔＄ず渚?鈹?  鈹斺攢鈹€ est-examples-graalvm/    # GraalVM绀轰緥
+鈹溾攢鈹€ est-demo/              # 婕旂ず搴旂敤
+鈹溾攢鈹€ deploy/                # 閮ㄧ讲閰嶇疆
+鈹?  鈹溾攢鈹€ docker/            # Docker閰嶇疆
+鈹?  鈹溾攢鈹€ k8s/               # Kubernetes閰嶇疆
+鈹?  鈹斺攢鈹€ servicemesh/       # Service Mesh閰嶇疆
+鈹溾攢鈹€ .github/               # GitHub Actions CI/CD
+鈹溾攢鈹€ .config/               # 浠ｇ爜璐ㄩ噺閰嶇疆锛圕heckstyle銆丳MD銆丼potBugs锛?鈹斺攢鈹€ docs/                  # 鏂囨。
 ```
 
 ---
 
-## 📚 文档导航
+## 馃摎 鏂囨。瀵艰埅
 
-### 入门指南
-- [快速开始](docs/getting-started/README.md) - 创建你的第一个应用
-- [演示应用](est-demo/README.md) - 完整的功能演示
-- [快速开始指南](est-demo/QUICKSTART.md) - 5分钟上手
+### 鍏ラ棬鎸囧崡
+- [蹇€熷紑濮媇(docs/getting-started/README.md) - 鍒涘缓浣犵殑绗竴涓簲鐢?- [婕旂ず搴旂敤](est-demo/README.md) - 瀹屾暣鐨勫姛鑳芥紨绀?- [蹇€熷紑濮嬫寚鍗梋(est-demo/QUICKSTART.md) - 5鍒嗛挓涓婃墜
 
-### 教程系列
-- [入门教程](docs/tutorials/beginner/) - 适合初学者
-- [Web 开发教程](docs/tutorials/) - 学习 Web 开发
+### 鏁欑▼绯诲垪
+- [鍏ラ棬鏁欑▼](docs/tutorials/beginner/) - 閫傚悎鍒濆鑰?- [Web 寮€鍙戞暀绋媇(docs/tutorials/) - 瀛︿範 Web 寮€鍙?
+### 妯″潡鏂囨。
+- [鏍稿績妯″潡](est-core/README.md)
+- [鍩虹妯″潡](est-base/README.md)
+- [鍔熻兘妯″潡](est-modules/README.md)
+- [搴旂敤妯″潡](est-app/README.md)
 
-### 模块文档
-- [核心模块](est-core/README.md)
-- [基础模块](est-base/README.md)
-- [功能模块](est-modules/README.md)
-- [应用模块](est-app/README.md)
+### AI 寮€鍙?- [AI 鏂囨。](docs/ai/README.md)
+- [AI 鍔╂墜 API](docs/ai/api/ai-assistant.md)
+- [LLM 瀹㈡埛绔痌(docs/ai/api/llm-client.md)
 
-### AI 开发
-- [AI 文档](docs/ai/README.md)
-- [AI 助手 API](docs/ai/api/ai-assistant.md)
-- [LLM 客户端](docs/ai/api/llm-client.md)
-
-### 部署指南
-- [Docker 部署](deploy/README.md)
-- [Kubernetes 部署](deploy/k8s/)
+### 閮ㄧ讲鎸囧崡
+- [Docker 閮ㄧ讲](deploy/README.md)
+- [Kubernetes 閮ㄧ讲](deploy/k8s/)
 - [Service Mesh](deploy/servicemesh/)
 
-### API 参考
-- [API 文档中心](docs/README.md) - 完整的文档导航
-- [示例代码](est-examples/) - 丰富的示例代码
-
-### 更多
-- [最佳实践](docs/best-practices/) - 代码组织、性能优化、安全等
-- [架构设计](docs/architecture/README.md)
+### API 鍙傝€?- [API 鏂囨。涓績](docs/README.md) - 瀹屾暣鐨勬枃妗ｅ鑸?- [绀轰緥浠ｇ爜](est-examples/) - 涓板瘜鐨勭ず渚嬩唬鐮?
+### 鏇村
+- [鏈€浣冲疄璺礭(docs/best-practices/) - 浠ｇ爜缁勭粐銆佹€ц兘浼樺寲銆佸畨鍏ㄧ瓑
+- [鏋舵瀯璁捐](docs/architecture/README.md)
 
 ---
 
-## 🎯 代码示例
+## 馃幆 浠ｇ爜绀轰緥
 
-### 第一个 Web 应用
+### 绗竴涓?Web 搴旂敤
 ```java
 import ltd.idcu.est.web.Web;
 import ltd.idcu.est.web.api.WebApplication;
 
 public class HelloWorld {
     public static void main(String[] args) {
-        WebApplication app = Web.create("我的第一个应用", "1.0.0");
+        WebApplication app = Web.create("鎴戠殑绗竴涓簲鐢?, "1.0.0");
         
         app.get("/", (req, res) -&gt; res.send("Hello, World!"));
         app.get("/api/user/:name", (req, res) -&gt; 
@@ -224,7 +170,7 @@ public class HelloWorld {
 }
 ```
 
-### 使用缓存
+### 浣跨敤缂撳瓨
 ```java
 import ltd.idcu.est.cache.memory.MemoryCache;
 import ltd.idcu.est.cache.api.Cache;
@@ -234,37 +180,35 @@ cache.put("key", "value");
 Object value = cache.get("key");
 ```
 
-### 使用日志
+### 浣跨敤鏃ュ織
 ```java
 import ltd.idcu.est.logging.console.ConsoleLogs;
 import ltd.idcu.est.logging.api.Logger;
 
 Logger logger = ConsoleLogs.getLogger(HelloWorld.class);
-logger.info("这是一条日志");
+logger.info("杩欐槸涓€鏉℃棩蹇?);
 ```
 
-### 使用事件总线
+### 浣跨敤浜嬩欢鎬荤嚎
 ```java
 import ltd.idcu.est.event.local.LocalEventBus;
 import ltd.idcu.est.event.api.EventBus;
 
 EventBus eventBus = new LocalEventBus();
 eventBus.subscribe(UserCreatedEvent.class, event -&gt; 
-    logger.info("用户创建: {}", event.getUsername()));
-eventBus.publish(new UserCreatedEvent("张三"));
+    logger.info("鐢ㄦ埛鍒涘缓: {}", event.getUsername()));
+eventBus.publish(new UserCreatedEvent("寮犱笁"));
 ```
 
 ---
 
-## 🤝 贡献
+## 馃 璐＄尞
 
-欢迎贡献代码！请查看项目文档了解如何参与项目开发。
+娆㈣繋璐＄尞浠ｇ爜锛佽鏌ョ湅椤圭洰鏂囨。浜嗚В濡備綍鍙備笌椤圭洰寮€鍙戙€?
+---
+
+## 馃搫 璁稿彲璇?[MIT License](LICENSE)
 
 ---
 
-## 📄 许可证
-[MIT License](LICENSE)
-
----
-
-**祝你使用 EST 框架愉快！** 🎉
+**绁濅綘浣跨敤 EST 妗嗘灦鎰夊揩锛?* 馃帀

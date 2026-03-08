@@ -1,4 +1,4 @@
-﻿# est-core-module - 灏忕櫧浠庡叆闂ㄥ埌绮鹃€?
+# est-core-module - 灏忕櫧浠庡叆闂ㄥ埌绮鹃€?
 ## 鐩綍
 - [浠€涔堟槸 est-core-module](#浠€涔堟槸-est-core-module)
 - [蹇€熷叆闂╙(#蹇€熷叆闂?
