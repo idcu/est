@@ -15,6 +15,8 @@ public class SkillManager {
         registerSkill(new CodeReviewSkill());
         registerSkill(new RefactorSkill());
         registerSkill(new ArchitectureSkill());
+        registerSkill(new PerformanceOptimizationSkill());
+        registerSkill(new SecurityAuditSkill());
     }
     
     public void registerSkill(EstSkill skill) {

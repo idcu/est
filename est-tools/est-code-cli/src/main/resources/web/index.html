@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EST Code CLI - Web Interface</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>EST Code CLI</h1>
+            <p class="subtitle">AI 驱动的智能开发辅助工具</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="chat">AI 对话</button>
+            <button class="nav-tab" data-tab="skills">EST 技能</button>
+            <button class="nav-tab" data-tab="tools">MCP 工具</button>
+            <button class="nav-tab" data-tab="search">项目搜索</button>
+            <button class="nav-tab" data-tab="config">配置</button>
+        </nav>
+
+        <main class="main-content">
+            <section id="chat" class="tab-content active">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-input-container">
+                        <textarea id="chatInput" placeholder="输入您的问题..." rows="3"></textarea>
+                        <button id="sendBtn" class="btn btn-primary">发送</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="skills" class="tab-content">
+                <div class="skills-grid" id="skillsGrid"></div>
+            </section>
+
+            <section id="tools" class="tab-content">
+                <div class="tools-list" id="toolsList"></div>
+            </section>
+
+            <section id="search" class="tab-content">
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="输入搜索关键词...">
+                        <button id="searchBtn" class="btn btn-primary">搜索</button>
+                    </div>
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+            </section>
+
+            <section id="config" class="tab-content">
+                <div class="config-container">
+                    <form id="configForm">
+                        <div class="form-group">
+                            <label for="nickname">昵称</label>
+                            <input type="text" id="nickname" placeholder="EST">
+                        </div>
+                        <div class="form-group">
+                            <label for="workDir">工作目录</label>
+                            <input type="text" id="workDir" placeholder="">
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="planningMode">
+                            <label for="planningMode">规划模式</label>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="hitlEnabled">
+                            <label for="hitlEnabled">HITL 安全策略</label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">保存配置</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>EST Code CLI v1.0.0 | Powered by EST AI Suite</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

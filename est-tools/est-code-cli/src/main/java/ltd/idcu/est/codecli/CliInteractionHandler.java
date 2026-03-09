@@ -9,11 +9,15 @@ import ltd.idcu.est.codecli.prompts.PromptLibrary;
 import ltd.idcu.est.codecli.search.FileIndex;
 import ltd.idcu.est.codecli.search.ProjectIndexer;
 import ltd.idcu.est.codecli.security.ApprovalManager;
+import ltd.idcu.est.codecli.web.EstWebServer;
+import ltd.idcu.est.codecli.acp.AcpServer;
 import ltd.idcu.est.codecli.security.HitlSecurityPolicy;
 import ltd.idcu.est.codecli.skills.SkillManager;
 import ltd.idcu.est.codecli.ux.CommandHistory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -32,6 +36,7 @@ public class CliInteractionHandler {
     private final SkillManager skillManager;
     private final PromptLibrary promptLibrary;
     private final CommandHistory commandHistory;
+    private final CliConfig config;
     private final Scanner scanner;
     private final String nickname;
     private final Path workDir;
@@ -39,6 +44,7 @@ public class CliInteractionHandler {
     
     public CliInteractionHandler(AiAssistant aiAssistant, String workDir, String nickname) {
         this.aiAssistant = aiAssistant;
+        this.config = CliConfig.load();
         this.workDir = Paths.get(workDir);
         this.contractManager = new ContractManager(this.workDir);
         this.fileIndex = new FileIndex();
@@ -49,7 +55,7 @@ public class CliInteractionHandler {
         this.commandHistory = new CommandHistory();
         this.mcpServer = new EstCodeCliMcpServer(workDir, fileIndex, indexer, skillManager, promptLibrary);
         this.scanner = new Scanner(System.in);
-        this.nickname = nickname != null ? nickname : "EST";
+        this.nickname = nickname != null ? nickname : config.getNickname();
         this.running = true;
     }
     
@@ -124,6 +130,21 @@ public class CliInteractionHandler {
             return;
         }
         
+        if (input.equalsIgnoreCase("config")) {
+            handleConfig();
+            return;
+        }
+        
+        if (input.equalsIgnoreCase("web")) {
+            handleWeb();
+            return;
+        }
+        
+        if (input.equalsIgnoreCase("acp")) {
+            handleAcp();
+            return;
+        }
+        
         if (input.startsWith("/")) {
             handleToolCommand(input.substring(1));
             return;
@@ -142,11 +163,77 @@ public class CliInteractionHandler {
         System.out.println("  history    - Show command history");
         System.out.println("  test       - Run Maven tests");
         System.out.println("  compile    - Run Maven compile");
+        System.out.println("  config     - Manage configuration");
+        System.out.println("  web        - Start web server (browser interface)");
+        System.out.println("  acp        - Start ACP server (IDE integration)");
         System.out.println("  /<tool>    - Call an MCP tool directly (e.g., /list_dir)");
         System.out.println("  help       - Show this help message");
         System.out.println("  exit/quit  - Exit the program");
         System.out.println();
         System.out.println("Or just chat naturally - I'll help you with your code!");
+    }
+    
+    private void handleConfig() {
+        System.out.println();
+        System.out.println("Current Configuration:");
+        System.out.println("=".repeat(40));
+        System.out.println("  Nickname:     " + config.getNickname());
+        System.out.println("  Work Dir:     " + config.getWorkDir());
+        System.out.println("  Planning Mode: " + config.isPlanningMode());
+        System.out.println("  HITL Enabled: " + config.isHitlEnabled());
+        if (config.getChatModelApiUrl() != null) {
+            System.out.println("  Chat API URL: " + config.getChatModelApiUrl());
+        }
+        if (config.getChatModelName() != null) {
+            System.out.println("  Chat Model:   " + config.getChatModelName());
+        }
+        System.out.println("=".repeat(40));
+        System.out.println();
+        System.out.println("Options:");
+        System.out.println("  1. Set Nickname");
+        System.out.println("  2. Toggle Planning Mode");
+        System.out.println("  3. Toggle HITL Security");
+        System.out.println("  4. Save Configuration");
+        System.out.println("  5. Save to User Config");
+        System.out.println("  0. Back");
+        System.out.println();
+        System.out.print("Choose an option: ");
+        
+        try {
+            String choice = scanner.nextLine().trim();
+            switch (choice) {
+                case "1":
+                    System.out.print("Enter new nickname: ");
+                    String newNickname = scanner.nextLine().trim();
+                    if (!newNickname.isEmpty()) {
+                        config.setNickname(newNickname);
+                        System.out.println("Nickname updated to: " + newNickname);
+                    }
+                    break;
+                case "2":
+                    config.setPlanningMode(!config.isPlanningMode());
+                    System.out.println("Planning Mode: " + (config.isPlanningMode() ? "Enabled" : "Disabled"));
+                    break;
+                case "3":
+                    config.setHitlEnabled(!config.isHitlEnabled());
+                    System.out.println("HITL Security: " + (config.isHitlEnabled() ? "Enabled" : "Disabled"));
+                    break;
+                case "4":
+                    config.save();
+                    System.out.println("Configuration saved to est-code-cli.yml");
+                    break;
+                case "5":
+                    config.saveToUserConfig();
+                    System.out.println("Configuration saved to user config");
+                    break;
+                case "0":
+                    break;
+                default:
+                    System.out.println("Invalid option");
+            }
+        } catch (IOException e) {
+            System.err.println("Error saving config: " + e.getMessage());
+        }
     }
     
     private void handleListSkills() {
@@ -286,12 +373,136 @@ public class CliInteractionHandler {
             System.out.println(nickname);
             System.out.println();
             
+            EstSkill matchingSkill = skillManager.findMatchingSkill(message);
+            if (matchingSkill != null) {
+                System.out.println("💡 检测到您可能需要使用技能: " + matchingSkill.getName());
+                System.out.println("   " + matchingSkill.getDescription());
+                System.out.println();
+                System.out.println("是否要使用该技能？(y/n，或直接继续对话)");
+                System.out.print("> ");
+                String choice = scanner.nextLine().trim().toLowerCase();
+                
+                if (choice.equals("y") || choice.equals("yes")) {
+                    handleSkillInvocation(matchingSkill, message);
+                    return;
+                }
+            }
+            
             String response = aiAssistant.chat(message);
             System.out.println(response);
             
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+    
+    private void handleSkillInvocation(EstSkill skill, String userMessage) {
+        try {
+            System.out.println();
+            System.out.println("使用技能: " + skill.getName());
+            System.out.println("=".repeat(50));
+            System.out.println();
+            
+            System.out.println("请提供要处理的代码文件路径，或直接粘贴代码：");
+            System.out.print("> ");
+            String input = scanner.nextLine().trim();
+            
+            String codeContent = "";
+            if (input.startsWith("/") || input.contains("\\") || input.endsWith(".java") || input.endsWith(".md")) {
+                Path filePath = workDir.resolve(input);
+                if (Files.exists(filePath)) {
+                    codeContent = Files.readString(filePath, StandardCharsets.UTF_8);
+                    System.out.println("已读取文件: " + filePath);
+                } else {
+                    System.err.println("文件不存在: " + filePath);
+                    return;
+                }
+            } else {
+                codeContent = input;
+                System.out.println("使用提供的代码内容");
+            }
+            
+            System.out.println();
+            System.out.println("正在处理...");
+            System.out.println();
+            
+            String prompt = skill.getPromptTemplate().replace("{{code}}", codeContent);
+            String response = aiAssistant.chat(prompt);
+            
+            System.out.println(response);
+            
+        } catch (Exception e) {
+            System.err.println("Error invoking skill: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private void handleWeb() {
+        System.out.println();
+        System.out.println("Starting EST Code CLI Web Server...");
+        System.out.print("Enter port (default 8080): ");
+        String portInput = scanner.nextLine().trim();
+        
+        int port = 8080;
+        if (!portInput.isEmpty()) {
+            try {
+                port = Integer.parseInt(portInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid port, using 8080");
+            }
+        }
+        
+        try {
+            EstWebServer server = new EstWebServer(port, workDir.toString());
+            
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("\nShutting down web server...");
+                server.stop();
+            }));
+            
+            System.out.println("EST Code CLI Web Server started on http://localhost:" + port);
+            System.out.println("Press Ctrl+C to stop the server");
+            System.out.println();
+            
+            server.start();
+            
+        } catch (IOException e) {
+            System.err.println("Could not start web server: " + e.getMessage());
+        }
+    }
+    
+    private void handleAcp() {
+        System.out.println();
+        System.out.println("Starting EST Code CLI ACP Server...");
+        System.out.print("Enter port (default 3000): ");
+        String portInput = scanner.nextLine().trim();
+        
+        int port = 3000;
+        if (!portInput.isEmpty()) {
+            try {
+                port = Integer.parseInt(portInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid port, using 3000");
+            }
+        }
+        
+        try {
+            AcpServer server = new AcpServer(port, workDir.toString());
+            
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("\nShutting down ACP server...");
+                server.stop();
+            }));
+            
+            System.out.println("EST Code CLI ACP Server started on port " + port);
+            System.out.println("Press Ctrl+C to stop the server");
+            System.out.println();
+            
+            server.start();
+            
+        } catch (IOException e) {
+            System.err.println("Could not start ACP server: " + e.getMessage());
         }
     }
 }

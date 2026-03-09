@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CliConfig {
@@ -129,5 +130,42 @@ public class CliConfig {
     
     public void setHitlEnabled(boolean hitlEnabled) {
         this.hitlEnabled = hitlEnabled;
+    }
+    
+    public void save() throws IOException {
+        saveTo(Paths.get(DEFAULT_CONFIG_FILE));
+    }
+    
+    public void saveTo(Path configPath) throws IOException {
+        Map<String, Object> root = new LinkedHashMap<>();
+        Map<String, Object> solon = new LinkedHashMap<>();
+        Map<String, Object> code = new LinkedHashMap<>();
+        Map<String, Object> cli = new LinkedHashMap<>();
+        
+        cli.put("nickname", nickname);
+        cli.put("workDir", workDir);
+        cli.put("planningMode", planningMode);
+        cli.put("hitlEnabled", hitlEnabled);
+        
+        if (chatModelApiUrl != null || chatModelApiKey != null || chatModelName != null) {
+            Map<String, Object> chatModel = new LinkedHashMap<>();
+            if (chatModelApiUrl != null) chatModel.put("apiUrl", chatModelApiUrl);
+            if (chatModelApiKey != null) chatModel.put("apiKey", chatModelApiKey);
+            if (chatModelName != null) chatModel.put("model", chatModelName);
+            cli.put("chatModel", chatModel);
+        }
+        
+        code.put("cli", cli);
+        solon.put("code", code);
+        root.put("solon", solon);
+        
+        String yamlContent = YamlUtils.dump(root);
+        Files.createDirectories(configPath.getParent());
+        Files.write(configPath, yamlContent.getBytes(StandardCharsets.UTF_8));
+    }
+    
+    public void saveToUserConfig() throws IOException {
+        Path userConfigPath = Paths.get(USER_CONFIG_FILE);
+        saveTo(userConfigPath);
     }
 }
