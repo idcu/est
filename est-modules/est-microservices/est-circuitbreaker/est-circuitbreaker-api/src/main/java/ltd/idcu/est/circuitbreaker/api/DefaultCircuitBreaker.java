@@ -1,5 +1,7 @@
 package ltd.idcu.est.circuitbreaker.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -7,7 +9,7 @@ import java.util.function.Supplier;
 public class DefaultCircuitBreaker implements CircuitBreaker {
     private final String name;
     private final CircuitBreakerConfig config;
-    private final AtomicReference<CircuitState> state = new AtomicReference<>(CircuitState.CLOSED);
+    protected final AtomicReference<CircuitState> state = new AtomicReference<>(CircuitState.CLOSED);
     private final AtomicLong failureCount = new AtomicLong(0);
     private final AtomicLong successCount = new AtomicLong(0);
     private final AtomicLong timeoutCount = new AtomicLong(0);
@@ -17,6 +19,7 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
     private final AtomicLong lastSuccessTime = new AtomicLong(0);
     private final AtomicLong halfOpenSuccessCount = new AtomicLong(0);
     private final AtomicLong openTime = new AtomicLong(0);
+    private final List<CircuitBreakerListener> listeners = new ArrayList<>();
 
     public DefaultCircuitBreaker(String name) {
         this(name, new CircuitBreakerConfig());
@@ -36,6 +39,11 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
     public CircuitState getState() {
         checkAndTransitionState();
         return state.get();
+    }
+
+    @Override
+    public CircuitBreakerConfig getConfig() {
+        return config;
     }
 
     @Override
@@ -68,6 +76,24 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
     }
 
     @Override
+    public <T> T execute(Supplier<T> supplier, Supplier<T> fallback) {
+        try {
+            return execute(supplier);
+        } catch (Exception e) {
+            return fallback.get();
+        }
+    }
+
+    @Override
+    public void execute(Runnable runnable, Runnable fallback) {
+        try {
+            execute(runnable);
+        } catch (Exception e) {
+            fallback.run();
+        }
+    }
+
+    @Override
     public void reset() {
         state.set(CircuitState.CLOSED);
         failureCount.set(0);
@@ -94,6 +120,29 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
         );
     }
 
+    @Override
+    public void addListener(CircuitBreakerListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(CircuitBreakerListener listener) {
+        listeners.remove(listener);
+    }
+
+    protected void transitionTo(CircuitState newState) {
+        state.set(newState);
+    }
+
+    protected void onSuccess() {
+    }
+
+    protected void onFailure() {
+    }
+
+    protected void resetCounters() {
+    }
+
     private void recordSuccess() {
         successCount.incrementAndGet();
         lastSuccessTime.set(System.currentTimeMillis());
@@ -107,6 +156,7 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
                 halfOpenSuccessCount.set(0);
             }
         }
+        onSuccess();
     }
 
     private void recordFailure() {
@@ -125,6 +175,7 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
             openTime.set(System.currentTimeMillis());
             halfOpenSuccessCount.set(0);
         }
+        onFailure();
     }
 
     private void checkAndTransitionState() {

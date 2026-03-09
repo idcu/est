@@ -10,7 +10,7 @@ public class AesConfigEncryptorTest {
 
     @Test
     public void testEncryptDecrypt() {
-        ConfigEncryptor encryptor = new AesConfigEncryptor("test-secret-key-123456");
+        ConfigEncryptor encryptor = new AesConfigEncryptor();
         
         String plaintext = "Hello, World!";
         String encrypted = encryptor.encrypt(plaintext);
@@ -24,7 +24,7 @@ public class AesConfigEncryptorTest {
 
     @Test
     public void testDifferentPlaintexts() {
-        ConfigEncryptor encryptor = new AesConfigEncryptor("test-secret-key-123456");
+        ConfigEncryptor encryptor = new AesConfigEncryptor();
         
         String text1 = "password123";
         String text2 = "another-secret";
@@ -39,7 +39,7 @@ public class AesConfigEncryptorTest {
 
     @Test
     public void testEmptyString() {
-        ConfigEncryptor encryptor = new AesConfigEncryptor("test-secret-key-123456");
+        ConfigEncryptor encryptor = new AesConfigEncryptor();
         
         String encrypted = encryptor.encrypt("");
         Assertions.assertNotNull(encrypted);
@@ -48,7 +48,7 @@ public class AesConfigEncryptorTest {
 
     @Test
     public void testSpecialCharacters() {
-        ConfigEncryptor encryptor = new AesConfigEncryptor("test-secret-key-123456");
+        ConfigEncryptor encryptor = new AesConfigEncryptor();
         
         String specialText = "!@#$%^&*()_+-=[]{}|;':\",./<>?";
         String encrypted = encryptor.encrypt(specialText);
@@ -57,7 +57,7 @@ public class AesConfigEncryptorTest {
 
     @Test
     public void testLongText() {
-        ConfigEncryptor encryptor = new AesConfigEncryptor("test-secret-key-123456");
+        ConfigEncryptor encryptor = new AesConfigEncryptor();
         
         StringBuilder longText = new StringBuilder();
         for (int i = 0; i < 1000; i++) {

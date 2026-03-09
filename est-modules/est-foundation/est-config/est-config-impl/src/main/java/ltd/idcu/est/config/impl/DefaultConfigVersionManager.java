@@ -16,6 +16,10 @@ public class DefaultConfigVersionManager implements ConfigVersionManager {
     private ConfigVersion currentVersion;
     private int versionCounter = 0;
 
+    public DefaultConfigVersionManager() {
+        this.configCenter = null;
+    }
+
     public DefaultConfigVersionManager(ConfigCenter configCenter) {
         this.configCenter = configCenter;
     }
@@ -51,6 +55,10 @@ public class DefaultConfigVersionManager implements ConfigVersionManager {
 
     @Override
     public void rollbackTo(String versionId) {
+        if (configCenter == null) {
+            throw new UnsupportedOperationException("ConfigCenter not initialized");
+        }
+        
         ConfigVersion version = versionMap.get(versionId);
         if (version == null) {
             throw new IllegalArgumentException("Version not found: " + versionId);
@@ -88,6 +96,9 @@ public class DefaultConfigVersionManager implements ConfigVersionManager {
     }
 
     public String snapshot(String comment) {
+        if (configCenter == null) {
+            throw new UnsupportedOperationException("ConfigCenter not initialized");
+        }
         return createVersion(configCenter.getAllProperties(), comment);
     }
 }

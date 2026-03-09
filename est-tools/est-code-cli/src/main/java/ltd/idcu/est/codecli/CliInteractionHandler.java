@@ -6,6 +6,8 @@ import ltd.idcu.est.codecli.context.ConversationContext;
 import ltd.idcu.est.codecli.contract.ContractManager;
 import ltd.idcu.est.codecli.contract.ProjectContract;
 import ltd.idcu.est.codecli.mcp.EstCodeCliMcpServer;
+import ltd.idcu.est.codecli.plugin.PluginManager;
+import ltd.idcu.est.codecli.plugin.PluginMarketplaceManager;
 import ltd.idcu.est.codecli.prompts.PromptLibrary;
 import ltd.idcu.est.codecli.search.FileIndex;
 import ltd.idcu.est.codecli.search.ProjectIndexer;
@@ -38,6 +40,8 @@ public class CliInteractionHandler {
     private final PromptLibrary promptLibrary;
     private final CommandHistory commandHistory;
     private final ConversationContext conversationContext;
+    private final PluginManager pluginManager;
+    private final PluginMarketplaceManager pluginMarketplaceManager;
     private final CliConfig config;
     private final Scanner scanner;
     private final String nickname;
@@ -56,10 +60,13 @@ public class CliInteractionHandler {
         this.promptLibrary = new PromptLibrary();
         this.commandHistory = new CommandHistory();
         this.conversationContext = new ConversationContext();
+        this.pluginManager = new PluginManager(this.workDir);
+        this.pluginMarketplaceManager = new PluginMarketplaceManager(this.workDir);
         this.mcpServer = new EstCodeCliMcpServer(workDir, fileIndex, indexer, skillManager, promptLibrary);
         this.scanner = new Scanner(System.in);
         this.nickname = nickname != null ? nickname : config.getNickname();
         this.running = true;
+        this.pluginManager.loadAllPlugins();
     }
     
     public void start() {
@@ -158,6 +165,16 @@ public class CliInteractionHandler {
             return;
         }
         
+        if (input.equalsIgnoreCase("plugins")) {
+            handlePlugins();
+            return;
+        }
+        
+        if (input.equalsIgnoreCase("marketplace")) {
+            handleMarketplace();
+            return;
+        }
+        
         if (input.startsWith("/")) {
             handleToolCommand(input.substring(1));
             return;
@@ -179,6 +196,8 @@ public class CliInteractionHandler {
         System.out.println("  test       - Run Maven tests");
         System.out.println("  compile    - Run Maven compile");
         System.out.println("  config     - Manage configuration");
+        System.out.println("  plugins    - Manage plugins");
+        System.out.println("  marketplace- Browse plugin marketplace");
         System.out.println("  web        - Start web server (browser interface)");
         System.out.println("  acp        - Start ACP server (IDE integration)");
         System.out.println("  /<tool>    - Call an MCP tool directly (e.g., /list_dir)");
@@ -547,6 +566,275 @@ public class CliInteractionHandler {
             
         } catch (IOException e) {
             System.err.println("Could not start ACP server: " + e.getMessage());
+        }
+    }
+    
+    private void handlePlugins() {
+        System.out.println();
+        System.out.println("Plugin Management:");
+        System.out.println("=".repeat(40));
+        System.out.println();
+        System.out.println(pluginMarketplaceManager.listPluginsAsString());
+        System.out.println();
+        System.out.println("Options:");
+        System.out.println("  1. Load plugin from file/directory");
+        System.out.println("  2. Unload plugin");
+        System.out.println("  3. Reload all plugins");
+        System.out.println("  0. Back");
+        System.out.println();
+        System.out.print("Choose an option: ");
+        
+        String choice = scanner.nextLine().trim();
+        switch (choice) {
+            case "1":
+                handleLoadPlugin();
+                break;
+            case "2":
+                handleUnloadPlugin();
+                break;
+            case "3":
+                handleReloadPlugins();
+                break;
+            case "0":
+                break;
+            default:
+                System.out.println("Invalid option");
+        }
+    }
+    
+    private void handleLoadPlugin() {
+        System.out.print("Enter plugin path (file or directory): ");
+        String pathInput = scanner.nextLine().trim();
+        if (pathInput.isEmpty()) {
+            System.out.println("Path cannot be empty");
+            return;
+        }
+        
+        try {
+            Path pluginPath = Paths.get(pathInput);
+            if (!Files.exists(pluginPath)) {
+                System.err.println("Path does not exist: " + pluginPath);
+                return;
+            }
+            pluginManager.loadPlugin(pluginPath);
+            System.out.println("Plugin loaded successfully!");
+        } catch (Exception e) {
+            System.err.println("Failed to load plugin: " + e.getMessage());
+        }
+    }
+    
+    private void handleUnloadPlugin() {
+        System.out.print("Enter plugin ID to unload: ");
+        String pluginId = scanner.nextLine().trim();
+        if (pluginId.isEmpty()) {
+            System.out.println("Plugin ID cannot be empty");
+            return;
+        }
+        
+        try {
+            pluginManager.unloadPlugin(pluginId);
+            System.out.println("Plugin unloaded successfully!");
+        } catch (Exception e) {
+            System.err.println("Failed to unload plugin: " + e.getMessage());
+        }
+    }
+    
+    private void handleReloadPlugins() {
+        System.out.println("Reloading all plugins...");
+        pluginManager.unloadAllPlugins();
+        pluginManager.loadAllPlugins();
+        System.out.println("Plugins reloaded successfully!");
+    }
+    
+    private void handleMarketplace() {
+        System.out.println();
+        System.out.println("Plugin Marketplace:");
+        System.out.println("=".repeat(40));
+        System.out.println();
+        System.out.println("Options:");
+        System.out.println("  1. Search plugins");
+        System.out.println("  2. Browse popular plugins");
+        System.out.println("  3. Browse latest plugins");
+        System.out.println("  4. Browse certified plugins");
+        System.out.println("  5. Browse categories");
+        System.out.println("  6. Install plugin");
+        System.out.println("  7. Update plugin");
+        System.out.println("  8. Check for updates");
+        System.out.println("  0. Back");
+        System.out.println();
+        System.out.print("Choose an option: ");
+        
+        String choice = scanner.nextLine().trim();
+        switch (choice) {
+            case "1":
+                handleSearchMarketplace();
+                break;
+            case "2":
+                handlePopularPlugins();
+                break;
+            case "3":
+                handleLatestPlugins();
+                break;
+            case "4":
+                handleCertifiedPlugins();
+                break;
+            case "5":
+                handleBrowseCategories();
+                break;
+            case "6":
+                handleInstallPlugin();
+                break;
+            case "7":
+                handleUpdatePlugin();
+                break;
+            case "8":
+                handleCheckUpdates();
+                break;
+            case "0":
+                break;
+            default:
+                System.out.println("Invalid option");
+        }
+    }
+    
+    private void handleSearchMarketplace() {
+        System.out.print("Enter search query: ");
+        String query = scanner.nextLine().trim();
+        if (query.isEmpty()) {
+            System.out.println("Query cannot be empty");
+            return;
+        }
+        System.out.println();
+        System.out.println(pluginMarketplaceManager.searchPluginsAsString(query));
+    }
+    
+    private void handlePopularPlugins() {
+        System.out.print("Number of plugins to show (default 10): ");
+        String limitInput = scanner.nextLine().trim();
+        int limit = 10;
+        if (!limitInput.isEmpty()) {
+            try {
+                limit = Integer.parseInt(limitInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number, using 10");
+            }
+        }
+        
+        var plugins = pluginMarketplaceManager.getPopularPlugins(limit);
+        System.out.println();
+        System.out.println("Popular Plugins (" + plugins.size() + "):");
+        for (var plugin : plugins) {
+            System.out.println("  - " + plugin.getName() + " v" + plugin.getVersion());
+            System.out.println("    " + plugin.getDescription());
+        }
+    }
+    
+    private void handleLatestPlugins() {
+        System.out.print("Number of plugins to show (default 10): ");
+        String limitInput = scanner.nextLine().trim();
+        int limit = 10;
+        if (!limitInput.isEmpty()) {
+            try {
+                limit = Integer.parseInt(limitInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number, using 10");
+            }
+        }
+        
+        var plugins = pluginMarketplaceManager.getLatestPlugins(limit);
+        System.out.println();
+        System.out.println("Latest Plugins (" + plugins.size() + "):");
+        for (var plugin : plugins) {
+            System.out.println("  - " + plugin.getName() + " v" + plugin.getVersion());
+            System.out.println("    " + plugin.getDescription());
+        }
+    }
+    
+    private void handleCertifiedPlugins() {
+        var plugins = pluginMarketplaceManager.getCertifiedPlugins();
+        System.out.println();
+        System.out.println("Certified Plugins (" + plugins.size() + "):");
+        for (var plugin : plugins) {
+            System.out.println("  - " + plugin.getName() + " v" + plugin.getVersion());
+            System.out.println("    " + plugin.getDescription());
+        }
+    }
+    
+    private void handleBrowseCategories() {
+        var categories = pluginMarketplaceManager.getCategories();
+        System.out.println();
+        System.out.println("Categories (" + categories.size() + "):");
+        for (String category : categories) {
+            System.out.println("  - " + category);
+        }
+        
+        if (!categories.isEmpty()) {
+            System.out.println();
+            System.out.print("Enter category to browse (or press Enter to skip): ");
+            String category = scanner.nextLine().trim();
+            if (!category.isEmpty()) {
+                var plugins = pluginMarketplaceManager.searchPluginsByCategory(category);
+                System.out.println();
+                System.out.println("Plugins in category '" + category + "' (" + plugins.size() + "):");
+                for (var plugin : plugins) {
+                    System.out.println("  - " + plugin.getName() + " v" + plugin.getVersion());
+                    System.out.println("    " + plugin.getDescription());
+                }
+            }
+        }
+    }
+    
+    private void handleInstallPlugin() {
+        System.out.print("Enter plugin ID to install: ");
+        String pluginId = scanner.nextLine().trim();
+        if (pluginId.isEmpty()) {
+            System.out.println("Plugin ID cannot be empty");
+            return;
+        }
+        
+        System.out.print("Enter version (optional, press Enter for latest): ");
+        String version = scanner.nextLine().trim();
+        
+        boolean success;
+        if (version.isEmpty()) {
+            success = pluginMarketplaceManager.installPlugin(pluginId);
+        } else {
+            success = pluginMarketplaceManager.installPlugin(pluginId, version);
+        }
+        
+        if (success) {
+            System.out.println("Plugin installed successfully!");
+        } else {
+            System.err.println("Failed to install plugin");
+        }
+    }
+    
+    private void handleUpdatePlugin() {
+        System.out.print("Enter plugin ID to update: ");
+        String pluginId = scanner.nextLine().trim();
+        if (pluginId.isEmpty()) {
+            System.out.println("Plugin ID cannot be empty");
+            return;
+        }
+        
+        boolean success = pluginMarketplaceManager.updatePlugin(pluginId);
+        if (success) {
+            System.out.println("Plugin updated successfully!");
+        } else {
+            System.err.println("Failed to update plugin");
+        }
+    }
+    
+    private void handleCheckUpdates() {
+        var updates = pluginMarketplaceManager.getUpdatesAvailable();
+        System.out.println();
+        if (updates.isEmpty()) {
+            System.out.println("All plugins are up to date!");
+        } else {
+            System.out.println("Available updates (" + updates.size() + "):");
+            for (var plugin : updates) {
+                System.out.println("  - " + plugin.getName() + " v" + plugin.getVersion());
+            }
         }
     }
 }

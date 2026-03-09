@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-examples</artifactId>
+        <version>2.4.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>est-examples-serverless</artifactId>
+
+    <name>EST Examples Serverless</name>
+    <description>EST Examples Serverless - Serverless function examples for AWS, Azure, Alibaba, Google</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-serverless-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-serverless-aws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-serverless-azure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-serverless-alibaba</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-serverless-google</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-util-common</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

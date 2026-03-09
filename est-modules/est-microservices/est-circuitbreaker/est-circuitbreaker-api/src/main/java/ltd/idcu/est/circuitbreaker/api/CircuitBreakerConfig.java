@@ -12,19 +12,22 @@ public class CircuitBreakerConfig {
     private final int slidingWindowSize;
     private final long slidingWindowDurationMs;
     private final double failureRateThreshold;
+    private final int minimumRequestCount;
+    private final long timeWindowMs;
     private final List<Predicate<Throwable>> recordFailurePredicates;
     private final List<Predicate<Throwable>> ignoreFailurePredicates;
 
     public CircuitBreakerConfig() {
-        this(5, 30000, 3, 5000, 100, 60000, 0.5, new ArrayList<>(), new ArrayList<>());
+        this(5, 30000, 3, 5000, 100, 60000, 0.5, 10, 60000, new ArrayList<>(), new ArrayList<>());
     }
 
     public CircuitBreakerConfig(int failureThreshold, long waitDurationMs, int successThreshold, long timeoutMs) {
-        this(failureThreshold, waitDurationMs, successThreshold, timeoutMs, 100, 60000, 0.5, new ArrayList<>(), new ArrayList<>());
+        this(failureThreshold, waitDurationMs, successThreshold, timeoutMs, 100, 60000, 0.5, 10, 60000, new ArrayList<>(), new ArrayList<>());
     }
 
     public CircuitBreakerConfig(int failureThreshold, long waitDurationMs, int successThreshold, long timeoutMs,
                                  int slidingWindowSize, long slidingWindowDurationMs, double failureRateThreshold,
+                                 int minimumRequestCount, long timeWindowMs,
                                  List<Predicate<Throwable>> recordFailurePredicates,
                                  List<Predicate<Throwable>> ignoreFailurePredicates) {
         this.failureThreshold = failureThreshold;
@@ -34,6 +37,8 @@ public class CircuitBreakerConfig {
         this.slidingWindowSize = slidingWindowSize;
         this.slidingWindowDurationMs = slidingWindowDurationMs;
         this.failureRateThreshold = failureRateThreshold;
+        this.minimumRequestCount = minimumRequestCount;
+        this.timeWindowMs = timeWindowMs;
         this.recordFailurePredicates = recordFailurePredicates;
         this.ignoreFailurePredicates = ignoreFailurePredicates;
     }
@@ -64,6 +69,14 @@ public class CircuitBreakerConfig {
 
     public double getFailureRateThreshold() {
         return failureRateThreshold;
+    }
+
+    public int getMinimumRequestCount() {
+        return minimumRequestCount;
+    }
+
+    public long getTimeWindowMs() {
+        return timeWindowMs;
     }
 
     public List<Predicate<Throwable>> getRecordFailurePredicates() {
@@ -105,6 +118,8 @@ public class CircuitBreakerConfig {
         private int slidingWindowSize = 100;
         private long slidingWindowDurationMs = 60000;
         private double failureRateThreshold = 0.5;
+        private int minimumRequestCount = 10;
+        private long timeWindowMs = 60000;
         private final List<Predicate<Throwable>> recordFailurePredicates = new ArrayList<>();
         private final List<Predicate<Throwable>> ignoreFailurePredicates = new ArrayList<>();
 
@@ -143,6 +158,16 @@ public class CircuitBreakerConfig {
             return this;
         }
 
+        public Builder minimumRequestCount(int minimumRequestCount) {
+            this.minimumRequestCount = minimumRequestCount;
+            return this;
+        }
+
+        public Builder timeWindowMs(long timeWindowMs) {
+            this.timeWindowMs = timeWindowMs;
+            return this;
+        }
+
         public Builder recordFailure(Predicate<Throwable> predicate) {
             this.recordFailurePredicates.add(predicate);
             return this;
@@ -156,6 +181,7 @@ public class CircuitBreakerConfig {
         public CircuitBreakerConfig build() {
             return new CircuitBreakerConfig(failureThreshold, waitDurationMs, successThreshold, timeoutMs,
                     slidingWindowSize, slidingWindowDurationMs, failureRateThreshold,
+                    minimumRequestCount, timeWindowMs,
                     recordFailurePredicates, ignoreFailurePredicates);
         }
     }

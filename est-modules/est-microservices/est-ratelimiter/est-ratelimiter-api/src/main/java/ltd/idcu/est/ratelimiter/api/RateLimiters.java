@@ -1,8 +1,5 @@
 package ltd.idcu.est.ratelimiter.api;
 
-import ltd.idcu.est.ratelimiter.impl.DefaultRateLimiterRegistry;
-import ltd.idcu.est.ratelimiter.impl.TokenBucketRateLimiter;
-
 public class RateLimiters {
     private static final RateLimiterRegistry DEFAULT_REGISTRY = new DefaultRateLimiterRegistry();
 

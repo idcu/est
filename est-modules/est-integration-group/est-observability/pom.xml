@@ -7,13 +7,13 @@
     <parent>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-integration-group</artifactId>
-        <version>2.3.0-SNAPSHOT</version>
+        <version>2.4.0-SNAPSHOT</version>
     </parent>
     
     <artifactId>est-observability</artifactId>
     <packaging>pom</packaging>
     <name>EST Observability</name>
-    <description>可观测性模块 - Metrics、Logs、Traces集成</description>
+    <description>可观测性模�?- Metrics、Logs、Traces集成</description>
     
     <modules>
         <module>est-observability-api</module>

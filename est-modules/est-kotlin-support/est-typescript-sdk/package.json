@@ -1,0 +1,33 @@
+{
+  "name": "est-framework-sdk",
+  "version": "2.4.0",
+  "description": "EST Framework TypeScript/JavaScript SDK",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:benchmark": "jest tests/benchmark.test.ts",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "est",
+    "framework",
+    "sdk",
+    "typescript"
+  ],
+  "author": "EST Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "@types/jest": "^29.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}

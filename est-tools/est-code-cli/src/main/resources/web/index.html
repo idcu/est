@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#667eea">
     <title>EST Code CLI - Web Interface</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -18,6 +21,9 @@
             <button class="nav-tab" data-tab="skills">EST 技能</button>
             <button class="nav-tab" data-tab="tools">MCP 工具</button>
             <button class="nav-tab" data-tab="search">项目搜索</button>
+            <button class="nav-tab" data-tab="plugins">插件市场</button>
+            <button class="nav-tab" data-tab="deploy">部署</button>
+            <button class="nav-tab" data-tab="sdks">SDK示例</button>
             <button class="nav-tab" data-tab="config">配置</button>
         </nav>
 
@@ -50,6 +56,318 @@
                 </div>
             </section>
 
+            <section id="plugins" class="tab-content">
+                <div class="plugins-container">
+                    <h2>插件市场</h2>
+                    <p class="section-desc">浏览、搜索和安装EST Code CLI插件</p>
+                    
+                    <div class="plugins-toolbar">
+                        <div class="plugins-search">
+                            <input type="text" id="pluginSearchInput" placeholder="搜索插件...">
+                            <button id="pluginSearchBtn" class="btn btn-primary">搜索</button>
+                        </div>
+                        <div class="plugins-filter">
+                            <select id="pluginCategory">
+                                <option value="all">全部分类</option>
+                                <option value="tools">开发工具</option>
+                                <option value="integration">系统集成</option>
+                                <option value="analytics">数据分析</option>
+                                <option value="productivity">效率提升</option>
+                            </select>
+                            <select id="pluginSort">
+                                <option value="popular">最流行</option>
+                                <option value="latest">最新</option>
+                                <option value="rating">评分最高</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="plugins-tabs">
+                        <button class="plugin-tab active" data-view="browse">浏览市场</button>
+                        <button class="plugin-tab" data-view="installed">已安装</button>
+                        <button class="plugin-tab" data-view="updates">可更新</button>
+                    </div>
+                    
+                    <div id="pluginsBrowse" class="plugins-view active">
+                        <div class="plugins-grid" id="pluginsGrid"></div>
+                    </div>
+                    
+                    <div id="pluginsInstalled" class="plugins-view">
+                        <div class="plugins-grid" id="installedPluginsGrid"></div>
+                    </div>
+                    
+                    <div id="pluginsUpdates" class="plugins-view">
+                        <div class="plugins-grid" id="updatesPluginsGrid"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="deploy" class="tab-content">
+                <div class="deploy-container">
+                    <h2>云原生部署</h2>
+                    <p class="section-desc">选择部署目标平台，快速部署您的应用</p>
+                    
+                    <div class="deploy-platforms">
+                        <div class="platform-card" data-platform="docker">
+                            <div class="platform-icon">🐳</div>
+                            <h3>Docker</h3>
+                            <p>容器化部署，快速启动</p>
+                            <button class="btn btn-secondary" onclick="deployTo('docker')">生成配置</button>
+                        </div>
+                        
+                        <div class="platform-card" data-platform="kubernetes">
+                            <div class="platform-icon">☸️</div>
+                            <h3>Kubernetes</h3>
+                            <p>容器编排，生产就绪</p>
+                            <button class="btn btn-secondary" onclick="deployTo('kubernetes')">生成配置</button>
+                        </div>
+                        
+                        <div class="platform-card" data-platform="aws">
+                            <div class="platform-icon">☁️</div>
+                            <h3>AWS Lambda</h3>
+                            <p>Serverless，按需付费</p>
+                            <button class="btn btn-secondary" onclick="deployTo('aws')">生成配置</button>
+                        </div>
+                        
+                        <div class="platform-card" data-platform="azure">
+                            <div class="platform-icon">🔷</div>
+                            <h3>Azure Functions</h3>
+                            <p>Serverless，企业级</p>
+                            <button class="btn btn-secondary" onclick="deployTo('azure')">生成配置</button>
+                        </div>
+                        
+                        <div class="platform-card" data-platform="alibaba">
+                            <div class="platform-icon">🏮</div>
+                            <h3>阿里云函数计算</h3>
+                            <p>Serverless，本土优选</p>
+                            <button class="btn btn-secondary" onclick="deployTo('alibaba')">生成配置</button>
+                        </div>
+                        
+                        <div class="platform-card" data-platform="google">
+                            <div class="platform-icon">🔶</div>
+                            <h3>Google Cloud</h3>
+                            <p>Serverless，全球覆盖</p>
+                            <button class="btn btn-secondary" onclick="deployTo('google')">生成配置</button>
+                        </div>
+                    </div>
+                    
+                    <div id="deployOutput" class="deploy-output" style="display: none;">
+                        <h3>部署配置</h3>
+                        <button class="btn btn-small" onclick="copyOutput()">复制</button>
+                        <pre id="outputContent"></pre>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="sdks" class="tab-content">
+                <div class="sdks-container">
+                    <h2>多语言 SDK</h2>
+                    <p class="section-desc">选择语言，查看 EST Framework SDK 使用示例</p>
+                    
+                    <div class="language-tabs">
+                        <button class="lang-tab active" data-lang="typescript">TypeScript</button>
+                        <button class="lang-tab" data-lang="python">Python</button>
+                        <button class="lang-tab" data-lang="go">Go</button>
+                        <button class="lang-tab" data-lang="kotlin">Kotlin</button>
+                    </div>
+                    
+                    <div class="sdk-examples">
+                        <div id="typescript-examples" class="lang-examples active">
+                            <h3>TypeScript / JavaScript SDK</h3>
+                            <div class="example-card">
+                                <h4>安装</h4>
+                                <pre><code>npm install @est/framework-sdk
+# 或
+yarn add @est/framework-sdk</code></pre>
+                            </div>
+                            <div class="example-card">
+                                <h4>基础使用</h4>
+                                <pre><code>import { EstClient } from '@est/framework-sdk';
+
+// 初始化客户端
+const client = new EstClient({
+  apiUrl: 'http://localhost:8080',
+  apiKey: 'your-api-key'
+});
+
+// 发送请求
+const response = await client.request('/api/hello');
+console.log(response);</code></pre>
+                            </div>
+                            <div class="example-card">
+                                <h4>插件市场</h4>
+                                <pre><code>import { PluginMarketplaceClient } from '@est/framework-sdk';
+
+const marketplace = new PluginMarketplaceClient();
+
+// 搜索插件
+const plugins = await marketplace.searchPlugins('database');
+console.log(plugins);
+
+// 安装插件
+await marketplace.installPlugin('database-plugin', '1.0.0');</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div id="python-examples" class="lang-examples">
+                            <h3>Python SDK</h3>
+                            <div class="example-card">
+                                <h4>安装</h4>
+                                <pre><code>pip install est-framework-sdk</code></pre>
+                            </div>
+                            <div class="example-card">
+                                <h4>基础使用</h4>
+                                <pre><code>from est_sdk import EstClient
+
+# 初始化客户端
+client = EstClient(
+    api_url="http://localhost:8080",
+    api_key="your-api-key"
+)
+
+# 发送请求
+response = client.request("/api/hello")
+print(response)</code></pre>
+                            </div>
+                            <div class="example-card">
+                                <h4>插件市场</h4>
+                                <pre><code>from est_sdk import PluginMarketplaceClient
+
+marketplace = PluginMarketplaceClient()
+
+# 搜索插件
+plugins = marketplace.search_plugins("database")
+print(plugins)
+
+# 安装插件
+marketplace.install_plugin("database-plugin", "1.0.0")</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div id="go-examples" class="lang-examples">
+                            <h3>Go SDK</h3>
+                            <div class="example-card">
+                                <h4>安装</h4>
+                                <pre><code>go get github.com/idcu/est-sdk-go</code></pre>
+                            </div>
+                            <div class="example-card">
+                                <h4>基础使用</h4>
+                                <pre><code>package main
+
+import (
+    "fmt"
+    "github.com/idcu/est-sdk-go"
+)
+
+func main() {
+    // 初始化客户端
+    client := est.NewEstClient(&est.ClientConfig{
+        APIUrl: "http://localhost:8080",
+        APIKey: "your-api-key",
+    })
+    
+    // 发送请求
+    response, err := client.Request("/api/hello")
+    if err != nil {
+        panic(err)
+    }
+    
+    fmt.Println(response)
+}</code></pre>
+                            </div>
+                            <div class="example-card">
+                                <h4>插件市场</h4>
+                                <pre><code>package main
+
+import (
+    "fmt"
+    "github.com/idcu/est-sdk-go"
+)
+
+func main() {
+    marketplace := est.NewPluginMarketplaceClient()
+    
+    // 搜索插件
+    plugins, err := marketplace.SearchPlugins("database")
+    if err != nil {
+        panic(err)
+    }
+    
+    fmt.Println(plugins)
+    
+    // 安装插件
+    err = marketplace.InstallPlugin("database-plugin", "1.0.0")
+    if err != nil {
+        panic(err)
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div id="kotlin-examples" class="lang-examples">
+                            <h3>Kotlin DSL</h3>
+                            <div class="example-card">
+                                <h4>协程支持</h4>
+                                <pre><code>import ltd.idcu.est.kotlin.coroutines.*
+import kotlinx.coroutines.*
+
+fun main() = runBlocking {
+    val scope = EstCoroutineScope()
+    
+    scope.launch {
+        println("Running in EST coroutine scope")
+        delay(1000)
+        println("Done!")
+    }
+}</code></pre>
+                            </div>
+                            <div class="example-card">
+                                <h4>EST DSL</h4>
+                                <pre><code>import ltd.idcu.est.kotlin.dsl.*
+
+fun main() {
+    val app = estApplication {
+        name = "My EST App"
+        version = "1.0.0"
+        
+        modules {
+            +"est-core"
+            +"est-web"
+            +"est-plugin"
+        }
+        
+        config {
+            "server.port" to 8080
+            "app.name" to "My App"
+        }
+    }
+    
+    app.start()
+}</code></pre>
+                            </div>
+                            <div class="example-card">
+                                <h4>Flow 支持</h4>
+                                <pre><code>import ltd.idcu.est.kotlin.flow.*
+import kotlinx.coroutines.*
+
+fun main() = runBlocking {
+    val flow = estFlow {
+        for (i in 1..5) {
+            emit(i)
+            delay(100)
+        }
+    }
+    
+    flow.collect { value ->
+        println("Received: $value")
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
             <section id="config" class="tab-content">
                 <div class="config-container">
                     <form id="configForm">

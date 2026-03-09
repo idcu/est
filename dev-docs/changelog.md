@@ -5,6 +5,80 @@
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 ---
 
+## [2.4.0] - 2026-03-09
+
+### ✨ 新增
+- **生态系统建设**
+  - 完整的插件系统实现（Plugin、PluginManager、PluginLoader、PluginListener）
+  - 插件生命周期管理（加载、初始化、启动、停止、卸载）
+  - 插件依赖管理和统计信息
+  - 插件市场 API 设计（PluginMarketplace、PluginMetadata）
+  - 插件系统示例项目（est-examples-plugin）
+  
+- **云原生增强**
+  - 完整的可观测性集成（Metrics + Logs + Traces）
+  - Prometheus Metrics 集成
+  - ELK Stack Logs 集成
+  - OpenTelemetry、Zipkin、Jaeger Traces 集成
+  - 可观测性 UI（Observability.vue）
+  - 可观测性后端 Controller（ObservabilityController.java）
+  - Grafana 仪表板模板（est-dashboard.json）
+  
+  - 微服务治理增强
+    - 断路器实现（est-circuitbreaker）
+    - 限流实现（est-ratelimiter）
+    - 服务发现实现（est-discovery）
+    - 性能监控实现（est-performance）
+    - 微服务治理 UI（MicroserviceGovernance.vue）
+    - 微服务治理后端 Controller（MicroserviceGovernanceController.java）
+  
+  - Serverless 支持完善
+    - AWS Lambda 支持
+    - Azure Functions 支持
+    - 阿里云函数计算支持
+    - Google Cloud Functions 支持
+    - 冷启动优化器（ColdStartOptimizer）
+    - Serverless 本地运行器（ServerlessLocalRunner）
+    - Serverless 示例项目（est-examples-serverless）
+    - 完整的部署配置（deploy/serverless/）
+
+- **多语言支持**
+  - Kotlin 原生支持
+  - Kotlin DSL 设计
+  - 协程集成
+  - Kotlin 特定扩展函数
+  - Kotlin 示例项目（est-examples-kotlin）
+  - Kotlin DSL 示例（KotlinDslExample.kt）
+  - Kotlin 扩展函数示例（KotlinExtensionsExample.kt）
+
+- **示例代码完善**
+  - 新增 est-examples-kotlin - Kotlin 支持示例
+  - 新增 est-examples-plugin - 插件系统示例
+  - 新增 est-examples-serverless - Serverless 示例
+  - 总计 9 个示例模块
+
+- **管理后台 UI 增强**
+  - 可观测性仪表盘（Metrics、Traces、Logs 三个标签页）
+  - 微服务治理（断路器、限流、服务发现、性能监控）
+  - ECharts 图表集成（7+ 图表）
+  - 移动端响应式优化
+
+### 🛠️ 修复
+- 统一所有模块版本号为 2.4.0-SNAPSHOT
+- 修复 Maven 依赖版本缺失问题（est-util-common/pom.xml）
+- 移除多余的 JUnit 依赖声明
+- 优化依赖管理结构
+
+### 📚 文档
+- 更新开发路线图（roadmap.md）
+- 更新 2.4.0 开发计划（development-plan-2.4.0.md）
+- 创建第三阶段完成总结（phase3-final-completion-summary.md）
+- 创建 2.4.0 版本准备文档（version-2.4.0-preparation.md）
+- 创建 Grafana 仪表板模板（deploy/grafana/est-dashboard.json）
+- 更新所有示例模块的 README 文档
+
+---
+
 ## [2.3.0] - 2026-06-30
 
 ### ✨ 新增

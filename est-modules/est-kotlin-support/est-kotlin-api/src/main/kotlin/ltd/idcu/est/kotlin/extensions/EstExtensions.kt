@@ -1,67 +1,27 @@
 package ltd.idcu.est.kotlin.extensions
 
-import ltd.idcu.est.core.api.Module
-import ltd.idcu.est.core.api.Application
-import java.util.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import java.time.Duration
+import java.time.Instant
+
+fun String?.nullIfBlank(): String? = if (isNullOrBlank()) null else this
 
 fun String?.orEmpty(): String = this ?: ""
 
-fun String?.orDefault(default: String): String = this ?: default
-
-fun <T> T?.orDefault(default: T): T = this ?: default
-
-fun <T> T?.applyIf(condition: Boolean, block: T.() -> Unit): T {
-    if (condition) {
-        this.block()
-    }
-    return this
-}
-
-fun <T> T?.letIf(condition: Boolean, block: (T) -> Unit): T? {
-    if (condition && this != null) {
-        block(this)
-    }
-    return this
-}
-
-fun String.toOptional(): Optional<String> = Optional.ofNullable(this)
-
-fun <T> T.toOptional(): Optional<T> = Optional.ofNullable(this)
-
-fun String.isNotNullOrEmpty(): Boolean = this != null && this.isNotEmpty()
-
-fun String?.nullIfEmpty(): String? = if (this.isNullOrEmpty()) null else this
-
-fun <T> List<T>?.nullIfEmpty(): List<T>? = if (this.isNullOrEmpty()) null else this
-
-fun <K, V> Map<K, V>?.nullIfEmpty(): Map<K, V>? = if (this.isNullOrEmpty()) null else this
-
-fun String.capitalizeFirst(): String {
-    if (this.isEmpty()) return this
-    return this.substring(0, 1).uppercase() + this.substring(1)
-}
-
-fun String.decapitalizeFirst(): String {
-    if (this.isEmpty()) return this
-    return this.substring(0, 1).lowercase() + this.substring(1)
-}
-
-fun String.toSnakeCase(): String {
-    return this.replace(Regex("([a-z])([A-Z])"), "$1_$2").lowercase()
-}
-
-fun String.toCamelCase(): String {
-    return this.split('_').joinToString("") { it.capitalizeFirst() }.decapitalizeFirst()
-}
-
 fun String.truncate(maxLength: Int, suffix: String = "..."): String {
-    if (this.length <= maxLength) return this
-    return this.take(maxLength - suffix.length) + suffix
+    if (length <= maxLength) return this
+    return take(maxLength - suffix.length) + suffix
 }
+
+fun <T> List<T>?.nullIfEmpty(): List<T>? = if (isNullOrEmpty()) null else this
+
+fun <T> List<T>?.orEmpty(): List<T> = this ?: emptyList()
 
 fun <T> MutableList<T>.removeIf(predicate: (T) -> Boolean): Boolean {
+    val iterator = iterator()
     var removed = false
-    val iterator = this.iterator()
     while (iterator.hasNext()) {
         if (predicate(iterator.next())) {
             iterator.remove()
@@ -71,71 +31,131 @@ fun <T> MutableList<T>.removeIf(predicate: (T) -> Boolean): Boolean {
     return removed
 }
 
-fun <T> List<T>.distinctByKey(keySelector: (T) -> Any): List<T> {
-    val seen = mutableSetOf<Any>()
-    return this.filter { seen.add(keySelector(it)) }
+fun <K, V> Map<K, V>?.nullIfEmpty(): Map<K, V>? = if (isNullOrEmpty()) null else this
+
+fun <K, V> Map<K, V>?.orEmpty(): Map<K, V> = this ?: emptyMap()
+
+fun <T> T?.ifNull(defaultValue: () -> T): T = this ?: defaultValue()
+
+fun <T> T?.ifNullOrEmpty(defaultValue: () -> T): T where T : CharSequence =
+    if (isNullOrEmpty()) defaultValue() else this
+
+fun <T> T?.takeIf(condition: Boolean): T? = if (condition) this else null
+
+fun <T> T?.takeUnless(condition: Boolean): T? = if (!condition) this else null
+
+infix fun <T> T?.coalesce(other: T): T = this ?: other
+
+fun <T, R> T?.letIf(condition: Boolean, block: (T) -> R): R? =
+    if (condition && this != null) block(this) else null
+
+fun <T> T.applyIf(condition: Boolean, block: T.() -> Unit): T {
+    if (condition) block()
+    return this
 }
 
-fun <T, R> List<T>.mapToSet(transform: (T) -> R): Set<R> {
-    return this.mapTo(mutableSetOf(), transform)
+fun <T> Result<T>.onSuccessLog(block: (T) -> Unit): Result<T> {
+    onSuccess(block)
+    return this
 }
 
-fun <K, V> Map<K, V>.getOrDefault(key: K, defaultValue: () -> V): V {
-    return this[key] ?: defaultValue()
+fun <T> Result<T>.onFailureLog(block: (Throwable) -> Unit): Result<T> {
+    onFailure(block)
+    return this
 }
 
-fun <K, V> MutableMap<K, V>.computeIfAbsent(key: K, mappingFunction: (K) -> V): V {
-    return this.getOrPut(key) { mappingFunction(key) }
+fun <T> Result<T>.getOrNullLog(): T? {
+    onFailure { println("Error: ${it.message}") }
+    return getOrNull()
 }
 
-inline fun <T> measureTimeMillis(block: () -> T): Pair<T, Long> {
-    val start = System.currentTimeMillis()
+fun Duration.toHumanReadable(): String {
+    val seconds = seconds
+    return when {
+        seconds < 60 -> "${seconds}s"
+        seconds < 3600 -> "${seconds / 60}m ${seconds % 60}s"
+        else -> "${seconds / 3600}h ${(seconds % 3600) / 60}m"
+    }
+}
+
+fun Instant.elapsed(): Duration = Duration.between(this, Instant.now())
+
+fun Instant.isOlderThan(duration: Duration): Boolean = elapsed() > duration
+
+fun Instant.isNewerThan(duration: Duration): Boolean = elapsed() < duration
+
+fun <T> timer(block: () -> T): Pair<T, Duration> {
+    val start = Instant.now()
     val result = block()
-    val end = System.currentTimeMillis()
-    return result to (end - start)
+    val end = Instant.now()
+    return result to Duration.between(start, end)
 }
 
-inline fun <T> measureTimeNanos(block: () -> T): Pair<T, Long> {
-    val start = System.nanoTime()
+suspend fun <T> timerSuspend(block: suspend () -> T): Pair<T, Duration> {
+    val start = Instant.now()
     val result = block()
-    val end = System.nanoTime()
-    return result to (end - start)
+    val end = Instant.now()
+    return result to Duration.between(start, end)
 }
 
-inline fun retry(
-    times: Int,
-    delayMillis: Long = 0,
-    block: () -> Unit
-) {
-    var lastException: Exception? = null
-    repeat(times) { attempt ->
-        try {
-            block()
-            return
-        } catch (e: Exception) {
-            lastException = e
-            if (attempt < times - 1 && delayMillis > 0) {
-                Thread.sleep(delayMillis)
-            }
+fun <T> Flow<T>.throttle(periodMillis: Long): Flow<T> = flow {
+    var lastEmissionTime = 0L
+    collect { value ->
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastEmissionTime >= periodMillis) {
+            emit(value)
+            lastEmissionTime = currentTime
         }
     }
-    throw lastException ?: RuntimeException("Retry failed")
 }
 
-inline fun <T> retryOrDefault(
-    times: Int,
-    defaultValue: T,
-    delayMillis: Long = 0,
-    block: () -> T
-): T {
-    repeat(times) { attempt ->
-        try {
-            return block()
-        } catch (e: Exception) {
-            if (attempt < times - 1 && delayMillis > 0) {
-                Thread.sleep(delayMillis)
-            }
+fun <T> Flow<T>.debounce(timeoutMillis: Long): Flow<T> = flow {
+    var lastValue: T? = null
+    var job: kotlinx.coroutines.Job? = null
+    
+    collect { value ->
+        lastValue = value
+        job?.cancel()
+        job = kotlinx.coroutines.GlobalScope.launch {
+            delay(timeoutMillis)
+            lastValue?.let { emit(it) }
         }
     }
-    return defaultValue
+}
+
+fun <T> List<T>.paginate(page: Int, pageSize: Int): List<T> {
+    val fromIndex = page * pageSize
+    if (fromIndex >= size) return emptyList()
+    val toIndex = minOf(fromIndex + pageSize, size)
+    return subList(fromIndex, toIndex)
+}
+
+fun <T, K> List<T>.groupByIntoList(keySelector: (T) -> K): Map<K, List<T>> =
+    groupBy(keySelector)
+
+fun <T, K, V> List<T>.associateByNonNull(keySelector: (T) -> K?, valueTransform: (T) -> V): Map<K, V> =
+    mapNotNull { t -> keySelector(t)?.let { it to valueTransform(t) } }
+        .toMap()
+
+fun String.toCamelCase(): String {
+    return split('_', '-', ' ')
+        .mapIndexed { index, s ->
+            if (index == 0) s.lowercase()
+            else s.lowercase().replaceFirstChar { it.uppercaseChar() }
+        }
+        .joinToString("")
+}
+
+fun String.toSnakeCase(): String {
+    return replace(Regex("([a-z])([A-Z])"), "$1_$2")
+        .lowercase()
+        .replace(' ', '_')
+        .replace('-', '_')
+}
+
+fun String.toKebabCase(): String {
+    return replace(Regex("([a-z])([A-Z])"), "$1-$2")
+        .lowercase()
+        .replace(' ', '-')
+        .replace('_', '-')
 }

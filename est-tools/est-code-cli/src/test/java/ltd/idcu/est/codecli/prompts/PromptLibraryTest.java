@@ -1,7 +1,7 @@
 package ltd.idcu.est.codecli.prompts;
 
-import ltd.idcu.est.test.api.Test;
-import ltd.idcu.est.test.api.BeforeEach;
+import ltd.idcu.est.test.annotation.Test;
+import ltd.idcu.est.test.annotation.BeforeEach;
 
 import java.util.List;
 

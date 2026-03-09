@@ -7,7 +7,7 @@
     <parent>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-tools</artifactId>
-        <version>2.3.0-SNAPSHOT</version>
+        <version>2.4.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>est-code-cli</artifactId>
@@ -20,39 +20,49 @@
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-ai-assistant</artifactId>
-            <version>2.3.0-SNAPSHOT</version>
+            <version>2.4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-llm</artifactId>
-            <version>2.3.0-SNAPSHOT</version>
+            <version>2.4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-scaffold</artifactId>
-            <version>2.3.0-SNAPSHOT</version>
+            <version>2.4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-codegen</artifactId>
-            <version>2.3.0-SNAPSHOT</version>
+            <version>2.4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-util-format-yaml</artifactId>
-            <version>2.3.0-SNAPSHOT</version>
+            <version>2.4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-test-api</artifactId>
-            <version>2.3.0-SNAPSHOT</version>
+            <version>2.4.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-test-impl</artifactId>
-            <version>2.3.0-SNAPSHOT</version>
+            <version>2.4.0-SNAPSHOT</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-plugin-marketplace-api</artifactId>
+            <version>2.4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-plugin-marketplace-impl</artifactId>
+            <version>2.4.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

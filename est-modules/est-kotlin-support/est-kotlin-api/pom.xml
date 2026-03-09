@@ -12,7 +12,7 @@
     
     <artifactId>est-kotlin-api</artifactId>
     <name>EST Kotlin API</name>
-    <description>Kotlin支持API - DSL、协程接口定义</description>
+    <description>Kotlin Support API - DSL and Coroutine interfaces</description>
     
     <dependencies>
         <dependency>

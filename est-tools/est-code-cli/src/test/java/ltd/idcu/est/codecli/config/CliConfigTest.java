@@ -1,8 +1,8 @@
 package ltd.idcu.est.codecli.config;
 
-import ltd.idcu.est.test.api.Test;
-import ltd.idcu.est.test.api.BeforeEach;
-import ltd.idcu.est.test.api.AfterEach;
+import ltd.idcu.est.test.annotation.Test;
+import ltd.idcu.est.test.annotation.BeforeEach;
+import ltd.idcu.est.test.annotation.AfterEach;
 
 import java.io.IOException;
 import java.nio.file.Files;

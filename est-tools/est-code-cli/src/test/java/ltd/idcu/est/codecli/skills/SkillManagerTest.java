@@ -1,7 +1,7 @@
 package ltd.idcu.est.codecli.skills;
 
-import ltd.idcu.est.test.api.Test;
-import ltd.idcu.est.test.api.BeforeEach;
+import ltd.idcu.est.test.annotation.Test;
+import ltd.idcu.est.test.annotation.BeforeEach;
 
 import java.util.List;
 
@@ -99,7 +99,7 @@ public class SkillManagerTest {
 
     @Test
     void testFindMatchingSkill() {
-        EstSkill matched = skillManager.findMatchingSkill("请审查这段代码");
+        EstSkill matched = skillManager.findMatchingSkill("请审查这段代�?);
         assertNotNull(matched);
         assertEquals("code_review", matched.getName());
     }
@@ -113,7 +113,7 @@ public class SkillManagerTest {
 
     @Test
     void testFindMatchingSkillSecurity() {
-        EstSkill matched = skillManager.findMatchingSkill("检查这段代码的安全性");
+        EstSkill matched = skillManager.findMatchingSkill("检查这段代码的安全�?);
         assertNotNull(matched);
         assertEquals("security_audit", matched.getName());
     }

@@ -4,10 +4,12 @@ import ltd.idcu.est.ai.api.AiAssistant;
 import ltd.idcu.est.ai.impl.DefaultAiAssistant;
 import ltd.idcu.est.codecli.config.CliConfig;
 import ltd.idcu.est.codecli.mcp.EstCodeCliMcpServer;
+import ltd.idcu.est.codecli.plugin.PluginMarketplaceManager;
 import ltd.idcu.est.codecli.prompts.PromptLibrary;
 import ltd.idcu.est.codecli.search.FileIndex;
 import ltd.idcu.est.codecli.search.ProjectIndexer;
 import ltd.idcu.est.codecli.skills.SkillManager;
+import ltd.idcu.est.plugin.api.PluginInfo;
 
 import java.io.*;
 import java.net.*;
@@ -30,6 +32,7 @@ public class EstWebServer {
     private final SkillManager skillManager;
     private final PromptLibrary promptLibrary;
     private final EstCodeCliMcpServer mcpServer;
+    private final PluginMarketplaceManager pluginMarketplaceManager;
     private ServerSocket serverSocket;
     private ExecutorService executorService;
     private volatile boolean running;
@@ -44,6 +47,7 @@ public class EstWebServer {
         this.skillManager = new SkillManager();
         this.promptLibrary = new PromptLibrary();
         this.mcpServer = new EstCodeCliMcpServer(workDir, fileIndex, indexer, skillManager, promptLibrary);
+        this.pluginMarketplaceManager = new PluginMarketplaceManager(Paths.get(workDir));
         this.executorService = Executors.newCachedThreadPool();
     }
     
@@ -62,6 +66,12 @@ public class EstWebServer {
         System.out.println("  POST /api/search      - Search files");
         System.out.println("  GET  /api/config      - Get config");
         System.out.println("  POST /api/config      - Update config");
+        System.out.println("  GET  /api/plugins     - List plugins");
+        System.out.println("  POST /api/plugins/search - Search plugins");
+        System.out.println("  GET  /api/plugins/installed - List installed plugins");
+        System.out.println("  POST /api/plugins/install - Install plugin");
+        System.out.println("  POST /api/plugins/update - Update plugin");
+        System.out.println("  POST /api/plugins/uninstall - Uninstall plugin");
         System.out.println("Press Ctrl+C to stop");
         
         while (running) {
@@ -137,6 +147,24 @@ public class EstWebServer {
             handleApiGetConfig(writer, output);
         } else if ("POST".equals(method) && "/config".equals(apiPath)) {
             handleApiUpdateConfig(reader, writer, output);
+        } else if ("GET".equals(method) && "/plugins".equals(apiPath)) {
+            handleApiListPlugins(writer, output);
+        } else if ("POST".equals(method) && "/plugins/search".equals(apiPath)) {
+            handleApiSearchPlugins(reader, writer, output);
+        } else if ("GET".equals(method) && "/plugins/installed".equals(apiPath)) {
+            handleApiListInstalledPlugins(writer, output);
+        } else if ("POST".equals(method) && "/plugins/install".equals(apiPath)) {
+            handleApiInstallPlugin(reader, writer, output);
+        } else if ("POST".equals(method) && "/plugins/update".equals(apiPath)) {
+            handleApiUpdatePlugin(reader, writer, output);
+        } else if ("POST".equals(method) && "/plugins/uninstall".equals(apiPath)) {
+            handleApiUninstallPlugin(reader, writer, output);
+        } else if ("GET".equals(method) && "/plugins/categories".equals(apiPath)) {
+            handleApiGetCategories(writer, output);
+        } else if ("GET".equals(method) && "/plugins/popular".equals(apiPath)) {
+            handleApiGetPopularPlugins(writer, output);
+        } else if ("GET".equals(method) && "/plugins/latest".equals(apiPath)) {
+            handleApiGetLatestPlugins(writer, output);
         } else {
             sendJsonError(writer, output, 404, "API endpoint not found: " + path);
         }
@@ -291,6 +319,154 @@ public class EstWebServer {
         } catch (IOException e) {
             sendJsonError(writer, output, 500, "Error saving config: " + e.getMessage());
         }
+    }
+    
+    private Map<String, Object> pluginInfoToMap(PluginInfo plugin) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("name", plugin.getName());
+        map.put("version", plugin.getVersion());
+        map.put("description", plugin.getDescription());
+        map.put("author", plugin.getAuthor());
+        map.put("mainClass", plugin.getMainClass());
+        map.put("dependencies", plugin.getDependencies());
+        map.put("softDependencies", plugin.getSoftDependencies());
+        map.put("category", plugin.getCategory());
+        map.put("tags", plugin.getTags());
+        map.put("icon", plugin.getIcon());
+        map.put("homepage", plugin.getHomepage());
+        map.put("repository", plugin.getRepository());
+        map.put("license", plugin.getLicense());
+        map.put("rating", plugin.getRating());
+        map.put("downloadCount", plugin.getDownloadCount());
+        map.put("screenshots", plugin.getScreenshots());
+        map.put("changelog", plugin.getChangelog());
+        map.put("publishTime", plugin.getPublishTime());
+        map.put("lastUpdateTime", plugin.getLastUpdateTime());
+        map.put("certified", plugin.isCertified());
+        map.put("compatibleVersions", plugin.getCompatibleVersions());
+        map.put("minFrameworkVersion", plugin.getMinFrameworkVersion());
+        return map;
+    }
+    
+    private void handleApiListPlugins(PrintWriter writer, OutputStream output) throws IOException {
+        List<Map<String, Object>> plugins = new ArrayList<>();
+        pluginMarketplaceManager.getPopularPlugins(10).forEach(plugin -> {
+            plugins.add(pluginInfoToMap(plugin));
+        });
+        sendJsonResponse(writer, output, ApiResponse.success(plugins));
+    }
+    
+    private void handleApiSearchPlugins(BufferedReader reader, PrintWriter writer, 
+                                         OutputStream output) throws IOException {
+        String body = readRequestBody(reader);
+        String query = extractJsonValue(body, "query");
+        String category = extractJsonValue(body, "category");
+        
+        List<Map<String, Object>> plugins = new ArrayList<>();
+        List<PluginInfo> results;
+        
+        if (category != null && !category.isEmpty()) {
+            results = pluginMarketplaceManager.searchPluginsByCategory(category);
+        } else if (query != null && !query.isEmpty()) {
+            results = pluginMarketplaceManager.searchPlugins(query);
+        } else {
+            results = pluginMarketplaceManager.getPopularPlugins(20);
+        }
+        
+        results.forEach(plugin -> {
+            plugins.add(pluginInfoToMap(plugin));
+        });
+        
+        sendJsonResponse(writer, output, ApiResponse.success(plugins));
+    }
+    
+    private void handleApiListInstalledPlugins(PrintWriter writer, OutputStream output) throws IOException {
+        List<Map<String, Object>> plugins = new ArrayList<>();
+        pluginMarketplaceManager.getInstalledPlugins().forEach(plugin -> {
+            plugins.add(pluginInfoToMap(plugin));
+        });
+        sendJsonResponse(writer, output, ApiResponse.success(plugins));
+    }
+    
+    private void handleApiInstallPlugin(BufferedReader reader, PrintWriter writer, 
+                                         OutputStream output) throws IOException {
+        String body = readRequestBody(reader);
+        String pluginId = extractJsonValue(body, "pluginId");
+        String version = extractJsonValue(body, "version");
+        
+        if (pluginId == null || pluginId.isEmpty()) {
+            sendJsonError(writer, output, 400, "Plugin ID is required");
+            return;
+        }
+        
+        boolean success;
+        if (version != null && !version.isEmpty()) {
+            success = pluginMarketplaceManager.installPlugin(pluginId, version);
+        } else {
+            success = pluginMarketplaceManager.installPlugin(pluginId);
+        }
+        
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("success", success);
+        result.put("pluginId", pluginId);
+        sendJsonResponse(writer, output, ApiResponse.success(result));
+    }
+    
+    private void handleApiUpdatePlugin(BufferedReader reader, PrintWriter writer, 
+                                        OutputStream output) throws IOException {
+        String body = readRequestBody(reader);
+        String pluginId = extractJsonValue(body, "pluginId");
+        
+        if (pluginId == null || pluginId.isEmpty()) {
+            sendJsonError(writer, output, 400, "Plugin ID is required");
+            return;
+        }
+        
+        boolean success = pluginMarketplaceManager.updatePlugin(pluginId);
+        
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("success", success);
+        result.put("pluginId", pluginId);
+        sendJsonResponse(writer, output, ApiResponse.success(result));
+    }
+    
+    private void handleApiUninstallPlugin(BufferedReader reader, PrintWriter writer, 
+                                           OutputStream output) throws IOException {
+        String body = readRequestBody(reader);
+        String pluginId = extractJsonValue(body, "pluginId");
+        
+        if (pluginId == null || pluginId.isEmpty()) {
+            sendJsonError(writer, output, 400, "Plugin ID is required");
+            return;
+        }
+        
+        boolean success = pluginMarketplaceManager.uninstallPlugin(pluginId);
+        
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("success", success);
+        result.put("pluginId", pluginId);
+        sendJsonResponse(writer, output, ApiResponse.success(result));
+    }
+    
+    private void handleApiGetCategories(PrintWriter writer, OutputStream output) throws IOException {
+        List<String> categories = pluginMarketplaceManager.getCategories();
+        sendJsonResponse(writer, output, ApiResponse.success(categories));
+    }
+    
+    private void handleApiGetPopularPlugins(PrintWriter writer, OutputStream output) throws IOException {
+        List<Map<String, Object>> plugins = new ArrayList<>();
+        pluginMarketplaceManager.getPopularPlugins(10).forEach(plugin -> {
+            plugins.add(pluginInfoToMap(plugin));
+        });
+        sendJsonResponse(writer, output, ApiResponse.success(plugins));
+    }
+    
+    private void handleApiGetLatestPlugins(PrintWriter writer, OutputStream output) throws IOException {
+        List<Map<String, Object>> plugins = new ArrayList<>();
+        pluginMarketplaceManager.getLatestPlugins(10).forEach(plugin -> {
+            plugins.add(pluginInfoToMap(plugin));
+        });
+        sendJsonResponse(writer, output, ApiResponse.success(plugins));
     }
     
     private String readRequestBody(BufferedReader reader) throws IOException {

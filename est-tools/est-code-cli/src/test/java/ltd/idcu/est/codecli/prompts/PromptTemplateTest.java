@@ -1,6 +1,6 @@
 package ltd.idcu.est.codecli.prompts;
 
-import ltd.idcu.est.test.api.Test;
+import ltd.idcu.est.test.annotation.Test;
 
 import java.util.HashMap;
 import java.util.Map;

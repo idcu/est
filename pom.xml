@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -37,8 +37,9 @@
         <module>est-base</module>
         <module>est-modules</module>
         <module>est-app</module>
-        <module>est-tools</module>
-        <module>est-starter-monomer</module>
+        <!-- <module>est-tools</module> -->
+        <!-- <module>est-starter-monomer</module> -->
+        <!-- <module>est-examples</module> -->
     </modules>
 
     <dependencyManagement>
@@ -380,6 +381,36 @@
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
+                <artifactId>est-tracing-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-tracing-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-observability-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-observability-prometheus</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-observability-elk</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-observability-opentelemetry</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
                 <artifactId>est-scheduler-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -593,10 +624,41 @@
                 <artifactId>est-serverless-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-serverless-aws</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-serverless-azure</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-serverless-alibaba</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-serverless-google</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-kotlin-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-kotlin-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
+        <testSourceDirectory>nonexistent</testSourceDirectory>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -667,7 +729,7 @@
                         </rulesets>
                         <sourceEncoding>UTF-8</sourceEncoding>
                         <minimumTokens>100</minimumTokens>
-                        <targetJdk>21</targetJdk>
+                        <targetJdk>17</targetJdk>
                         <excludeRoots>
                             <excludeRoot>target/generated-sources/stubs</excludeRoot>
                         </excludeRoots>

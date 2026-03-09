@@ -11,6 +11,7 @@
     </parent>
     
     <artifactId>est-kotlin-support</artifactId>
+    <packaging>pom</packaging>
     <name>EST Kotlin Support</name>
     <description>Kotlin原生支持、DSL、协程集成</description>
     
