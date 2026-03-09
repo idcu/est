@@ -17,7 +17,7 @@ Add EST Framework to your Maven project:
         <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est</artifactId>
-            <version>2.1.0</version>
+            <version>2.2.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

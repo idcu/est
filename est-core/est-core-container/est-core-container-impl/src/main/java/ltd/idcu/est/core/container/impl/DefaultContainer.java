@@ -54,6 +54,8 @@ public class DefaultContainer implements Container {
     private final Map<Class<?>, Method[]> postConstructCache = new ConcurrentHashMap<>();
     private final Map<Class<?>, Method[]> preDestroyCache = new ConcurrentHashMap<>();
     private Config config;
+    
+    private boolean performanceMode = false;
 
     private final ThreadLocal<List<String>> currentResolutionChain = new ThreadLocal<List<String>>() {
         @Override
@@ -71,6 +73,15 @@ public class DefaultContainer implements Container {
     public DefaultContainer(Config config) {
         this();
         this.config = config;
+    }
+    
+    public DefaultContainer enablePerformanceMode(boolean enabled) {
+        this.performanceMode = enabled;
+        return this;
+    }
+    
+    public boolean isPerformanceMode() {
+        return performanceMode;
     }
 
     public Config getConfig() {
@@ -254,6 +265,9 @@ public class DefaultContainer implements Container {
     }
     
     private void checkForCircularDependency(String key) {
+        if (performanceMode) {
+            return;
+        }
         List<String> chain = currentResolutionChain.get();
         if (chain.contains(key)) {
             List<String> copy = new ArrayList<>(chain);
@@ -345,6 +359,9 @@ public class DefaultContainer implements Container {
 
     @SuppressWarnings("unchecked")
     private <T> T processBean(T bean, String beanName) {
+        if (performanceMode) {
+            return bean;
+        }
         T processed = bean;
         for (BeanPostProcessor processor : beanPostProcessors) {
             processed = (T) processor.postProcessBeforeInitialization(processed, beanName);
@@ -353,6 +370,9 @@ public class DefaultContainer implements Container {
     }
 
     private void initializeBean(Object bean, String beanName) {
+        if (performanceMode) {
+            return;
+        }
         invokePostConstruct(bean);
         if (bean instanceof InitializingBean) {
             try {

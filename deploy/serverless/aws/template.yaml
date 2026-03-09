@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: EST Framework Serverless Application
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: java21
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        APP_ENV: production
+        LOG_LEVEL: INFO
+
+Resources:
+  EstHelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: est-hello-world
+      Description: EST Framework Hello World Function
+      CodeUri: ../../est-examples/est-examples-serverless/target/est-examples-serverless-2.1.0.jar
+      Handler: ltd.idcu.est.examples.serverless.HelloWorldLambdaHandler::handleRequest
+      Events:
+        HelloWorldApi:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+
+Outputs:
+  HelloWorldApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  HelloWorldFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt EstHelloWorldFunction.Arn

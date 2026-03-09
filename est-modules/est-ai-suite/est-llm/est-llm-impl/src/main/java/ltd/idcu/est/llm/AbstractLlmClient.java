@@ -227,6 +227,50 @@ public abstract class AbstractLlmClient implements LlmClient {
         return apiKey != null && !apiKey.isEmpty();
     }
 
+    @Override
+    public LlmResponse chatWithImage(List<LlmMessage> messages, String imageBase64, String imageType) {
+        return chatWithImage(messages, imageBase64, imageType, new LlmOptions());
+    }
+
+    @Override
+    public LlmResponse chatWithImage(List<LlmMessage> messages, String imageBase64, String imageType, LlmOptions options) {
+        log("Image understanding not implemented for " + getName());
+        return LlmResponse.error("Image understanding not supported by " + getName());
+    }
+
+    @Override
+    public byte[] textToSpeech(String text) {
+        return textToSpeech(text, "default");
+    }
+
+    @Override
+    public byte[] textToSpeech(String text, String voice) {
+        log("Text to speech not implemented for " + getName());
+        return new byte[0];
+    }
+
+    @Override
+    public String speechToText(byte[] audioBytes) {
+        return speechToText(audioBytes, "en");
+    }
+
+    @Override
+    public String speechToText(byte[] audioBytes, String language) {
+        log("Speech to text not implemented for " + getName());
+        return "";
+    }
+
+    @Override
+    public byte[] generateImage(String prompt) {
+        return generateImage(prompt, 1024, 1024);
+    }
+
+    @Override
+    public byte[] generateImage(String prompt, int width, int height) {
+        log("Image generation not implemented for " + getName());
+        return new byte[0];
+    }
+
     protected String buildChatRequestBody(List<LlmMessage> messages, LlmOptions options) {
         return buildChatRequestBody(messages, options, false);
     }

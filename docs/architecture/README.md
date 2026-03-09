@@ -24,7 +24,7 @@ The core framework capabilities including DI container, configuration, lifecycle
 - est-core-aop: AOP support
 - est-core-tx: Transaction management
 
-### 3. est-modules (妯″潡灞?
+### 3. est-modules (妯″潡�?
 Feature modules organized into functional groups.
 
 **Groups:**
@@ -54,7 +54,7 @@ Development tools and utilities.
 - est-migration: Migration tools
 - est-cli: Command-line interface
 
-### 6. est-examples (绀轰緥灞?
+### 6. est-examples (绀轰緥�?
 Example applications demonstrating framework usage.
 
 ## Key Design Principles

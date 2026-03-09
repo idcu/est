@@ -1,0 +1,29 @@
+edition: 3.0.0
+name: est-framework-app
+access: default
+
+services:
+  est-hello-world:
+    component: fc3
+    props:
+      region: cn-hangzhou
+      functionName: est-hello-world
+      description: EST Framework Hello World Function
+      code: ../../est-examples/est-examples-serverless/target/est-examples-serverless-2.1.0.jar
+      runtime: java21
+      handler: ltd.idcu.est.examples.serverless.HelloWorldFcHandler::handleRequest
+      memorySize: 512
+      timeout: 30
+      environmentVariables:
+        APP_ENV: production
+        LOG_LEVEL: INFO
+      triggers:
+        - triggerName: httpTrigger
+          triggerType: http
+          description: HTTP trigger for EST function
+          qualifier: LATEST
+          triggerConfig:
+            authType: anonymous
+            methods:
+              - GET
+              - POST

@@ -2,6 +2,8 @@ package ltd.idcu.est.circuitbreaker.impl;
 
 import ltd.idcu.est.circuitbreaker.api.*;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -19,6 +21,8 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
     private final AtomicLong lastSuccessTime = new AtomicLong(0);
     private final AtomicLong halfOpenSuccessCount = new AtomicLong(0);
     private final AtomicLong openTime = new AtomicLong(0);
+    private final AtomicLong totalExecutionTime = new AtomicLong(0);
+    private final List<CircuitBreakerListener> listeners = new CopyOnWriteArrayList<>();
 
     public DefaultCircuitBreaker(String name) {
         this(name, new CircuitBreakerConfig());
@@ -34,6 +38,7 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
         return name;
     }
     
+    @Override
     public CircuitBreakerConfig getConfig() {
         return config;
     }
@@ -46,42 +51,58 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
 
     @Override
     public <T> T execute(Supplier<T> supplier) throws Exception {
+        long startTime = System.currentTimeMillis();
         totalRequests.incrementAndGet();
         checkAndTransitionState();
 
         CircuitState currentState = state.get();
         if (currentState == CircuitState.OPEN) {
             rejectedRequests.incrementAndGet();
+            notifyOnReject();
             throw new CircuitBreakerOpenException("Circuit breaker is open: " + name);
         }
 
         try {
             T result = supplier.get();
-            recordSuccess();
+            long duration = System.currentTimeMillis() - startTime;
+            recordSuccess(duration);
             return result;
         } catch (Exception e) {
-            recordFailure();
+            long duration = System.currentTimeMillis() - startTime;
+            if (config.shouldRecordFailure(e)) {
+                recordFailure(e, duration);
+            } else {
+                recordSuccess(duration);
+            }
             throw e;
         }
     }
 
     @Override
     public <T> T execute(Supplier<T> supplier, Supplier<T> fallback) {
+        long startTime = System.currentTimeMillis();
         totalRequests.incrementAndGet();
         checkAndTransitionState();
 
         CircuitState currentState = state.get();
         if (currentState == CircuitState.OPEN) {
             rejectedRequests.incrementAndGet();
+            notifyOnReject();
             return fallback.get();
         }
 
         try {
             T result = supplier.get();
-            recordSuccess();
+            long duration = System.currentTimeMillis() - startTime;
+            recordSuccess(duration);
             return result;
         } catch (Exception e) {
-            recordFailure();
+            long duration = System.currentTimeMillis() - startTime;
+            if (config.shouldRecordFailure(e)) {
+                recordFailure(e, duration);
+            } else {
+                recordSuccess(duration);
+            }
             return fallback.get();
         }
     }
@@ -107,6 +128,7 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
 
     @Override
     public void reset() {
+        CircuitState oldState = state.get();
         state.set(CircuitState.CLOSED);
         failureCount.set(0);
         successCount.set(0);
@@ -117,6 +139,8 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
         lastFailureTime.set(0);
         lastSuccessTime.set(0);
         openTime.set(0);
+        totalExecutionTime.set(0);
+        notifyOnStateChange(oldState, CircuitState.CLOSED);
     }
 
     @Override
@@ -132,34 +156,50 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
         );
     }
 
-    private void recordSuccess() {
+    @Override
+    public void addListener(CircuitBreakerListener listener) {
+        if (listener != null) {
+            listeners.add(listener);
+        }
+    }
+
+    @Override
+    public void removeListener(CircuitBreakerListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void recordSuccess(long durationMs) {
         successCount.incrementAndGet();
+        totalExecutionTime.addAndGet(durationMs);
         lastSuccessTime.set(System.currentTimeMillis());
+        notifyOnSuccess(durationMs);
 
         CircuitState currentState = state.get();
         if (currentState == CircuitState.HALF_OPEN) {
             long currentHalfOpenSuccesses = halfOpenSuccessCount.incrementAndGet();
             if (currentHalfOpenSuccesses >= config.getSuccessThreshold()) {
-                state.set(CircuitState.CLOSED);
+                transitionState(CircuitState.CLOSED);
                 failureCount.set(0);
                 halfOpenSuccessCount.set(0);
             }
         }
     }
 
-    private void recordFailure() {
+    private void recordFailure(Throwable throwable, long durationMs) {
         failureCount.incrementAndGet();
+        totalExecutionTime.addAndGet(durationMs);
         lastFailureTime.set(System.currentTimeMillis());
+        notifyOnFailure(throwable, durationMs);
 
         CircuitState currentState = state.get();
         if (currentState == CircuitState.CLOSED) {
             long currentFailures = failureCount.get();
             if (currentFailures >= config.getFailureThreshold()) {
-                state.set(CircuitState.OPEN);
+                transitionState(CircuitState.OPEN);
                 openTime.set(System.currentTimeMillis());
             }
         } else if (currentState == CircuitState.HALF_OPEN) {
-            state.set(CircuitState.OPEN);
+            transitionState(CircuitState.OPEN);
             openTime.set(System.currentTimeMillis());
             halfOpenSuccessCount.set(0);
         }
@@ -170,8 +210,51 @@ public class DefaultCircuitBreaker implements CircuitBreaker {
         if (currentState == CircuitState.OPEN) {
             long now = System.currentTimeMillis();
             if (now - openTime.get() >= config.getWaitDurationMs()) {
-                state.set(CircuitState.HALF_OPEN);
+                transitionState(CircuitState.HALF_OPEN);
                 halfOpenSuccessCount.set(0);
+            }
+        }
+    }
+
+    private void transitionState(CircuitState newState) {
+        CircuitState oldState = state.getAndSet(newState);
+        if (oldState != newState) {
+            notifyOnStateChange(oldState, newState);
+        }
+    }
+
+    private void notifyOnStateChange(CircuitState oldState, CircuitState newState) {
+        for (CircuitBreakerListener listener : listeners) {
+            try {
+                listener.onStateChange(name, oldState, newState);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    private void notifyOnSuccess(long durationMs) {
+        for (CircuitBreakerListener listener : listeners) {
+            try {
+                listener.onSuccess(name, durationMs);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    private void notifyOnFailure(Throwable throwable, long durationMs) {
+        for (CircuitBreakerListener listener : listeners) {
+            try {
+                listener.onFailure(name, throwable, durationMs);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    private void notifyOnReject() {
+        for (CircuitBreakerListener listener : listeners) {
+            try {
+                listener.onReject(name);
+            } catch (Exception e) {
             }
         }
     }

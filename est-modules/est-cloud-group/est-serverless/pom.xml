@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-cloud-group</artifactId>
+        <version>2.2.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>est-serverless</artifactId>
+    <packaging>pom</packaging>
+
+    <name>EST Serverless</name>
+    <description>EST Serverless - Serverless function adapters for major cloud platforms</description>
+
+    <modules>
+        <module>est-serverless-api</module>
+        <module>est-serverless-aws</module>
+        <module>est-serverless-azure</module>
+        <module>est-serverless-alibaba</module>
+        <module>est-serverless-google</module>
+    </modules>
+
+</project>

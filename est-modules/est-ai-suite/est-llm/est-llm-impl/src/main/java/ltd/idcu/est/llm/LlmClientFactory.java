@@ -19,6 +19,11 @@ public class LlmClientFactory {
         registerProvider("doubao", DoubaoLlmClient::new);
         registerProvider("kimi", KimiLlmClient::new);
         registerProvider("ollama", OllamaLlmClient::new);
+        registerProvider("anthropic", AnthropicLlmClient::new);
+        registerProvider("claude", AnthropicLlmClient::new);
+        registerProvider("gemini", GeminiLlmClient::new);
+        registerProvider("mistral", MistralLlmClient::new);
+        registerProvider("deepseek", DeepSeekLlmClient::new);
         
         loadProvidersFromServiceLoader();
     }

@@ -32,4 +32,20 @@ public interface LlmClient {
     void setEndpoint(String endpoint);
     
     boolean isAvailable();
+    
+    LlmResponse chatWithImage(List<LlmMessage> messages, String imageBase64, String imageType);
+    
+    LlmResponse chatWithImage(List<LlmMessage> messages, String imageBase64, String imageType, LlmOptions options);
+    
+    byte[] textToSpeech(String text);
+    
+    byte[] textToSpeech(String text, String voice);
+    
+    String speechToText(byte[] audioBytes);
+    
+    String speechToText(byte[] audioBytes, String language);
+    
+    byte[] generateImage(String prompt);
+    
+    byte[] generateImage(String prompt, int width, int height);
 }

@@ -25,14 +25,14 @@ This section contains documentation for all EST Framework modules.
 - [est-messaging](./integration-group/messaging.md) - Messaging abstractions
 - [est-integration](./integration-group/integration.md) - Third-party integrations
 
-### est-web-group (Web妗嗘灦)
+### est-web-group (Web妗嗘�?
 - [est-web-router](./web-group/router.md) - HTTP routing
 - [est-web-middleware](./web-group/middleware.md) - Middleware pipeline
 - [est-web-session](./web-group/session.md) - Session management
 - [est-web-template](./web-group/template.md) - Template engine
 - [est-gateway](./web-group/gateway.md) - API gateway
 
-### est-ai-suite (AI濂椾欢)
+### est-ai-suite (AI濂椾�?
 - [est-ai-config](./ai-suite/ai-config.md) - AI configuration
 - [est-llm-core](./ai-suite/llm-core.md) - LLM core abstractions
 - [est-llm](./ai-suite/llm.md) - LLM provider implementations
