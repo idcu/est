@@ -34,35 +34,35 @@ serverless/
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-serverless-api</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- AWS Lambda -->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-serverless-aws</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- Azure Functions -->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-serverless-azure</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- 阿里云函数计�?-->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-serverless-alibaba</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- Google Cloud Functions -->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-serverless-google</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

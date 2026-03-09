@@ -17,12 +17,12 @@ est-ai-config/
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-ai-config-api</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-ai-config-impl</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

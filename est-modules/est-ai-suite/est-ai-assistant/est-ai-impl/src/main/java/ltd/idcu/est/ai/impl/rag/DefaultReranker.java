@@ -8,6 +8,25 @@ import java.util.regex.Pattern;
 public class DefaultReranker implements Reranker {
     
     private static final Pattern WORD_PATTERN = Pattern.compile("\\p{L}+", Pattern.UNICODE_CHARACTER_CLASS);
+    private static final String STRATEGY_DEFAULT = "default";
+    private static final String STRATEGY_BM25 = "bm25";
+    private static final String STRATEGY_TFIDF = "tfidf";
+    
+    private String strategy;
+    private Map<String, Double> weights;
+    private int totalQueries;
+    private int totalChunksReranked;
+    
+    public DefaultReranker() {
+        this.strategy = STRATEGY_DEFAULT;
+        this.weights = new HashMap<>();
+        this.weights.put("keywordMatch", 0.5);
+        this.weights.put("position", 0.2);
+        this.weights.put("length", 0.15);
+        this.weights.put("density", 0.15);
+        this.totalQueries = 0;
+        this.totalChunksReranked = 0;
+    }
     
     @Override
     public String getName() {
@@ -144,5 +163,154 @@ public class DefaultReranker implements Reranker {
         
         double density = (double) totalMatches / wordCount;
         return Math.min(1.0, density * 5);
+    }
+    
+    @Override
+    public void setRerankStrategy(String strategy) {
+        this.strategy = strategy;
+    }
+    
+    @Override
+    public String getRerankStrategy() {
+        return strategy;
+    }
+    
+    @Override
+    public void setWeights(Map<String, Double> weights) {
+        this.weights = new HashMap<>(weights);
+    }
+    
+    @Override
+    public Map<String, Double> getWeights() {
+        return new HashMap<>(weights);
+    }
+    
+    @Override
+    public Map<String, Object> getRerankingStats() {
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("totalQueries", totalQueries);
+        stats.put("totalChunksReranked", totalChunksReranked);
+        stats.put("currentStrategy", strategy);
+        stats.put("weights", new HashMap<>(weights));
+        return stats;
+    }
+    
+    @Override
+    public List<ScoredChunk> rerankWithScores(String query, List<DocumentChunk> chunks) {
+        totalQueries++;
+        totalChunksReranked += chunks.size();
+        
+        if (STRATEGY_BM25.equals(strategy)) {
+            return rerankWithBM25(query, chunks);
+        } else if (STRATEGY_TFIDF.equals(strategy)) {
+            return rerankWithTFIDF(query, chunks);
+        } else {
+            return rerankWithDefault(query, chunks);
+        }
+    }
+    
+    private List<ScoredChunk> rerankWithDefault(String query, List<DocumentChunk> chunks) {
+        Set<String> queryWords = extractWords(query.toLowerCase());
+        List<ScoredChunk> scoredChunks = new ArrayList<>();
+        
+        for (int i = 0; i < chunks.size(); i++) {
+            DocumentChunk chunk = chunks.get(i);
+            double score = calculateScore(query, queryWords, chunk);
+            scoredChunks.add(new DefaultScoredChunk(chunk, score, i));
+        }
+        
+        scoredChunks.sort((a, b) -> Double.compare(b.getScore(), a.getScore()));
+        
+        return scoredChunks;
+    }
+    
+    private List<ScoredChunk> rerankWithBM25(String query, List<DocumentChunk> chunks) {
+        Set<String> queryWords = extractWords(query.toLowerCase());
+        List<ScoredChunk> scoredChunks = new ArrayList<>();
+        
+        double k1 = 1.5;
+        double b = 0.75;
+        double avgDocLength = calculateAverageDocLength(chunks);
+        
+        for (int i = 0; i < chunks.size(); i++) {
+            DocumentChunk chunk = chunks.get(i);
+            String content = chunk.getContent().toLowerCase();
+            Set<String> chunkWords = extractWords(content);
+            int docLength = chunkWords.size();
+            
+            double score = 0.0;
+            for (String word : queryWords) {
+                int f = countWordOccurrences(word, content);
+                if (f > 0) {
+                    double numerator = f * (k1 + 1);
+                    double denominator = f + k1 * (1 - b + b * docLength / avgDocLength);
+                    score += Math.log((chunks.size() - countDocumentsWithWord(word, chunks) + 0.5) / 
+                                      (countDocumentsWithWord(word, chunks) + 0.5)) * 
+                             (numerator / denominator);
+                }
+            }
+            
+            scoredChunks.add(new DefaultScoredChunk(chunk, score, i));
+        }
+        
+        scoredChunks.sort((a, b) -> Double.compare(b.getScore(), a.getScore()));
+        
+        return scoredChunks;
+    }
+    
+    private List<ScoredChunk> rerankWithTFIDF(String query, List<DocumentChunk> chunks) {
+        Set<String> queryWords = extractWords(query.toLowerCase());
+        List<ScoredChunk> scoredChunks = new ArrayList<>();
+        
+        for (int i = 0; i < chunks.size(); i++) {
+            DocumentChunk chunk = chunks.get(i);
+            String content = chunk.getContent().toLowerCase();
+            Set<String> chunkWords = extractWords(content);
+            
+            double score = 0.0;
+            for (String word : queryWords) {
+                if (chunkWords.contains(word)) {
+                    double tf = (double) countWordOccurrences(word, content) / chunkWords.size();
+                    double idf = Math.log((double) chunks.size() / (1 + countDocumentsWithWord(word, chunks)));
+                    score += tf * idf;
+                }
+            }
+            
+            scoredChunks.add(new DefaultScoredChunk(chunk, score, i));
+        }
+        
+        scoredChunks.sort((a, b) -> Double.compare(b.getScore(), a.getScore()));
+        
+        return scoredChunks;
+    }
+    
+    private double calculateAverageDocLength(List<DocumentChunk> chunks) {
+        if (chunks.isEmpty()) return 1.0;
+        
+        int totalLength = 0;
+        for (DocumentChunk chunk : chunks) {
+            totalLength += extractWords(chunk.getContent().toLowerCase()).size();
+        }
+        return (double) totalLength / chunks.size();
+    }
+    
+    private int countWordOccurrences(String word, String content) {
+        int count = 0;
+        int index = 0;
+        while ((index = content.indexOf(word, index)) != -1) {
+            count++;
+            index += word.length();
+        }
+        return count;
+    }
+    
+    private int countDocumentsWithWord(String word, List<DocumentChunk> chunks) {
+        int count = 0;
+        for (DocumentChunk chunk : chunks) {
+            if (chunk.getContent().toLowerCase().contains(word)) {
+                count++;
+            }
+        }
+        return count;
     }
 }

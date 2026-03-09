@@ -21,7 +21,7 @@
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-ai-assistant</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@
 鍦ㄤ綘鐨?`build.gradle` 涓坊鍔狅細
 
 ```groovy
-implementation 'ltd.idcu:est-ai-assistant:2.2.0'
+implementation 'ltd.idcu:est-ai-assistant:2.3.0-SNAPSHOT'
 ```
 
 ---

@@ -1,0 +1,272 @@
+# EST Code CLI 项目完成总结
+
+## 项目概述
+
+EST Code CLI 是一个 AI 驱动的命令行工具，为 EST 框架开发者提供智能化的开发辅助。
+
+## 完成的阶段
+
+### 阶段一：基础功能 ✅
+
+**目标：** 建立基础 CLI 框架和 AI 对话能力
+
+**完成内容：**
+- ✅ 创建 est-code-cli 模块目录结构和 pom.xml
+- ✅ 创建 EST.md 项目合约文档相关类
+- ✅ 创建命令行交互处理器
+- ✅ 创建 EstCodeCliMain 主入口类
+- ✅ 整合 AiAssistant 实现对话功能
+- ✅ 添加 README.md 文档和示例配置
+
+**创建的文件：**
+- `pom.xml` - Maven 配置
+- `config/CliConfig.java` - 配置管理
+- `contract/ProjectContract.java` - 项目合约模型
+- `contract/ContractManager.java` - 合约管理器
+- `CliInteractionHandler.java` - 交互处理器
+- `EstCodeCliMain.java` - 主入口类
+- `src/main/resources/est-code-cli.yml.example` - 示例配置
+
+---
+
+### 阶段二：工具集成 ✅
+
+**目标：** 集成 MCP 工具和文件操作能力
+
+**完成内容：**
+- ✅ 创建文件读写 MCP 工具（ReadFile、WriteFile、ListDir）
+- ✅ 封装 est-scaffold 为 MCP 工具
+- ✅ 封装 est-codegen 为 MCP 工具
+- ✅ 创建工具注册和管理系统（EstCodeCliMcpServer）
+- ✅ 更新交互处理器支持工具调用
+- ✅ 更新 README 文档
+
+**创建的文件：**
+- `mcp/EstCodeCliMcpServer.java` - MCP 服务器
+- `mcp/ReadFileMcpTool.java` - 读文件工具
+- `mcp/WriteFileMcpTool.java` - 写文件工具
+- `mcp/ListDirMcpTool.java` - 列目录工具
+- `mcp/ScaffoldMcpTool.java` - 脚手架工具
+- `mcp/CodeGenMcpTool.java` - 代码生成工具
+
+---
+
+### 阶段三：高级功能 ✅
+
+**目标：** 添加搜索、HITL、Web 模式和 ACP 协议
+
+**完成内容：**
+- ✅ 实现项目索引和纯 Java 搜索（倒排索引）
+- ✅ 创建搜索 MCP 工具（est_search、est_index_project）
+- ✅ 添加 HITL 安全策略（HitlSecurityPolicy、ApprovalManager）
+- ✅ 支持 Web 模式（浏览器界面 - EstWebServer）
+- ✅ 支持 ACP 协议（IDE 集成 - AcpServer）
+- ✅ 集成所有新功能到现有代码
+- ✅ 更新 README 文档
+
+**创建的文件：**
+- `search/FileIndex.java` - 文件索引（倒排索引）
+- `search/ProjectIndexer.java` - 项目索引器
+- `mcp/SearchMcpTool.java` - 搜索工具
+- `mcp/IndexProjectMcpTool.java` - 项目索引工具
+- `security/HitlSecurityPolicy.java` - HITL 安全策略
+- `security/ApprovalManager.java` - 审批管理器
+- `web/EstWebServer.java` - Web 服务器
+- `acp/AcpServer.java` - ACP 协议服务器
+
+---
+
+### 阶段四：完善生态 ✅
+
+**目标：** 添加技能、提示模板、测试能力和用户体验优化
+
+**完成内容：**
+- ✅ 添加 EST 专属技能（代码审查、重构建议、架构分析）
+- ✅ 创建技能管理器（SkillManager）
+- ✅ 完善提示模板库（6个专业提示模板）
+- ✅ 添加测试验证能力（TestRunner）
+- ✅ 优化用户体验（CommandHistory）
+- ✅ 创建新 MCP 工具（ListSkills、ListTemplates、RunTests）
+- ✅ 集成技能和提示模板到交互处理器
+- ✅ 新增命令（skills、templates、history、test、compile）
+- ✅ 更新项目结构文档
+- ✅ 更新 README 文档（包含所有新功能示例）
+
+**创建的文件：**
+- `skills/EstSkill.java` - 技能接口
+- `skills/SkillManager.java` - 技能管理器
+- `skills/CodeReviewSkill.java` - 代码审查技能
+- `skills/RefactorSkill.java` - 重构技能
+- `skills/ArchitectureSkill.java` - 架构分析技能
+- `prompts/PromptTemplate.java` - 提示模板
+- `prompts/PromptLibrary.java` - 提示模板库
+- `testing/TestRunner.java` - 测试运行器
+- `ux/CommandHistory.java` - 命令历史记录
+- `mcp/ListSkillsMcpTool.java` - 技能列表工具
+- `mcp/ListTemplatesMcpTool.java` - 模板列表工具
+- `mcp/RunTestsMcpTool.java` - 测试运行工具
+
+---
+
+## 核心功能
+
+### 1. AI 对话
+- 自然语言交互
+- 智能回答问题
+- 与 EST AI Suite 集成
+
+### 2. 项目合约（EST.md）
+- 项目信息管理
+- 构建和测试命令记录
+- 环境变量配置
+- 编码规范文档
+
+### 3. MCP 工具
+#### 文件操作
+- `est_read_file` - 读取文件
+- `est_write_file` - 写入文件
+- `est_list_dir` - 列出目录
+
+#### 开发工具
+- `est_scaffold` - 项目脚手架
+- `est_codegen` - 代码生成
+
+#### 搜索工具
+- `est_index_project` - 项目索引
+- `est_search` - 文件搜索
+
+#### 管理工具
+- `est_list_skills` - 列出技能
+- `est_list_templates` - 列出提示模板
+- `est_run_tests` - 运行测试
+
+### 4. EST 技能
+- `code_review` - 代码审查
+- `refactor` - 重构建议
+- `architecture` - 架构分析
+
+### 5. 提示模板库
+- `est_code_generator` - 代码生成
+- `est_bug_fixer` - Bug 修复
+- `est_test_generator` - 测试生成
+- `est_documentation` - 文档生成
+- `est_performance_optimization` - 性能优化
+- `est_security_audit` - 安全审计
+
+### 6. 高级功能
+- 项目搜索（倒排索引）
+- HITL 安全策略
+- Web 模式（浏览器界面）
+- ACP 协议（IDE 集成）
+- 命令历史记录
+- 测试运行器
+
+---
+
+## 命令列表
+
+| 命令 | 说明 |
+|------|------|
+| `help` | 显示帮助信息 |
+| `init` | 初始化工作区，创建 EST.md |
+| `contract` | 显示当前项目合约 |
+| `tools` | 列出所有可用的 MCP 工具 |
+| `skills` | 列出所有可用的 EST 技能 |
+| `templates` | 列出所有可用的提示模板 |
+| `history` | 显示命令历史记录 |
+| `test` | 运行 Maven 测试 |
+| `compile` | 运行 Maven 编译 |
+| `/<tool>` | 直接调用 MCP 工具 |
+| `exit` / `quit` | 退出程序 |
+
+---
+
+## 技术特点
+
+### 零依赖原则
+- 纯 Java 实现，无外部依赖
+- 使用 EST 自有工具库
+- 符合 EST 框架设计理念
+
+### 模块化设计
+- 清晰的包结构
+- 职责分离
+- 易于扩展
+
+### AI 原生
+- 深度集成 EST AI Suite
+- 技能系统
+- 提示模板库
+- MCP 协议支持
+
+---
+
+## 项目统计
+
+### 文件数量
+- **阶段一**: 7 个文件
+- **阶段二**: 6 个文件
+- **阶段三**: 8 个文件
+- **阶段四**: 12 个文件
+- **总计**: 33 个 Java 文件
+
+### 功能模块
+- **配置管理**: 1 个类
+- **合约管理**: 2 个类
+- **MCP 工具**: 10 个工具
+- **搜索**: 2 个类
+- **安全**: 2 个类
+- **技能**: 5 个类
+- **提示**: 2 个类
+- **测试**: 1 个类
+- **UX**: 1 个类
+- **Web**: 1 个类
+- **ACP**: 1 个类
+- **核心**: 2 个类
+
+---
+
+## 后续规划
+
+### 阶段五：持续优化
+- [ ] 添加更多技能（性能优化、安全审计等）
+- [ ] 完善 Web 界面
+- [ ] 深入 ACP 协议集成
+- [ ] 添加配置持久化
+- [ ] 技能与 AI 对话的智能联动
+
+---
+
+## 贡献指南
+
+### 如何贡献
+1. 选择任务：从路线图中选择感兴趣的任务
+2. 创建 Issue：说明计划如何实现
+3. Fork 仓库：创建开发分支
+4. 提交 PR：遵循贡献规范
+
+### 建议的贡献方向
+- **新手友好**: 文档完善、示例代码、Bug 修复
+- **中级**: 功能增强、测试编写、性能优化
+- **高级**: 架构设计、核心模块开发、AI 功能
+
+---
+
+## 相关资源
+
+- [EST AI Suite](../est-ai-suite/README.md) - AI 套件文档
+- [EST Scaffold](../est-scaffold/README.md) - 脚手架工具
+- [EST CodeGen](../est-codegen/README.md) - 代码生成工具
+- [EST Framework](../../README.md) - 框架主文档
+
+---
+
+## 许可证
+
+MIT License
+
+---
+
+**项目状态**: ✅ 阶段一至阶段四已完成
+**最后更新**: 2026-03-09
+**EST 版本**: 2.3.0-SNAPSHOT

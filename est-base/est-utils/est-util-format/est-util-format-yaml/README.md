@@ -22,7 +22,7 @@ est-util-format-yaml 灏卞�?YAML 缈昏瘧�?锛屽府浣犲湪 Java 瀵硅薄
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-util-format-yaml</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

@@ -39,12 +39,12 @@
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-features-logging-api</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-features-logging-console</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

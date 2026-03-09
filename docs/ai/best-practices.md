@@ -73,7 +73,7 @@ String optimized = aiAssistant.optimizeCode(generatedCode);
 ```java
 Map<String, Object> context = Map.of(
     "projectType", "e-commerce",
-    "frameworkVersion", "2.2.0",
+    "frameworkVersion", "2.3.0-SNAPSHOT",
     "database", "MySQL 8.0",
     "existingCode", existingCodeSnippet,
     "requirements", requirements

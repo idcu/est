@@ -34,7 +34,7 @@ String response = assistant.chat("你好，请介绍一�?EST 框架");
 ```java
 Map<String, Object> context = Map.of(
     "projectType", "web",
-    "frameworkVersion", "2.2.0"
+    "frameworkVersion", "2.3.0-SNAPSHOT"
 );
 String response = assistant.chat("如何创建一�?REST API", context);
 ```

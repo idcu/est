@@ -22,7 +22,7 @@ est-util-format-json 灏卞�?JSON 缈昏瘧�?锛屽府浣犳妸 Java 瀵硅薄
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-util-format-json</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

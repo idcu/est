@@ -427,21 +427,21 @@ String yaml = Yaml.stringify(user);
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-utils-common</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- IO宸ュ�?-->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-utils-io</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 
 <!-- JSON鏍煎紡鍖?-->
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-utils-format-json</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

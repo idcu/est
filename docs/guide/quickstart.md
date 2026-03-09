@@ -48,7 +48,7 @@ cd my-est-app
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <est.version>2.2.0</est.version>
+    <est.version>2.3.0-SNAPSHOT</est.version>
 </properties>
 
 <dependencies>

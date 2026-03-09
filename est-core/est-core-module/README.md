@@ -23,7 +23,7 @@ est-core-module 灏卞�?妯″潡绠＄悊鍣?锛屽府浣犵鐞嗘鏋剁
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-core-module</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

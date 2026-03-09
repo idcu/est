@@ -87,8 +87,144 @@ public class DefaultRequirementParser implements RequirementParser {
         return metadata;
     }
     
+    @Override
+    public List<String> extractKeywords(String requirement) {
+        List<String> keywords = new ArrayList<>();
+        
+        String[] techKeywords = {"数据库", "database", "API", "接口", "Web", "网页", "微服务", 
+                                  "microservice", "缓存", "cache", "安全", "security", "认证", 
+                                  "authentication", "授权", "authorization", "消息", "message", 
+                                  "队列", "queue", "搜索", "search", "报表", "report", "支付", 
+                                  "payment", "订单", "order", "用户", "user", "商品", "product"};
+        
+        for (String keyword : techKeywords) {
+            if (requirement.toLowerCase().contains(keyword.toLowerCase())) {
+                keywords.add(keyword);
+            }
+        }
+        
+        if (keywords.isEmpty()) {
+            keywords.add("系统");
+            keywords.add("功能");
+        }
+        
+        return keywords;
+    }
+    
+    @Override
+    public Map<String, Integer> analyzeSentiment(String requirement) {
+        Map<String, Integer> sentiment = new HashMap<>();
+        
+        String[] positiveWords = {"好", "优秀", "快速", "高效", "稳定", "可靠", "简单", "易用", 
+                                   "good", "excellent", "fast", "efficient", "stable", "reliable", 
+                                   "simple", "easy", "powerful"};
+        String[] negativeWords = {"复杂", "困难", "慢", "不稳定", "问题", "bug", "error", "复杂", 
+                                   "complex", "difficult", "slow", "unstable", "problem", "bug"};
+        
+        int positiveCount = 0;
+        int negativeCount = 0;
+        
+        for (String word : positiveWords) {
+            if (requirement.toLowerCase().contains(word.toLowerCase())) {
+                positiveCount++;
+            }
+        }
+        
+        for (String word : negativeWords) {
+            if (requirement.toLowerCase().contains(word.toLowerCase())) {
+                negativeCount++;
+            }
+        }
+        
+        sentiment.put("positive", positiveCount);
+        sentiment.put("negative", negativeCount);
+        sentiment.put("neutral", positiveCount == 0 && negativeCount == 0 ? 1 : 0);
+        
+        return sentiment;
+    }
+    
+    @Override
+    public List<String> extractEntities(String requirement) {
+        List<String> entities = new ArrayList<>();
+        
+        String[] entityPatterns = {"用户管理", "商品管理", "订单管理", "支付系统", "库存管理", 
+                                    "客户服务", "财务管理", "报表系统", "数据统计", "系统配置"};
+        
+        for (String entity : entityPatterns) {
+            if (requirement.contains(entity)) {
+                entities.add(entity);
+            }
+        }
+        
+        if (entities.isEmpty()) {
+            entities.add("核心业务实体");
+        }
+        
+        return entities;
+    }
+    
+    @Override
+    public Map<String, List<String>> classifyRequirements(String requirement) {
+        Map<String, List<String>> classification = new HashMap<>();
+        
+        List<String> functional = new ArrayList<>();
+        List<String> nonFunctional = new ArrayList<>();
+        List<String> technical = new ArrayList<>();
+        
+        if (requirement.contains("用户") || requirement.contains("功能") || 
+            requirement.contains("查询") || requirement.contains("添加") ||
+            requirement.contains("修改") || requirement.contains("删除")) {
+            functional.add("功能需求");
+        }
+        
+        if (requirement.contains("性能") || requirement.contains("速度") ||
+            requirement.contains("响应时间") || requirement.contains("并发")) {
+            nonFunctional.add("性能需求");
+        }
+        
+        if (requirement.contains("安全") || requirement.contains("认证") ||
+            requirement.contains("权限")) {
+            nonFunctional.add("安全需求");
+        }
+        
+        if (requirement.contains("技术") || requirement.contains("架构") ||
+            requirement.contains("数据库") || requirement.contains("API")) {
+            technical.add("技术需求");
+        }
+        
+        if (functional.isEmpty()) {
+            functional.add("通用功能需求");
+        }
+        
+        classification.put("functional", functional);
+        classification.put("nonFunctional", nonFunctional);
+        classification.put("technical", technical);
+        
+        return classification;
+    }
+    
+    @Override
+    public List<String> suggestPriorities(String requirement) {
+        List<String> priorities = new ArrayList<>();
+        
+        int complexity = calculateComplexity(requirement);
+        
+        if (complexity >= 4) {
+            priorities.add("高优先级 - 核心功能");
+            priorities.add("中优先级 - 辅助功能");
+            priorities.add("低优先级 - 增强功能");
+        } else if (complexity >= 2) {
+            priorities.add("高优先级 - 主要功能");
+            priorities.add("中优先级 - 次要功能");
+        } else {
+            priorities.add("高优先级 - 全部功能");
+        }
+        
+        return priorities;
+    }
+    
     private String extractProjectName(String requirement) {
-        String[] words = requirement.split("[，。！�?.!?\\s]+");
+        String[] words = requirement.split("[，。！�?.!?\\s]+");
         if (words.length > 0) {
             StringBuilder name = new StringBuilder();
             for (int i = 0; i < Math.min(3, words.length); i++) {
@@ -99,7 +235,7 @@ public class DefaultRequirementParser implements RequirementParser {
             }
             return name.toString() + "系统";
         }
-        return "未命名项�?;
+        return "未命名项�?;
     }
     
     private String determineProjectType(String requirement) {
@@ -125,7 +261,7 @@ public class DefaultRequirementParser implements RequirementParser {
         components.add(new ParsedRequirement.RequirementComponent(
             "核心功能",
             "functional",
-            "系统的主要功能模�?,
+            "系统的主要功能模�?,
             1
         ));
         
@@ -133,7 +269,7 @@ public class DefaultRequirementParser implements RequirementParser {
             components.add(new ParsedRequirement.RequirementComponent(
                 "用户管理",
                 "user",
-                "用户注册、登录、信息管�?,
+                "用户注册、登录、信息管�?,
                 2
             ));
         }
@@ -142,7 +278,7 @@ public class DefaultRequirementParser implements RequirementParser {
             components.add(new ParsedRequirement.RequirementComponent(
                 "数据管理",
                 "data",
-                "数据存储、查询、处�?,
+                "数据存储、查询、处�?,
                 3
             ));
         }
@@ -182,8 +318,8 @@ public class DefaultRequirementParser implements RequirementParser {
         if (requirement.contains("API") || requirement.contains("接口")) {
             techReqs.add("RESTful API");
         }
-        if (requirement.contains("数据�?) || requirement.contains("database")) {
-            techReqs.add("数据库支�?);
+        if (requirement.contains("数据�?) || requirement.contains("database")) {
+            techReqs.add("数据库支�?);
         }
         if (requirement.contains("安全") || requirement.contains("security")) {
             techReqs.add("安全认证");

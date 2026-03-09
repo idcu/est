@@ -47,12 +47,12 @@ EST Features Cache 灏卞儚鏄竴�?瓒呯骇鍌ㄧ墿�?銆傛兂璞′竴�
     <dependency>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-features-cache-api</artifactId>
-        <version>2.2.0</version>
+        <version>2.3.0-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-features-cache-memory</artifactId>
-        <version>2.2.0</version>
+        <version>2.3.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```

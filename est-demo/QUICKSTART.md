@@ -24,7 +24,7 @@ mvn exec:java -Dexec.mainClass="ltd.idcu.est.demo.EstDemoApplication"
 ```bash
 cd est-demo
 mvn clean package
-java -jar target/est-demo-2.2.0.jar
+java -jar target/est-demo-2.3.0-SNAPSHOT.jar
 ```
 
 ## 鍙敤鐨凙PI绔�?

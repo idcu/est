@@ -74,7 +74,7 @@ java -cp target/classes ltd.idcu.est.demo.EstDemoApplication
 
 ### 创建Web应用和中间件
 ```java
-WebApplication app = Web.create("EST Demo", "2.2.0");
+WebApplication app = Web.create("EST Demo", "2.3.0-SNAPSHOT");
 
 app.use((req, res, next) -> {
     requestCount.incrementAndGet();

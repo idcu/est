@@ -39,12 +39,12 @@ EST Config 灏卞儚鏄竴�?鏅鸿兘閰嶇疆绠＄悊涓績"銆傛兂�
     <dependency>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-config-api</artifactId>
-        <version>2.2.0-SNAPSHOT</version>
+        <version>2.3.0-SNAPSHOT-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-config-impl</artifactId>
-        <version>2.2.0-SNAPSHOT</version>
+        <version>2.3.0-SNAPSHOT-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```

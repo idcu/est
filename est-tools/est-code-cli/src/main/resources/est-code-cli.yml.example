@@ -1,0 +1,11 @@
+solon:
+  code:
+    cli:
+      nickname: "EST"
+      workDir: "."
+      planningMode: true
+      hitlEnabled: true
+      chatModel:
+        apiUrl: "https://api.deepseek.com/v1/chat/completions"
+        apiKey: "sk-xxxx"
+        model: "deepseek-chat"

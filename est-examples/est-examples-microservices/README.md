@@ -154,7 +154,7 @@ gateway.addCanaryConfig(config);
 ```java
 ConfigCenter configCenter = new DefaultConfigCenter();
 configCenter.setProperty("app.name", "est-gateway");
-configCenter.setProperty("app.version", "2.2.0");
+configCenter.setProperty("app.version", "2.3.0-SNAPSHOT");
 
 // 淇濆瓨鍒?YAML 鏂囦�?configCenter.saveToYaml("config.yaml");
 

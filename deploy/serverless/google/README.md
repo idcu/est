@@ -29,12 +29,12 @@ gcloud config set functions/region us-central1
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-serverless-api</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-serverless-google</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

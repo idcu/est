@@ -31,12 +31,12 @@ est-llm/
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-llm-api</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-llm-impl</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

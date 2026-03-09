@@ -23,7 +23,7 @@ est-core-config 灏卞�?閰嶇疆绠＄悊�?锛屽府浣犵粺涓€绠＄悊�
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-core-config</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

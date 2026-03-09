@@ -24,7 +24,7 @@ est-hotreload 灏卞�?鐑彃鎷?鍔熻兘銆傚紑鍙戞椂淇敼浠ｇ�
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-hotreload</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

@@ -24,7 +24,7 @@ est-migration 灏卞�?鏁版嵁搴撴惉瀹跺叕鍙?锛屽府浣犵鐞嗘�
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-migration</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 

@@ -33,7 +33,7 @@ EST App 就像是一个「应用模板」。想象一下你要盖房子，需要
     <dependency>
         <groupId>ltd.idcu</groupId>
         <artifactId>est-web</artifactId>
-        <version>2.2.0</version>
+        <version>2.3.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```

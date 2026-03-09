@@ -24,7 +24,7 @@ est-codegen 灏卞�?浠ｇ爜鐢熸垚�?锛屾牴鎹暟鎹簱琛ㄦ垨�
 <dependency>
     <groupId>ltd.idcu.est</groupId>
     <artifactId>est-codegen</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
 </dependency>
 ```
 
