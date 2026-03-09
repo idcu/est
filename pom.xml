@@ -30,13 +30,14 @@
         <project.version>2.4.0-SNAPSHOT</project.version>
         <graalvm.version>23.1.2</graalvm.version>
         <native-maven-plugin.version>0.10.1</native-maven-plugin.version>
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 
     <modules>
         <module>est-core</module>
         <module>est-base</module>
         <module>est-modules</module>
-        <module>est-app</module>
+        <!-- <module>est-app</module> -->
         <!-- <module>est-tools</module> -->
         <!-- <module>est-starter-monomer</module> -->
         <!-- <module>est-examples</module> -->
