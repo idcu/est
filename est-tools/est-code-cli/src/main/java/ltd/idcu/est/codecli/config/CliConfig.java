@@ -168,4 +168,72 @@ public class CliConfig {
         Path userConfigPath = Paths.get(USER_CONFIG_FILE);
         saveTo(userConfigPath);
     }
+
+    public void exportTo(Path exportPath) throws IOException {
+        saveTo(exportPath);
+    }
+
+    public static CliConfig importFrom(Path importPath) throws IOException {
+        CliConfig config = new CliConfig();
+        config.loadFromFile(importPath);
+        return config;
+    }
+
+    public ConfigValidator.ValidationResult validate() {
+        return ConfigValidator.validate(this);
+    }
+
+    public void applyTemplate(ConfigTemplate template) {
+        template.applyTo(this);
+    }
+
+    public static CliConfig fromTemplate(ConfigTemplate template) {
+        CliConfig config = new CliConfig();
+        template.applyTo(config);
+        return config;
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("nickname", nickname);
+        map.put("workDir", workDir);
+        map.put("planningMode", planningMode);
+        map.put("hitlEnabled", hitlEnabled);
+        
+        if (chatModelApiUrl != null || chatModelApiKey != null || chatModelName != null) {
+            Map<String, Object> chatModel = new LinkedHashMap<>();
+            if (chatModelApiUrl != null) chatModel.put("apiUrl", chatModelApiUrl);
+            if (chatModelApiKey != null) chatModel.put("apiKey", chatModelApiKey);
+            if (chatModelName != null) chatModel.put("model", chatModelName);
+            map.put("chatModel", chatModel);
+        }
+        
+        return map;
+    }
+
+    public void copyFrom(CliConfig other) {
+        this.nickname = other.nickname;
+        this.workDir = other.workDir;
+        this.planningMode = other.planningMode;
+        this.hitlEnabled = other.hitlEnabled;
+        this.chatModelApiUrl = other.chatModelApiUrl;
+        this.chatModelApiKey = other.chatModelApiKey;
+        this.chatModelName = other.chatModelName;
+    }
+
+    public CliConfig copy() {
+        CliConfig copy = new CliConfig();
+        copy.copyFrom(this);
+        return copy;
+    }
+
+    public void resetToDefaults() {
+        this.nickname = "EST";
+        this.workDir = System.getProperty("user.dir");
+        this.planningMode = true;
+        this.hitlEnabled = true;
+        this.chatModelApiUrl = null;
+        this.chatModelApiKey = null;
+        this.chatModelName = null;
+    }
 }

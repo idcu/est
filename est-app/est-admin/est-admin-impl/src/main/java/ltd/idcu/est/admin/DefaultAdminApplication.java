@@ -11,6 +11,7 @@ import ltd.idcu.est.admin.controller.LogController;
 import ltd.idcu.est.admin.controller.MonitorController;
 import ltd.idcu.est.admin.controller.IntegrationController;
 import ltd.idcu.est.admin.controller.AiController;
+import ltd.idcu.est.admin.controller.WorkflowController;
 import ltd.idcu.est.web.Web;
 import ltd.idcu.est.web.api.WebApplication;
 import ltd.idcu.est.web.api.Router;
@@ -31,6 +32,7 @@ public class DefaultAdminApplication implements AdminApplication {
     private final MonitorController monitorController;
     private final IntegrationController integrationController;
     private final AiController aiController;
+    private final WorkflowController workflowController;
     
     public DefaultAdminApplication() {
         this("EST Admin Console");
@@ -53,6 +55,7 @@ public class DefaultAdminApplication implements AdminApplication {
         );
         this.integrationController = new IntegrationController();
         this.aiController = new AiController();
+        this.workflowController = new WorkflowController();
         this.running = false;
         setupRoutes();
     }
@@ -170,6 +173,24 @@ public class DefaultAdminApplication implements AdminApplication {
                 r.get("/templates", (RouteHandler) aiController::listTemplates);
                 r.post("/templates/generate", (RouteHandler) aiController::generatePrompt);
             });
+            
+            router.group("/admin/api/workflow", (r, group) -> {
+                r.get("/definitions", (RouteHandler) workflowController::listDefinitions);
+                r.get("/definitions/{id}", (RouteHandler) workflowController::getDefinition);
+                r.post("/definitions", (RouteHandler) workflowController::createDefinition);
+                r.put("/definitions/{id}", (RouteHandler) workflowController::updateDefinition);
+                r.delete("/definitions/{id}", (RouteHandler) workflowController::deleteDefinition);
+                
+                r.get("/instances", (RouteHandler) workflowController::listInstances);
+                r.get("/instances/{id}", (RouteHandler) workflowController::getInstance);
+                r.post("/instances/start", (RouteHandler) workflowController::startInstance);
+                r.post("/instances/{id}/pause", (RouteHandler) workflowController::pauseInstance);
+                r.post("/instances/{id}/resume", (RouteHandler) workflowController::resumeInstance);
+                r.post("/instances/{id}/cancel", (RouteHandler) workflowController::cancelInstance);
+                r.post("/instances/{id}/retry", (RouteHandler) workflowController::retryInstance);
+                r.get("/instances/{id}/variables", (RouteHandler) workflowController::getInstanceVariables);
+                r.post("/instances/{id}/variables", (RouteHandler) workflowController::setInstanceVariable);
+            });
         });
     }
     
@@ -184,14 +205,14 @@ public class DefaultAdminApplication implements AdminApplication {
         webApplication.onStartup(() -> {
             System.out.println("\n".repeat(2));
             System.out.println("=".repeat(80));
-            System.out.println("�?EST Admin Console 启动成功�?);
+            System.out.println("�?EST Admin Console 启动成功�?);
             System.out.println("=".repeat(80));
-            System.out.println("\n访问地址�?);
+            System.out.println("\n访问地址�?);
             System.out.println("  - http://localhost:" + port + "/admin          (管理后台)");
-            System.out.println("\n默认登录账号�?);
-            System.out.println("  - 用户�? admin");
+            System.out.println("\n默认登录账号�?);
+            System.out.println("  - 用户�? admin");
             System.out.println("  - 密码: admin123");
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n�?Ctrl+C 停止服务�?);
             System.out.println("=".repeat(80));
         });
         

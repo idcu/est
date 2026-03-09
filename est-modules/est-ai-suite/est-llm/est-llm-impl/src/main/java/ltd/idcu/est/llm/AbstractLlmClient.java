@@ -109,7 +109,7 @@ public abstract class AbstractLlmClient implements LlmClient {
         try {
             Map<String, Object> arguments;
             if (argumentsJson != null && !argumentsJson.isEmpty()) {
-                arguments = JsonUtils.fromJson(argumentsJson, Map.class);
+                arguments = JsonUtils.parseObject(argumentsJson);
             } else {
                 arguments = new HashMap<>();
             }

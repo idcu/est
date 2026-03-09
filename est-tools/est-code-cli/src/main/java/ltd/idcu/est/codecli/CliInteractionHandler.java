@@ -2,6 +2,7 @@ package ltd.idcu.est.codecli;
 
 import ltd.idcu.est.ai.api.AiAssistant;
 import ltd.idcu.est.ai.api.mcp.McpToolResult;
+import ltd.idcu.est.codecli.context.ConversationContext;
 import ltd.idcu.est.codecli.contract.ContractManager;
 import ltd.idcu.est.codecli.contract.ProjectContract;
 import ltd.idcu.est.codecli.mcp.EstCodeCliMcpServer;
@@ -36,6 +37,7 @@ public class CliInteractionHandler {
     private final SkillManager skillManager;
     private final PromptLibrary promptLibrary;
     private final CommandHistory commandHistory;
+    private final ConversationContext conversationContext;
     private final CliConfig config;
     private final Scanner scanner;
     private final String nickname;
@@ -53,6 +55,7 @@ public class CliInteractionHandler {
         this.skillManager = new SkillManager();
         this.promptLibrary = new PromptLibrary();
         this.commandHistory = new CommandHistory();
+        this.conversationContext = new ConversationContext();
         this.mcpServer = new EstCodeCliMcpServer(workDir, fileIndex, indexer, skillManager, promptLibrary);
         this.scanner = new Scanner(System.in);
         this.nickname = nickname != null ? nickname : config.getNickname();
@@ -145,6 +148,16 @@ public class CliInteractionHandler {
             return;
         }
         
+        if (input.equalsIgnoreCase("clear") || input.equalsIgnoreCase("reset")) {
+            handleClearContext();
+            return;
+        }
+        
+        if (input.equalsIgnoreCase("context")) {
+            handleShowContext();
+            return;
+        }
+        
         if (input.startsWith("/")) {
             handleToolCommand(input.substring(1));
             return;
@@ -161,6 +174,8 @@ public class CliInteractionHandler {
         System.out.println("  skills     - List available EST skills");
         System.out.println("  templates  - List available prompt templates");
         System.out.println("  history    - Show command history");
+        System.out.println("  context    - Show conversation context");
+        System.out.println("  clear/reset- Clear conversation context");
         System.out.println("  test       - Run Maven tests");
         System.out.println("  compile    - Run Maven compile");
         System.out.println("  config     - Manage configuration");
@@ -388,13 +403,42 @@ public class CliInteractionHandler {
                 }
             }
             
-            String response = aiAssistant.chat(message);
+            conversationContext.addUserMessage(message);
+            String promptWithContext = conversationContext.buildPrompt(message);
+            String response = aiAssistant.chat(promptWithContext);
+            conversationContext.addAssistantMessage(response);
             System.out.println(response);
             
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+    
+    private void handleClearContext() {
+        conversationContext.clear();
+        System.out.println();
+        System.out.println("Conversation context cleared.");
+        System.out.println("The AI will no longer remember previous messages.");
+    }
+    
+    private void handleShowContext() {
+        System.out.println();
+        System.out.println("Conversation Context:");
+        System.out.println("=".repeat(50));
+        System.out.println("Message count: " + conversationContext.size());
+        System.out.println();
+        
+        if (conversationContext.isEmpty()) {
+            System.out.println("(No messages in context)");
+        } else {
+            for (ConversationContext.ConversationMessage msg : conversationContext.getMessages()) {
+                System.out.println("[" + msg.getRole().toUpperCase() + "]");
+                System.out.println(msg.getContent());
+                System.out.println();
+            }
+        }
+        System.out.println("=".repeat(50));
     }
     
     private void handleSkillInvocation(EstSkill skill, String userMessage) {

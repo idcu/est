@@ -1,43 +1,47 @@
+
 @echo off
+chcp 65001 >nul
+title EST Admin UI - 管理后台前端
+
 echo ========================================
-echo   EST Admin UI 启动脚本
+echo   EST Admin UI - 管理后台前端
 echo ========================================
 echo.
 
-cd /d "%~dp0"
-
-echo 正在检查 Node.js 和 npm...
-node --version
-if %errorlevel% neq 0 (
-    echo.
-    echo 错误：未找到 Node.js，请先安装 Node.js！
-    pause
-    exit /b 1
-)
-
-npm --version
-echo.
-
+echo 正在检查依赖...
 if not exist "node_modules" (
-    echo 正在安装依赖...
+    echo.
+    echo 依赖未安装，正在安装...
+    echo.
     call npm install
     if %errorlevel% neq 0 (
         echo.
-        echo 依赖安装失败！
+        echo ========================================
+        echo   依赖安装失败!
+        echo   请确保已安装 Node.js 16+
+        echo ========================================
+        echo.
         pause
         exit /b 1
     )
-    echo.
 )
 
+echo.
 echo 正在启动开发服务器...
 echo.
-echo 前端访问地址：http://localhost:3000
-echo 后端 API 地址：http://localhost:8080
+echo 前端将在 http://localhost:3000 启动
+echo 后端 API 代理到 http://localhost:8080
 echo.
-echo 请确保后端服务已启动！
+echo ========================================
 echo.
 
 call npm run dev
 
-pause
+if %errorlevel% neq 0 (
+    echo.
+    echo ========================================
+    echo   启动失败!
+    echo ========================================
+    echo.
+    pause
+)

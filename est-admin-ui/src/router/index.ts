@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/Dashboard.vue'),
-        meta: { title: '仪表�?, requiresAuth: true }
+        meta: { title: '仪表板', requiresAuth: true }
       },
       {
         path: 'system',
@@ -68,6 +68,12 @@ const routes: RouteRecordRaw[] = [
             name: 'LoginLog',
             component: () => import('@/views/system/LoginLog.vue'),
             meta: { title: '登录日志', requiresAuth: true }
+          },
+          {
+            path: 'data-permission',
+            name: 'DataPermission',
+            component: () => import('@/views/system/DataPermission.vue'),
+            meta: { title: '数据权限', requiresAuth: true }
           }
         ]
       },
@@ -101,7 +107,7 @@ const routes: RouteRecordRaw[] = [
         path: 'integration',
         name: 'Integration',
         redirect: '/integration/email',
-        meta: { title: '第三方集�?, requiresAuth: true },
+        meta: { title: '第三方集成', requiresAuth: true },
         children: [
           {
             path: 'email',
@@ -145,13 +151,47 @@ const routes: RouteRecordRaw[] = [
             path: 'reference',
             name: 'AiReference',
             component: () => import('@/views/ai/Reference.vue'),
-            meta: { title: '开发参�?, requiresAuth: true }
+            meta: { title: '开发参考', requiresAuth: true }
           },
           {
             path: 'template',
             name: 'AiTemplate',
             component: () => import('@/views/ai/Template.vue'),
             meta: { title: '提示模板', requiresAuth: true }
+          }
+        ]
+      },
+      {
+        path: 'workflow',
+        name: 'Workflow',
+        redirect: '/workflow/definition',
+        meta: { title: '工作流管理', requiresAuth: true },
+        children: [
+          {
+            path: 'definition',
+            name: 'WorkflowDefinition',
+            component: () => import('@/views/workflow/WorkflowDefinition.vue'),
+            meta: { title: '工作流定义', requiresAuth: true }
+          },
+          {
+            path: 'instance',
+            name: 'WorkflowInstance',
+            component: () => import('@/views/workflow/WorkflowInstance.vue'),
+            meta: { title: '工作流实例', requiresAuth: true }
+          }
+        ]
+      },
+      {
+        path: 'report',
+        name: 'Report',
+        redirect: '/report/dashboard',
+        meta: { title: '报表统计', requiresAuth: true },
+        children: [
+          {
+            path: 'dashboard',
+            name: 'ReportDashboard',
+            component: () => import('@/views/report/ReportDashboard.vue'),
+            meta: { title: '报表仪表盘', requiresAuth: true }
           }
         ]
       }

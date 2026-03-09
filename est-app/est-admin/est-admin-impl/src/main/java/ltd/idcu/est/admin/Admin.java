@@ -16,6 +16,7 @@ import ltd.idcu.est.admin.api.EmailService;
 import ltd.idcu.est.admin.api.SmsService;
 import ltd.idcu.est.admin.api.OssService;
 import ltd.idcu.est.admin.api.AiAssistantService;
+import ltd.idcu.est.admin.api.WorkflowService;
 
 public class Admin {
     
@@ -88,5 +89,9 @@ public class Admin {
     
     public static AiAssistantService createAiAssistantService() {
         return new DefaultAiAssistantService();
+    }
+    
+    public static WorkflowService createWorkflowService() {
+        return new DefaultWorkflowService();
     }
 }

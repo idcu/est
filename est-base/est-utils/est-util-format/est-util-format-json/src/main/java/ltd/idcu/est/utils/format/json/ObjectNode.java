@@ -129,6 +129,53 @@ public class ObjectNode extends JsonNode {
         return set(fieldName, value != null ? new DecimalNode(value) : NullNode.getInstance());
     }
 
+    public ObjectNode set(String fieldName, Map<String, Object> value) {
+        if (value == null) {
+            return set(fieldName, NullNode.getInstance());
+        }
+        ObjectNode mapNode = new ObjectNode();
+        for (Map.Entry<String, Object> entry : value.entrySet()) {
+            mapNode.set(entry.getKey(), entry.getValue());
+        }
+        return set(fieldName, mapNode);
+    }
+
+    public ObjectNode set(String fieldName, Object value) {
+        if (value == null) {
+            return set(fieldName, NullNode.getInstance());
+        }
+        if (value instanceof JsonNode) {
+            return set(fieldName, (JsonNode) value);
+        }
+        if (value instanceof String) {
+            return set(fieldName, (String) value);
+        }
+        if (value instanceof Integer) {
+            return set(fieldName, (Integer) value);
+        }
+        if (value instanceof Long) {
+            return set(fieldName, (Long) value);
+        }
+        if (value instanceof Double) {
+            return set(fieldName, (Double) value);
+        }
+        if (value instanceof Boolean) {
+            return set(fieldName, (Boolean) value);
+        }
+        if (value instanceof BigInteger) {
+            return set(fieldName, (BigInteger) value);
+        }
+        if (value instanceof BigDecimal) {
+            return set(fieldName, (BigDecimal) value);
+        }
+        if (value instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = (Map<String, Object>) value;
+            return set(fieldName, map);
+        }
+        return set(fieldName, String.valueOf(value));
+    }
+
     public ObjectNode setNull(String fieldName) {
         return set(fieldName, NullNode.getInstance());
     }
