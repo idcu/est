@@ -20,10 +20,10 @@ public class DefaultDepartmentService implements DepartmentService {
         DefaultDepartment headOffice = new DefaultDepartment(
             UUID.randomUUID().toString(),
             null,
-            "总公�?,
+            "Head Office",
             "HQ",
             1,
-            "张三",
+            "Zhang San",
             "13800138000",
             "hq@example.com",
             true

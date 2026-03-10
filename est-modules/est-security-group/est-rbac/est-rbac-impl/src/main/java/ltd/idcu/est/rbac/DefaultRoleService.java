@@ -27,7 +27,7 @@ public class DefaultRoleService implements RoleService {
         DefaultRole adminRole = new DefaultRole(
             UUID.randomUUID().toString(),
             "admin",
-            "超级管理�?,
+            "Super Administrator",
             adminPermissions,
             false
         );
@@ -38,7 +38,7 @@ public class DefaultRoleService implements RoleService {
         DefaultRole userRole = new DefaultRole(
             UUID.randomUUID().toString(),
             "user",
-            "普通用�?,
+            "Regular User",
             new HashSet<>(),
             true
         );

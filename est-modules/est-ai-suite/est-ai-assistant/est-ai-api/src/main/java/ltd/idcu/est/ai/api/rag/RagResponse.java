@@ -1,5 +1,7 @@
 package ltd.idcu.est.ai.api.rag;
 
+import java.util.List;
+
 public interface RagResponse {
     
     String getAnswer();

@@ -3,6 +3,7 @@ package ltd.idcu.est.ai.impl.vector;
 import ltd.idcu.est.ai.api.vector.Vector;
 import ltd.idcu.est.ai.api.vector.VectorStore;
 import ltd.idcu.est.ai.api.vector.VectorStoreException;
+import ltd.idcu.est.ai.api.vector.VectorStoreRuntimeException;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -190,33 +191,5 @@ public class InMemoryVectorStore implements VectorStore {
         }
         
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-    }
-    
-    public static class VectorStoreRuntimeException extends RuntimeException implements VectorStoreException {
-        private final ErrorType errorType;
-        private final String storeName;
-        private final Throwable cause;
-        
-        public VectorStoreRuntimeException(ErrorType errorType, String message, String storeName, Throwable cause) {
-            super(message);
-            this.errorType = errorType;
-            this.storeName = storeName;
-            this.cause = cause;
-        }
-        
-        @Override
-        public ErrorType getErrorType() {
-            return errorType;
-        }
-        
-        @Override
-        public String getStoreName() {
-            return storeName;
-        }
-        
-        @Override
-        public Throwable getCause() {
-            return cause;
-        }
     }
 }

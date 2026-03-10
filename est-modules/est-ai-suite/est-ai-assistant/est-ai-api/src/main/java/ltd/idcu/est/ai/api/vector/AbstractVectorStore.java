@@ -44,7 +44,7 @@ public abstract class AbstractVectorStore implements VectorStore {
     
     @Override
     public List<Vector> search(String collectionName, Vector queryVector, int topK, Map<String, Object> filter) {
-        return search(collectionName, queryVector.getEmbedding(), topK, filter);
+        return search(collectionName, queryVector.getValues(), topK, filter);
     }
     
     @Override
@@ -54,7 +54,11 @@ public abstract class AbstractVectorStore implements VectorStore {
     
     protected void checkConnected() {
         if (!connected) {
-            throw new VectorStoreException("Vector store not connected: " + name);
+            throw new VectorStoreRuntimeException(
+                VectorStoreException.ErrorType.CONNECTION_ERROR,
+                "Vector store not connected: " + name,
+                name
+            );
         }
     }
 }
