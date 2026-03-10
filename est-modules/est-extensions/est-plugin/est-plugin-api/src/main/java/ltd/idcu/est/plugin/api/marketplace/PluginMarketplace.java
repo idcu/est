@@ -1,6 +1,7 @@
 package ltd.idcu.est.plugin.api.marketplace;
 
 import java.util.List;
+import ltd.idcu.est.plugin.api.PluginInfo;
 
 public interface PluginMarketplace {
     

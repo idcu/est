@@ -83,11 +83,11 @@ public class PluginPublishRequest {
         this.tags = tags;
     }
     
-    public String getDependencies() {
+    public String[] getDependencies() {
         return dependencies;
     }
     
-    public void setDependencies(String dependencies) {
+    public void setDependencies(String[] dependencies) {
         this.dependencies = dependencies;
     }
     

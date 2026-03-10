@@ -477,6 +477,16 @@
             </dependency>
             <dependency>
                 <groupId>ltd.idcu</groupId>
+                <artifactId>est-gateway-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
+                <artifactId>est-gateway-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ltd.idcu</groupId>
                 <artifactId>est-console-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
