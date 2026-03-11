@@ -1,6 +1,6 @@
 package ltd.idcu.est.data.jdbc;
 
-import ltd.idcu.est.features.data.api.*;
+import ltd.idcu.est.data.api.*;
 
 public final class JdbcData {
     
@@ -28,7 +28,7 @@ public final class JdbcData {
         return new JdbcRepository<>(connectionPool, entityClass, mapper, tableName, idColumnName);
     }
     
-    public static DataConfig.DataConfigBuilder configBuilder() {
-        return new DataConfig.DataConfigBuilder();
+    public static DataConfigBuilder configBuilder() {
+        return new DataConfigBuilder();
     }
 }

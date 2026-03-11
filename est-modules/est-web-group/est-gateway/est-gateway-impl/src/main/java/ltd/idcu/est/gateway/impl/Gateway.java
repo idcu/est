@@ -1,8 +1,8 @@
 package ltd.idcu.est.gateway.impl;
 
-import ltd.idcu.est.circuitbreaker.api.CircuitBreaker;
-import ltd.idcu.est.circuitbreaker.api.CircuitBreakerConfig;
-import ltd.idcu.est.circuitbreaker.impl.DefaultCircuitBreaker;
+// import ltd.idcu.est.circuitbreaker.api.CircuitBreaker;
+// import ltd.idcu.est.circuitbreaker.api.CircuitBreakerConfig;
+// import ltd.idcu.est.circuitbreaker.impl.DefaultCircuitBreaker;
 import ltd.idcu.est.gateway.api.ApiGateway;
 import ltd.idcu.est.gateway.api.CanaryReleaseConfig;
 import ltd.idcu.est.gateway.api.CanaryReleaseManager;
@@ -10,10 +10,14 @@ import ltd.idcu.est.gateway.api.GatewayMiddleware;
 import ltd.idcu.est.gateway.api.GatewayRouter;
 import ltd.idcu.est.gateway.api.RateLimiter;
 import ltd.idcu.est.gateway.api.WebSocketHandler;
-import ltd.idcu.est.gateway.impl.middleware.CircuitBreakerMiddleware;
+import ltd.idcu.est.gateway.impl.middleware.AuthMiddleware;
+// import ltd.idcu.est.gateway.impl.middleware.CircuitBreakerMiddleware;
 import ltd.idcu.est.gateway.impl.middleware.CorsMiddleware;
 import ltd.idcu.est.gateway.impl.middleware.LoggingMiddleware;
 import ltd.idcu.est.gateway.impl.middleware.RateLimitMiddleware;
+import ltd.idcu.est.gateway.impl.middleware.TracingMiddleware;
+
+import java.util.Set;
 
 import javax.net.ssl.SSLContext;
 
@@ -30,6 +34,11 @@ public class Gateway {
         return new Gateway();
     }
 
+    public Gateway withTracing() {
+        gateway.addMiddleware(new TracingMiddleware());
+        return this;
+    }
+
     public Gateway withLogging() {
         gateway.addMiddleware(new LoggingMiddleware());
         return this;
@@ -37,6 +46,16 @@ public class Gateway {
 
     public Gateway withCors() {
         gateway.addMiddleware(new CorsMiddleware());
+        return this;
+    }
+
+    public Gateway withAuth(AuthMiddleware.AuthValidator validator) {
+        gateway.addMiddleware(new AuthMiddleware(validator));
+        return this;
+    }
+
+    public Gateway withAuth(AuthMiddleware.AuthValidator validator, Set<String> excludedPaths) {
+        gateway.addMiddleware(new AuthMiddleware(validator, excludedPaths));
         return this;
     }
 
@@ -58,23 +77,23 @@ public class Gateway {
         return this;
     }
 
-    public Gateway withCircuitBreaker(String serviceName) {
-        CircuitBreakerConfig config = CircuitBreakerConfig.builder().build();
-        CircuitBreaker circuitBreaker = new DefaultCircuitBreaker(serviceName, config);
-        gateway.addMiddleware(new CircuitBreakerMiddleware(circuitBreaker));
-        return this;
-    }
-
-    public Gateway withCircuitBreaker(String serviceName, CircuitBreakerConfig config) {
-        CircuitBreaker circuitBreaker = new DefaultCircuitBreaker(serviceName, config);
-        gateway.addMiddleware(new CircuitBreakerMiddleware(circuitBreaker));
-        return this;
-    }
-
-    public Gateway withCircuitBreaker(CircuitBreaker circuitBreaker) {
-        gateway.addMiddleware(new CircuitBreakerMiddleware(circuitBreaker));
-        return this;
-    }
+//    public Gateway withCircuitBreaker(String serviceName) {
+//        CircuitBreakerConfig config = CircuitBreakerConfig.builder().build();
+//        CircuitBreaker circuitBreaker = new DefaultCircuitBreaker(serviceName, config);
+//        gateway.addMiddleware(new CircuitBreakerMiddleware(circuitBreaker));
+//        return this;
+//    }
+//
+//    public Gateway withCircuitBreaker(String serviceName, CircuitBreakerConfig config) {
+//        CircuitBreaker circuitBreaker = new DefaultCircuitBreaker(serviceName, config);
+//        gateway.addMiddleware(new CircuitBreakerMiddleware(circuitBreaker));
+//        return this;
+//    }
+//
+//    public Gateway withCircuitBreaker(CircuitBreaker circuitBreaker) {
+//        gateway.addMiddleware(new CircuitBreakerMiddleware(circuitBreaker));
+//        return this;
+//    }
 
     public Gateway withSsl(SSLContext sslContext) {
         this.sslContext = sslContext;

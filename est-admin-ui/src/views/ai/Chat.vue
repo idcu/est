@@ -3,10 +3,10 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>AI 对话</span>
+          <span>AI Chat</span>
           <el-button link @click="clearChat">
             <el-icon><Delete /></el-icon>
-            清空对话
+            Clear Chat
           </el-button>
         </div>
       </template>
@@ -18,7 +18,7 @@
             <el-icon v-else><Cpu /></el-icon>
           </div>
           <div class="message-content">
-            <div class="message-role">{{ msg.role === 'user' ? '�? : 'AI 助手' }}</div>
+            <div class="message-role">{{ msg.role === 'user' ? 'You' : 'AI Assistant' }}</div>
             <div class="message-text">{{ msg.content }}</div>
           </div>
         </div>
@@ -29,12 +29,12 @@
           v-model="inputMessage"
           type="textarea"
           :rows="3"
-          placeholder="输入您的问题..."
+          placeholder="Enter your question..."
           @keydown.enter.ctrl="sendMessage"
         />
         <div class="input-actions">
           <el-button type="primary" @click="sendMessage" :loading="loading">
-            发�?(Ctrl+Enter)
+            Send (Ctrl+Enter)
           </el-button>
         </div>
       </div>
@@ -68,7 +68,7 @@ const scrollToBottom = () => {
 
 const sendMessage = async () => {
   if (!inputMessage.value.trim()) {
-    ElMessage.warning('请输入消�?)
+    ElMessage.warning('Please enter a message')
     return
   }
   
@@ -94,7 +94,7 @@ const sendMessage = async () => {
       scrollToBottom()
     }
   } catch (error) {
-    ElMessage.error('发送消息失�?)
+    ElMessage.error('Failed to send message')
   } finally {
     loading.value = false
   }
@@ -108,7 +108,7 @@ onMounted(() => {
   messages.value = [
     {
       role: 'assistant',
-      content: '您好！我�?EST AI 助手，有什么可以帮助您的吗�?
+      content: 'Hello! I am EST AI Assistant. How can I help you today?'
     }
   ]
 })

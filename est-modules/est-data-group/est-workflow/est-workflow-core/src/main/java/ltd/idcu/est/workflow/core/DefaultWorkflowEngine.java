@@ -229,16 +229,7 @@ public class DefaultWorkflowEngine implements WorkflowEngine {
         notifyWorkflowStart(instance);
         
         try {
-            Node currentNode = workflow.getStartNode();
-            while (currentNode != null && instance.getStatus() == WorkflowStatus.RUNNING) {
-                executeNode(instance, currentNode);
-                
-                if (currentNode == workflow.getEndNode()) {
-                    break;
-                }
-                
-                currentNode = findNextNode(workflow, currentNode, instance.getContext());
-            }
+            executeFromNode(workflow.getStartNode(), instance, workflow, new java.util.HashSet<>());
             
             if (instance.getStatus() == WorkflowStatus.RUNNING) {
                 instance.setStatus(WorkflowStatus.COMPLETED);
@@ -249,6 +240,33 @@ public class DefaultWorkflowEngine implements WorkflowEngine {
             instance.setStatus(WorkflowStatus.FAILED);
             instance.setEndTime(new Date());
             notifyWorkflowFail(instance, e);
+        }
+    }
+    
+    private void executeFromNode(Node node, DefaultWorkflowInstance instance, WorkflowDefinition workflow, java.util.Set<String> executedIds) {
+        if (node == null || executedIds.contains(node.getId()) || instance.getStatus() != WorkflowStatus.RUNNING) {
+            return;
+        }
+        
+        executeNode(instance, node);
+        executedIds.add(node.getId());
+        
+        if (node == workflow.getEndNode()) {
+            return;
+        }
+        
+        List<Edge> outgoingEdges = workflow.getOutgoingEdges(node.getId());
+        
+        if (node.getType().equals("PARALLEL_GATEWAY")) {
+            if (!outgoingEdges.isEmpty()) {
+                for (Edge edge : outgoingEdges) {
+                    Node nextNode = workflow.getNode(edge.getTargetNodeId());
+                    executeFromNode(nextNode, instance, workflow, executedIds);
+                }
+            }
+        } else {
+            Node nextNode = findNextNode(workflow, node, instance.getContext());
+            executeFromNode(nextNode, instance, workflow, executedIds);
         }
     }
     

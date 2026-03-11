@@ -1,0 +1,20 @@
+package ltd.idcu.est.compliance.api.cybersecurity;
+
+public enum SecurityEventType {
+
+    LOGIN_SUCCESS,
+    LOGIN_FAILURE,
+    LOGOUT,
+    ACCESS_DENIED,
+    DATA_ACCESS,
+    DATA_MODIFICATION,
+    DATA_DELETION,
+    CONFIGURATION_CHANGE,
+    PRIVILEGE_ESCALATION,
+    BRUTE_FORCE_ATTACK,
+    SQL_INJECTION,
+    XSS_ATTACK,
+    SUSPICIOUS_ACTIVITY,
+    SYSTEM_ERROR,
+    CUSTOM
+}

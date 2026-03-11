@@ -20,10 +20,10 @@ public class DefaultDepartmentService implements DepartmentService {
         DefaultDepartment headOffice = new DefaultDepartment(
             UUID.randomUUID().toString(),
             null,
-            "总公�?,
+            "Head Office",
             "HQ",
             1,
-            "张三",
+            "Zhang San",
             "13800138000",
             "hq@example.com",
             true
@@ -33,10 +33,10 @@ public class DefaultDepartmentService implements DepartmentService {
         DefaultDepartment techDept = new DefaultDepartment(
             UUID.randomUUID().toString(),
             headOffice.getId(),
-            "技术部",
+            "Tech Dept",
             "TECH",
             1,
-            "李四",
+            "Li Si",
             "13800138001",
             "tech@example.com",
             true
@@ -46,10 +46,10 @@ public class DefaultDepartmentService implements DepartmentService {
         DefaultDepartment salesDept = new DefaultDepartment(
             UUID.randomUUID().toString(),
             headOffice.getId(),
-            "销售部",
+            "Sales Dept",
             "SALES",
             2,
-            "王五",
+            "Wang Wu",
             "13800138002",
             "sales@example.com",
             true
@@ -59,10 +59,10 @@ public class DefaultDepartmentService implements DepartmentService {
         DefaultDepartment hrDept = new DefaultDepartment(
             UUID.randomUUID().toString(),
             headOffice.getId(),
-            "人事�?,
+            "HR Dept",
             "HR",
             3,
-            "赵六",
+            "Zhao Liu",
             "13800138003",
             "hr@example.com",
             true

@@ -8,13 +8,25 @@ public interface LoginLog {
     
     String getUsername();
     
+    String getTenantId();
+    
+    String getLoginType();
+    
     String getIp();
     
     String getUserAgent();
     
+    String getLocation();
+    
+    String getRequestId();
+    
+    String getSessionId();
+    
     int getStatus();
     
     String getErrorMsg();
+    
+    String getStackTrace();
     
     long getCreatedAt();
 }

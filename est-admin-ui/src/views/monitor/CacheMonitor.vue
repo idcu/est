@@ -3,15 +3,16 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>缓存监控</span>
+          <span>Cache Monitor</span>
           <div class="header-actions">
             <el-button type="primary" @click="loadData" :loading="loading">
               <el-icon><Refresh /></el-icon>
-              刷新
+              Refresh
             </el-button>
             <el-button type="danger" @click="clearAllCachesConfirm">
               <el-icon><Delete /></el-icon>
-              清空所有缓�?            </el-button>
+              Clear All Caches
+            </el-button>
           </div>
         </div>
       </template>
@@ -19,16 +20,16 @@
       <div v-if="cacheData" class="monitor-content">
         <el-row :gutter="20" class="stats-row">
           <el-col :span="6">
-            <el-statistic title="总缓存键�? :value="cacheData.totalSize" />
+            <el-statistic title="Total Cache Keys" :value="cacheData.totalSize" />
           </el-col>
           <el-col :span="6">
-            <el-statistic title="总命中次�? :value="cacheData.totalHitCount" />
+            <el-statistic title="Total Hits" :value="cacheData.totalHitCount" />
           </el-col>
           <el-col :span="6">
-            <el-statistic title="总未命中次数" :value="cacheData.totalMissCount" />
+            <el-statistic title="Total Misses" :value="cacheData.totalMissCount" />
           </el-col>
           <el-col :span="6">
-            <el-statistic title="总命中率">
+            <el-statistic title="Total Hit Rate">
               <template #default>
                 {{ (cacheData.totalHitRate * 100).toFixed(2) }}%
               </template>
@@ -38,13 +39,13 @@
         
         <el-divider />
         
-        <h4>缓存详情</h4>
+        <h4>Cache Details</h4>
         <el-table :data="cacheData.caches" style="width: 100%">
-          <el-table-column prop="name" label="缓存名称" width="150" />
-          <el-table-column prop="size" label="键数�? width="100" />
-          <el-table-column prop="hitCount" label="命中次数" width="120" />
-          <el-table-column prop="missCount" label="未命中次�? width="120" />
-          <el-table-column label="命中�? width="120">
+          <el-table-column prop="name" label="Cache Name" width="150" />
+          <el-table-column prop="size" label="Keys" width="100" />
+          <el-table-column prop="hitCount" label="Hits" width="120" />
+          <el-table-column prop="missCount" label="Misses" width="120" />
+          <el-table-column label="Hit Rate" width="120">
             <template #default="{ row }">
               <el-progress 
                 :percentage="Math.round(row.hitRate * 100)" 
@@ -53,10 +54,10 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="120" fixed="right">
+          <el-table-column label="Actions" width="120" fixed="right">
             <template #default="{ row }">
               <el-button type="danger" link size="small" @click="clearCacheByName(row.name)">
-                清空
+                Clear
               </el-button>
             </template>
           </el-table-column>
@@ -82,10 +83,10 @@ const loadData = async () => {
     if (res.data.success) {
       cacheData.value = res.data.data
     } else {
-      ElMessage.error(res.data.message || '加载失败')
+      ElMessage.error(res.data.message || 'Load failed')
     }
   } catch (error) {
-    ElMessage.error('加载失败')
+    ElMessage.error('Load failed')
   } finally {
     loading.value = false
   }
@@ -93,42 +94,42 @@ const loadData = async () => {
 
 const clearCacheByName = async (cacheName: string) => {
   try {
-    await ElMessageBox.confirm(`确定要清空缓�?${cacheName} 吗？`, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    await ElMessageBox.confirm(`Are you sure you want to clear cache ${cacheName}?`, 'Confirm', {
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
       type: 'warning'
     })
     const res = await clearCache(cacheName)
     if (res.data.success) {
-      ElMessage.success('缓存清空成功')
+      ElMessage.success('Cache cleared successfully')
       loadData()
     } else {
-      ElMessage.error(res.data.message || '操作失败')
+      ElMessage.error(res.data.message || 'Operation failed')
     }
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error('操作失败')
+      ElMessage.error('Operation failed')
     }
   }
 }
 
 const clearAllCachesConfirm = async () => {
   try {
-    await ElMessageBox.confirm('确定要清空所有缓存吗？此操作不可恢复�?, '警告', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    await ElMessageBox.confirm('Are you sure you want to clear all caches? This action cannot be undone.', 'Warning', {
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
       type: 'warning'
     })
     const res = await clearAllCachesApi()
     if (res.data.success) {
-      ElMessage.success('所有缓存清空成�?)
+      ElMessage.success('All caches cleared successfully')
       loadData()
     } else {
-      ElMessage.error(res.data.message || '操作失败')
+      ElMessage.error(res.data.message || 'Operation failed')
     }
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error('操作失败')
+      ElMessage.error('Operation failed')
     }
   }
 }

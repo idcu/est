@@ -1,6 +1,6 @@
 package ltd.idcu.est.data.jdbc;
 
-import ltd.idcu.est.features.data.api.*;
+import ltd.idcu.est.data.api.*;
 import ltd.idcu.est.utils.common.AssertUtils;
 import ltd.idcu.est.utils.common.ObjectUtils;
 
@@ -229,13 +229,89 @@ public class JdbcOrm implements Orm {
         }
     }
     
+    @Override
     public void clearCache() {
         firstLevelCache.get().clear();
     }
     
-    public void evictFromCache(Class<?> entityClass, Object id) {
+    @Override
+    public <T> void evictCache(Class<T> entityClass, Object id) {
         CacheKey cacheKey = new CacheKey(entityClass, id);
         firstLevelCache.get().remove(cacheKey);
+    }
+    
+    @Override
+    public <T> int deleteAll(Class<T> entityClass) {
+        EntityMetadata metadata = getEntityMetadata(entityClass);
+        
+        if (metadata.logicDeleteField != null) {
+            return logicDeleteAll(entityClass, metadata);
+        }
+        
+        return physicalDeleteAll(entityClass, metadata);
+    }
+    
+    private <T> int logicDeleteAll(Class<T> entityClass, EntityMetadata metadata) {
+        StringBuilder sql = new StringBuilder("UPDATE ").append(metadata.tableName);
+        sql.append(" SET ").append(metadata.logicDeleteColumnName)
+           .append(" = '").append(metadata.logicDeleteValue).append("'");
+        
+        if (metadata.logicDeleteField != null) {
+            sql.append(" WHERE ").append(metadata.logicDeleteColumnName)
+               .append(" = '").append(metadata.logicDeleteNotDeletedValue).append("'");
+        }
+        
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0 && cacheEnabled) {
+                firstLevelCache.get().clear();
+            }
+            return affectedRows;
+        } catch (SQLException e) {
+            throw new DataException("Failed to logic delete all entities", e);
+        }
+    }
+    
+    private <T> int physicalDeleteAll(Class<T> entityClass, EntityMetadata metadata) {
+        StringBuilder sql = new StringBuilder("DELETE FROM ").append(metadata.tableName);
+        
+        if (metadata.logicDeleteField != null) {
+            sql.append(" WHERE ").append(metadata.logicDeleteColumnName)
+               .append(" = '").append(metadata.logicDeleteNotDeletedValue).append("'");
+        }
+        
+        try (Connection conn = connectionPool.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0 && cacheEnabled) {
+                firstLevelCache.get().clear();
+            }
+            return affectedRows;
+        } catch (SQLException e) {
+            throw new DataException("Failed to delete all entities", e);
+        }
+    }
+    
+    @Override
+    public <T> LambdaUpdateWrapper<T> update(Class<T> entityClass) {
+        return lambdaUpdate(entityClass);
+    }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> Repository<T, ?> getRepository(Class<T> entityClass) {
+        return getJdbcRepository(entityClass);
+    }
+    
+    @Override
+    public void flush() {
+    }
+    
+    @Override
+    public <T> Optional<T> findOneByFields(Class<T> entityClass, Map<String, Object> fields) {
+        List<T> results = findByFields(entityClass, fields);
+        return results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));
     }
     
     @Override
@@ -253,14 +329,14 @@ public class JdbcOrm implements Orm {
     @Override
     @SuppressWarnings("unchecked")
     public <T> long count(Class<T> entityClass) {
-        JdbcRepository<T, Object> repository = getRepository(entityClass);
+        JdbcRepository<T, Object> repository = getJdbcRepository(entityClass);
         return repository.count();
     }
     
     @Override
     @SuppressWarnings("unchecked")
     public <T> boolean exists(Class<T> entityClass, Object id) {
-        JdbcRepository<T, Object> repository = getRepository(entityClass);
+        JdbcRepository<T, Object> repository = getJdbcRepository(entityClass);
         return repository.existsById(id);
     }
     
@@ -395,7 +471,7 @@ public class JdbcOrm implements Orm {
     }
     
     @SuppressWarnings("unchecked")
-    private <T> JdbcRepository<T, Object> getRepository(Class<T> entityClass) {
+    private <T> JdbcRepository<T, Object> getJdbcRepository(Class<T> entityClass) {
         return (JdbcRepository<T, Object>) repositoryCache.computeIfAbsent(entityClass, 
                 clazz -> createRepository((Class<T>) clazz));
     }
@@ -678,10 +754,7 @@ public class JdbcOrm implements Orm {
                 }
             }
 
-            @Override
-            public T map(ResultSet rs, int rowNum) throws SQLException {
-                return map(rs);
-            }
+
         };
     }
     

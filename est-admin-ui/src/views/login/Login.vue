@@ -6,7 +6,7 @@
         <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
-            placeholder="请输入用户名"
+            placeholder="Please enter username"
             size="large"
             prefix-icon="User"
           />
@@ -15,7 +15,7 @@
           <el-input
             v-model="loginForm.password"
             type="password"
-            placeholder="请输入密�?
+            placeholder="Please enter password"
             size="large"
             prefix-icon="Lock"
             show-password
@@ -24,13 +24,13 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" size="large" :loading="loading" @click="handleLogin" style="width: 100%">
-            登录
+            Login
           </el-button>
         </el-form-item>
       </el-form>
       <div class="login-tips">
-        <p>默认账号: admin</p>
-        <p>默认密码: admin123</p>
+        <p>Default username: admin</p>
+        <p>Default password: admin123</p>
       </div>
     </div>
   </div>
@@ -54,8 +54,8 @@ const loginForm = reactive({
 })
 
 const rules = {
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密�?, trigger: 'blur' }]
+  username: [{ required: true, message: 'Please enter username', trigger: 'blur' }],
+  password: [{ required: true, message: 'Please enter password', trigger: 'blur' }]
 }
 
 async function handleLogin() {
@@ -64,10 +64,10 @@ async function handleLogin() {
   
   try {
     await userStore.login(loginForm)
-    ElMessage.success('登录成功')
+    ElMessage.success('Login successful')
     router.push('/')
   } catch (error: any) {
-    ElMessage.error(error.message || '登录失败，请检查用户名和密�?)
+    ElMessage.error(error.message || 'Login failed, please check username and password')
   } finally {
     loading.value = false
   }

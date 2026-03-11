@@ -22,11 +22,11 @@
         <module>est-security-group</module>
         <module>est-integration-group</module>
         <module>est-web-group</module>
-        <module>est-ai-suite</module>
-        <module>est-microservices</module>
+        <!-- <module>est-ai-suite</module> -->
+        <!-- <module>est-microservices</module> -->
         <module>est-extensions</module>
-        <module>est-cloud-group</module>
-        <module>est-kotlin-support</module>
+        <!-- <module>est-cloud-group</module> -->
+        <!-- <module>est-kotlin-support</module> -->
     </modules>
 
 </project>

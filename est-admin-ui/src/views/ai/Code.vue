@@ -3,34 +3,34 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>代码生成</span>
+          <span>Code Generation</span>
         </div>
       </template>
       
       <el-tabs v-model="activeTab">
-        <el-tab-pane label="生成代码" name="generate">
+        <el-tab-pane label="Generate Code" name="generate">
           <el-form label-width="100px">
-            <el-form-item label="需求描�?>
+            <el-form-item label="Requirement">
               <el-input
                 v-model="requirement"
                 type="textarea"
                 :rows="6"
-                placeholder="请描述您想要生成的代码需�?.."
+                placeholder="Please describe the code you want to generate..."
               />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleGenerateCode" :loading="loading">
-                生成代码
+                Generate Code
               </el-button>
             </el-form-item>
           </el-form>
           
           <div v-if="result" class="result-container">
             <div class="result-header">
-              <span>生成结果</span>
+              <span>Generated Result</span>
               <el-button link @click="copyResult">
                 <el-icon><DocumentCopy /></el-icon>
-                复制
+                Copy
               </el-button>
             </div>
             <el-input
@@ -42,29 +42,29 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="代码建议" name="suggest">
+        <el-tab-pane label="Code Suggestion" name="suggest">
           <el-form label-width="100px">
-            <el-form-item label="需求描�?>
+            <el-form-item label="Requirement">
               <el-input
                 v-model="suggestRequirement"
                 type="textarea"
                 :rows="6"
-                placeholder="请描述您的需求，获取代码建议..."
+                placeholder="Please describe your requirement to get code suggestions..."
               />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleSuggestCode" :loading="suggestLoading">
-                获取建议
+                Get Suggestions
               </el-button>
             </el-form-item>
           </el-form>
           
           <div v-if="suggestResult" class="result-container">
             <div class="result-header">
-              <span>建议结果</span>
+              <span>Suggestion Result</span>
               <el-button link @click="copySuggestResult">
                 <el-icon><DocumentCopy /></el-icon>
-                复制
+                Copy
               </el-button>
             </div>
             <el-input
@@ -76,29 +76,29 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="代码解释" name="explain">
+        <el-tab-pane label="Code Explanation" name="explain">
           <el-form label-width="100px">
-            <el-form-item label="代码">
+            <el-form-item label="Code">
               <el-input
                 v-model="codeToExplain"
                 type="textarea"
                 :rows="8"
-                placeholder="请输入需要解释的代码..."
+                placeholder="Please enter the code to explain..."
               />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleExplainCode" :loading="explainLoading">
-                解释代码
+                Explain Code
               </el-button>
             </el-form-item>
           </el-form>
           
           <div v-if="explainResult" class="result-container">
             <div class="result-header">
-              <span>解释结果</span>
+              <span>Explanation Result</span>
               <el-button link @click="copyExplainResult">
                 <el-icon><DocumentCopy /></el-icon>
-                复制
+                Copy
               </el-button>
             </div>
             <el-input
@@ -110,29 +110,29 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="代码优化" name="optimize">
+        <el-tab-pane label="Code Optimization" name="optimize">
           <el-form label-width="100px">
-            <el-form-item label="代码">
+            <el-form-item label="Code">
               <el-input
                 v-model="codeToOptimize"
                 type="textarea"
                 :rows="8"
-                placeholder="请输入需要优化的代码..."
+                placeholder="Please enter the code to optimize..."
               />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleOptimizeCode" :loading="optimizeLoading">
-                优化代码
+                Optimize Code
               </el-button>
             </el-form-item>
           </el-form>
           
           <div v-if="optimizeResult" class="result-container">
             <div class="result-header">
-              <span>优化结果</span>
+              <span>Optimization Result</span>
               <el-button link @click="copyOptimizeResult">
                 <el-icon><DocumentCopy /></el-icon>
-                复制
+                Copy
               </el-button>
             </div>
             <el-input
@@ -172,7 +172,7 @@ const optimizeResult = ref('')
 
 const handleGenerateCode = async () => {
   if (!requirement.value.trim()) {
-    ElMessage.warning('请输入需求描�?)
+    ElMessage.warning('Please enter the requirement')
     return
   }
   
@@ -183,7 +183,7 @@ const handleGenerateCode = async () => {
       result.value = res.data.data
     }
   } catch (error) {
-    ElMessage.error('生成代码失败')
+    ElMessage.error('Failed to generate code')
   } finally {
     loading.value = false
   }
@@ -191,7 +191,7 @@ const handleGenerateCode = async () => {
 
 const handleSuggestCode = async () => {
   if (!suggestRequirement.value.trim()) {
-    ElMessage.warning('请输入需求描�?)
+    ElMessage.warning('Please enter the requirement')
     return
   }
   
@@ -202,7 +202,7 @@ const handleSuggestCode = async () => {
       suggestResult.value = res.data.data
     }
   } catch (error) {
-    ElMessage.error('获取建议失败')
+    ElMessage.error('Failed to get suggestions')
   } finally {
     suggestLoading.value = false
   }
@@ -210,7 +210,7 @@ const handleSuggestCode = async () => {
 
 const handleExplainCode = async () => {
   if (!codeToExplain.value.trim()) {
-    ElMessage.warning('请输入需要解释的代码')
+    ElMessage.warning('Please enter the code to explain')
     return
   }
   
@@ -221,7 +221,7 @@ const handleExplainCode = async () => {
       explainResult.value = res.data.data
     }
   } catch (error) {
-    ElMessage.error('解释代码失败')
+    ElMessage.error('Failed to explain code')
   } finally {
     explainLoading.value = false
   }
@@ -229,7 +229,7 @@ const handleExplainCode = async () => {
 
 const handleOptimizeCode = async () => {
   if (!codeToOptimize.value.trim()) {
-    ElMessage.warning('请输入需要优化的代码')
+    ElMessage.warning('Please enter the code to optimize')
     return
   }
   
@@ -240,7 +240,7 @@ const handleOptimizeCode = async () => {
       optimizeResult.value = res.data.data
     }
   } catch (error) {
-    ElMessage.error('优化代码失败')
+    ElMessage.error('Failed to optimize code')
   } finally {
     optimizeLoading.value = false
   }
@@ -248,22 +248,22 @@ const handleOptimizeCode = async () => {
 
 const copyResult = () => {
   navigator.clipboard.writeText(result.value)
-  ElMessage.success('已复制到剪贴�?)
+  ElMessage.success('Copied to clipboard')
 }
 
 const copySuggestResult = () => {
   navigator.clipboard.writeText(suggestResult.value)
-  ElMessage.success('已复制到剪贴�?)
+  ElMessage.success('Copied to clipboard')
 }
 
 const copyExplainResult = () => {
   navigator.clipboard.writeText(explainResult.value)
-  ElMessage.success('已复制到剪贴�?)
+  ElMessage.success('Copied to clipboard')
 }
 
 const copyOptimizeResult = () => {
   navigator.clipboard.writeText(optimizeResult.value)
-  ElMessage.success('已复制到剪贴�?)
+  ElMessage.success('Copied to clipboard')
 }
 </script>
 

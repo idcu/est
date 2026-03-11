@@ -3,59 +3,59 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>服务监控</span>
+          <span>Service Monitor</span>
           <el-button type="primary" @click="loadData" :loading="loading">
             <el-icon><Refresh /></el-icon>
-            刷新
+            Refresh
           </el-button>
         </div>
       </template>
       
       <el-tabs v-model="activeTab">
-        <el-tab-pane label="JVM 监控" name="jvm">
+        <el-tab-pane label="JVM Monitor" name="jvm">
           <div v-if="jvmData" class="monitor-content">
             <el-row :gutter="20">
               <el-col :span="6">
-                <el-statistic title="JVM 信息" :value="jvmData.jvmInfo" />
+                <el-statistic title="JVM Info" :value="jvmData.jvmInfo" />
               </el-col>
               <el-col :span="6">
-                <el-statistic title="运行时间">
+                <el-statistic title="Uptime">
                   <template #default>
                     {{ formatUptime(jvmData.uptime) }}
                   </template>
                 </el-statistic>
               </el-col>
               <el-col :span="6">
-                <el-statistic title="线程�? :value="jvmData.metrics['jvm.thread.count']" />
+                <el-statistic title="Thread Count" :value="jvmData.metrics['jvm.thread.count']" />
               </el-col>
               <el-col :span="6">
-                <el-statistic title="GC 次数" :value="jvmData.metrics['jvm.gc.count']" />
+                <el-statistic title="GC Count" :value="jvmData.metrics['jvm.gc.count']" />
               </el-col>
             </el-row>
             
             <el-divider />
             
-            <h4>内存使用情况</h4>
+            <h4>Memory Usage</h4>
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-card>
-                  <template #header>堆内�?/template>
+                  <template #header>Heap Memory</template>
                   <el-progress 
                     :percentage="Math.round(jvmData.metrics['jvm.heap.usage'] * 100)" 
                     :status="jvmData.metrics['jvm.heap.usage'] > 0.8 ? 'warning' : 'success'"
                   />
                   <div class="memory-details">
-                    <span>已用: {{ formatBytes(jvmData.metrics['jvm.heap.used']) }}</span>
-                    <span>最�? {{ formatBytes(jvmData.metrics['jvm.heap.max']) }}</span>
+                    <span>Used: {{ formatBytes(jvmData.metrics['jvm.heap.used']) }}</span>
+                    <span>Max: {{ formatBytes(jvmData.metrics['jvm.heap.max']) }}</span>
                   </div>
                 </el-card>
               </el-col>
               <el-col :span="12">
                 <el-card>
-                  <template #header>非堆内存</template>
+                  <template #header>Non-Heap Memory</template>
                   <div class="memory-details">
-                    <span>已用: {{ formatBytes(jvmData.metrics['jvm.nonheap.used']) }}</span>
-                    <span>最�? {{ formatBytes(jvmData.metrics['jvm.nonheap.max']) }}</span>
+                    <span>Used: {{ formatBytes(jvmData.metrics['jvm.nonheap.used']) }}</span>
+                    <span>Max: {{ formatBytes(jvmData.metrics['jvm.nonheap.max']) }}</span>
                   </div>
                 </el-card>
               </el-col>
@@ -63,56 +63,56 @@
             
             <el-divider />
             
-            <h4>详细指标</h4>
+            <h4>Detailed Metrics</h4>
             <el-table :data="getMetricList(jvmData.metrics)" style="width: 100%">
-              <el-table-column prop="name" label="指标名称" width="250" />
-              <el-table-column prop="value" label="�? />
+              <el-table-column prop="name" label="Metric Name" width="250" />
+              <el-table-column prop="value" label="Value" />
             </el-table>
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="系统监控" name="system">
+        <el-tab-pane label="System Monitor" name="system">
           <div v-if="systemData" class="monitor-content">
             <el-row :gutter="20">
               <el-col :span="8">
-                <el-statistic title="操作系统" :value="systemData.osInfo" />
+                <el-statistic title="Operating System" :value="systemData.osInfo" />
               </el-col>
             </el-row>
             
             <el-divider />
             
-            <h4>详细指标</h4>
+            <h4>Detailed Metrics</h4>
             <el-table :data="getMetricList(systemData.metrics)" style="width: 100%">
-              <el-table-column prop="name" label="指标名称" width="250" />
-              <el-table-column prop="value" label="�? />
+              <el-table-column prop="name" label="Metric Name" width="250" />
+              <el-table-column prop="value" label="Value" />
             </el-table>
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="健康检�? name="health">
+        <el-tab-pane label="Health Check" name="health">
           <div v-if="healthData" class="monitor-content">
-            <h4>JVM 健康检�?/h4>
+            <h4>JVM Health Check</h4>
             <el-table :data="healthData.jvm" style="width: 100%">
-              <el-table-column prop="name" label="检查项" width="200" />
-              <el-table-column prop="status" label="状�? width="100">
+              <el-table-column prop="name" label="Check Item" width="200" />
+              <el-table-column prop="status" label="Status" width="100">
                 <template #default="{ row }">
                   <el-tag :type="getStatusType(row.status)">{{ row.status }}</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="message" label="消息" />
+              <el-table-column prop="message" label="Message" />
             </el-table>
             
             <el-divider />
             
-            <h4>系统健康检�?/h4>
+            <h4>System Health Check</h4>
             <el-table :data="healthData.system" style="width: 100%">
-              <el-table-column prop="name" label="检查项" width="200" />
-              <el-table-column prop="status" label="状�? width="100">
+              <el-table-column prop="name" label="Check Item" width="200" />
+              <el-table-column prop="status" label="Status" width="100">
                 <template #default="{ row }">
                   <el-tag :type="getStatusType(row.status)">{{ row.status }}</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="message" label="消息" />
+              <el-table-column prop="message" label="Message" />
             </el-table>
           </div>
         </el-tab-pane>
@@ -152,7 +152,7 @@ const loadData = async () => {
       healthData.value = healthRes.data.data
     }
   } catch (error) {
-    ElMessage.error('加载监控数据失败')
+    ElMessage.error('Load monitor data failed')
   } finally {
     loading.value = false
   }
@@ -170,7 +170,7 @@ const formatUptime = (ms: number) => {
   const minutes = Math.floor(seconds / 60)
   const hours = Math.floor(minutes / 60)
   const days = Math.floor(hours / 24)
-  return `${days}�?${hours % 24}小时 ${minutes % 60}分钟`
+  return `${days}d ${hours % 24}h ${minutes % 60}m`
 }
 
 const formatBytes = (bytes: number) => {

@@ -17,5 +17,6 @@
 
     <modules>
         <module>est-circuitbreaker-api</module>
+        <module>est-circuitbreaker-impl</module>
     </modules>
 </project>

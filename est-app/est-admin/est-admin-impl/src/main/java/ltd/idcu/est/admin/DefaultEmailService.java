@@ -17,16 +17,16 @@ public class DefaultEmailService implements EmailService {
     private void initializeDefaultTemplates() {
         DefaultEmailTemplate welcomeTemplate = new DefaultEmailTemplate(
             "welcome",
-            "欢迎加入我们",
-            "<html><body><h1>欢迎 {{username}}!</h1><p>感谢您的注册�?/p></body></html>",
+            "Welcome",
+            "<html><body><h1>Welcome {{username}}!</h1><p>Thank you for registering!</p></body></html>",
             true
         );
         templates.put("welcome", welcomeTemplate);
         
         DefaultEmailTemplate resetPasswordTemplate = new DefaultEmailTemplate(
             "reset-password",
-            "重置密码",
-            "您的验证码是：{{code}}，请�?分钟内使用�?,
+            "Reset Password",
+            "Your verification code is: {{code}}, please use it within 10 minutes.",
             false
         );
         templates.put("reset-password", resetPasswordTemplate);

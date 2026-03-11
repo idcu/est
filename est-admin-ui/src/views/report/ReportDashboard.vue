@@ -2,20 +2,20 @@
   <div class="report-dashboard-page">
     <el-card class="filter-card">
       <el-form :inline="true" :model="filterForm" class="filter-form">
-        <el-form-item label="时间范围">
+        <el-form-item label="Time Range">
           <el-date-picker
             v-model="dateRange"
             type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            range-separator="to"
+            start-placeholder="Start Date"
+            end-placeholder="End Date"
             value-format="YYYY-MM-DD"
             style="width: 350px;"
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleRefresh">刷新</el-button>
-          <el-button @click="handleReset">重置</el-button>
+          <el-button type="primary" @click="handleRefresh">Refresh</el-button>
+          <el-button @click="handleReset">Reset</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -48,7 +48,7 @@
         <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>用户增长趋势</span>
+              <span>User Growth Trend</span>
             </div>
           </template>
           <div ref="userChartRef" class="chart-container"></div>
@@ -58,7 +58,7 @@
         <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>角色分布</span>
+              <span>Role Distribution</span>
             </div>
           </template>
           <div ref="roleChartRef" class="chart-container"></div>
@@ -71,7 +71,7 @@
         <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>部门人员统计</span>
+              <span>Department Personnel Statistics</span>
             </div>
           </template>
           <div ref="deptChartRef" class="chart-container"></div>
@@ -81,7 +81,7 @@
         <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>操作日志趋势</span>
+              <span>Operation Log Trend</span>
             </div>
           </template>
           <div ref="logChartRef" class="chart-container"></div>
@@ -94,7 +94,7 @@
         <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>登录日志统计</span>
+              <span>Login Log Statistics</span>
             </div>
           </template>
           <div ref="loginChartRef" class="chart-container"></div>
@@ -135,28 +135,28 @@ let loginChart: echarts.ECharts | null = null
 
 const statsData = ref([
   {
-    label: '总用户数',
+    label: 'Total Users',
     value: '1,256',
     icon: User,
     color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     trend: 12.5
   },
   {
-    label: '活跃用户',
+    label: 'Active Users',
     value: '892',
     icon: UserFilled,
     color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     trend: 8.2
   },
   {
-    label: '今日操作',
+    label: 'Today Operations',
     value: '3,456',
     icon: Operation,
     color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     trend: -3.1
   },
   {
-    label: '工作流实例',
+    label: 'Workflow Instances',
     value: '156',
     icon: Document,
     color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
@@ -174,7 +174,7 @@ const initUserChart = () => {
       trigger: 'axis'
     },
     legend: {
-      data: ['新增用户', '活跃用户']
+      data: ['New Users', 'Active Users']
     },
     grid: {
       left: '3%',
@@ -185,14 +185,14 @@ const initUserChart = () => {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月']
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
     },
     yAxis: {
       type: 'value'
     },
     series: [
       {
-        name: '新增用户',
+        name: 'New Users',
         type: 'line',
         smooth: true,
         data: [120, 132, 101, 134, 90, 230, 210],
@@ -204,7 +204,7 @@ const initUserChart = () => {
         }
       },
       {
-        name: '活跃用户',
+        name: 'Active Users',
         type: 'line',
         smooth: true,
         data: [220, 182, 191, 234, 290, 330, 310],
@@ -236,14 +236,14 @@ const initRoleChart = () => {
     },
     series: [
       {
-        name: '角色分布',
+        name: 'Role Distribution',
         type: 'pie',
         radius: '50%',
         data: [
-          { value: 1048, name: '超级管理员' },
-          { value: 735, name: '系统管理员' },
-          { value: 580, name: '普通用户' },
-          { value: 484, name: '访客' }
+          { value: 1048, name: 'Super Admin' },
+          { value: 735, name: 'System Admin' },
+          { value: 580, name: 'Regular User' },
+          { value: 484, name: 'Guest' }
         ],
         emphasis: {
           itemStyle: {
@@ -279,14 +279,14 @@ const initDeptChart = () => {
     },
     xAxis: {
       type: 'category',
-      data: ['技术部', '产品部', '运营部', '市场部', '财务部', '人事部']
+      data: ['Tech', 'Product', 'Operations', 'Marketing', 'Finance', 'HR']
     },
     yAxis: {
       type: 'value'
     },
     series: [
       {
-        name: '人数',
+        name: 'Count',
         type: 'bar',
         data: [120, 80, 60, 50, 30, 20],
         itemStyle: {
@@ -312,7 +312,7 @@ const initLogChart = () => {
       trigger: 'axis'
     },
     legend: {
-      data: ['操作次数']
+      data: ['Operation Count']
     },
     grid: {
       left: '3%',
@@ -323,14 +323,14 @@ const initLogChart = () => {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     },
     yAxis: {
       type: 'value'
     },
     series: [
       {
-        name: '操作次数',
+        name: 'Operation Count',
         type: 'line',
         smooth: true,
         data: [820, 932, 901, 934, 1290, 1330, 1320],
@@ -353,7 +353,7 @@ const initLoginChart = () => {
   loginChart = echarts.init(loginChartRef.value)
   
   const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`)
-  const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
   const data = []
   
   for (let i = 0; i < 7; i++) {
@@ -394,7 +394,7 @@ const initLoginChart = () => {
     },
     series: [
       {
-        name: '登录次数',
+        name: 'Login Count',
         type: 'heatmap',
         data: data,
         label: {

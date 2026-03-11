@@ -18,5 +18,6 @@
 
     <modules>
         <module>est-config-api</module>
+        <module>est-config-impl</module>
     </modules>
 </project>

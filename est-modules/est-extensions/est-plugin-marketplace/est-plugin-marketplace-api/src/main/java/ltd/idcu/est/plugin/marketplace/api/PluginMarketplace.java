@@ -15,6 +15,8 @@ public interface PluginMarketplace {
     
     List<PluginInfo> searchPluginsByTags(String... tags);
     
+    SearchResult searchPlugins(PluginSearchQuery query);
+    
     List<PluginInfo> getPopularPlugins(int limit);
     
     List<PluginInfo> getLatestPlugins(int limit);
@@ -25,7 +27,11 @@ public interface PluginMarketplace {
     
     List<String> getCategories();
     
+    List<PluginCategory> getPluginCategories();
+    
     List<String> getPopularTags(int limit);
+    
+    List<String> getSearchSuggestions(String keyword);
     
     boolean installPlugin(String pluginId);
     

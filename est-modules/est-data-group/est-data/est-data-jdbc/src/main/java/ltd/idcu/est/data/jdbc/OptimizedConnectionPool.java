@@ -1,6 +1,6 @@
 package ltd.idcu.est.data.jdbc;
 
-import ltd.idcu.est.features.data.api.*;
+import ltd.idcu.est.data.api.*;
 
 import java.sql.*;
 import java.util.*;
@@ -261,11 +261,6 @@ public class OptimizedConnectionPool implements ConnectionPool {
     }
 
     @Override
-    public int getPoolSize() {
-        return totalConnections.get();
-    }
-
-    @Override
     public int getActiveConnections() {
         return activeConnections.size();
     }
@@ -276,23 +271,13 @@ public class OptimizedConnectionPool implements ConnectionPool {
     }
 
     @Override
-    public int getMaxPoolSize() {
-        return config.getMaxPoolSize();
-    }
-
-    @Override
-    public void setMaxPoolSize(int maxPoolSize) {
-        config.setMaxPoolSize(maxPoolSize);
-    }
-
-    @Override
     public int getMinPoolSize() {
         return config.getMinPoolSize();
     }
 
     @Override
-    public void setMinPoolSize(int minPoolSize) {
-        config.setMinPoolSize(minPoolSize);
+    public int getMaxPoolSize() {
+        return config.getMaxPoolSize();
     }
 
     @Override
@@ -301,18 +286,28 @@ public class OptimizedConnectionPool implements ConnectionPool {
     }
 
     @Override
-    public void setConnectionTimeout(long timeoutMillis) {
-        config.setConnectionTimeout(timeoutMillis);
+    public long getMaxLifetime() {
+        return config.getMaxLifetime();
     }
 
     @Override
-    public boolean isClosed() {
-        return closed.get();
+    public long getMaxIdleTime() {
+        return config.getMaxIdleTime();
     }
 
     @Override
-    public void validateConnections() {
-        housekeeping();
+    public boolean isTestWhileIdle() {
+        return config.isTestWhileIdle();
+    }
+
+    @Override
+    public long getValidationInterval() {
+        return config.getValidationInterval();
+    }
+
+    @Override
+    public String getValidationQuery() {
+        return config.getValidationQuery();
     }
 
     @Override

@@ -3,36 +3,36 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>在线用户</span>
+          <span>Online Users</span>
           <el-button type="primary" @click="loadUsers" :loading="loading">
             <el-icon><Refresh /></el-icon>
-            刷新
+            Refresh
           </el-button>
         </div>
       </template>
       
       <div class="stats-bar">
-        <el-statistic title="在线用户�? :value="userCount" />
+        <el-statistic title="Online User Count" :value="userCount" />
       </div>
       
       <el-table :data="users" style="width: 100%" v-loading="loading">
-        <el-table-column prop="username" label="用户�? width="120" />
-        <el-table-column prop="ip" label="IP地址" width="140" />
-        <el-table-column prop="browser" label="浏览�? min-width="200" show-overflow-tooltip />
-        <el-table-column prop="loginTime" label="登录时间" width="180">
+        <el-table-column prop="username" label="Username" width="120" />
+        <el-table-column prop="ip" label="IP Address" width="140" />
+        <el-table-column prop="browser" label="Browser" min-width="200" show-overflow-tooltip />
+        <el-table-column prop="loginTime" label="Login Time" width="180">
           <template #default="{ row }">
             {{ formatDate(row.loginTime) }}
           </template>
         </el-table-column>
-        <el-table-column prop="lastActivityTime" label="最后活�? width="180">
+        <el-table-column prop="lastActivityTime" label="Last Activity" width="180">
           <template #default="{ row }">
             {{ formatDate(row.lastActivityTime) }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="120" fixed="right">
+        <el-table-column label="Actions" width="120" fixed="right">
           <template #default="{ row }">
             <el-button type="danger" link size="small" @click="forceLogoutUser(row)">
-              强制下线
+              Force Logout
             </el-button>
           </template>
         </el-table-column>
@@ -59,10 +59,10 @@ const loadUsers = async () => {
       users.value = res.data.data.data
       userCount.value = res.data.data.count
     } else {
-      ElMessage.error(res.data.message || '加载失败')
+      ElMessage.error(res.data.message || 'Load failed')
     }
   } catch (error) {
-    ElMessage.error('加载失败')
+    ElMessage.error('Load failed')
   } finally {
     loading.value = false
   }
@@ -70,28 +70,28 @@ const loadUsers = async () => {
 
 const forceLogoutUser = async (user: OnlineUser) => {
   try {
-    await ElMessageBox.confirm(`确定要强制下线用�?${user.username} 吗？`, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    await ElMessageBox.confirm(`Are you sure you want to force logout user ${user.username}?`, 'Warning', {
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
       type: 'warning'
     })
     const res = await forceLogout(user.sessionId)
     if (res.data.success) {
-      ElMessage.success('强制下线成功')
+      ElMessage.success('Force logout successful')
       loadUsers()
     } else {
-      ElMessage.error(res.data.message || '操作失败')
+      ElMessage.error(res.data.message || 'Operation failed')
     }
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error('操作失败')
+      ElMessage.error('Operation failed')
     }
   }
 }
 
 const formatDate = (timestamp: number) => {
   const date = new Date(timestamp)
-  return date.toLocaleString('zh-CN')
+  return date.toLocaleString()
 }
 
 onMounted(() => {

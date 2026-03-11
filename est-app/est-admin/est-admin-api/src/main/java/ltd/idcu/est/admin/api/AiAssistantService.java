@@ -1,19 +1,15 @@
 package ltd.idcu.est.admin.api;
 
-import ltd.idcu.est.ai.api.AiAssistant;
-import ltd.idcu.est.ai.api.LlmMessage;
-import ltd.idcu.est.ai.api.PromptTemplate;
-
 import java.util.List;
 import java.util.Map;
 
 public interface AiAssistantService {
     
-    AiAssistant getAiAssistant();
+    Object getAiAssistant();
     
     String chat(String message);
     
-    String chat(List<LlmMessage> messages);
+    String chat(List<?> messages);
     
     String generateCode(String requirement);
     
@@ -31,11 +27,11 @@ public interface AiAssistantService {
     
     String generatePrompt(String templateName, Map<String, String> variables);
     
-    List<PromptTemplate> getTemplates();
+    List<?> getTemplates();
     
-    PromptTemplate getTemplate(String name);
+    Object getTemplate(String name);
     
-    void registerTemplate(PromptTemplate template);
+    void registerTemplate(Object template);
     
     void unregisterTemplate(String name);
 }

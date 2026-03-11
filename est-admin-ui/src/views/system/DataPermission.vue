@@ -2,28 +2,28 @@
   <div class="data-permission-page">
     <el-card class="search-card">
       <el-form :inline="true" :model="searchForm" class="search-form">
-        <el-form-item label="规则名称">
-          <el-input v-model="searchForm.name" placeholder="请输入规则名称" clearable />
+        <el-form-item label="Rule Name">
+          <el-input v-model="searchForm.name" placeholder="Please enter rule name" clearable />
         </el-form-item>
-        <el-form-item label="规则类型">
-          <el-select v-model="searchForm.ruleType" placeholder="请选择规则类型" clearable>
-            <el-option label="行级权限" value="ROW_LEVEL" />
-            <el-option label="字段级权限" value="FIELD_LEVEL" />
-            <el-option label="组合权限" value="COMBINED" />
+        <el-form-item label="Rule Type">
+          <el-select v-model="searchForm.ruleType" placeholder="Please select rule type" clearable>
+            <el-option label="Row Level" value="ROW_LEVEL" />
+            <el-option label="Field Level" value="FIELD_LEVEL" />
+            <el-option label="Combined" value="COMBINED" />
           </el-select>
         </el-form-item>
-        <el-form-item label="资源类型">
-          <el-input v-model="searchForm.resourceType" placeholder="请输入资源类型" clearable />
+        <el-form-item label="Resource Type">
+          <el-input v-model="searchForm.resourceType" placeholder="Please enter resource type" clearable />
         </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
-            <el-option label="启用" :value="1" />
-            <el-option label="禁用" :value="0" />
+        <el-form-item label="Status">
+          <el-select v-model="searchForm.status" placeholder="Please select status" clearable>
+            <el-option label="Enabled" :value="1" />
+            <el-option label="Disabled" :value="0" />
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleSearch">搜索</el-button>
-          <el-button @click="handleReset">重置</el-button>
+          <el-button type="primary" @click="handleSearch">Search</el-button>
+          <el-button @click="handleReset">Reset</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -31,38 +31,38 @@
     <el-card class="table-card">
       <template #header>
         <div class="card-header">
-          <span>数据权限规则列表</span>
-          <el-button type="primary" @click="handleAdd">新增规则</el-button>
+          <span>Data Permission Rule List</span>
+          <el-button type="primary" @click="handleAdd">Add Rule</el-button>
         </div>
       </template>
       <el-table :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="name" label="规则名称" width="180" />
-        <el-table-column prop="description" label="描述" show-overflow-tooltip />
-        <el-table-column prop="ruleType" label="规则类型" width="120">
+        <el-table-column prop="name" label="Rule Name" width="180" />
+        <el-table-column prop="description" label="Description" show-overflow-tooltip />
+        <el-table-column prop="ruleType" label="Rule Type" width="120">
           <template #default="{ row }">
             <el-tag :type="getRuleTypeTag(row.ruleType)">
               {{ getRuleTypeText(row.ruleType) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="resourceType" label="资源类型" width="150" />
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="resourceType" label="Resource Type" width="150" />
+        <el-table-column prop="status" label="Status" width="100">
           <template #default="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'danger'">
-              {{ row.status === 1 ? '启用' : '禁用' }}
+              {{ row.status === 1 ? 'Enabled' : 'Disabled' }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" width="180" />
-        <el-table-column label="操作" width="280" fixed="right">
+        <el-table-column prop="createTime" label="Create Time" width="180" />
+        <el-table-column label="Actions" width="280" fixed="right">
           <template #default="{ row }">
-            <el-button link type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
-            <el-button link type="info" size="small" @click="handleAssignRoles(row)">分配角色</el-button>
+            <el-button link type="primary" size="small" @click="handleEdit(row)">Edit</el-button>
+            <el-button link type="info" size="small" @click="handleAssignRoles(row)">Assign Roles</el-button>
             <el-button link type="warning" size="small" @click="handleStatus(row)">
-              {{ row.status === 1 ? '禁用' : '启用' }}
+              {{ row.status === 1 ? 'Disable' : 'Enable' }}
             </el-button>
-            <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>
+            <el-button link type="danger" size="small" @click="handleDelete(row)">Delete</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -86,31 +86,31 @@
       destroy-on-close
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="120px">
-        <el-form-item label="规则名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入规则名称" />
+        <el-form-item label="Rule Name" prop="name">
+          <el-input v-model="formData.name" placeholder="Please enter rule name" />
         </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input v-model="formData.description" type="textarea" :rows="2" placeholder="请输入描述" />
+        <el-form-item label="Description" prop="description">
+          <el-input v-model="formData.description" type="textarea" :rows="2" placeholder="Please enter description" />
         </el-form-item>
-        <el-form-item label="规则类型" prop="ruleType">
+        <el-form-item label="Rule Type" prop="ruleType">
           <el-radio-group v-model="formData.ruleType">
-            <el-radio label="ROW_LEVEL">行级权限</el-radio>
-            <el-radio label="FIELD_LEVEL">字段级权限</el-radio>
-            <el-radio label="COMBINED">组合权限</el-radio>
+            <el-radio label="ROW_LEVEL">Row Level</el-radio>
+            <el-radio label="FIELD_LEVEL">Field Level</el-radio>
+            <el-radio label="COMBINED">Combined</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="资源类型" prop="resourceType">
-          <el-input v-model="formData.resourceType" placeholder="请输入资源类型，如：user、order" />
+        <el-form-item label="Resource Type" prop="resourceType">
+          <el-input v-model="formData.resourceType" placeholder="Please enter resource type, e.g. user, order" />
         </el-form-item>
         
         <el-divider content-position="left" v-if="['ROW_LEVEL', 'COMBINED'].includes(formData.ruleType)">
-          行级权限条件
+          Row Level Conditions
         </el-divider>
         <div v-if="['ROW_LEVEL', 'COMBINED'].includes(formData.ruleType)" class="conditions-section">
-          <el-button type="primary" size="small" @click="addRowCondition">添加条件</el-button>
+          <el-button type="primary" size="small" @click="addRowCondition">Add Condition</el-button>
           <div v-for="(condition, index) in formData.rowConditions" :key="index" class="condition-item">
-            <el-input v-model="condition.fieldName" placeholder="字段名" style="width: 150px; margin-right: 10px;" />
-            <el-select v-model="condition.operator" placeholder="操作符" style="width: 120px; margin-right: 10px;">
+            <el-input v-model="condition.fieldName" placeholder="Field Name" style="width: 150px; margin-right: 10px;" />
+            <el-select v-model="condition.operator" placeholder="Operator" style="width: 120px; margin-right: 10px;">
               <el-option label="=" value="EQ" />
               <el-option label="!=" value="NE" />
               <el-option label=">" value="GT" />
@@ -120,54 +120,54 @@
               <el-option label="IN" value="IN" />
               <el-option label="LIKE" value="LIKE" />
             </el-select>
-            <el-input v-model="condition.value" placeholder="值" style="width: 200px; margin-right: 10px;" />
-            <el-button link type="danger" size="small" @click="removeRowCondition(index)">删除</el-button>
+            <el-input v-model="condition.value" placeholder="Value" style="width: 200px; margin-right: 10px;" />
+            <el-button link type="danger" size="small" @click="removeRowCondition(index)">Delete</el-button>
           </div>
         </div>
 
         <el-divider content-position="left" v-if="['FIELD_LEVEL', 'COMBINED'].includes(formData.ruleType)">
-          字段级权限掩码
+          Field Level Masks
         </el-divider>
         <div v-if="['FIELD_LEVEL', 'COMBINED'].includes(formData.ruleType)" class="masks-section">
-          <el-button type="primary" size="small" @click="addFieldMask">添加字段掩码</el-button>
+          <el-button type="primary" size="small" @click="addFieldMask">Add Field Mask</el-button>
           <div v-for="(mask, index) in formData.fieldMasks" :key="index" class="mask-item">
-            <el-input v-model="mask.fieldName" placeholder="字段名" style="width: 200px; margin-right: 10px;" />
-            <el-select v-model="mask.maskType" placeholder="掩码类型" style="width: 150px; margin-right: 10px;">
-              <el-option label="隐藏" value="HIDDEN" />
-              <el-option label="只读" value="READ_ONLY" />
-              <el-option label="脱敏" value="MASKED" />
+            <el-input v-model="mask.fieldName" placeholder="Field Name" style="width: 200px; margin-right: 10px;" />
+            <el-select v-model="mask.maskType" placeholder="Mask Type" style="width: 150px; margin-right: 10px;">
+              <el-option label="Hidden" value="HIDDEN" />
+              <el-option label="Read Only" value="READ_ONLY" />
+              <el-option label="Masked" value="MASKED" />
             </el-select>
-            <el-button link type="danger" size="small" @click="removeFieldMask(index)">删除</el-button>
+            <el-button link type="danger" size="small" @click="removeFieldMask(index)">Delete</el-button>
           </div>
         </div>
 
-        <el-form-item label="状态" prop="status">
+        <el-form-item label="Status" prop="status">
           <el-radio-group v-model="formData.status">
-            <el-radio :label="1">启用</el-radio>
-            <el-radio :label="0">禁用</el-radio>
+            <el-radio :label="1">Enabled</el-radio>
+            <el-radio :label="0">Disabled</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit">确定</el-button>
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="handleSubmit">Confirm</el-button>
       </template>
     </el-dialog>
 
     <el-dialog
       v-model="assignRolesDialogVisible"
-      title="分配角色"
+      title="Assign Roles"
       width="600px"
     >
       <el-transfer
         v-model="selectedRoleIds"
         :data="roleList"
-        :titles="['待选角色', '已选角色']"
-        :button-texts="['移除', '添加']"
+        :titles="['Available Roles', 'Selected Roles']"
+        :button-texts="['Remove', 'Add']"
       />
       <template #footer>
-        <el-button @click="assignRolesDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleAssignRolesSubmit">确定</el-button>
+        <el-button @click="assignRolesDialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="handleAssignRolesSubmit">Confirm</el-button>
       </template>
     </el-dialog>
   </div>
@@ -224,9 +224,9 @@ const formData = reactive<Partial<DataPermissionRule>>({
 })
 
 const formRules: FormRules = {
-  name: [{ required: true, message: '请输入规则名称', trigger: 'blur' }],
-  ruleType: [{ required: true, message: '请选择规则类型', trigger: 'change' }],
-  resourceType: [{ required: true, message: '请输入资源类型', trigger: 'blur' }]
+  name: [{ required: true, message: 'Please enter rule name', trigger: 'blur' }],
+  ruleType: [{ required: true, message: 'Please select rule type', trigger: 'change' }],
+  resourceType: [{ required: true, message: 'Please enter resource type', trigger: 'blur' }]
 }
 
 const getRuleTypeTag = (type: string) => {
@@ -240,9 +240,9 @@ const getRuleTypeTag = (type: string) => {
 
 const getRuleTypeText = (type: string) => {
   const textMap: Record<string, string> = {
-    ROW_LEVEL: '行级权限',
-    FIELD_LEVEL: '字段级权限',
-    COMBINED: '组合权限'
+    ROW_LEVEL: 'Row Level',
+    FIELD_LEVEL: 'Field Level',
+    COMBINED: 'Combined'
   }
   return textMap[type] || type
 }
@@ -255,7 +255,7 @@ const loadRoles = async () => {
       label: role.name
     }))
   } catch (error) {
-    console.error('加载角色失败', error)
+    console.error('Load roles failed', error)
   }
 }
 
@@ -269,7 +269,7 @@ const loadData = async () => {
     tableData.value = res.data.list || []
     pagination.total = res.data.total || 0
   } catch (error) {
-    console.error('加载数据失败', error)
+    console.error('Load data failed', error)
   }
 }
 
@@ -288,7 +288,7 @@ const handleReset = () => {
 
 const handleAdd = () => {
   isEdit.value = false
-  dialogTitle.value = '新增数据权限规则'
+  dialogTitle.value = 'Add Data Permission Rule'
   Object.assign(formData, {
     name: '',
     description: '',
@@ -306,11 +306,11 @@ const handleEdit = async (row: DataPermissionRule) => {
   try {
     const res = await getDataPermissionRule(row.id)
     isEdit.value = true
-    dialogTitle.value = '编辑数据权限规则'
+    dialogTitle.value = 'Edit Data Permission Rule'
     Object.assign(formData, { ...res.data })
     dialogVisible.value = true
   } catch (error) {
-    console.error('获取详情失败', error)
+    console.error('Get details failed', error)
   }
 }
 
@@ -323,47 +323,47 @@ const handleAssignRoles = (row: DataPermissionRule) => {
 const handleAssignRolesSubmit = async () => {
   try {
     await assignRolePermissions(currentRuleId.value, selectedRoleIds.value)
-    ElMessage.success('分配成功')
+    ElMessage.success('Assigned successfully')
     assignRolesDialogVisible.value = false
     loadData()
   } catch (error) {
-    console.error('分配失败', error)
+    console.error('Assign failed', error)
   }
 }
 
 const handleStatus = async (row: DataPermissionRule) => {
   try {
     await ElMessageBox.confirm(
-      `确定要${row.status === 1 ? '禁用' : '启用'}该规则吗？`,
-      '提示',
-      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+      `Are you sure you want to ${row.status === 1 ? 'disable' : 'enable'} this rule?`,
+      'Warning',
+      { confirmButtonText: 'Confirm', cancelButtonText: 'Cancel', type: 'warning' }
     )
     await updateDataPermissionRule({
       id: row.id,
       status: row.status === 1 ? 0 : 1
     })
-    ElMessage.success('操作成功')
+    ElMessage.success('Operation successful')
     loadData()
   } catch (error) {
     if (error !== 'cancel') {
-      console.error('操作失败', error)
+      console.error('Operation failed', error)
     }
   }
 }
 
 const handleDelete = async (row: DataPermissionRule) => {
   try {
-    await ElMessageBox.confirm('确定要删除该规则吗？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    await ElMessageBox.confirm('Are you sure you want to delete this rule?', 'Warning', {
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
       type: 'warning'
     })
     await deleteDataPermissionRule(row.id)
-    ElMessage.success('删除成功')
+    ElMessage.success('Deleted successfully')
     loadData()
   } catch (error) {
     if (error !== 'cancel') {
-      console.error('删除失败', error)
+      console.error('Delete failed', error)
     }
   }
 }
@@ -373,15 +373,15 @@ const handleSubmit = async () => {
     await formRef.value?.validate()
     if (isEdit.value) {
       await updateDataPermissionRule(formData)
-      ElMessage.success('更新成功')
+      ElMessage.success('Updated successfully')
     } else {
       await createDataPermissionRule(formData)
-      ElMessage.success('创建成功')
+      ElMessage.success('Created successfully')
     }
     dialogVisible.value = false
     loadData()
   } catch (error) {
-    console.error('提交失败', error)
+    console.error('Submit failed', error)
   }
 }
 

@@ -1,6 +1,6 @@
 package ltd.idcu.est.data.jdbc;
 
-import ltd.idcu.est.features.data.api.*;
+import ltd.idcu.est.data.api.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

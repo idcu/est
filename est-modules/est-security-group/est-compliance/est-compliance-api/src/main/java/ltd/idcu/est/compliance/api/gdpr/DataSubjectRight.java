@@ -1,0 +1,12 @@
+package ltd.idcu.est.compliance.api.gdpr;
+
+public enum DataSubjectRight {
+
+    RIGHT_TO_ACCESS,
+    RIGHT_TO_RECTIFICATION,
+    RIGHT_TO_ERASURE,
+    RIGHT_TO_RESTRICT_PROCESSING,
+    RIGHT_TO_DATA_PORTABILITY,
+    RIGHT_TO_OBJECT,
+    RIGHT_TO_AUTOMATED_DECISION_MAKING
+}

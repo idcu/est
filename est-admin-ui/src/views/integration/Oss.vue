@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>对象存储</span>
+          <span>Object Storage</span>
         </div>
       </template>
       
@@ -13,9 +13,9 @@
             <el-card class="bucket-card">
               <template #header>
                 <div class="card-header">
-                  <span>存储�?/span>
+                  <span>Buckets</span>
                   <el-button type="primary" size="small" @click="loadBuckets">
-                    刷新
+                    Refresh
                   </el-button>
                 </div>
               </template>
@@ -39,7 +39,7 @@
             <el-card class="file-card">
               <template #header>
                 <div class="card-header">
-                  <span>文件列表</span>
+                  <span>File List</span>
                   <div class="actions">
                     <el-upload
                       :show-file-list="false"
@@ -48,38 +48,38 @@
                     >
                       <el-button type="primary">
                         <el-icon><Upload /></el-icon>
-                        上传文件
+                        Upload File
                       </el-button>
                     </el-upload>
                     <el-button @click="loadFiles">
                       <el-icon><Refresh /></el-icon>
-                      刷新
+                      Refresh
                     </el-button>
                   </div>
                 </div>
               </template>
               
               <el-table :data="files" style="width: 100%" v-loading="loading">
-                <el-table-column prop="fileName" label="文件�? />
-                <el-table-column prop="filePath" label="路径" show-overflow-tooltip />
-                <el-table-column prop="size" label="大小" width="120">
+                <el-table-column prop="fileName" label="File Name" />
+                <el-table-column prop="filePath" label="Path" show-overflow-tooltip />
+                <el-table-column prop="size" label="Size" width="120">
                   <template #default="{ row }">
                     {{ formatBytes(row.size) }}
                   </template>
                 </el-table-column>
-                <el-table-column prop="contentType" label="类型" width="150" />
-                <el-table-column prop="lastModified" label="修改时间" width="180">
+                <el-table-column prop="contentType" label="Type" width="150" />
+                <el-table-column prop="lastModified" label="Modified At" width="180">
                   <template #default="{ row }">
                     {{ formatDate(row.lastModified) }}
                   </template>
                 </el-table-column>
-                <el-table-column label="操作" width="150">
+                <el-table-column label="Actions" width="150">
                   <template #default="{ row }">
                     <el-button link type="primary" @click="previewFile(row)">
-                      预览
+                      Preview
                     </el-button>
                     <el-button link type="danger" @click="handleDelete(row)">
-                      删除
+                      Delete
                     </el-button>
                   </template>
                 </el-table-column>
@@ -114,7 +114,7 @@ const loadBuckets = async () => {
       }
     }
   } catch (error) {
-    ElMessage.error('加载存储桶失�?)
+    ElMessage.error('Failed to load buckets')
   }
 }
 
@@ -135,7 +135,7 @@ const loadFiles = async () => {
       files.value = res.data.data
     }
   } catch (error) {
-    ElMessage.error('加载文件列表失败')
+    ElMessage.error('Failed to load file list')
   } finally {
     loading.value = false
   }
@@ -148,7 +148,7 @@ const beforeUpload = (file: File) => {
 
 const handleUpload = async () => {
   if (!currentBucket.value || !uploadFileData.value) {
-    ElMessage.warning('请选择存储桶和文件')
+    ElMessage.warning('Please select bucket and file')
     return
   }
   
@@ -159,11 +159,11 @@ const handleUpload = async () => {
       file: uploadFileData.value
     })
     if (res.data.success) {
-      ElMessage.success('文件上传成功')
+      ElMessage.success('File uploaded successfully')
       await loadFiles()
     }
   } catch (error) {
-    ElMessage.error('文件上传失败')
+    ElMessage.error('Failed to upload file')
   }
 }
 
@@ -173,9 +173,9 @@ const previewFile = (file: OssFile) => {
 
 const handleDelete = async (file: OssFile) => {
   try {
-    await ElMessageBox.confirm('确定要删除这个文件吗�?, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    await ElMessageBox.confirm('Are you sure you want to delete this file?', 'Confirm', {
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
       type: 'warning'
     })
     
@@ -184,12 +184,12 @@ const handleDelete = async (file: OssFile) => {
       fileName: file.fileName
     })
     if (res.data.success) {
-      ElMessage.success('文件删除成功')
+      ElMessage.success('File deleted successfully')
       await loadFiles()
     }
   } catch (error) {
     if (error !== 'cancel') {
-      ElMessage.error('文件删除失败')
+      ElMessage.error('Failed to delete file')
     }
   }
 }

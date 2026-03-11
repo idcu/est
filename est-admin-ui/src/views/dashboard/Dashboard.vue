@@ -9,7 +9,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-value">{{ stats.userCount }}</div>
-              <div class="stat-label">用户�?/div>
+              <div class="stat-label">User Count</div>
             </div>
           </div>
         </el-card>
@@ -22,7 +22,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-value">{{ stats.roleCount }}</div>
-              <div class="stat-label">角色�?/div>
+              <div class="stat-label">Role Count</div>
             </div>
           </div>
         </el-card>
@@ -35,7 +35,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-value">{{ stats.menuCount }}</div>
-              <div class="stat-label">菜单�?/div>
+              <div class="stat-label">Menu Count</div>
             </div>
           </div>
         </el-card>
@@ -48,7 +48,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-value">{{ stats.tenantCount }}</div>
-              <div class="stat-label">租户�?/div>
+              <div class="stat-label">Tenant Count</div>
             </div>
           </div>
         </el-card>
@@ -60,34 +60,34 @@
         <el-card>
           <template #header>
             <div class="card-header">
-              <span>欢迎使用 EST Admin Console</span>
+              <span>Welcome to EST Admin Console</span>
             </div>
           </template>
           <div class="welcome-content">
-            <h3>🎉 欢迎，Admin</h3>
-            <p>这是一个现代化的企业级后台管理系统</p>
+            <h3>🎉 Welcome, Admin</h3>
+            <p>This is a modern enterprise-level backend management system</p>
             <el-divider />
-            <h4>快速导�?/h4>
+            <h4>Quick Start</h4>
             <div class="quick-nav">
               <el-button type="primary" @click="$router.push('/system/user')">
                 <el-icon><User /></el-icon>
-                用户管理
+                User Management
               </el-button>
               <el-button type="success" @click="$router.push('/system/role')">
                 <el-icon><UserFilled /></el-icon>
-                角色管理
+                Role Management
               </el-button>
               <el-button type="warning" @click="$router.push('/system/menu')">
                 <el-icon><Menu /></el-icon>
-                菜单管理
+                Menu Management
               </el-button>
               <el-button type="info" @click="$router.push('/system/department')">
                 <el-icon><OfficeBuilding /></el-icon>
-                部门管理
+                Department Management
               </el-button>
               <el-button type="danger" @click="$router.push('/system/tenant')">
                 <el-icon><House /></el-icon>
-                租户管理
+                Tenant Management
               </el-button>
             </div>
           </div>
@@ -97,15 +97,15 @@
         <el-card>
           <template #header>
             <div class="card-header">
-              <span>系统信息</span>
+              <span>System Info</span>
             </div>
           </template>
           <div class="system-info">
             <el-descriptions :column="1" border>
-              <el-descriptions-item label="框架版本">EST 2.1.0</el-descriptions-item>
-              <el-descriptions-item label="Vue 版本">3.4.x</el-descriptions-item>
+              <el-descriptions-item label="Framework Version">EST 2.1.0</el-descriptions-item>
+              <el-descriptions-item label="Vue Version">3.4.x</el-descriptions-item>
               <el-descriptions-item label="Element Plus">2.4.x</el-descriptions-item>
-              <el-descriptions-item label="构建工具">Vite 5.x</el-descriptions-item>
+              <el-descriptions-item label="Build Tool">Vite 5.x</el-descriptions-item>
             </el-descriptions>
           </div>
         </el-card>

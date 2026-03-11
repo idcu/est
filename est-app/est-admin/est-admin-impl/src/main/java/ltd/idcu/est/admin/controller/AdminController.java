@@ -200,7 +200,7 @@ public class AdminController {
     private String getDashboardHTML() {
         return """
             <!DOCTYPE html>
-            <html lang="zh-CN">
+            <html lang="en">
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -350,17 +350,17 @@ public class AdminController {
             </head>
             <body>
                 <div class="header">
-                    <h1>🎛�?EST Admin Console</h1>
+                    <h1>EST Admin Console</h1>
                 </div>
                 
                 <div class="container">
                     <div style="text-align: right; margin-bottom: 20px;">
-                        <button class="refresh-btn" onclick="refreshStats()">🔄 刷新数据</button>
+                        <button class="refresh-btn" onclick="refreshStats()">Refresh Data</button>
                     </div>
                     
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <div class="stat-label">堆内存使�?/div>
+                            <div class="stat-label">Heap Memory Used</div>
                             <div>
                                 <span class="stat-value" id="heapUsed">0</span>
                                 <span class="stat-unit">MB</span>
@@ -371,59 +371,59 @@ public class AdminController {
                         </div>
                         
                         <div class="stat-card">
-                            <div class="stat-label">线程�?/div>
+                            <div class="stat-label">Thread Count</div>
                             <div class="stat-value" id="threadCount">0</div>
                         </div>
                         
                         <div class="stat-card">
-                            <div class="stat-label">系统负载</div>
+                            <div class="stat-label">System Load</div>
                             <div class="stat-value" id="systemLoad">0</div>
                         </div>
                         
                         <div class="stat-card">
-                            <div class="stat-label">运行时间</div>
+                            <div class="stat-label">Uptime</div>
                             <div class="stat-value" id="uptime">0</div>
-                            <span class="stat-unit">�?/span>
+                            <span class="stat-unit">s</span>
                         </div>
                     </div>
                     
                     <div class="content-grid">
                         <div class="panel">
-                            <div class="panel-title">💾 内存信息</div>
+                            <div class="panel-title">Memory Info</div>
                             <div class="detail-item">
-                                <span class="detail-label">堆内存已使用</span>
+                                <span class="detail-label">Heap Used</span>
                                 <span class="detail-value" id="heapUsedDetail">0 MB</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">堆内存最大�?/span>
+                                <span class="detail-label">Heap Max</span>
                                 <span class="detail-value" id="heapMaxDetail">0 MB</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">堆内存已提交</span>
+                                <span class="detail-label">Heap Committed</span>
                                 <span class="detail-value" id="heapCommittedDetail">0 MB</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">非堆内存已使�?/span>
+                                <span class="detail-label">Non-Heap Used</span>
                                 <span class="detail-value" id="nonHeapUsedDetail">0 MB</span>
                             </div>
                         </div>
                         
                         <div class="panel">
-                            <div class="panel-title">🖥�?系统信息</div>
+                            <div class="panel-title">System Info</div>
                             <div class="detail-item">
-                                <span class="detail-label">操作系统</span>
+                                <span class="detail-label">OS</span>
                                 <span class="detail-value" id="osName">-</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">系统版本</span>
+                                <span class="detail-label">OS Version</span>
                                 <span class="detail-value" id="osVersion">-</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">可用处理�?/span>
+                                <span class="detail-label">Processors</span>
                                 <span class="detail-value" id="availableProcessors">0</span>
                             </div>
                             <div class="detail-item">
-                                <span class="detail-label">峰值线程数</span>
+                                <span class="detail-label">Peak Threads</span>
                                 <span class="detail-value" id="peakThreadCount">0</span>
                             </div>
                         </div>

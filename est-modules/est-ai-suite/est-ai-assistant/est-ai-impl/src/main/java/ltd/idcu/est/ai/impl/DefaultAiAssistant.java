@@ -17,6 +17,8 @@ import ltd.idcu.est.ai.impl.storage.MemoryStorageProvider;
 import ltd.idcu.est.ai.impl.vector.InMemoryVectorStore;
 import ltd.idcu.est.ai.impl.vector.VectorStoreFactory;
 import ltd.idcu.est.ai.impl.llm.LlmClientFactory;
+import ltd.idcu.est.ai.impl.integration.RagIntegrationAdapter;
+import ltd.idcu.est.ai.impl.integration.McpIntegrationAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +47,8 @@ public class DefaultAiAssistant implements AiAssistant {
     private PromptTemplateRepository promptTemplateRepository;
     private VectorStore vectorStore;
     private EmbeddingModel embeddingModel;
+    private RagIntegrationAdapter ragAdapter;
+    private McpIntegrationAdapter mcpAdapter;
     
     public DefaultAiAssistant() {
         this(new CompositeConfigLoader());
@@ -69,6 +73,8 @@ public class DefaultAiAssistant implements AiAssistant {
         this.conversationHistory = Collections.synchronizedList(new LinkedList<>());
         this.storageProvider = new MemoryStorageProvider();
         this.vectorStore = VectorStoreFactory.create();
+        this.ragAdapter = new RagIntegrationAdapter();
+        this.mcpAdapter = new McpIntegrationAdapter();
         initializeRepositories();
         initializeDefaultTemplates();
     }
@@ -129,12 +135,12 @@ public class DefaultAiAssistant implements AiAssistant {
             "api",
             "生成REST API CRUD操作",
             """
-            创建一个REST API，包含完整的CRUD操作�?            - GET /api/resources - 获取所�?            - GET /api/resources/:id - 获取单个
+            创建一个REST API，包含完整的CRUD操作�?            - GET /api/resources - 获取所�?            - GET /api/resources/:id - 获取单个
             - POST /api/resources - 创建
             - PUT /api/resources/:id - 更新
             - DELETE /api/resources/:id - 删除
             
-            使用ConcurrentHashMap作为数据存储�?            """,
+            使用ConcurrentHashMap作为数据存储�?            """,
             Map.of("resourceName", "", "packageName", "")
         ));
         
@@ -145,8 +151,8 @@ public class DefaultAiAssistant implements AiAssistant {
             """
             使用EST的依赖注入容器：
             1. 创建Container实例
-            2. 注册服务接口和实�?            3. 获取服务并使�?            
-            代码结构�?            Container container = new DefaultContainer();
+            2. 注册服务接口和实�?            3. 获取服务并使�?            
+            代码结构�?            Container container = new DefaultContainer();
             container.register(MyService.class, MyServiceImpl.class);
             MyService service = container.get(MyService.class);
             """
@@ -158,8 +164,8 @@ public class DefaultAiAssistant implements AiAssistant {
             "配置管理",
             """
             使用EST的配置管理功能：
-            - 设置配置�?            - 获取配置�?            - 使用默认�?            
-            代码示例�?            Config config = app.getConfig();
+            - 设置配置�?            - 获取配置�?            - 使用默认�?            
+            代码示例�?            Config config = app.getConfig();
             config.set("app.name", "MyApp");
             String appName = config.getString("app.name", "DefaultApp");
             """
@@ -238,14 +244,14 @@ public class DefaultAiAssistant implements AiAssistant {
                 - Web.create(name, version) - 创建应用
                 - app.get(path, handler) - GET路由
                 - app.post(path, handler) - POST路由
-                - res.send(text) - 发送文�?                - res.json(data) - 发送JSON
+                - res.send(text) - 发送文�?                - res.json(data) - 发送JSON
                 - res.html(html) - 发送HTML
-                - app.run(port) - 启动服务�?                """;
+                - app.run(port) - 启动服务�?                """;
             case "config" -> """
                 配置快速参考：
                 - config.set(key, value) - 设置配置
-                - config.getString(key) - 获取字符�?                - config.getInt(key, defaultValue) - 获取整数
-                - config.getBoolean(key) - 获取布尔�?                """;
+                - config.getString(key) - 获取字符�?                - config.getInt(key, defaultValue) - 获取整数
+                - config.getBoolean(key) - 获取布尔�?                """;
             case "vector" -> """
                 向量数据库快速参考：
                 - assistant.getVectorStore() - 获取向量存储
@@ -265,19 +271,19 @@ public class DefaultAiAssistant implements AiAssistant {
                 1. 使用try-catch包装业务逻辑
                 2. 使用res.sendError(code, message)返回错误
                 3. 400 - 请求参数错误
-                4. 404 - 资源不存�?                5. 500 - 服务器内部错�?                """;
+                4. 404 - 资源不存�?                5. 500 - 服务器内部错�?                """;
             case "routing" -> """
                 路由最佳实践：
                 1. 使用RESTful风格的URL
                 2. 对相关路由使用group
-                3. 使用路径参数�?user/:id
+                3. 使用路径参数�?user/:id
                 4. 启用CORS支持跨域
                 """;
             case "rag" -> """
                 RAG（检索增强生成）最佳实践：
                 1. 将文档切分为合适大小的chunk
                 2. 为每个chunk生成embedding
-                3. 存储在向量数据库�?                4. 检索时使用用户查询的embedding
+                3. 存储在向量数据库�?                4. 检索时使用用户查询的embedding
                 5. 将检索结果作为上下文提供给LLM
                 """;
             default -> "未知分类: " + category;
@@ -288,7 +294,7 @@ public class DefaultAiAssistant implements AiAssistant {
     public String getTutorial(String topic) {
         return switch (topic.toLowerCase()) {
             case "first-app" -> """
-                第一个EST应用教程�?                1. 添加est-web-impl依赖
+                第一个EST应用教程�?                1. 添加est-web-impl依赖
                 2. 创建主类
                 3. 使用Web.create()创建应用
                 4. 添加路由
@@ -303,7 +309,7 @@ public class DefaultAiAssistant implements AiAssistant {
                 3. 插入向量：store.upsert("my-docs", vector);
                 4. 搜索：List<Vector> results = store.search("my-docs", queryVector, 5);
                 
-                详细示例请查看est-examples-ai模块�?                """;
+                详细示例请查看est-examples-ai模块�?                """;
             default -> "未知教程: " + topic;
         };
     }
@@ -319,19 +325,19 @@ public class DefaultAiAssistant implements AiAssistant {
     public String suggestCode(String requirement) {
         if (llmClient != null && llmClient.isAvailable()) {
             String prompt = "你是一个Java开发专家，使用EST框架。请根据以下需求生成Java代码：\n\n" + requirement +
-                           "\n\n请只返回代码，不要其他解释�?;
+                           "\n\n请只返回代码，不要其他解释�?;
             return llmClient.generate(prompt);
         }
         if (requirement.toLowerCase().contains("web") || requirement.toLowerCase().contains("http")) {
             return "建议使用EST Web模块，调用getQuickReference(\"web\") 获取更多信息";
         } else if (requirement.toLowerCase().contains("database") || requirement.toLowerCase().contains("data")) {
-            return "建议使用EST Data模块，支持JDBC、MongoDB、Redis�?;
+            return "建议使用EST Data模块，支持JDBC、MongoDB、Redis�?;
         } else if (requirement.toLowerCase().contains("security") || requirement.toLowerCase().contains("auth")) {
-            return "建议使用EST Security模块，支持JWT、Basic Auth、OAuth2�?;
+            return "建议使用EST Security模块，支持JWT、Basic Auth、OAuth2�?;
         } else if (requirement.toLowerCase().contains("vector") || requirement.toLowerCase().contains("embedding")) {
             return "建议使用EST Vector Store模块，调用getQuickReference(\"vector\") 获取更多信息";
         }
-        return "请提供更具体的需求，我可以给出更准确的建议�?;
+        return "请提供更具体的需求，我可以给出更准确的建议�?;
     }
     
     @Override
@@ -343,13 +349,13 @@ public class DefaultAiAssistant implements AiAssistant {
         if (code.contains("Web.create")) {
             return "这是创建EST Web应用的标准方式，参数是应用名称和版本";
         } else if (code.contains("app.get")) {
-            return "这是添加GET路由的方法，第一个参数是路径，第二个是处理函�?;
+            return "这是添加GET路由的方法，第一个参数是路径，第二个是处理函�?;
         } else if (code.contains("res.json")) {
             return "这是发送JSON响应的方法，会自动设置Content-Type为application/json";
         } else if (code.contains("VectorStore")) {
-            return "这是EST向量数据库的API，用于存储和检索向量数�?;
+            return "这是EST向量数据库的API，用于存储和检索向量数�?;
         }
-        return "代码解释功能正在完善中�?;
+        return "代码解释功能正在完善中�?;
     }
     
     @Override
@@ -362,7 +368,7 @@ public class DefaultAiAssistant implements AiAssistant {
                "1. 检查是否有未使用的导入\n" +
                "2. 考虑使用app.onStartup()添加启动日志\n" +
                "3. 考虑添加错误处理\n" +
-               "4. 遵循EST的命名约�?;
+               "4. 遵循EST的命名约�?;
     }
     
     @Override
@@ -448,5 +454,65 @@ public class DefaultAiAssistant implements AiAssistant {
     @Override
     public void setEmbeddingModel(EmbeddingModel embeddingModel) {
         this.embeddingModel = embeddingModel;
+    }
+    
+    public RagIntegrationAdapter getRagAdapter() {
+        return ragAdapter;
+    }
+    
+    public void setRagAdapter(RagIntegrationAdapter ragAdapter) {
+        this.ragAdapter = ragAdapter;
+    }
+    
+    public McpIntegrationAdapter getMcpAdapter() {
+        return mcpAdapter;
+    }
+    
+    public void setMcpAdapter(McpIntegrationAdapter mcpAdapter) {
+        this.mcpAdapter = mcpAdapter;
+    }
+    
+    public void addRagDocument(String id, String content, String metadata) {
+        ragAdapter.addDocument(id, content, metadata);
+    }
+    
+    public List<RagIntegrationAdapter.SearchResultInfo> retrieveWithRag(String query, int topK) {
+        return ragAdapter.retrieve(query, topK);
+    }
+    
+    public String generateWithRag(String query, int topK) {
+        return ragAdapter.generateWithRag(query, topK);
+    }
+    
+    public void registerMcpTool(String name, String description, McpIntegrationAdapter.McpToolExecutor executor) {
+        mcpAdapter.registerTool(name, description, executor);
+    }
+    
+    public void registerMcpResource(String uri, String name, String content) {
+        mcpAdapter.registerResource(uri, name, content);
+    }
+    
+    public void registerMcpPrompt(String name, String description, String template) {
+        mcpAdapter.registerPrompt(name, description, template);
+    }
+    
+    public List<McpIntegrationAdapter.ToolInfo> listMcpTools() {
+        return mcpAdapter.listTools();
+    }
+    
+    public McpIntegrationAdapter.ToolResult callMcpTool(String toolName, java.util.Map<String, Object> arguments) {
+        return mcpAdapter.callTool(toolName, arguments);
+    }
+    
+    public void startMcpServer() {
+        mcpAdapter.startServer();
+    }
+    
+    public void stopMcpServer() {
+        mcpAdapter.stopServer();
+    }
+    
+    public boolean isMcpServerRunning() {
+        return mcpAdapter.isServerRunning();
     }
 }

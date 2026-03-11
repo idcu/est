@@ -2,21 +2,21 @@
   <div class="role-page">
     <el-card class="search-card">
       <el-form :inline="true" :model="searchForm" class="search-form">
-        <el-form-item label="角色名称">
-          <el-input v-model="searchForm.name" placeholder="请输入角色名�? clearable />
+        <el-form-item label="Role Name">
+          <el-input v-model="searchForm.name" placeholder="Please enter role name" clearable />
         </el-form-item>
-        <el-form-item label="角色编码">
-          <el-input v-model="searchForm.code" placeholder="请输入角色编�? clearable />
+        <el-form-item label="Role Code">
+          <el-input v-model="searchForm.code" placeholder="Please enter role code" clearable />
         </el-form-item>
-        <el-form-item label="状�?>
-          <el-select v-model="searchForm.status" placeholder="请选择状�? clearable>
-            <el-option label="启用" :value="1" />
-            <el-option label="禁用" :value="0" />
+        <el-form-item label="Status">
+          <el-select v-model="searchForm.status" placeholder="Please select status" clearable>
+            <el-option label="Enabled" :value="1" />
+            <el-option label="Disabled" :value="0" />
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleSearch">搜索</el-button>
-          <el-button @click="handleReset">重置</el-button>
+          <el-button type="primary" @click="handleSearch">Search</el-button>
+          <el-button @click="handleReset">Reset</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -24,32 +24,32 @@
     <el-card class="table-card">
       <template #header>
         <div class="card-header">
-          <span>角色列表</span>
-          <el-button type="primary" @click="handleAdd">新增角色</el-button>
+          <span>Role List</span>
+          <el-button type="primary" @click="handleAdd">Add Role</el-button>
         </div>
       </template>
       <el-table :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="name" label="角色名称" width="150" />
-        <el-table-column prop="code" label="角色编码" width="150" />
-        <el-table-column prop="sort" label="排序" width="100" />
-        <el-table-column prop="status" label="状�? width="100">
+        <el-table-column prop="name" label="Role Name" width="150" />
+        <el-table-column prop="code" label="Role Code" width="150" />
+        <el-table-column prop="sort" label="Sort" width="100" />
+        <el-table-column prop="status" label="Status" width="100">
           <template #default="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'danger'">
-              {{ row.status === 1 ? '启用' : '禁用' }}
+              {{ row.status === 1 ? 'Enabled' : 'Disabled' }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="remark" label="备注" />
-        <el-table-column prop="createTime" label="创建时间" width="180" />
-        <el-table-column label="操作" width="280" fixed="right">
+        <el-table-column prop="remark" label="Remark" />
+        <el-table-column prop="createTime" label="Create Time" width="180" />
+        <el-table-column label="Actions" width="280" fixed="right">
           <template #default="{ row }">
-            <el-button link type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
-            <el-button link type="info" size="small" @click="handlePermission(row)">权限</el-button>
+            <el-button link type="primary" size="small" @click="handleEdit(row)">Edit</el-button>
+            <el-button link type="info" size="small" @click="handlePermission(row)">Permission</el-button>
             <el-button link type="warning" size="small" @click="handleStatus(row)">
-              {{ row.status === 1 ? '禁用' : '启用' }}
+              {{ row.status === 1 ? 'Disable' : 'Enable' }}
             </el-button>
-            <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>
+            <el-button link type="danger" size="small" @click="handleDelete(row)">Delete</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -73,34 +73,34 @@
       destroy-on-close
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px">
-        <el-form-item label="角色名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入角色名�? />
+        <el-form-item label="Role Name" prop="name">
+          <el-input v-model="formData.name" placeholder="Please enter role name" />
         </el-form-item>
-        <el-form-item label="角色编码" prop="code">
-          <el-input v-model="formData.code" placeholder="请输入角色编�? :disabled="isEdit" />
+        <el-form-item label="Role Code" prop="code">
+          <el-input v-model="formData.code" placeholder="Please enter role code" :disabled="isEdit" />
         </el-form-item>
-        <el-form-item label="排序" prop="sort">
+        <el-form-item label="Sort" prop="sort">
           <el-input-number v-model="formData.sort" :min="0" />
         </el-form-item>
-        <el-form-item label="状�? prop="status">
+        <el-form-item label="Status" prop="status">
           <el-radio-group v-model="formData.status">
-            <el-radio :label="1">启用</el-radio>
-            <el-radio :label="0">禁用</el-radio>
+            <el-radio :label="1">Enabled</el-radio>
+            <el-radio :label="0">Disabled</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备�? />
+        <el-form-item label="Remark" prop="remark">
+          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="Please enter remark" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit">确定</el-button>
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="handleSubmit">Confirm</el-button>
       </template>
     </el-dialog>
 
     <el-dialog
       v-model="permissionDialogVisible"
-      title="分配权限"
+      title="Assign Permission"
       width="500px"
       destroy-on-close
     >
@@ -113,8 +113,8 @@
         :props="treeProps"
       />
       <template #footer>
-        <el-button @click="permissionDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handlePermissionSubmit">确定</el-button>
+        <el-button @click="permissionDialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="handlePermissionSubmit">Confirm</el-button>
       </template>
     </el-dialog>
   </div>
@@ -165,10 +165,10 @@ const formData = reactive({
 
 const formRules: FormRules = {
   name: [
-    { required: true, message: '请输入角色名�?, trigger: 'blur' }
+    { required: true, message: 'Please enter role name', trigger: 'blur' }
   ],
   code: [
-    { required: true, message: '请输入角色编�?, trigger: 'blur' }
+    { required: true, message: 'Please enter role code', trigger: 'blur' }
   ]
 }
 
@@ -182,7 +182,7 @@ const loadData = async () => {
     tableData.value = res.data.list || []
     pagination.total = res.data.total || 0
   } catch (error) {
-    console.error('加载角色列表失败', error)
+    console.error('Failed to load role list', error)
   }
 }
 
@@ -191,7 +191,7 @@ const loadMenuTree = async () => {
     const res = await listMenus()
     menuTreeData.value = res.data || []
   } catch (error) {
-    console.error('加载菜单树失�?, error)
+    console.error('Failed to load menu tree', error)
   }
 }
 
@@ -208,7 +208,7 @@ const handleReset = () => {
 }
 
 const handleAdd = () => {
-  dialogTitle.value = '新增角色'
+  dialogTitle.value = 'Add Role'
   isEdit.value = false
   Object.assign(formData, {
     id: undefined,
@@ -222,14 +222,14 @@ const handleAdd = () => {
 }
 
 const handleEdit = async (row: any) => {
-  dialogTitle.value = '编辑角色'
+  dialogTitle.value = 'Edit Role'
   isEdit.value = true
   try {
     const res = await getRole(row.id)
     Object.assign(formData, res.data)
     dialogVisible.value = true
   } catch (error) {
-    console.error('获取角色信息失败', error)
+    console.error('Failed to get role info', error)
   }
 }
 
@@ -240,15 +240,15 @@ const handleSubmit = async () => {
       try {
         if (isEdit.value) {
           await updateRole(formData)
-          ElMessage.success('更新成功')
+          ElMessage.success('Updated successfully')
         } else {
           await createRole(formData)
-          ElMessage.success('创建成功')
+          ElMessage.success('Created successfully')
         }
         dialogVisible.value = false
         loadData()
       } catch (error) {
-        console.error('提交失败', error)
+        console.error('Failed to submit', error)
       }
     }
   })
@@ -262,7 +262,7 @@ const handlePermission = async (row: any) => {
 }
 
 const handlePermissionSubmit = () => {
-  ElMessage.success('权限分配成功')
+  ElMessage.success('Permission assigned successfully')
   permissionDialogVisible.value = false
 }
 
@@ -270,25 +270,25 @@ const handleStatus = async (row: any) => {
   const newStatus = row.status === 1 ? 0 : 1
   try {
     await updateRoleStatus(row.id, newStatus)
-    ElMessage.success(newStatus === 1 ? '启用成功' : '禁用成功')
+    ElMessage.success(newStatus === 1 ? 'Enabled successfully' : 'Disabled successfully')
     loadData()
   } catch (error) {
-    console.error('状态更新失�?, error)
+    console.error('Failed to update status', error)
   }
 }
 
 const handleDelete = (row: any) => {
-  ElMessageBox.confirm('确定要删除该角色吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Are you sure you want to delete this role?', 'Warning', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning'
   }).then(async () => {
     try {
       await deleteRole(row.id)
-      ElMessage.success('删除成功')
+      ElMessage.success('Deleted successfully')
       loadData()
     } catch (error) {
-      console.error('删除失败', error)
+      console.error('Failed to delete', error)
     }
   }).catch(() => {})
 }

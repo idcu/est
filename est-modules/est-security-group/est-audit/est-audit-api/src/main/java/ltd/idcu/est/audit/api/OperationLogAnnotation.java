@@ -10,5 +10,11 @@ import java.lang.annotation.Target;
 public @interface OperationLogAnnotation {
     String module() default "";
     String operation() default "";
+    String resource() default "";
+    String resourceId() default "";
+    String description() default "";
     boolean saveParams() default true;
+    boolean saveResult() default false;
+    boolean async() default true;
+    String[] ignoreParams() default {};
 }

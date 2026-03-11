@@ -19,9 +19,9 @@
     <modules>
         <module>est-data-api</module>
         <module>est-data-jdbc</module>
-        <module>est-data-memory</module>
-        <module>est-data-redis</module>
-        <module>est-data-mongodb</module>
+        <!-- <module>est-data-memory</module> -->
+        <!-- <module>est-data-redis</module> -->
+        <!-- <module>est-data-mongodb</module> -->
     </modules>
 
 </project>

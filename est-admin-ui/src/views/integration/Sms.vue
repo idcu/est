@@ -3,38 +3,39 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>短信服务</span>
+          <span>SMS Service</span>
         </div>
       </template>
       
       <el-tabs v-model="activeTab">
-        <el-tab-pane label="发送短�? name="send">
+        <el-tab-pane label="Send SMS" name="send">
           <el-form :model="smsForm" label-width="100px" style="max-width: 600px;">
-            <el-form-item label="手机�?>
-              <el-input v-model="smsForm.phone" placeholder="请输入手机号" />
+            <el-form-item label="Phone">
+              <el-input v-model="smsForm.phone" placeholder="Please enter phone number" />
             </el-form-item>
-            <el-form-item label="内容">
+            <el-form-item label="Content">
               <el-input
                 v-model="smsForm.content"
                 type="textarea"
                 :rows="4"
-                placeholder="请输入短信内�?
+                placeholder="Please enter SMS content"
               />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="handleSendSms" :loading="sending">
-                发送短�?              </el-button>
+                Send SMS
+              </el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
         
-        <el-tab-pane label="短信模板" name="templates">
+        <el-tab-pane label="SMS Templates" name="templates">
           <el-table :data="templates" style="width: 100%">
-            <el-table-column prop="code" label="模板编码" width="150" />
-            <el-table-column prop="name" label="模板名称" width="150" />
-            <el-table-column prop="content" label="内容" show-overflow-tooltip />
-            <el-table-column prop="provider" label="服务�? width="120" />
-            <el-table-column prop="createdAt" label="创建时间" width="180">
+            <el-table-column prop="code" label="Template Code" width="150" />
+            <el-table-column prop="name" label="Template Name" width="150" />
+            <el-table-column prop="content" label="Content" show-overflow-tooltip />
+            <el-table-column prop="provider" label="Provider" width="120" />
+            <el-table-column prop="createdAt" label="Created At" width="180">
               <template #default="{ row }">
                 {{ formatDate(row.createdAt) }}
               </template>
@@ -61,7 +62,7 @@ const smsForm = ref({
 
 const handleSendSms = async () => {
   if (!smsForm.value.phone || !smsForm.value.content) {
-    ElMessage.warning('请填写完整的短信信息')
+    ElMessage.warning('Please complete SMS information')
     return
   }
   
@@ -69,14 +70,14 @@ const handleSendSms = async () => {
   try {
     const res = await sendSms(smsForm.value)
     if (res.data.success) {
-      ElMessage.success('短信发送成�?)
+      ElMessage.success('SMS sent successfully')
       smsForm.value = {
         phone: '',
         content: ''
       }
     }
   } catch (error) {
-    ElMessage.error('短信发送失�?)
+    ElMessage.error('Failed to send SMS')
   } finally {
     sending.value = false
   }
@@ -89,7 +90,7 @@ const loadTemplates = async () => {
       templates.value = res.data.data
     }
   } catch (error) {
-    ElMessage.error('加载模板失败')
+    ElMessage.error('Failed to load templates')
   }
 }
 

@@ -204,7 +204,7 @@ public class DefaultMenuService implements MenuService {
         DefaultMenu integrationMenu = new DefaultMenu(
             UUID.randomUUID().toString(),
             null,
-            "第三方集�?,
+            "Integrations",
             "/integration",
             null,
             "link",
@@ -309,7 +309,7 @@ public class DefaultMenuService implements MenuService {
         DefaultMenu referenceMenu = new DefaultMenu(
             UUID.randomUUID().toString(),
             aiMenu.getId(),
-            "开发参�?,
+            "Dev Reference",
             "/ai/reference",
             "ai/reference/index",
             "reading",

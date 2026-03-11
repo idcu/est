@@ -17,16 +17,16 @@ public class DefaultSmsService implements SmsService {
     private void initializeDefaultTemplates() {
         DefaultSmsTemplate verifyCodeTemplate = new DefaultSmsTemplate(
             "VERIFY_CODE",
-            "验证�?,
-            "您的验证码是�?{code}�?分钟内有效�?,
+            "Verification Code",
+            "Your verification code is ${code}, valid for 10 minutes.",
             "mock"
         );
         templates.put("VERIFY_CODE", verifyCodeTemplate);
         
         DefaultSmsTemplate loginTemplate = new DefaultSmsTemplate(
             "LOGIN_NOTICE",
-            "登录通知",
-            "您的账号�?{time}�?{ip}登录，如非本人操作请及时修改密码�?,
+            "Login Notice",
+            "Your account logged in at ${time} from ${ip}. If this wasn't you, please change your password immediately.",
             "mock"
         );
         templates.put("LOGIN_NOTICE", loginTemplate);

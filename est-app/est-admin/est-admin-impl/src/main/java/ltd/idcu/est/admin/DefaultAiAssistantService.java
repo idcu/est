@@ -1,11 +1,6 @@
 package ltd.idcu.est.admin;
 
 import ltd.idcu.est.admin.api.AiAssistantService;
-import ltd.idcu.est.ai.api.AiAssistant;
-import ltd.idcu.est.ai.api.LlmMessage;
-import ltd.idcu.est.ai.api.PromptTemplate;
-import ltd.idcu.est.ai.api.PromptTemplateRegistry;
-import ltd.idcu.est.ai.impl.DefaultAiAssistant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,92 +8,79 @@ import java.util.Map;
 
 public class DefaultAiAssistantService implements AiAssistantService {
     
-    private final AiAssistant aiAssistant;
-    
     public DefaultAiAssistantService() {
-        this.aiAssistant = new DefaultAiAssistant();
-    }
-    
-    public DefaultAiAssistantService(AiAssistant aiAssistant) {
-        this.aiAssistant = aiAssistant;
     }
     
     @Override
-    public AiAssistant getAiAssistant() {
-        return aiAssistant;
+    public Object getAiAssistant() {
+        throw new UnsupportedOperationException("AI Assistant not available");
     }
     
     @Override
     public String chat(String message) {
-        return aiAssistant.chat(message);
+        return "AI Assistant not available";
     }
     
     @Override
-    public String chat(List<LlmMessage> messages) {
-        return aiAssistant.chat(messages);
+    public String chat(List<?> messages) {
+        return "AI Assistant not available";
     }
     
     @Override
     public String generateCode(String requirement) {
-        return aiAssistant.getCodeGenerator().generateFromRequirement(requirement);
+        return "AI Code Generator not available";
     }
     
     @Override
     public String suggestCode(String requirement) {
-        return aiAssistant.suggestCode(requirement);
+        return "AI Code Suggestion not available";
     }
     
     @Override
     public String explainCode(String code) {
-        return aiAssistant.explainCode(code);
+        return "AI Code Explanation not available";
     }
     
     @Override
     public String optimizeCode(String code) {
-        return aiAssistant.optimizeCode(code);
+        return "AI Code Optimization not available";
     }
     
     @Override
     public String getQuickReference(String topic) {
-        return aiAssistant.getQuickReference(topic);
+        return "AI Quick Reference not available";
     }
     
     @Override
     public String getBestPractice(String category) {
-        return aiAssistant.getBestPractice(category);
+        return "AI Best Practice not available";
     }
     
     @Override
     public String getTutorial(String topic) {
-        return aiAssistant.getTutorial(topic);
+        return "AI Tutorial not available";
     }
     
     @Override
     public String generatePrompt(String templateName, Map<String, String> variables) {
-        return aiAssistant.generatePrompt(templateName, variables);
+        return "AI Prompt Generation not available";
     }
     
     @Override
-    public List<PromptTemplate> getTemplates() {
-        PromptTemplateRegistry registry = aiAssistant.getTemplateRegistry();
-        return new ArrayList<>(registry.getAllTemplates());
+    public List<?> getTemplates() {
+        return new ArrayList<>();
     }
     
     @Override
-    public PromptTemplate getTemplate(String name) {
-        PromptTemplateRegistry registry = aiAssistant.getTemplateRegistry();
-        return registry.getTemplate(name).orElse(null);
+    public Object getTemplate(String name) {
+        return null;
     }
     
     @Override
-    public void registerTemplate(PromptTemplate template) {
-        PromptTemplateRegistry registry = aiAssistant.getTemplateRegistry();
-        registry.register(template);
+    public void registerTemplate(Object template) {
     }
     
     @Override
     public void unregisterTemplate(String name) {
-        PromptTemplateRegistry registry = aiAssistant.getTemplateRegistry();
-        registry.unregister(name);
     }
 }

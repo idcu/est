@@ -114,7 +114,7 @@ public class CollectionOptimizerUtilsTest {
 
     @Test
     public void testQuickSortEmpty() {
-        List<Integer> sorted = CollectionOptimizerUtils.quickSort(Collections.emptyList());
+        List<Integer> sorted = CollectionOptimizerUtils.quickSort(Collections.<Integer>emptyList());
         assertTrue(sorted.isEmpty());
     }
 

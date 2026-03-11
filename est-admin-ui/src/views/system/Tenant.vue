@@ -2,21 +2,21 @@
   <div class="tenant-page">
     <el-card class="search-card">
       <el-form :inline="true" :model="searchForm" class="search-form">
-        <el-form-item label="租户名称">
-          <el-input v-model="searchForm.name" placeholder="请输入租户名�? clearable />
+        <el-form-item label="Tenant Name">
+          <el-input v-model="searchForm.name" placeholder="Please enter tenant name" clearable />
         </el-form-item>
-        <el-form-item label="租户编码">
-          <el-input v-model="searchForm.code" placeholder="请输入租户编�? clearable />
+        <el-form-item label="Tenant Code">
+          <el-input v-model="searchForm.code" placeholder="Please enter tenant code" clearable />
         </el-form-item>
-        <el-form-item label="状�?>
-          <el-select v-model="searchForm.status" placeholder="请选择状�? clearable>
-            <el-option label="启用" :value="1" />
-            <el-option label="禁用" :value="0" />
+        <el-form-item label="Status">
+          <el-select v-model="searchForm.status" placeholder="Please select status" clearable>
+            <el-option label="Enabled" :value="1" />
+            <el-option label="Disabled" :value="0" />
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleSearch">搜索</el-button>
-          <el-button @click="handleReset">重置</el-button>
+          <el-button type="primary" @click="handleSearch">Search</el-button>
+          <el-button @click="handleReset">Reset</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -24,39 +24,39 @@
     <el-card class="table-card">
       <template #header>
         <div class="card-header">
-          <span>租户列表</span>
-          <el-button type="primary" @click="handleAdd">新增租户</el-button>
+          <span>Tenant List</span>
+          <el-button type="primary" @click="handleAdd">Add Tenant</el-button>
         </div>
       </template>
       <el-table :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="name" label="租户名称" width="200" />
-        <el-table-column prop="code" label="租户编码" width="150" />
-        <el-table-column prop="type" label="租户类型" width="120">
+        <el-table-column prop="name" label="Tenant Name" width="200" />
+        <el-table-column prop="code" label="Tenant Code" width="150" />
+        <el-table-column prop="type" label="Tenant Type" width="120">
           <template #default="{ row }">
             <el-tag :type="row.type === 1 ? 'primary' : row.type === 2 ? 'success' : 'info'">
               {{ row.type === 1 ? 'COLUMN' : row.type === 2 ? 'SCHEMA' : 'DATABASE' }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="contactName" label="联系�? width="120" />
-        <el-table-column prop="contactPhone" label="联系电话" width="130" />
-        <el-table-column prop="status" label="状�? width="100">
+        <el-table-column prop="contactName" label="Contact" width="120" />
+        <el-table-column prop="contactPhone" label="Phone" width="130" />
+        <el-table-column prop="status" label="Status" width="100">
           <template #default="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'danger'">
-              {{ row.status === 1 ? '启用' : '禁用' }}
+              {{ row.status === 1 ? 'Enabled' : 'Disabled' }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="expireTime" label="过期时间" width="180" />
-        <el-table-column prop="createTime" label="创建时间" width="180" />
-        <el-table-column label="操作" width="250" fixed="right">
+        <el-table-column prop="expireTime" label="Expire Time" width="180" />
+        <el-table-column prop="createTime" label="Created At" width="180" />
+        <el-table-column label="Actions" width="250" fixed="right">
           <template #default="{ row }">
-            <el-button link type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
+            <el-button link type="primary" size="small" @click="handleEdit(row)">Edit</el-button>
             <el-button link type="warning" size="small" @click="handleStatus(row)">
-              {{ row.status === 1 ? '禁用' : '启用' }}
+              {{ row.status === 1 ? 'Disable' : 'Enable' }}
             </el-button>
-            <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>
+            <el-button link type="danger" size="small" @click="handleDelete(row)">Delete</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -80,49 +80,49 @@
       destroy-on-close
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="120px">
-        <el-form-item label="租户名称" prop="name">
-          <el-input v-model="formData.name" placeholder="请输入租户名�? />
+        <el-form-item label="Tenant Name" prop="name">
+          <el-input v-model="formData.name" placeholder="Please enter tenant name" />
         </el-form-item>
-        <el-form-item label="租户编码" prop="code">
-          <el-input v-model="formData.code" placeholder="请输入租户编�? :disabled="isEdit" />
+        <el-form-item label="Tenant Code" prop="code">
+          <el-input v-model="formData.code" placeholder="Please enter tenant code" :disabled="isEdit" />
         </el-form-item>
-        <el-form-item label="租户类型" prop="type">
-          <el-select v-model="formData.type" placeholder="请选择租户类型">
-            <el-option label="COLUMN (字段�?" :value="1" />
-            <el-option label="SCHEMA (模式�?" :value="2" />
-            <el-option label="DATABASE (数据库级)" :value="3" />
+        <el-form-item label="Tenant Type" prop="type">
+          <el-select v-model="formData.type" placeholder="Please select tenant type">
+            <el-option label="COLUMN" :value="1" />
+            <el-option label="SCHEMA" :value="2" />
+            <el-option label="DATABASE" :value="3" />
           </el-select>
         </el-form-item>
-        <el-form-item label="联系�? prop="contactName">
-          <el-input v-model="formData.contactName" placeholder="请输入联系人" />
+        <el-form-item label="Contact" prop="contactName">
+          <el-input v-model="formData.contactName" placeholder="Please enter contact" />
         </el-form-item>
-        <el-form-item label="联系电话" prop="contactPhone">
-          <el-input v-model="formData.contactPhone" placeholder="请输入联系电�? />
+        <el-form-item label="Phone" prop="contactPhone">
+          <el-input v-model="formData.contactPhone" placeholder="Please enter phone" />
         </el-form-item>
-        <el-form-item label="联系邮箱" prop="contactEmail">
-          <el-input v-model="formData.contactEmail" placeholder="请输入联系邮�? />
+        <el-form-item label="Email" prop="contactEmail">
+          <el-input v-model="formData.contactEmail" placeholder="Please enter email" />
         </el-form-item>
-        <el-form-item label="过期时间" prop="expireTime">
+        <el-form-item label="Expire Time" prop="expireTime">
           <el-date-picker
             v-model="formData.expireTime"
             type="datetime"
-            placeholder="选择过期时间"
+            placeholder="Select expire time"
             style="width: 100%"
           />
         </el-form-item>
-        <el-form-item label="状�? prop="status">
+        <el-form-item label="Status" prop="status">
           <el-radio-group v-model="formData.status">
-            <el-radio :label="1">启用</el-radio>
-            <el-radio :label="0">禁用</el-radio>
+            <el-radio :label="1">Enabled</el-radio>
+            <el-radio :label="0">Disabled</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备�? />
+        <el-form-item label="Remark" prop="remark">
+          <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="Please enter remark" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit">确定</el-button>
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="handleSubmit">Confirm</el-button>
       </template>
     </el-dialog>
   </div>
@@ -166,13 +166,13 @@ const formData = reactive({
 
 const formRules: FormRules = {
   name: [
-    { required: true, message: '请输入租户名�?, trigger: 'blur' }
+    { required: true, message: 'Please enter tenant name', trigger: 'blur' }
   ],
   code: [
-    { required: true, message: '请输入租户编�?, trigger: 'blur' }
+    { required: true, message: 'Please enter tenant code', trigger: 'blur' }
   ],
   type: [
-    { required: true, message: '请选择租户类型', trigger: 'change' }
+    { required: true, message: 'Please select tenant type', trigger: 'change' }
   ]
 }
 
@@ -186,7 +186,7 @@ const loadData = async () => {
     tableData.value = res.data.list || []
     pagination.total = res.data.total || 0
   } catch (error) {
-    console.error('加载租户列表失败', error)
+    console.error('Failed to load tenant list', error)
   }
 }
 
@@ -203,7 +203,7 @@ const handleReset = () => {
 }
 
 const handleAdd = () => {
-  dialogTitle.value = '新增租户'
+  dialogTitle.value = 'Add Tenant'
   isEdit.value = false
   Object.assign(formData, {
     id: undefined,
@@ -221,14 +221,14 @@ const handleAdd = () => {
 }
 
 const handleEdit = async (row: any) => {
-  dialogTitle.value = '编辑租户'
+  dialogTitle.value = 'Edit Tenant'
   isEdit.value = true
   try {
     const res = await getTenant(row.id)
     Object.assign(formData, res.data)
     dialogVisible.value = true
   } catch (error) {
-    console.error('获取租户信息失败', error)
+    console.error('Failed to get tenant info', error)
   }
 }
 
@@ -239,15 +239,15 @@ const handleSubmit = async () => {
       try {
         if (isEdit.value) {
           await updateTenant(formData)
-          ElMessage.success('更新成功')
+          ElMessage.success('Updated successfully')
         } else {
           await createTenant(formData)
-          ElMessage.success('创建成功')
+          ElMessage.success('Created successfully')
         }
         dialogVisible.value = false
         loadData()
       } catch (error) {
-        console.error('提交失败', error)
+        console.error('Submit failed', error)
       }
     }
   })
@@ -257,25 +257,25 @@ const handleStatus = async (row: any) => {
   const newStatus = row.status === 1 ? 0 : 1
   try {
     await updateTenantStatus(row.id, newStatus)
-    ElMessage.success(newStatus === 1 ? '启用成功' : '禁用成功')
+    ElMessage.success(newStatus === 1 ? 'Enabled successfully' : 'Disabled successfully')
     loadData()
   } catch (error) {
-    console.error('状态更新失�?, error)
+    console.error('Status update failed', error)
   }
 }
 
 const handleDelete = (row: any) => {
-  ElMessageBox.confirm('确定要删除该租户吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm('Are you sure you want to delete this tenant?', 'Confirm', {
+    confirmButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
     type: 'warning'
   }).then(async () => {
     try {
       await deleteTenant(row.id)
-      ElMessage.success('删除成功')
+      ElMessage.success('Deleted successfully')
       loadData()
     } catch (error) {
-      console.error('删除失败', error)
+      console.error('Delete failed', error)
     }
   }).catch(() => {})
 }

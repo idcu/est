@@ -64,6 +64,16 @@
             <artifactId>est-plugin-marketplace-impl</artifactId>
             <version>2.4.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-agent-api</artifactId>
+            <version>2.4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-agent-impl</artifactId>
+            <version>2.4.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

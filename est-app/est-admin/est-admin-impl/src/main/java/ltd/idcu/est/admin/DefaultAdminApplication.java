@@ -41,6 +41,7 @@ public class DefaultAdminApplication implements AdminApplication {
     public DefaultAdminApplication(String name) {
         this.name = name;
         this.webApplication = Web.create(name, "1.0.0");
+        this.webApplication.enableCors();
         this.adminController = new AdminController();
         this.userController = new UserController();
         this.roleController = new RoleController();
@@ -205,14 +206,14 @@ public class DefaultAdminApplication implements AdminApplication {
         webApplication.onStartup(() -> {
             System.out.println("\n".repeat(2));
             System.out.println("=".repeat(80));
-            System.out.println("�?EST Admin Console 启动成功�?);
+            System.out.println("EST Admin Console started successfully!");
             System.out.println("=".repeat(80));
-            System.out.println("\n访问地址�?);
-            System.out.println("  - http://localhost:" + port + "/admin          (管理后台)");
-            System.out.println("\n默认登录账号�?);
-            System.out.println("  - 用户�? admin");
-            System.out.println("  - 密码: admin123");
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\nAccess URLs:");
+            System.out.println("  - http://localhost:" + port + "/admin          (Admin Console)");
+            System.out.println("\nDefault login credentials:");
+            System.out.println("  - Username: admin");
+            System.out.println("  - Password: admin123");
+            System.out.println("\nPress Ctrl+C to stop the service");
             System.out.println("=".repeat(80));
         });
         

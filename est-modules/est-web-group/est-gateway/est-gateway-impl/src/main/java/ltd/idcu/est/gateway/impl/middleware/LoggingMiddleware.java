@@ -23,14 +23,29 @@ public class LoggingMiddleware implements GatewayMiddleware {
             context.setAttribute("requestId", requestId);
             context.setAttribute("startTime", startTime);
             
-            System.out.printf("[%s] [%s] %s %s%n", 
-                Instant.now(), 
-                requestId, 
-                context.getRequestMethod(), 
-                context.getRequestPath());
+            logRequest(requestId, context);
             
             return context;
         };
+    }
+
+    private void logRequest(String requestId, GatewayContext context) {
+        System.out.printf("[%s] [%s] REQ %s %s%n", 
+            Instant.now(), 
+            requestId, 
+            context.getRequestMethod(), 
+            context.getRequestPath());
+    }
+
+    public static void logResponse(String requestId, long startTime, GatewayContext context) {
+        long duration = System.currentTimeMillis() - startTime;
+        int status = context.getResponseStatus();
+        System.out.printf("[%s] [%s] RES %s %d (%dms)%n", 
+            Instant.now(), 
+            requestId, 
+            context.getRequestPath(), 
+            status,
+            duration);
     }
 
     @Override

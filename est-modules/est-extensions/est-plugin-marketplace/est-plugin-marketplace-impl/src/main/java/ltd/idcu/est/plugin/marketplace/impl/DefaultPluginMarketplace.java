@@ -65,6 +65,97 @@ public class DefaultPluginMarketplace implements PluginMarketplace {
     }
     
     @Override
+    public SearchResult searchPlugins(PluginSearchQuery query) {
+        List<PluginInfo> allPlugins = getAllPluginsFromRepos();
+        
+        List<PluginInfo> filtered = allPlugins.stream()
+            .filter(p -> matchesQuery(p, query))
+            .collect(Collectors.toList());
+        
+        List<PluginInfo> sorted = sortPlugins(filtered, query.getSortBy());
+        
+        int totalCount = sorted.size();
+        int fromIndex = query.getPage() * query.getPageSize();
+        int toIndex = Math.min(fromIndex + query.getPageSize(), sorted.size());
+        
+        if (fromIndex >= sorted.size()) {
+            return SearchResult.builder()
+                .plugins(Collections.emptyList())
+                .totalCount(totalCount)
+                .page(query.getPage())
+                .pageSize(query.getPageSize())
+                .build();
+        }
+        
+        return SearchResult.builder()
+            .plugins(sorted.subList(fromIndex, toIndex))
+            .totalCount(totalCount)
+            .page(query.getPage())
+            .pageSize(query.getPageSize())
+            .build();
+    }
+    
+    private boolean matchesQuery(PluginInfo plugin, PluginSearchQuery query) {
+        if (query.getKeyword() != null && !query.getKeyword().isEmpty()) {
+            String lowerKeyword = query.getKeyword().toLowerCase();
+            boolean matchesName = plugin.getName().toLowerCase().contains(lowerKeyword);
+            boolean matchesDesc = plugin.getDescription() != null && 
+                                  plugin.getDescription().toLowerCase().contains(lowerKeyword);
+            boolean matchesTags = Arrays.stream(plugin.getTags())
+                .anyMatch(t -> t.toLowerCase().contains(lowerKeyword));
+            if (!matchesName && !matchesDesc && !matchesTags) {
+                return false;
+            }
+        }
+        
+        if (query.getCategory() != null && !query.getCategory().equals(plugin.getCategory())) {
+            return false;
+        }
+        
+        if (!query.getTags().isEmpty()) {
+            boolean hasAnyTag = query.getTags().stream()
+                .anyMatch(t -> Arrays.asList(plugin.getTags()).contains(t));
+            if (!hasAnyTag) {
+                return false;
+            }
+        }
+        
+        if (query.getCertified() != null && query.getCertified() != plugin.isCertified()) {
+            return false;
+        }
+        
+        if (query.getLicense() != null && !query.getLicense().equals(plugin.getLicense())) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private List<PluginInfo> sortPlugins(List<PluginInfo> plugins, String sortBy) {
+        Comparator<PluginInfo> comparator;
+        switch (sortBy != null ? sortBy : "relevance") {
+            case "downloads":
+                comparator = Comparator.comparingInt(PluginInfo::getDownloadCount).reversed();
+                break;
+            case "rating":
+                comparator = Comparator.comparingDouble(PluginInfo::getRating).reversed();
+                break;
+            case "updated":
+                comparator = Comparator.comparingLong(PluginInfo::getLastUpdateTime).reversed();
+                break;
+            case "created":
+                comparator = Comparator.comparingLong(PluginInfo::getPublishTime).reversed();
+                break;
+            case "name":
+                comparator = Comparator.comparing(PluginInfo::getName);
+                break;
+            default:
+                comparator = Comparator.comparingInt(PluginInfo::getDownloadCount).reversed();
+        }
+        return plugins.stream().sorted(comparator).collect(Collectors.toList());
+    }
+    
+    @Override
     public List<PluginInfo> getPopularPlugins(int limit) {
         List<PluginInfo> all = getAllPluginsFromRepos();
         return all.stream()
@@ -104,6 +195,42 @@ public class DefaultPluginMarketplace implements PluginMarketplace {
     }
     
     @Override
+    public List<PluginCategory> getPluginCategories() {
+        Map<String, Integer> categoryCounts = new HashMap<>();
+        for (PluginInfo plugin : getAllPluginsFromRepos()) {
+            String category = plugin.getCategory();
+            if (category != null) {
+                categoryCounts.merge(category, 1, Integer::sum);
+            }
+        }
+        
+        return categoryCounts.entrySet().stream()
+            .map(entry -> PluginCategory.builder()
+                .id(entry.getKey())
+                .name(entry.getKey())
+                .description(entry.getKey() + " plugins")
+                .icon(getCategoryIcon(entry.getKey()))
+                .pluginCount(entry.getValue())
+                .build())
+            .sorted(Comparator.comparing(PluginCategory::getName))
+            .collect(Collectors.toList());
+    }
+    
+    private String getCategoryIcon(String category) {
+        return switch (category != null ? category.toLowerCase() : "") {
+            case "database" -> "🗄️";
+            case "web" -> "🌐";
+            case "security" -> "🔒";
+            case "ai" -> "🤖";
+            case "cloud" -> "☁️";
+            case "microservices" -> "⚙️";
+            case "testing" -> "🧪";
+            case "monitoring" -> "📊";
+            default -> "📦";
+        };
+    }
+    
+    @Override
     public List<String> getPopularTags(int limit) {
         Map<String, Integer> tagCount = new HashMap<>();
         for (PluginInfo plugin : getAllPluginsFromRepos()) {
@@ -116,6 +243,29 @@ public class DefaultPluginMarketplace implements PluginMarketplace {
             .limit(limit)
             .map(Map.Entry::getKey)
             .collect(Collectors.toList());
+    }
+    
+    @Override
+    public List<String> getSearchSuggestions(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        String lowerKeyword = keyword.toLowerCase();
+        Set<String> suggestions = new LinkedHashSet<>();
+        
+        for (PluginInfo plugin : getAllPluginsFromRepos()) {
+            if (plugin.getName().toLowerCase().startsWith(lowerKeyword)) {
+                suggestions.add(plugin.getName());
+            }
+            for (String tag : plugin.getTags()) {
+                if (tag.toLowerCase().startsWith(lowerKeyword)) {
+                    suggestions.add(tag);
+                }
+            }
+        }
+        
+        return suggestions.stream().limit(10).collect(Collectors.toList());
     }
     
     @Override

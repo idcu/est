@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import ltd.idcu.est.gateway.impl.middleware.LoggingMiddleware;
 
 public class DefaultApiGateway implements ApiGateway {
     private final GatewayRouter router;
@@ -197,10 +198,18 @@ public class DefaultApiGateway implements ApiGateway {
             }
             context = (DefaultGatewayContext) pipeline.apply(context);
             
-            if (matchedRoute != null) {
-                forwardRequest(context, exchange);
-            } else {
-                sendError(exchange, 404, "Not Found: " + requestPath);
+            Boolean shouldAbort = (Boolean) context.getAttribute("shouldAbort");
+            try {
+                if (shouldAbort != null && shouldAbort) {
+                    sendAbortResponse(exchange, context);
+                } else if (matchedRoute != null) {
+                    forwardRequest(context, exchange);
+                } else {
+                    context.setResponseStatus(404);
+                    sendError(exchange, 404, "Not Found: " + requestPath);
+                }
+            } finally {
+                logResponseIfNeeded(context);
             }
         }
 
@@ -291,12 +300,39 @@ public class DefaultApiGateway implements ApiGateway {
             }
         }
 
+        private void sendAbortResponse(HttpExchange exchange, DefaultGatewayContext context) throws IOException {
+            Map<String, String> responseHeaders = context.getResponseHeaders();
+            for (Map.Entry<String, String> header : responseHeaders.entrySet()) {
+                if (!header.getKey().equalsIgnoreCase("Transfer-Encoding") &&
+                    !header.getKey().equalsIgnoreCase("Content-Length") &&
+                    !header.getKey().equalsIgnoreCase("Connection")) {
+                    exchange.getResponseHeaders().add(header.getKey(), header.getValue());
+                }
+            }
+            
+            byte[] responseBody = context.getResponseBody();
+            exchange.sendResponseHeaders(context.getResponseStatus(), responseBody.length);
+            if (responseBody.length > 0) {
+                try (OutputStream os = exchange.getResponseBody()) {
+                    os.write(responseBody);
+                }
+            }
+        }
+
         private void sendError(HttpExchange exchange, int statusCode, String message) throws IOException {
             exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
             byte[] body = message.getBytes(StandardCharsets.UTF_8);
             exchange.sendResponseHeaders(statusCode, body.length);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(body);
+            }
+        }
+
+        private void logResponseIfNeeded(GatewayContext context) {
+            String requestId = (String) context.getAttribute("requestId");
+            Long startTime = (Long) context.getAttribute("startTime");
+            if (requestId != null && startTime != null) {
+                LoggingMiddleware.logResponse(requestId, startTime, context);
             }
         }
     }

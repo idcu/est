@@ -17,6 +17,8 @@ import ltd.idcu.est.codecli.acp.AcpServer;
 import ltd.idcu.est.codecli.security.HitlSecurityPolicy;
 import ltd.idcu.est.codecli.skills.SkillManager;
 import ltd.idcu.est.codecli.ux.CommandHistory;
+import ltd.idcu.est.codecli.agent.AgentManager;
+import ltd.idcu.est.codecli.agent.AgentCommandHandler;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -46,6 +48,8 @@ public class CliInteractionHandler {
     private final Scanner scanner;
     private final String nickname;
     private final Path workDir;
+    private final AgentManager agentManager;
+    private final AgentCommandHandler agentCommandHandler;
     private boolean running;
     
     public CliInteractionHandler(AiAssistant aiAssistant, String workDir, String nickname) {
@@ -65,6 +69,8 @@ public class CliInteractionHandler {
         this.mcpServer = new EstCodeCliMcpServer(workDir, fileIndex, indexer, skillManager, promptLibrary);
         this.scanner = new Scanner(System.in);
         this.nickname = nickname != null ? nickname : config.getNickname();
+        this.agentManager = AgentManager.getInstance();
+        this.agentCommandHandler = new AgentCommandHandler(agentManager);
         this.running = true;
         this.pluginManager.loadAllPlugins();
     }
@@ -175,6 +181,11 @@ public class CliInteractionHandler {
             return;
         }
         
+        if (input.toLowerCase().startsWith("agent")) {
+            agentCommandHandler.handleAgentCommand(input);
+            return;
+        }
+        
         if (input.startsWith("/")) {
             handleToolCommand(input.substring(1));
             return;
@@ -200,6 +211,7 @@ public class CliInteractionHandler {
         System.out.println("  marketplace- Browse plugin marketplace");
         System.out.println("  web        - Start web server (browser interface)");
         System.out.println("  acp        - Start ACP server (IDE integration)");
+        System.out.println("  agent      - Agent commands (type 'agent' for details)");
         System.out.println("  /<tool>    - Call an MCP tool directly (e.g., /list_dir)");
         System.out.println("  help       - Show this help message");
         System.out.println("  exit/quit  - Exit the program");

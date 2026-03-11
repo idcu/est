@@ -15,6 +15,10 @@ export interface MenuInfo {
   children?: MenuInfo[]
 }
 
+export function listMenus() {
+  return request.get<MenuInfo[]>('/admin/api/menus')
+}
+
 export function getMenuList() {
   return request.get<MenuInfo[]>('/admin/api/menus')
 }
@@ -35,8 +39,8 @@ export function createMenu(data: any) {
   return request.post('/admin/api/menus', data)
 }
 
-export function updateMenu(id: string, data: any) {
-  return request.put(`/admin/api/menus/${id}`, data)
+export function updateMenu(data: any) {
+  return request.put(`/admin/api/menus/${data.id}`, data)
 }
 
 export function deleteMenu(id: string) {

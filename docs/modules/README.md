@@ -2,6 +2,10 @@
 
 This section contains documentation for all EST Framework modules.
 
+## 重要文档
+
+- [外部依赖模块文档](./external-dependencies.md) - 列出所有有外部依赖的模块及其说明
+
 ## Module Groups
 
 ### est-foundation (基础设施)

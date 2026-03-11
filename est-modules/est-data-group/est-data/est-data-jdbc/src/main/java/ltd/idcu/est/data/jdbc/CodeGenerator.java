@@ -1,6 +1,6 @@
 package ltd.idcu.est.data.jdbc;
 
-import ltd.idcu.est.features.data.api.*;
+import ltd.idcu.est.data.api.*;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class CodeGenerator {
         
         StringBuilder code = new StringBuilder();
         code.append("package ").append(packageName).append(";\n\n");
-        code.append("import ltd.idcu.est.features.data.api.*;\n");
+        code.append("import ltd.idcu.est.data.api.*;\n");
         code.append("import java.time.LocalDateTime;\n\n");
         
         code.append("@Entity(tableName = \"").append(getTableName(entityClass)).append("\")\n");

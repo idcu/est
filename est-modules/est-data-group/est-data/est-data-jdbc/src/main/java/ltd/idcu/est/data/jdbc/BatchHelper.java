@@ -1,6 +1,6 @@
 package ltd.idcu.est.data.jdbc;
 
-import ltd.idcu.est.features.data.api.DataException;
+import ltd.idcu.est.data.api.DataException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

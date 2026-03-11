@@ -1,6 +1,6 @@
 package ltd.idcu.est.data.jdbc;
 
-import ltd.idcu.est.features.data.api.*;
+import ltd.idcu.est.data.api.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -292,12 +292,10 @@ public class JdbcLambdaQueryWrapper<T> implements LambdaQueryWrapper<T> {
         }
     }
 
-    @Override
     public LambdaQueryWrapper<T> orderBy(SFunction<T, ?> column) {
         return orderBy(column, true);
     }
 
-    @Override
     public LambdaQueryWrapper<T> orderBy(SFunction<T, ?> column, boolean ascending) {
         orderBys.add(new OrderBy(LambdaUtils.getColumnName(column), ascending));
         return this;
@@ -405,42 +403,34 @@ public class JdbcLambdaQueryWrapper<T> implements LambdaQueryWrapper<T> {
         }
     }
     
-    @Override
     public LambdaQueryWrapper<T> join(String table, String leftField, String rightField) {
         return join(table, leftField, "=", rightField);
     }
     
-    @Override
     public LambdaQueryWrapper<T> join(String table, String leftField, String operator, String rightField) {
         return addJoin("JOIN", table, leftField, operator, rightField);
     }
     
-    @Override
     public LambdaQueryWrapper<T> leftJoin(String table, String leftField, String rightField) {
         return leftJoin(table, leftField, "=", rightField);
     }
     
-    @Override
     public LambdaQueryWrapper<T> leftJoin(String table, String leftField, String operator, String rightField) {
         return addJoin("LEFT JOIN", table, leftField, operator, rightField);
     }
     
-    @Override
     public LambdaQueryWrapper<T> rightJoin(String table, String leftField, String rightField) {
         return rightJoin(table, leftField, "=", rightField);
     }
     
-    @Override
     public LambdaQueryWrapper<T> rightJoin(String table, String leftField, String operator, String rightField) {
         return addJoin("RIGHT JOIN", table, leftField, operator, rightField);
     }
     
-    @Override
     public LambdaQueryWrapper<T> innerJoin(String table, String leftField, String rightField) {
         return innerJoin(table, leftField, "=", rightField);
     }
     
-    @Override
     public LambdaQueryWrapper<T> innerJoin(String table, String leftField, String operator, String rightField) {
         return addJoin("INNER JOIN", table, leftField, operator, rightField);
     }
@@ -495,6 +485,29 @@ public class JdbcLambdaQueryWrapper<T> implements LambdaQueryWrapper<T> {
             long endTime = System.currentTimeMillis();
             metrics.recordQuery(endTime - startTime);
         }
+    }
+
+    @Override
+    public List<T> list() {
+        return get();
+    }
+
+    @Override
+    public Optional<T> one() {
+        if (limitValue == null) {
+            limit(1);
+        }
+        List<T> result = get();
+        return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
+    }
+
+    @Override
+    public T oneOrNull() {
+        if (limitValue == null) {
+            limit(1);
+        }
+        List<T> result = get();
+        return result.isEmpty() ? null : result.get(0);
     }
 
     @Override

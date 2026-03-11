@@ -3,10 +3,10 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span>提示模板</span>
+          <span>Prompt Templates</span>
           <el-button type="primary" @click="loadTemplates">
             <el-icon><Refresh /></el-icon>
-            刷新
+            Refresh
           </el-button>
         </div>
       </template>
@@ -15,7 +15,7 @@
         <el-col :span="8">
           <el-card class="template-list-card">
             <template #header>
-              <span>模板列表</span>
+              <span>Template List</span>
             </template>
             <el-menu
               :default-active="selectedTemplate"
@@ -35,20 +35,20 @@
         <el-col :span="16">
           <el-card class="template-detail-card">
             <template #header>
-              <span>模板详情</span>
+              <span>Template Details</span>
             </template>
             
             <div v-if="currentTemplate" class="template-detail">
               <el-descriptions :column="1" border>
-                <el-descriptions-item label="名称">{{ currentTemplate.name }}</el-descriptions-item>
-                <el-descriptions-item label="分类">{{ currentTemplate.category }}</el-descriptions-item>
-                <el-descriptions-item label="描述">{{ currentTemplate.description }}</el-descriptions-item>
+                <el-descriptions-item label="Name">{{ currentTemplate.name }}</el-descriptions-item>
+                <el-descriptions-item label="Category">{{ currentTemplate.category }}</el-descriptions-item>
+                <el-descriptions-item label="Description">{{ currentTemplate.description }}</el-descriptions-item>
               </el-descriptions>
               
               <el-divider />
               
               <div class="template-content">
-                <h4>模板内容</h4>
+                <h4>Template Content</h4>
                 <el-input
                   v-model="currentTemplate.template"
                   type="textarea"
@@ -60,7 +60,7 @@
               <el-divider />
               
               <div class="template-variables">
-                <h4>变量</h4>
+                <h4>Variables</h4>
                 <el-tag
                   v-for="(desc, name) in currentTemplate.requiredVariables"
                   :key="name"
@@ -73,28 +73,28 @@
               <el-divider />
               
               <div class="generate-prompt">
-                <h4>生成提示</h4>
+                <h4>Generate Prompt</h4>
                 <el-form label-width="100px">
                   <el-form-item
                     v-for="(desc, name) in currentTemplate.requiredVariables"
                     :key="name"
                     :label="name"
                   >
-                    <el-input v-model="variables[name]" :placeholder="'请输�?' + name" />
+                    <el-input v-model="variables[name]" :placeholder="'Please enter ' + name" />
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="handleGeneratePrompt" :loading="generateLoading">
-                      生成提示
+                      Generate Prompt
                     </el-button>
                   </el-form-item>
                 </el-form>
                 
                 <div v-if="generatedPrompt" class="generated-prompt">
                   <div class="result-header">
-                    <span>生成结果</span>
+                    <span>Generated Result</span>
                     <el-button link @click="copyGeneratedPrompt">
                       <el-icon><DocumentCopy /></el-icon>
-                      复制
+                      Copy
                     </el-button>
                   </div>
                   <el-input
@@ -108,7 +108,7 @@
             </div>
             
             <div v-else class="no-template">
-              <el-empty description="请选择一个模�? />
+              <el-empty description="Please select a template" />
             </div>
           </el-card>
         </el-col>
@@ -137,7 +137,7 @@ const loadTemplates = async () => {
       templates.value = res.data.data
     }
   } catch (error) {
-    ElMessage.error('加载模板失败')
+    ElMessage.error('Failed to load templates')
   }
 }
 
@@ -155,7 +155,7 @@ const selectTemplate = (name: string) => {
 
 const handleGeneratePrompt = async () => {
   if (!currentTemplate.value) {
-    ElMessage.warning('请选择一个模�?)
+    ElMessage.warning('Please select a template')
     return
   }
   
@@ -173,7 +173,7 @@ const handleGeneratePrompt = async () => {
       generatedPrompt.value = res.data.data
     }
   } catch (error) {
-    ElMessage.error('生成提示失败')
+    ElMessage.error('Failed to generate prompt')
   } finally {
     generateLoading.value = false
   }
@@ -181,7 +181,7 @@ const handleGeneratePrompt = async () => {
 
 const copyGeneratedPrompt = () => {
   navigator.clipboard.writeText(generatedPrompt.value)
-  ElMessage.success('已复制到剪贴�?)
+  ElMessage.success('Copied to clipboard')
 }
 
 onMounted(() => {

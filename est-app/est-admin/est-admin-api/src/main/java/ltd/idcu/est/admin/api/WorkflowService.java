@@ -1,31 +1,28 @@
 package ltd.idcu.est.admin.api;
 
-import ltd.idcu.est.workflow.api.WorkflowDefinition;
-import ltd.idcu.est.workflow.api.WorkflowInstance;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public interface WorkflowService {
     
-    List<WorkflowDefinition> getAllDefinitions();
+    List<?> getAllDefinitions();
     
-    Optional<WorkflowDefinition> getDefinition(String definitionId);
+    Optional<?> getDefinition(String definitionId);
     
-    WorkflowDefinition createDefinition(String name, String description, String jsonDefinition);
+    Object createDefinition(String name, String description, String jsonDefinition);
     
-    WorkflowDefinition updateDefinition(String definitionId, String name, String description, String jsonDefinition);
+    Object updateDefinition(String definitionId, String name, String description, String jsonDefinition);
     
     void deleteDefinition(String definitionId);
     
-    List<WorkflowInstance> getAllInstances();
+    List<?> getAllInstances();
     
-    List<WorkflowInstance> getInstancesByDefinition(String definitionId);
+    List<?> getInstancesByDefinition(String definitionId);
     
-    Optional<WorkflowInstance> getInstance(String instanceId);
+    Optional<?> getInstance(String instanceId);
     
-    WorkflowInstance startWorkflow(String definitionId, Map<String, Object> variables);
+    Object startWorkflow(String definitionId, Map<String, Object> variables);
     
     boolean pauseWorkflow(String instanceId);
     

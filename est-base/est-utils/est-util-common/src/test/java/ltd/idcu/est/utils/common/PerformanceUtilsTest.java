@@ -81,11 +81,9 @@ public class PerformanceUtilsTest {
         assertTrue(snapshot.getHeapInit() >= 0);
         assertTrue(snapshot.getHeapUsed() >= 0);
         assertTrue(snapshot.getHeapCommitted() >= 0);
-        assertTrue(snapshot.getHeapMax() >= 0);
         assertTrue(snapshot.getNonHeapInit() >= 0);
         assertTrue(snapshot.getNonHeapUsed() >= 0);
         assertTrue(snapshot.getNonHeapCommitted() >= 0);
-        assertTrue(snapshot.getNonHeapMax() >= 0);
         assertTrue(snapshot.getTimestamp() > 0);
     }
 

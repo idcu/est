@@ -1,9 +1,9 @@
 package ltd.idcu.est.data.jdbc;
 
-import ltd.idcu.est.features.data.api.SFunction;
-import ltd.idcu.est.features.data.api.Column;
-import ltd.idcu.est.features.data.api.Transient;
-import ltd.idcu.est.features.data.api.DataException;
+import ltd.idcu.est.data.api.SFunction;
+import ltd.idcu.est.data.api.Column;
+import ltd.idcu.est.data.api.Transient;
+import ltd.idcu.est.data.api.DataException;
 
 import java.io.Serializable;
 import java.lang.invoke.SerializedLambda;
