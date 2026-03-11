@@ -1,60 +1,43 @@
-# EST Framework 2.4.0-SNAPSHOT
+# EST Framework 2.4.0
 
 EST 是一个**独立**的现代 Java 框架，采用渐进式架构设计，支持企业级应用开发、AI 集成、微服务架构等多种场景。
-- **版本**: 2.4.0-SNAPSHOT
+- **版本**: 2.4.0
 - **项目**: EST
 - **作者**: idcu
 - **许可证**: MIT License
 
 ---
 
-## 🚧 版本 2.4.0 开发中
+## 🎉 版本 2.4.0 已发布
 
-我们正在积极开发 **EST Framework 2.4.0** 版本！
-
-### 2.4.0 开发目标
-- 🌱 **生态系统建设** - 插件市场、第三方模块认证
-- ☁️ **云原生增强** - Serverless支持完善、微服务治理
-- 🌐 **多语言支持** - Kotlin原生支持、gRPC支持
-- 🛠️ **开发者体验提升** - IntelliJ IDEA插件、VS Code扩展
-
-### 详细信息
-- [2.4.0开发计划](dev-docs/development-plan-2.4.0.md)
-- [开发路线图](dev-docs/roadmap.md)
-
----
-
-## 🎉 版本 2.3.0 已发布
-
-**EST Framework 2.3.0** 已于2026-03-09正式发布！
+**EST Framework 2.4.0** 已于2026-03-10正式发布！这是一个里程碑式的版本，聚焦于**生态系统建设**、**云原生增强**、**多语言支持**和**可观测性完善**。
 
 ### 主要亮点
-- ✨ **AI功能全面增强** - 需求解析器、架构设计器、测试代码生成、RAG能力全面提升
-- 🚀 **性能优化工具套件** - PerformanceUtils、CollectionOptimizerUtils 完整工具集
-- 📊 **完整的性能基准测试** - PerformanceBenchmark 性能基准测试套件
-- ✅ **高测试覆盖率** - 38个单元测试，性能工具类100%覆盖
-- 📚 **丰富的示例代码** - PerformanceOptimizationExample 7个实用示例
+- 🌱 **生态系统建设** - 完整的插件市场和第三方模块认证体系
+- ☁️ **云原生增强** - Serverless支持完善、微服务治理、可观测性
+- 🌐 **多语言支持** - Kotlin原生支持、gRPC支持、Python/Go/TypeScript SDK
+- 📊 **可观测性完善** - Prometheus/ELK/Zipkin/Jaeger集成
+- ✅ **完整的发布准备** - 文档齐全，SDK发布就绪
 
 ### 快速开始
 ```xml
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-core</artifactId>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
 </dependency>
 
 <dependency>
     <groupId>ltd.idcu</groupId>
     <artifactId>est-util-common</artifactId>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 
 ### 详细信息
-- [发布说明](dev-docs/release-notes-2.3.0.md)
-- [变更日志](dev-docs/changelog.md)
+- [发布说明](dev-docs/release-notes-2.4.0.md)
+- [最终发布总结](dev-docs/release-final-summary-2.4.0.md)
 - [开发路线图](dev-docs/roadmap.md)
-- [发布计划](dev-docs/release-plan-2.3.0.md)
 
 ---
 
