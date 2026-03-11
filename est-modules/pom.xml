@@ -27,6 +27,7 @@
         <module>est-extensions</module>
         <!-- <module>est-cloud-group</module> -->
         <!-- <module>est-kotlin-support</module> -->
+        <!-- <module>est-lowcode</module> -->
     </modules>
 
 </project>

@@ -60,6 +60,10 @@
             <groupId>ltd.idcu</groupId>
             <artifactId>est-config-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-util-format-json</artifactId>
+        </dependency>
         <!-- <dependency>
             <groupId>ltd.idcu</groupId>
             <artifactId>est-ai-api</artifactId>

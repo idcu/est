@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>ltd.idcu</groupId>
+        <artifactId>est-lowcode</artifactId>
+        <version>2.4.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>est-lowcode-api</artifactId>
+    <packaging>pom</packaging>
+    <name>EST Low Code API</name>
+    <description>EST Framework Low Code API - 低代码平台API接口定义</description>
+
+    <modules>
+        <module>est-lowcode-flow-api</module>
+        <module>est-lowcode-form-api</module>
+        <module>est-lowcode-ui-api</module>
+        <module>est-lowcode-report-api</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>ltd.idcu</groupId>
+            <artifactId>est-core-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -5,6 +5,7 @@ import ltd.idcu.est.admin.api.ApiResponse;
 import ltd.idcu.est.admin.api.AuthService;
 import ltd.idcu.est.admin.api.LoginLogService;
 import ltd.idcu.est.admin.api.User;
+import ltd.idcu.est.utils.format.json.JsonUtils;
 import ltd.idcu.est.web.api.Request;
 import ltd.idcu.est.web.api.Response;
 import ltd.idcu.est.web.api.Session;
@@ -29,6 +30,24 @@ public class AdminController {
     public void login(Request req, Response res) {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        
+        if (username == null || password == null) {
+            String body = req.getBody();
+            if (body != null && !body.isEmpty()) {
+                try {
+                    Map<String, Object> jsonMap = JsonUtils.parseObject(body);
+                    if (jsonMap != null) {
+                        username = JsonUtils.getString(jsonMap, "username");
+                        password = JsonUtils.getString(jsonMap, "password");
+                    }
+                } catch (Exception e) {
+                    res.setStatus(400);
+                    res.json(ApiResponse.error("Invalid JSON format"));
+                    return;
+                }
+            }
+        }
+        
         String ip = getClientIp(req);
         String userAgent = getUserAgent(req);
         
