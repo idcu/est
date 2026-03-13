@@ -22,7 +22,7 @@ public class EnhancedContainerExample {
     static class ChineseGreetingService implements GreetingService {
         @Override
         public String greet(String name) {
-            return "你好, " + name + "!";
+            return "Nihao, " + name + "!";
         }
     }
 
@@ -77,14 +77,14 @@ public class EnhancedContainerExample {
         container.register(AppService.class, AppService.class);
         
         AppService appService = container.get(AppService.class);
-        System.out.println(appService.getWelcomeMessage("张三"));
+        System.out.println(appService.getWelcomeMessage("ZhangSan"));
         System.out.println();
         
         System.out.println("2. Qualifier Support:");
         GreetingService englishService = container.get(GreetingService.class, "english");
         GreetingService chineseService = container.get(GreetingService.class, "chinese");
         System.out.println("English: " + englishService.greet("John"));
-        System.out.println("Chinese: " + chineseService.greet("李四"));
+        System.out.println("Chinese: " + chineseService.greet("LiSi"));
         System.out.println();
         
         System.out.println("3. Scope Support - Singleton:");
@@ -107,7 +107,7 @@ public class EnhancedContainerExample {
         
         System.out.println("5. Create Method:");
         AppService createdService = container.create(AppService.class);
-        System.out.println(createdService.getWelcomeMessage("王五"));
+        System.out.println(createdService.getWelcomeMessage("WangWu"));
         System.out.println();
         
         System.out.println("6. getIfPresent and contains:");

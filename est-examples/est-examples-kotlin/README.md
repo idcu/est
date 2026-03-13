@@ -1,15 +1,15 @@
-# EST Framework Kotlin 示例
+# EST Framework Kotlin Examples
 
-本目录包含 EST Framework Kotlin 原生支持的示例代码。
+This directory contains example code for EST Framework Kotlin native support.
 
-## 功能特性
+## Features
 
-- **Kotlin DSL** - 优雅的领域特定语言支持
-- **协程集成** - Kotlin协程与EST框架无缝集成
-- **扩展函数** - 丰富的Kotlin扩展函数
-- **空安全优化** - 利用Kotlin空安全特性
+- **Kotlin DSL** - Elegant domain-specific language support
+- **Coroutine Integration** - Seamless integration between Kotlin coroutines and EST Framework
+- **Extension Functions** - Rich Kotlin extension functions
+- **Null Safety Optimization** - Leveraging Kotlin null safety features
 
-## 模块结构
+## Module Structure
 
 ```
 est-examples-kotlin/
@@ -21,45 +21,45 @@ est-examples-kotlin/
 │                   └── est/
 │                       └── examples/
 │                           └── kotlin/
-│                               ├── KotlinDslExample.kt      # Kotlin DSL 示例
-│                               └── KotlinExtensionsExample.kt # 扩展函数示例
+│                               ├── KotlinDslExample.kt      # Kotlin DSL Example
+│                               └── KotlinExtensionsExample.kt # Extension Functions Example
 ├── pom.xml
 └── README.md
 ```
 
-## 快速开始
+## Quick Start
 
-### 前置要求
+### Prerequisites
 
 - JDK 21+
 - Maven 3.8+
 - Kotlin 1.9+
 
-### 运行示例
+### Run Examples
 
 ```bash
-# 进入示例目录
+# Enter example directory
 cd est-examples-kotlin
 
-# 编译项目
+# Compile project
 mvn clean compile
 
-# 运行 Kotlin DSL 示例
+# Run Kotlin DSL example
 mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.kotlin.KotlinDslExample"
 
-# 运行扩展函数示例
+# Run extension functions example
 mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.kotlin.KotlinExtensionsExample"
 ```
 
-## 示例说明
+## Example Description
 
-### 1. Kotlin DSL 示例 (KotlinDslExample.kt)
+### 1. Kotlin DSL Example (KotlinDslExample.kt)
 
-展示如何使用 Kotlin DSL 创建 EST 应用：
+Demonstrates how to create EST applications using Kotlin DSL:
 
 ```kotlin
 val app = estApplication("MyKotlinApp", "1.0.0") {
-    description = "这是一个使用 Kotlin DSL 创建的 EST 应用"
+    description = "This is an EST application created with Kotlin DSL"
     author = "EST Team"
     
     web {
@@ -76,15 +76,15 @@ val app = estApplication("MyKotlinApp", "1.0.0") {
 app.run()
 ```
 
-功能特性：
-- 应用配置 DSL
-- Web 服务配置
-- 路由定义 DSL
-- 流畅的 API 设计
+Features:
+- Application configuration DSL
+- Web service configuration
+- Route definition DSL
+- Fluent API design
 
-### 2. 协程示例 (KotlinDslExample.kt)
+### 2. Coroutine Example (KotlinDslExample.kt)
 
-展示 Kotlin 协程与 EST 框架的集成：
+Demonstrates integration between Kotlin coroutines and EST Framework:
 
 ```kotlin
 import ltd.idcu.est.kotlin.coroutines.estCoroutineScope
@@ -92,54 +92,54 @@ import ltd.idcu.est.kotlin.coroutines.estAsync
 
 runBlocking {
     val job = estCoroutineScope {
-        println("协程执行中...")
+        println("Coroutine executing...")
         delay(500)
     }
     
     val result = estAsync {
-        "协程结果"
+        "Coroutine result"
     }
 }
 ```
 
-功能特性：
-- 自定义协程调度器
-- 协程作用域管理
-- 异步任务执行
-- 超时控制
+Features:
+- Custom coroutine dispatcher
+- Coroutine scope management
+- Asynchronous task execution
+- Timeout control
 
-### 3. 扩展函数示例 (KotlinExtensionsExample.kt)
+### 3. Extension Functions Example (KotlinExtensionsExample.kt)
 
-展示 EST 框架提供的 Kotlin 扩展函数：
+Demonstrates Kotlin extension functions provided by EST Framework:
 
 ```kotlin
-// 集合扩展
+// Collection extensions
 val list = listOf(1, 2, 3, 4, 5)
 val even = list.filter { it % 2 == 0 }
 val doubled = list.map { it * 2 }
 
-// 字符串扩展
+// String extensions
 val str = "Hello, EST!"
 val reversed = str.reversed()
 val uppercase = str.uppercase()
 
-// 安全类型转换
+// Safe type conversion
 val safeInt = "123".toIntOrNull() ?: 0
 ```
 
-## 相关文档
+## Related Documentation
 
-- [Kotlin DSL 指南](../../docs/guides/kotlin-dsl.md)
-- [协程集成文档](../../docs/guides/coroutines.md)
-- [扩展函数参考](../../docs/guides/extensions.md)
-- [EST Kotlin 支持模块](../../est-modules/est-kotlin-support/README.md)
+- [Kotlin DSL Guide](../../docs/guides/kotlin-dsl.md)
+- [Coroutine Integration Documentation](../../docs/guides/coroutines.md)
+- [Extension Functions Reference](../../docs/guides/extensions.md)
+- [EST Kotlin Support Module](../../est-modules/est-kotlin-support/README.md)
 
-## 技术栈
+## Tech Stack
 
 - **Kotlin**: 1.9.20
 - **Kotlin Coroutines**: 1.7.3
 - **EST Framework**: 2.4.0-SNAPSHOT
 
-## 许可证
+## License
 
 MIT License

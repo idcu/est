@@ -5,13 +5,13 @@ public class Main {
         System.out.println("EST Framework Basic Examples");
         System.out.println("==============================");
         
-        // 运行核心功能示例
+        // Run core feature example
         CoreExample.run();
         
-        // 运行设计模式示例
+        // Run design pattern example
         PatternExample.run();
         
-        // 运行工具类示�?
+        // Run utils example
         UtilsExample.run();
         
         System.out.println("\n==============================");

@@ -38,8 +38,9 @@
         <module>est-base</module>
         <module>est-modules</module>
         <module>est-app</module>
-        <!-- <module>est-starter-monomer</module> -->
-        <!-- <module>est-tools</module> -->
+        <module>est-demo</module>
+        <module>est-starter-monomer</module>
+        <module>est-tools</module>
         <!-- <module>est-examples</module> -->
     </modules>
 

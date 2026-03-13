@@ -38,67 +38,67 @@ public class EnhancedGatewayApp {
         ConfigEncryptor encryptor = new AesConfigEncryptor("my-secret-key-123456");
         ConfigVersionManager versionManager = new DefaultConfigVersionManager();
 
-        System.out.println("=== 1. 配置加密示例 ===");
+        System.out.println("=== 1. Config Encryption Example ===");
         String plainPassword = "db-password-123";
         String encryptedPassword = encryptor.encrypt(plainPassword);
-        System.out.println("明文密码: " + plainPassword);
-        System.out.println("加密密码: " + encryptedPassword);
-        System.out.println("解密密码: " + encryptor.decrypt(encryptedPassword) + "\n");
+        System.out.println("Plain password: " + plainPassword);
+        System.out.println("Encrypted password: " + encryptedPassword);
+        System.out.println("Decrypted password: " + encryptor.decrypt(encryptedPassword) + "\n");
 
-        System.out.println("=== 2. 配置版本管理示例 ===");
+        System.out.println("=== 2. Config Version Management Example ===");
         Map<String, Object> configV1 = new HashMap<>();
         configV1.put("gateway.port", 8080);
         configV1.put("user.service.url", "http://localhost:8081");
-        ConfigVersion v1 = versionManager.createVersion("gateway-config", configV1, "初始配置");
-        System.out.println("创建版本: " + v1.getVersionId());
+        ConfigVersion v1 = versionManager.createVersion("gateway-config", configV1, "Initial config");
+        System.out.println("Created version: " + v1.getVersionId());
 
         Map<String, Object> configV2 = new HashMap<>();
         configV2.put("gateway.port", 8080);
         configV2.put("user.service.url", "http://localhost:8081");
         configV2.put("order.service.url", "http://localhost:8082");
-        ConfigVersion v2 = versionManager.createVersion("gateway-config", configV2, "添加订单服务");
-        System.out.println("创建版本: " + v2.getVersionId());
+        ConfigVersion v2 = versionManager.createVersion("gateway-config", configV2, "Add order service");
+        System.out.println("Created version: " + v2.getVersionId());
 
         List<ConfigVersion> versions = versionManager.listVersions("gateway-config", 0, 10);
-        System.out.println("版本列表: " + versions.size() + " 个版本\n");
+        System.out.println("Version list: " + versions.size() + " versions\n");
 
-        System.out.println("=== 3. 配置中心持久化示�?===");
+        System.out.println("=== 3. Config Center Persistence Example ===");
         configCenter.setProperty("app.name", "est-gateway");
         configCenter.setProperty("app.version", "2.1.0");
         configCenter.setProperty("feature.persistence", "enabled");
         String configPath = System.getProperty("java.io.tmpdir") + "/gateway-config.yaml";
         configCenter.saveToYaml(configPath);
-        System.out.println("配置已保存到: " + configPath);
+        System.out.println("Config saved to: " + configPath);
         ConfigCenter restoredConfig = new DefaultConfigCenter();
         restoredConfig.loadFromYaml(configPath);
-        System.out.println("从文件恢复的配置: app.name=" + restoredConfig.getProperty("app.name"));
+        System.out.println("Config restored from file: app.name=" + restoredConfig.getProperty("app.name"));
         System.out.println();
 
-        System.out.println("=== 4. 服务发现持久化示�?===");
+        System.out.println("=== 4. Service Discovery Persistence Example ===");
         ServiceRegistry serviceRegistry = new DefaultServiceRegistry();
         serviceRegistry.register(new ServiceInstance("user-service", "inst-1", "localhost", 8081));
         serviceRegistry.register(new ServiceInstance("order-service", "inst-1", "localhost", 8082));
         String servicePath = System.getProperty("java.io.tmpdir") + "/service-registry.json";
         serviceRegistry.saveToJson(servicePath);
-        System.out.println("服务注册表已保存�? " + servicePath);
+        System.out.println("Service registry saved to: " + servicePath);
         ServiceRegistry restoredRegistry = new DefaultServiceRegistry();
         restoredRegistry.loadFromJson(servicePath);
-        System.out.println("从文件恢复的服务数量: " + restoredRegistry.getServiceIds().size());
+        System.out.println("Services restored from file: " + restoredRegistry.getServiceIds().size());
         System.out.println();
 
-        System.out.println("=== 5. 熔断器持久化示例 ===");
+        System.out.println("=== 5. Circuit Breaker Persistence Example ===");
         CircuitBreakerRegistry cbRegistry = new DefaultCircuitBreakerRegistry();
         cbRegistry.create("user-service");
         cbRegistry.create("order-service");
         String cbPath = System.getProperty("java.io.tmpdir") + "/circuit-breakers.json";
         ((DefaultCircuitBreakerRegistry) cbRegistry).saveToJson(cbPath);
-        System.out.println("熔断器注册表已保存到: " + cbPath);
+        System.out.println("Circuit breaker registry saved to: " + cbPath);
         CircuitBreakerRegistry restoredCbRegistry = new DefaultCircuitBreakerRegistry();
         ((DefaultCircuitBreakerRegistry) restoredCbRegistry).loadFromJson(cbPath);
-        System.out.println("从文件恢复的熔断器数�? " + restoredCbRegistry.getAll().size());
+        System.out.println("Circuit breakers restored from file: " + restoredCbRegistry.getAll().size());
         System.out.println();
 
-        System.out.println("=== 6. 追踪数据持久化示�?===");
+        System.out.println("=== 6. Tracing Data Persistence Example ===");
         String tracePath = System.getProperty("java.io.tmpdir") + "/traces.jsonl";
         FileSpanExporter spanExporter = new FileSpanExporter(tracePath);
         TracerRegistry tracerRegistry = new DefaultTracerRegistry();
@@ -108,10 +108,10 @@ public class EnhancedGatewayApp {
         tracer.addTag(span, "method", "GET");
         tracer.endSpan(span, true);
         spanExporter.flush();
-        System.out.println("追踪数据已保存到: " + tracePath);
+        System.out.println("Tracing data saved to: " + tracePath);
         System.out.println();
 
-        System.out.println("=== 7. 创建增强型网�?===");
+        System.out.println("=== 7. Create Enhanced Gateway ===");
         Gateway gateway = Gateway.create()
             .withLogging()
             .withCors()

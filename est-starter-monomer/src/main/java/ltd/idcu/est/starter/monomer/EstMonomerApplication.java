@@ -4,6 +4,7 @@ import ltd.idcu.est.web.Web;
 import ltd.idcu.est.web.api.WebApplication;
 import ltd.idcu.est.web.api.Request;
 import ltd.idcu.est.web.api.Response;
+import ltd.idcu.est.web.api.Middleware;
 import ltd.idcu.est.logging.api.Logger;
 import ltd.idcu.est.logging.console.ConsoleLogs;
 import ltd.idcu.est.logging.file.FileLogs;
@@ -12,13 +13,15 @@ import ltd.idcu.est.cache.memory.MemoryCache;
 import ltd.idcu.est.event.api.EventBus;
 import ltd.idcu.est.event.local.LocalEventBus;
 import ltd.idcu.est.scheduler.api.Scheduler;
-import ltd.idcu.est.scheduler.fixed.FixedScheduler;
-import ltd.idcu.est.monitor.api.Monitor;
+import ltd.idcu.est.scheduler.api.Task;
+import ltd.idcu.est.scheduler.fixed.FixedRateScheduler;
+import ltd.idcu.est.scheduler.fixed.FixedRateSchedulers;
 import ltd.idcu.est.monitor.jvm.JvmMonitor;
 import ltd.idcu.est.monitor.system.SystemMonitor;
 import ltd.idcu.est.data.api.Repository;
 import ltd.idcu.est.data.memory.MemoryRepository;
 
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,29 +30,32 @@ import java.util.concurrent.atomic.AtomicLong;
 public class EstMonomerApplication {
 
     private static final Logger consoleLogger = ConsoleLogs.getLogger(EstMonomerApplication.class);
-    private static final Logger fileLogger = FileLogs.getLogger("est-monomer.log");
+    private static final Logger fileLogger = FileLogs.getLogger("est-monomer.log", new File("est-monomer.log"));
     
-    private static final Cache<String, Object> memoryCache = new MemoryCache<>();
+    private static final MemoryCache<String, Object> memoryCache = new MemoryCache<>();
     
     private static final EventBus localEventBus = new LocalEventBus();
     
-    private static final Scheduler scheduler = new FixedScheduler();
+    private static final Scheduler scheduler = FixedRateSchedulers.create();
     
-    private static final Monitor jvmMonitor = new JvmMonitor();
-    private static final Monitor systemMonitor = new SystemMonitor();
+    private static final JvmMonitor jvmMonitor = JvmMonitor.getInstance();
+    private static final SystemMonitor systemMonitor = SystemMonitor.getInstance();
     
     private static final AtomicInteger requestCount = new AtomicInteger(0);
     private static final AtomicLong totalRequestTime = new AtomicLong(0);
 
     static {
-        localEventBus.subscribe(SystemEvent.class, event -> {
-            consoleLogger.info("收到系统事件: {} - {}", event.getType(), event.getMessage());
-            fileLogger.info("系统事件 [{}]: {}", event.getType(), event.getMessage());
+        localEventBus.subscribe("system.event", (event, data) -> {
+            if (data instanceof SystemEvent systemEvent) {
+                consoleLogger.info("收到系统事件: {} - {}", systemEvent.getType(), systemEvent.getMessage());
+                fileLogger.info("系统事件 [{}]: {}", systemEvent.getType(), systemEvent.getMessage());
+            }
         });
         
-        scheduler.scheduleAtFixedRate(() -> {
+        Task logTask = FixedRateSchedulers.wrap(() -> {
             consoleLogger.debug("定时任务执行 - 当前请求数: {}", requestCount.get());
-        }, 10, 30, TimeUnit.SECONDS);
+        });
+        scheduler.scheduleAtFixedRate(logTask, 10, 30, TimeUnit.SECONDS);
         
         memoryCache.put("system:startup", System.currentTimeMillis());
     }
@@ -64,14 +70,40 @@ public class EstMonomerApplication {
 
         WebApplication app = Web.create("EST Monomer", "2.3.0-SNAPSHOT");
 
-        app.use((req, res, next) -> {
-            requestCount.incrementAndGet();
-            long startTime = System.currentTimeMillis();
-            consoleLogger.info("Request: {} {}", req.getMethod(), req.getPath());
-            next.handle();
-            long duration = System.currentTimeMillis() - startTime;
-            totalRequestTime.addAndGet(duration);
-            consoleLogger.info("Response: {} {} - {}ms", req.getMethod(), req.getPath(), duration);
+        app.use(new Middleware() {
+            @Override
+            public String getName() {
+                return "request-logger";
+            }
+
+            @Override
+            public int getPriority() {
+                return 0;
+            }
+
+            @Override
+            public boolean before(Request req, Response res) {
+                requestCount.incrementAndGet();
+                long startTime = System.currentTimeMillis();
+                req.setAttribute("startTime", startTime);
+                consoleLogger.info("Request: {} {}", req.getMethod(), req.getPath());
+                return true;
+            }
+
+            @Override
+            public void after(Request req, Response res) {
+                Long startTime = (Long) req.getAttribute("startTime");
+                if (startTime != null) {
+                    long duration = System.currentTimeMillis() - startTime;
+                    totalRequestTime.addAndGet(duration);
+                    consoleLogger.info("Response: {} {} - {}ms", req.getMethod(), req.getPath(), duration);
+                }
+            }
+
+            @Override
+            public boolean isGlobal() {
+                return true;
+            }
         });
 
         app.routes(router -> {

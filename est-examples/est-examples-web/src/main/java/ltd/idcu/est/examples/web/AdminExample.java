@@ -8,7 +8,7 @@ public class AdminExample {
     public static void main(String[] args) {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(80));
-        System.out.println("EST Admin Console - 管理后台示例");
+        System.out.println("EST Admin Console - Admin Backend Example");
         System.out.println("=".repeat(80));
         
         AdminApplication adminApp = Admin.create("EST Admin Console", "1.0.0");

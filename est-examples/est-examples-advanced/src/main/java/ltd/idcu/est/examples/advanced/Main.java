@@ -5,13 +5,13 @@ public class Main {
         System.out.println("EST Framework Advanced Examples");
         System.out.println("===============================");
         
-        // 运行自定义扩展示�?
+        // Run custom extension example
         CustomExtensionExample.run();
         
-        // 运行多模块集成示�?
+        // Run multi-module integration example
         MultiModuleIntegrationExample.run();
         
-        // 运行性能优化示例
+        // Run performance optimization example
         PerformanceOptimizationExample.run();
         
         System.out.println("\n===============================");

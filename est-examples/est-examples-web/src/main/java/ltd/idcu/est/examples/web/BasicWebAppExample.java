@@ -17,16 +17,16 @@ public class BasicWebAppExample {
     
     public static void main(String[] args) {
         System.out.println("=".repeat(60));
-        System.out.println("EST Web 框架 - 多种实现方式示例");
+        System.out.println("EST Web Framework - Multiple Implementation Examples");
         System.out.println("=".repeat(60));
-        System.out.println("\n请选择要运行的示例�?);
-        System.out.println("  1. 最简 Hello World（适合入门�?);
-        System.out.println("  2. Lambda 表达式路由（现代写法�?);
-        System.out.println("  3. 控制器模式（MVC 架构�?);
-        System.out.println("  4. REST API 模式");
-        System.out.println("  5. 完整示例（包含中间件、会话、模板等�?);
-        System.out.println("\n本演示将运行�?1 个示例（最简 Hello World�?);
-        System.out.println("如需运行其他示例，请修改 main 方法中的调用\n");
+        System.out.println("\nPlease select which example to run:");
+        System.out.println("  1. Simplest Hello World (great for beginners)");
+        System.out.println("  2. Lambda Expression Routing (modern style)");
+        System.out.println("  3. Controller Pattern (MVC architecture)");
+        System.out.println("  4. REST API Pattern");
+        System.out.println("  5. Complete Example (with middleware, session, templates, etc.)");
+        System.out.println("\nThis demo will run the 1st example (Simplest Hello World)");
+        System.out.println("To run other examples, please modify the call in main method\n");
         
         simplestHelloWorld();
     }
@@ -38,25 +38,25 @@ public class BasicWebAppExample {
     public static void simplestHelloWorld() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("【方式一】最简 Hello World");
+        System.out.println("[Mode 1] Simplest Hello World");
         System.out.println("=".repeat(60));
-        System.out.println("\n这是最简单的 Web 应用，只需 3 行代码！");
-        System.out.println("适合快速了�?EST Web 框架的核心概念\n");
+        System.out.println("\nThis is the simplest web application, just 3 lines of code!");
+        System.out.println("Great for quickly understanding EST Web framework core concepts\n");
         
-        System.out.println("代码步骤�?);
-        System.out.println("  1. 创建 Web 应用");
-        System.out.println("  2. 定义路由（当访问 / 时返回什么）");
-        System.out.println("  3. 启动服务器\n");
+        System.out.println("Code Steps:");
+        System.out.println("  1. Create Web application");
+        System.out.println("  2. Define route (what to return when accessing /)");
+        System.out.println("  3. Start server\n");
         
-        WebApplication app = Web.create("我的第一�?Web 应用", "1.0.0");
+        WebApplication app = Web.create("My First Web App", "1.0.0");
         
         app.get("/", (req, res) -> {
-            res.send("Hello, World! 你好，世界！");
+            res.send("Hello, World!");
         });
         
         app.get("/api/greeting", (req, res) -> {
             res.json(Map.of(
-                "message", "欢迎使用 EST Web 框架�?,
+                "message", "Welcome to EST Web Framework",
                 "version", "2.1.0",
                 "status", "success"
             ));
@@ -64,11 +64,11 @@ public class BasicWebAppExample {
         
         app.onStartup(() -> {
             System.out.println("\n".repeat(2));
-            System.out.println("�?服务器启动成功！");
-            System.out.println("\n请在浏览器中访问�?);
+            System.out.println("[X] Server started successfully!");
+            System.out.println("\nPlease visit in your browser:");
             System.out.println("  - http://localhost:8080          (Hello World)");
             System.out.println("  - http://localhost:8080/api/greeting  (JSON API)");
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n[X] Press Ctrl+C to stop server");
             System.out.println("=".repeat(60));
         });
         
@@ -78,20 +78,20 @@ public class BasicWebAppExample {
     public static void lambdaRoutingExample() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("【方式二】Lambda 表达式路�?);
+        System.out.println("[Mode 2] Lambda Expression Routing");
         System.out.println("=".repeat(60));
-        System.out.println("\n使用 Lambda 表达式可以更灵活地定义路�?);
-        System.out.println("支持路径参数、查询参数、表单数据等\n");
+        System.out.println("\nUsing Lambda expressions allows more flexible route definition");
+        System.out.println("Supports path parameters, query parameters, form data, etc.\n");
         
-        WebApplication app = Web.create("Lambda 路由示例", "1.0.0");
+        WebApplication app = Web.create("Lambda Routing Example", "1.0.0");
         
-        System.out.println("定义的路由：");
-        System.out.println("  - GET  /                    - 首页");
-        System.out.println("  - GET  /hello/:name         - 带路径参数的问�?);
-        System.out.println("  - GET  /user                 - 带查询参�?);
-        System.out.println("  - POST /login                - 处理表单提交");
+        System.out.println("Defined routes:");
+        System.out.println("  - GET  /                    - Homepage");
+        System.out.println("  - GET  /hello/:name         - Greeting with path parameter");
+        System.out.println("  - GET  /user                 - With query parameters");
+        System.out.println("  - POST /login                - Handle form submission");
         System.out.println("  - GET  /api/users            - REST API");
-        System.out.println("  - GET  /api/users/:id        - REST API（详情）");
+        System.out.println("  - GET  /api/users/:id        - REST API (detail)");
         System.out.println();
         
         app.get("/", (req, res) -> {
@@ -99,7 +99,7 @@ public class BasicWebAppExample {
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>EST Web 示例</title>
+                    <title>EST Web Example</title>
                     <style>
                         body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
                         h1 { color: #333; }
@@ -108,13 +108,13 @@ public class BasicWebAppExample {
                     </style>
                 </head>
                 <body>
-                    <h1>欢迎使用 EST Web 框架�?/h1>
-                    <p>这是一个使�?Lambda 表达式定义路由的示例�?/p>
+                    <h1>Welcome to EST Web Framework</h1>
+                    <p>This is an example using Lambda expressions to define routes</p>
                     <div class="nav">
-                        <a href="/hello/小明">问候小�?/a>
-                        <a href="/hello/小红">问候小�?/a>
-                        <a href="/user?id=1001&name=张三">查看用户</a>
-                        <a href="/api/users">查看用户列表 API</a>
+                        <a href="/hello/John">Greet John</a>
+                        <a href="/hello/Jane">Greet Jane</a>
+                        <a href="/user?id=1001&name=John">View User</a>
+                        <a href="/api/users">View User List API</a>
                     </div>
                 </body>
                 </html>
@@ -123,29 +123,29 @@ public class BasicWebAppExample {
         
         app.get("/hello/:name", (req, res) -> {
             String name = req.param("name");
-            String title = req.queryParam("title", "同学");
+            String title = req.queryParam("title", "Friend");
             res.html("""
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>问�?/title>
+                    <title>Greeting</title>
                     <style>
                         body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; }
                         h1 { color: #007bff; }
                     </style>
                 </head>
                 <body>
-                    <h1>你好�?s %s�?/h1>
-                    <p>欢迎来到 EST Web 世界�?/p>
-                    <p><a href="/">返回首页</a></p>
+                    <h1>Hello, %s %s!</h1>
+                    <p>Welcome to the EST Web World!</p>
+                    <p><a href="/">Back to Homepage</a></p>
                 </body>
                 </html>
                 """.formatted(title, name));
         });
         
         app.get("/user", (req, res) -> {
-            String id = req.queryParam("id", "未知");
-            String name = req.queryParam("name", "未知");
+            String id = req.queryParam("id", "Unknown");
+            String name = req.queryParam("name", "Unknown");
             res.json(Map.of(
                 "id", id,
                 "name", name,
@@ -160,13 +160,13 @@ public class BasicWebAppExample {
             if ("admin".equals(username) && "123456".equals(password)) {
                 res.json(Map.of(
                     "success", true,
-                    "message", "登录成功",
+                    "message", "Login successful",
                     "user", username
                 ));
             } else {
                 res.status(401).json(Map.of(
                     "success", false,
-                    "message", "用户名或密码错误"
+                    "message", "Invalid username or password"
                 ));
             }
         });
@@ -176,9 +176,9 @@ public class BasicWebAppExample {
                 r.get("/users", (req, res) -> {
                     res.json(Map.of(
                         "users", new Object[]{
-                            Map.of("id", 1, "name", "张三", "age", 25),
-                            Map.of("id", 2, "name", "李四", "age", 30),
-                            Map.of("id", 3, "name", "王五", "age", 28)
+                            Map.of("id", 1, "name", "John", "age", 25),
+                            Map.of("id", 2, "name", "Jane", "age", 30),
+                            Map.of("id", 3, "name", "Bob", "age", 28)
                         },
                         "total", 3
                     ));
@@ -188,7 +188,7 @@ public class BasicWebAppExample {
                     String id = req.param("id");
                     res.json(Map.of(
                         "id", Integer.parseInt(id),
-                        "name", "用户" + id,
+                        "name", "User" + id,
                         "email", "user" + id + "@example.com",
                         "role", "user"
                     ));
@@ -197,9 +197,9 @@ public class BasicWebAppExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n�?服务器启动成功！");
-            System.out.println("\n访问地址：http://localhost:8080");
-            System.out.println("�?Ctrl+C 停止服务�?);
+            System.out.println("\n[X] Server started successfully!");
+            System.out.println("\nAccess URL: http://localhost:8080");
+            System.out.println("[X] Press Ctrl+C to stop server");
             System.out.println("=".repeat(60));
         });
         
@@ -209,12 +209,12 @@ public class BasicWebAppExample {
     public static void controllerExample() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("【方式三】控制器模式（MVC 架构�?);
+        System.out.println("[Mode 3] Controller Pattern (MVC Architecture)");
         System.out.println("=".repeat(60));
-        System.out.println("\n对于大型应用，推荐使用控制器模式");
-        System.out.println("这种方式将相关的路由组织在一个控制器类中，代码更清晰\n");
+        System.out.println("\nFor large applications, we recommend using controller pattern");
+        System.out.println("This way organizes related routes in one controller class, cleaner code\n");
         
-        WebApplication app = Web.create("控制器示�?, "1.0.0");
+        WebApplication app = Web.create("Controller Example", "1.0.0");
         
         app.use(new LoggingMiddleware());
         
@@ -228,12 +228,12 @@ public class BasicWebAppExample {
         app.post("/users", userController::create);
         
         app.onStartup(() -> {
-            System.out.println("\n�?服务器启动成功！");
-            System.out.println("\n访问地址�?);
+            System.out.println("\n[X] Server started successfully!");
+            System.out.println("\nAccess URLs:");
             System.out.println("  - http://localhost:8080");
             System.out.println("  - http://localhost:8080/about");
             System.out.println("  - http://localhost:8080/users");
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n[X] Press Ctrl+C to stop server");
             System.out.println("=".repeat(60));
         });
         
@@ -243,12 +243,12 @@ public class BasicWebAppExample {
     public static void restApiExample() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("【方式四】REST API 模式");
+        System.out.println("[Mode 4] REST API Pattern");
         System.out.println("=".repeat(60));
-        System.out.println("\n使用 AbstractRestController 创建 RESTful API");
-        System.out.println("提供标准�?CRUD 操作接口\n");
+        System.out.println("\nUsing AbstractRestController to create RESTful API");
+        System.out.println("Provides standard CRUD operation interfaces\n");
         
-        WebApplication app = Web.create("REST API 示例", "1.0.0");
+        WebApplication app = Web.create("REST API Example", "1.0.0");
         
         app.use(new LoggingMiddleware());
         app.use(new PerformanceMonitorMiddleware());
@@ -266,14 +266,14 @@ public class BasicWebAppExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n�?REST API 服务器启动成功！");
-            System.out.println("\n可用�?API 端点�?);
-            System.out.println("  - GET    /api/v1/users       - 获取用户列表");
-            System.out.println("  - GET    /api/v1/users/:id   - 获取单个用户");
-            System.out.println("  - POST   /api/v1/users       - 创建用户");
-            System.out.println("  - PUT    /api/v1/users/:id   - 更新用户");
-            System.out.println("  - DELETE /api/v1/users/:id   - 删除用户");
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n[X] REST API server started successfully!");
+            System.out.println("\nAvailable API endpoints:");
+            System.out.println("  - GET    /api/v1/users       - Get user list");
+            System.out.println("  - GET    /api/v1/users/:id   - Get single user");
+            System.out.println("  - POST   /api/v1/users       - Create user");
+            System.out.println("  - PUT    /api/v1/users/:id   - Update user");
+            System.out.println("  - DELETE /api/v1/users/:id   - Delete user");
+            System.out.println("\n[X] Press Ctrl+C to stop server");
             System.out.println("=".repeat(60));
         });
         
@@ -283,17 +283,17 @@ public class BasicWebAppExample {
     public static void completeExample() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("【方式五】完整示�?);
+        System.out.println("[Mode 5] Complete Example");
         System.out.println("=".repeat(60));
-        System.out.println("\n展示 Web 框架的完整功能：");
-        System.out.println("  - 中间件（日志、性能监控�?);
-        System.out.println("  - 会话管理");
-        System.out.println("  - 静态文件服�?);
-        System.out.println("  - 模板引擎");
-        System.out.println("  - 错误处理");
+        System.out.println("\nDemonstrating complete web framework features:");
+        System.out.println("  - Middleware (logging, performance monitoring)");
+        System.out.println("  - Session management");
+        System.out.println("  - Static file serving");
+        System.out.println("  - Template engine");
+        System.out.println("  - Error handling");
         System.out.println();
         
-        WebApplication app = Web.create("完整 Web 应用", "1.0.0");
+        WebApplication app = Web.create("Complete Web App", "1.0.0");
         
         app.use(new LoggingMiddleware());
         app.use(new PerformanceMonitorMiddleware());
@@ -306,7 +306,7 @@ public class BasicWebAppExample {
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>EST 完整示例</title>
+                    <title>EST Complete Example</title>
                     <style>
                         body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
                         .card { border: 1px solid #ddd; padding: 20px; margin: 10px 0; border-radius: 5px; }
@@ -315,18 +315,18 @@ public class BasicWebAppExample {
                     </style>
                 </head>
                 <body>
-                    <h1>EST Web 框架 - 完整示例</h1>
+                    <h1>EST Web Framework - Complete Example</h1>
                     
                     <div class="card info">
-                        <h3>会话信息</h3>
-                        <p>这是你第 %d 次访问本页面</p>
+                        <h3>Session Information</h3>
+                        <p>This is your %d visit to this page</p>
                     </div>
                     
                     <div class="card">
-                        <h3>功能演示</h3>
+                        <h3>Feature Demonstration</h3>
                         <ul>
-                            <li><a href="/api/status">查看 API 状�?/a></li>
-                            <li><a href="/error">测试错误处理</a></li>
+                            <li><a href="/api/status">View API Status</a></li>
+                            <li><a href="/error">Test Error Handling</a></li>
                         </ul>
                     </div>
                 </body>
@@ -344,7 +344,7 @@ public class BasicWebAppExample {
         });
         
         app.get("/error", (req, res) -> {
-            throw new RuntimeException("这是一个测试错误，用于演示错误处理");
+            throw new RuntimeException("This is a test error for demonstrating error handling");
         });
         
         app.onError((req, res, error) -> {
@@ -356,9 +356,9 @@ public class BasicWebAppExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n�?完整 Web 应用启动成功�?);
-            System.out.println("\n访问地址：http://localhost:8080");
-            System.out.println("�?Ctrl+C 停止服务�?);
+            System.out.println("\n[X] Complete Web App started successfully!");
+            System.out.println("\nAccess URL: http://localhost:8080");
+            System.out.println("[X] Press Ctrl+C to stop server");
             System.out.println("=".repeat(60));
         });
         
@@ -373,7 +373,7 @@ class HomeController extends AbstractController {
             <!DOCTYPE html>
             <html>
             <head>
-                <title>首页</title>
+                <title>Home</title>
                 <style>
                     body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
                     nav a { margin: 0 10px; color: #007bff; }
@@ -381,12 +381,12 @@ class HomeController extends AbstractController {
             </head>
             <body>
                 <nav>
-                    <a href="/">首页</a>
-                    <a href="/about">关于</a>
-                    <a href="/users">用户</a>
+                    <a href="/">Home</a>
+                    <a href="/about">About</a>
+                    <a href="/users">Users</a>
                 </nav>
-                <h1>欢迎来到首页�?/h1>
-                <p>这是使用控制器模式构建的 Web 应用�?/p>
+                <h1>Welcome to Homepage</h1>
+                <p>This is a web application built with controller pattern</p>
             </body>
             </html>
             """);
@@ -397,7 +397,7 @@ class HomeController extends AbstractController {
             <!DOCTYPE html>
             <html>
             <head>
-                <title>关于我们</title>
+                <title>About Us</title>
                 <style>
                     body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
                     nav a { margin: 0 10px; color: #007bff; }
@@ -405,13 +405,13 @@ class HomeController extends AbstractController {
             </head>
             <body>
                 <nav>
-                    <a href="/">首页</a>
-                    <a href="/about">关于</a>
-                    <a href="/users">用户</a>
+                    <a href="/">Home</a>
+                    <a href="/about">About</a>
+                    <a href="/users">Users</a>
                 </nav>
-                <h1>关于我们</h1>
-                <p>EST 是一个零依赖的现�?Java Web 框架�?/p>
-                <p>简单、高效、易于学习！</p>
+                <h1>About Us</h1>
+                <p>EST is a zero-dependency modern Java Web framework</p>
+                <p>Simple, efficient, and easy to learn!</p>
             </body>
             </html>
             """);
@@ -423,9 +423,9 @@ class UserController extends AbstractController {
     public void list(Request req, Response res) {
         res.json(Map.of(
             "users", new Object[]{
-                Map.of("id", 1, "name", "张三"),
-                Map.of("id", 2, "name", "李四"),
-                Map.of("id", 3, "name", "王五")
+                Map.of("id", 1, "name", "John"),
+                Map.of("id", 2, "name", "Jane"),
+                Map.of("id", 3, "name", "Bob")
             }
         ));
     }
@@ -434,7 +434,7 @@ class UserController extends AbstractController {
         String id = req.param("id");
         res.json(Map.of(
             "id", id,
-            "name", "用户" + id
+            "name", "User" + id
         ));
     }
     
@@ -442,7 +442,7 @@ class UserController extends AbstractController {
         String name = req.formParam("name");
         res.status(201).json(Map.of(
             "success", true,
-            "message", "用户创建成功",
+            "message", "User created successfully",
             "name", name
         ));
     }
@@ -454,8 +454,8 @@ class UserRestController extends AbstractRestController {
         res.json(Map.of(
             "success", true,
             "data", new Object[]{
-                Map.of("id", 1, "name", "张三", "email", "zhangsan@example.com"),
-                Map.of("id", 2, "name", "李四", "email", "lisi@example.com")
+                Map.of("id", 1, "name", "John", "email", "john@example.com"),
+                Map.of("id", 2, "name", "Jane", "email", "jane@example.com")
             },
             "total", 2
         ));
@@ -467,7 +467,7 @@ class UserRestController extends AbstractRestController {
             "success", true,
             "data", Map.of(
                 "id", Integer.parseInt(id),
-                "name", "用户" + id,
+                "name", "User" + id,
                 "email", "user" + id + "@example.com",
                 "createdAt", System.currentTimeMillis()
             )
@@ -475,12 +475,12 @@ class UserRestController extends AbstractRestController {
     }
     
     public void create(Request req, Response res) {
-        String name = req.formParam("name", "未命名用�?);
+        String name = req.formParam("name", "Unnamed User");
         String email = req.formParam("email", "");
         
         res.status(201).json(Map.of(
             "success", true,
-            "message", "用户创建成功",
+            "message", "User created successfully",
             "data", Map.of(
                 "id", 100,
                 "name", name,
@@ -495,7 +495,7 @@ class UserRestController extends AbstractRestController {
         
         res.json(Map.of(
             "success", true,
-            "message", "用户更新成功",
+            "message", "User updated successfully",
             "data", Map.of(
                 "id", Integer.parseInt(id),
                 "name", name
@@ -508,7 +508,7 @@ class UserRestController extends AbstractRestController {
         
         res.json(Map.of(
             "success", true,
-            "message", "用户删除成功",
+            "message", "User deleted successfully",
             "deletedId", id
         ));
     }

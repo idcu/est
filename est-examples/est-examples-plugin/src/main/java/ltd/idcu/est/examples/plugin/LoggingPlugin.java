@@ -17,10 +17,10 @@ public class LoggingPlugin extends AbstractPlugin {
         super(PluginInfo.builder()
                 .name("logging-plugin")
                 .version("1.0.0")
-                .description("一个日志记录插件，展示插件状态和属性管理")
+                .description("A logging plugin demonstrating plugin state and attribute management")
                 .author("EST Team")
                 .mainClass(LoggingPlugin.class.getName())
-                .category("工具")
+                .category("Utility")
                 .tags("logging", "utility", "example")
                 .minFrameworkVersion("2.3.0")
                 .build());
@@ -28,24 +28,24 @@ public class LoggingPlugin extends AbstractPlugin {
 
     @Override
     public void onLoad() {
-        log("插件已加载");
+        log("Plugin loaded");
         setAttribute("loadTime", System.currentTimeMillis());
     }
 
     @Override
     public void onEnable() {
-        log("插件已启用");
+        log("Plugin enabled");
         setAttribute("enableTime", System.currentTimeMillis());
     }
 
     @Override
     public void onDisable() {
-        log("插件已禁用");
+        log("Plugin disabled");
     }
 
     @Override
     public void onUnload() {
-        log("插件已卸载");
+        log("Plugin unloaded");
     }
 
     public void log(String message) {
@@ -65,7 +65,7 @@ public class LoggingPlugin extends AbstractPlugin {
 
     public void clearLogs() {
         logs.clear();
-        log("日志已清空");
+        log("Logs cleared");
     }
 
     public int getLogCount() {

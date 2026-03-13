@@ -16,13 +16,13 @@ public class SimpleDataExample {
     private static final Logger logger = ConsoleLogs.getLogger(SimpleDataExample.class);
     
     public static void main(String[] args) {
-        System.out.println("=== EST 数据访问示例 ===");
+        System.out.println("=== EST Data Access Example ===");
         
         basicCRUDExample();
         queryExample();
         cacheIntegrationExample();
         
-        System.out.println("\n�?所有示例完成！");
+        System.out.println("\n[X] All examples complete!");
     }
     
     @Entity(tableName = "products")
@@ -49,12 +49,12 @@ public class SimpleDataExample {
         
         @Override
         public String toString() {
-            return name + " ¥" + price + " (库存:" + stock + ")";
+            return name + " $" + price + " (Stock:" + stock + ")";
         }
     }
     
     private static void basicCRUDExample() {
-        System.out.println("\n--- 基础 CRUD 操作 ---");
+        System.out.println("\n--- Basic CRUD Operations ---");
         
         Repository<Product, Long> repository = MemoryData.newRepository();
         
@@ -63,25 +63,25 @@ public class SimpleDataExample {
         
         repository.save(p1);
         repository.save(p2);
-        System.out.println("  已保�?2 个产�?);
+        System.out.println("  Saved 2 products");
         
-        System.out.println("  产品总数: " + repository.count());
+        System.out.println("  Total products: " + repository.count());
         
         Optional<Product> found = repository.findById(p1.getId());
-        found.ifPresent(p -> System.out.println("  找到产品: " + p));
+        found.ifPresent(p -> System.out.println("  Found product: " + p));
         
         List<Product> all = repository.findAll();
-        System.out.println("  所有产�?");
+        System.out.println("  All products:");
         all.forEach(p -> System.out.println("    - " + p));
         
         repository.delete(p2);
-        System.out.println("  删除后总数: " + repository.count());
+        System.out.println("  Total after delete: " + repository.count());
         
-        logger.info("CRUD 操作示例完成");
+        logger.info("CRUD operations example complete");
     }
     
     private static void queryExample() {
-        System.out.println("\n--- 查询和过�?---");
+        System.out.println("\n--- Query and Filtering ---");
         
         Repository<Product, Long> repository = MemoryData.newRepository();
         
@@ -91,9 +91,9 @@ public class SimpleDataExample {
         repository.save(new Product("AirPods", 1299.0, 300));
         
         List<Product> all = repository.findAll();
-        System.out.println("  所有产�? " + all.size() + " �?);
+        System.out.println("  All products: " + all.size() + " items");
         
-        System.out.println("  价格 < 8000 的产�?");
+        System.out.println("  Products with price < 8000:");
         List<Product> affordable = new ArrayList<>();
         for (Product p : all) {
             if (p.getPrice() < 8000) {
@@ -102,27 +102,27 @@ public class SimpleDataExample {
             }
         }
         
-        logger.info("查询示例完成");
+        logger.info("Query example complete");
     }
     
     private static void cacheIntegrationExample() {
-        System.out.println("\n--- 数据访问 + 缓存 ---");
+        System.out.println("\n--- Data Access + Cache ---");
         
         Repository<Product, Long> repository = MemoryData.newRepository();
         ltd.idcu.est.cache.api.Cache<Long, Product> cache = 
             new ltd.idcu.est.cache.memory.MemoryCache<>();
         
-        Product product = new Product("热销商品", 99.0, 1000);
+        Product product = new Product("Hot Product", 99.0, 1000);
         repository.save(product);
         
-        System.out.println("  第一次查询（从数据库�? " + product);
+        System.out.println("  First query (from database): " + product);
         
         cache.put(product.getId(), product);
-        System.out.println("  已写入缓�?);
+        System.out.println("  Written to cache");
         
         Optional<Product> cached = cache.get(product.getId());
-        cached.ifPresent(p -> System.out.println("  第二次查询（从缓存）: " + p));
+        cached.ifPresent(p -> System.out.println("  Second query (from cache): " + p));
         
-        logger.info("缓存联动示例完成");
+        logger.info("Cache integration example complete");
     }
 }

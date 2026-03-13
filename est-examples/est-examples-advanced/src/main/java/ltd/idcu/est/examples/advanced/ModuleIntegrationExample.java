@@ -36,60 +36,60 @@ public class ModuleIntegrationExample {
     
     public static void main(String[] args) throws InterruptedException {
         System.out.println("=".repeat(80));
-        System.out.println("EST 框架 - 模块联动综合示例");
+        System.out.println("EST Framework - Module Integration Comprehensive Example");
         System.out.println("=".repeat(80));
-        System.out.println("\n本示例展�?EST 框架各个模块如何协同工作�?);
-        System.out.println("  📦 依赖注入容器 - 管理所有服�?);
-        System.out.println("  💾 数据访问 - 存储用户和订�?);
-        System.out.println("  �?缓存系统 - 加速热点数据访�?);
-        System.out.println("  📡 事件总线 - 组件间解耦通信");
-        System.out.println("  📝 日志系统 - 记录所有操�?);
-        System.out.println("  �?调度系统 - 定时执行任务");
-        System.out.println("  🔍 监控系统 - 监控应用状�?);
-        System.out.println("  📨 消息系统 - 异步处理订单");
+        System.out.println("\nThis example demonstrates how EST Framework modules work together:");
+        System.out.println("  [X] Dependency Injection Container - manages all services");
+        System.out.println("  [X] Data Access - stores users and orders");
+        System.out.println("  [X] Cache System - accelerates hot data access");
+        System.out.println("  [X] Event Bus - decoupled communication between components");
+        System.out.println("  [X] Logging System - records all operations");
+        System.out.println("  [X] Scheduler System - executes tasks periodically");
+        System.out.println("  [X] Monitor System - monitors application status");
+        System.out.println("  [X] Message System - processes orders asynchronously");
         System.out.println();
         
         System.out.println("=".repeat(80));
-        System.out.println("架构图：");
+        System.out.println("Architecture Diagram:");
         System.out.println("=".repeat(80));
         System.out.println();
-        System.out.println("    ┌─────────────────────────────────────────────────────────�?);
-        System.out.println("    �?             Web 请求 / 用户操作                   �?);
-        System.out.println("    └────────────────────┬────────────────────────────────�?);
-        System.out.println("                         �?);
-        System.out.println("                         �?);
-        System.out.println("    ┌─────────────────────────────────────────────────────────�?);
-        System.out.println("    �?        依赖注入容器 (Container)               �?);
-        System.out.println("    �? 管理所有服务的生命周期                    �?);
-        System.out.println("    └────────────────┬────────────────────────────────────�?);
-        System.out.println("                     �?);
-        System.out.println("         ┌───────────┼───────────�?);
-        System.out.println("         �?          �?          �?);
-        System.out.println("         �?          �?          �?);
-        System.out.println("    ┌─────────�?┌─────────�?┌─────────�?);
-        System.out.println("    �?数据访问 �?�?缓存系统 �?�?事件总线 �?);
-        System.out.println("    │Repository�?�? Cache  �?│EventBus �?);
-        System.out.println("    └────┬────�?└────┬────�?└────┬────�?);
-        System.out.println("         �?          �?          �?);
-        System.out.println("         └───────────┼───────────�?);
-        System.out.println("                     �?);
-        System.out.println("         ┌───────────┼───────────�?);
-        System.out.println("         �?          �?          �?);
-        System.out.println("         �?          �?          �?);
-        System.out.println("    ┌─────────�?┌─────────�?┌─────────�?);
-        System.out.println("    �?调度系统 �?�?监控系统 �?�?消息系统 �?);
-        System.out.println("    │Scheduler�?�?Monitor �?�?Messaging�?);
-        System.out.println("    └─────────�?└─────────�?└─────────�?);
-        System.out.println("                     �?);
-        System.out.println("                     �?);
-        System.out.println("    ┌─────────────────────────────────────────────────────────�?);
-        System.out.println("    �?          日志系统 (Logging)                    �?);
-        System.out.println("    �?     记录所有操作和事件                      �?);
-        System.out.println("    └─────────────────────────────────────────────────────────�?);
+        System.out.println("    +---------------------------------------------------+");
+        System.out.println("    |         Web Request / User Operation             |");
+        System.out.println("    +-------------------+-------------------------------+");
+        System.out.println("                        |");
+        System.out.println("                        |");
+        System.out.println("    +---------------------------------------------------+");
+        System.out.println("    |      Dependency Injection Container             |");
+        System.out.println("    |  Manages lifecycle of all services            |");
+        System.out.println("    +---------------+-----------------------------------+");
+        System.out.println("                    |");
+        System.out.println("         +----------+----------+");
+        System.out.println("         |          |          |");
+        System.out.println("         |          |          |");
+        System.out.println("    +----v----+ +----v----+ +----v----+");
+        System.out.println("    | Data    | |  Cache  | |  Event  |");
+        System.out.println("    |Repo     | |  Cache  | | EventBus|");
+        System.out.println("    +----+----+ +----+----+ +----+----+");
+        System.out.println("         |          |          |");
+        System.out.println("         +----------+----------+");
+        System.out.println("                    |");
+        System.out.println("         +----------+----------+");
+        System.out.println("         |          |          |");
+        System.out.println("         |          |          |");
+        System.out.println("    +----v----+ +----v----+ +----v----+");
+        System.out.println("    |Scheduler| | Monitor | |Messaging|");
+        System.out.println("    |Scheduler| | Monitor | |Messaging|");
+        System.out.println("    +---------+ +---------+ +---------+");
+        System.out.println("                    |");
+        System.out.println("                    |");
+        System.out.println("    +---------------------------------------------------+");
+        System.out.println("    |          Logging System                         |");
+        System.out.println("    |     Records all operations and events          |");
+        System.out.println("    +---------------------------------------------------+");
         System.out.println();
         
         System.out.println("=".repeat(80));
-        System.out.println("开始演�?..");
+        System.out.println("Starting demonstration...");
         System.out.println("=".repeat(80));
         
         Container container = new DefaultContainer();
@@ -102,14 +102,14 @@ public class ModuleIntegrationExample {
         
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(80));
-        System.out.println("�?所有模块联动演示完成！");
+        System.out.println("[X] All module integration demonstration complete!");
         System.out.println("=".repeat(80));
-        System.out.println("\n总结�?);
-        System.out.println("  1. 容器管理所有服务，方便依赖注入");
-        System.out.println("  2. 数据访问负责持久化，缓存负责加�?);
-        System.out.println("  3. 事件总线解耦组件，消息系统异步处理");
-        System.out.println("  4. 调度系统定时任务，监控系统保驾护�?);
-        System.out.println("  5. 日志系统记录一切，问题排查不愁");
+        System.out.println("\nSummary:");
+        System.out.println("  1. Container manages all services with easy DI");
+        System.out.println("  2. Data access handles persistence, cache handles acceleration");
+        System.out.println("  3. Event bus decouples components, message system handles async");
+        System.out.println("  4. Scheduler handles periodic tasks, monitor ensures stability");
+        System.out.println("  5. Logging system records everything for easy troubleshooting");
     }
     
     @Entity(tableName = "users")
@@ -176,23 +176,23 @@ public class ModuleIntegrationExample {
         }
         
         public User createUser(String name, String email) {
-            logger.info("创建用户: {}", name);
+            logger.info("Creating user: {}", name);
             User user = new User(name, email);
             userRepo.save(user);
             userCache.put(user.getId(), user);
             eventBus.publish("user.created", user);
-            logger.info("用户创建成功，ID: {}", user.getId());
+            logger.info("User created successfully, ID: {}", user.getId());
             return user;
         }
         
         public User getUserById(Long id) {
-            logger.debug("查询用户: {}", id);
+            logger.debug("Querying user: {}", id);
             Optional<User> cached = userCache.get(id);
             if (cached.isPresent()) {
-                logger.info("缓存命中�?);
+                logger.info("Cache hit");
                 return cached.get();
             }
-            logger.info("缓存未命中，查询数据�?..");
+            logger.info("Cache miss, querying database...");
             Optional<User> user = userRepo.findById(id);
             user.ifPresent(u -> userCache.put(u.getId(), u));
             return user.orElse(null);
@@ -217,12 +217,12 @@ public class ModuleIntegrationExample {
         }
         
         public Order createOrder(Long userId, String product, double amount) {
-            logger.info("创建订单: 用户={}, 商品={}, 金额={}", userId, product, amount);
+            logger.info("Creating order: user={}, product={}, amount={}", userId, product, amount);
             Order order = new Order(userId, product, amount);
             orderRepo.save(order);
             eventBus.publish("order.created", order);
-            messageProducer.send("order-queue", "订单 #" + order.getId() + " 待处�?);
-            logger.info("订单创建成功，ID: {}", order.getId());
+            messageProducer.send("order-queue", "Order #" + order.getId() + " pending");
+            logger.info("Order created successfully, ID: {}", order.getId());
             return order;
         }
         
@@ -233,11 +233,11 @@ public class ModuleIntegrationExample {
     
     public static class NotificationService {
         public void onUserCreated(User user) {
-            logger.info("[通知服务] �?{} 发送欢迎邮�?, user.getEmail());
+            logger.info("[Notification] Sending welcome email to {}", user.getEmail());
         }
         
         public void onOrderCreated(Order order) {
-            logger.info("[通知服务] 向用�?{} 发送订单确�?, order.getUserId());
+            logger.info("[Notification] Sending order confirmation to user {}", order.getUserId());
         }
     }
     
@@ -247,12 +247,12 @@ public class ModuleIntegrationExample {
         
         public void onUserCreated(User user) {
             userCount++;
-            logger.info("[统计服务] 用户�? {}", userCount);
+            logger.info("[Statistics] User count: {}", userCount);
         }
         
         public void onOrderCreated(Order order) {
             orderCount++;
-            logger.info("[统计服务] 订单�? {}", orderCount);
+            logger.info("[Statistics] Order count: {}", orderCount);
         }
         
         public int getUserCount() { return userCount; }
@@ -260,7 +260,7 @@ public class ModuleIntegrationExample {
     }
     
     private static void initializeServices(Container container) {
-        System.out.println("\n--- 步骤 1: 初始化所有服�?---");
+        System.out.println("\n--- Step 1: Initialize all services ---");
         
         Repository<User, Long> userRepo = MemoryData.newRepository();
         Repository<Order, Long> orderRepo = MemoryData.newRepository();
@@ -281,7 +281,7 @@ public class ModuleIntegrationExample {
         
         MessageConsumer consumer = LocalMessages.newConsumer();
         consumer.subscribe("order-queue", msg -> {
-            logger.info("[订单处理] 收到消息: {}", msg.getBody());
+            logger.info("[Order Processing] Received message: {}", msg.getBody());
         });
         
         container.registerSingleton(UserService.class, userService);
@@ -289,33 +289,33 @@ public class ModuleIntegrationExample {
         container.registerSingleton(StatisticsService.class, statisticsService);
         container.registerSingleton(EventBus.class, eventBus);
         
-        logger.info("所有服务初始化完成�?);
+        logger.info("All services initialized successfully");
     }
     
     private static void demonstrateUserOperations(Container container) {
-        System.out.println("\n--- 步骤 2: 演示用户操作 ---");
+        System.out.println("\n--- Step 2: Demonstrate user operations ---");
         
         UserService userService = container.get(UserService.class);
         
-        System.out.println("\n2.1 创建用户（触发事件）");
-        User user1 = userService.createUser("张三", "zhangsan@example.com");
-        User user2 = userService.createUser("李四", "lisi@example.com");
+        System.out.println("\n2.1 Create users (triggers events)");
+        User user1 = userService.createUser("ZhangSan", "zhangsan@example.com");
+        User user2 = userService.createUser("LiSi", "lisi@example.com");
         
-        System.out.println("\n2.2 查询用户（第一次查数据库）");
+        System.out.println("\n2.2 Query user (first time from database)");
         User queriedUser1 = userService.getUserById(user1.getId());
-        System.out.println("   查询�? " + queriedUser1.getName());
+        System.out.println("   Query result: " + queriedUser1.getName());
         
-        System.out.println("\n2.3 再次查询用户（命中缓存）");
+        System.out.println("\n2.3 Query user again (cache hit)");
         User cachedUser1 = userService.getUserById(user1.getId());
-        System.out.println("   查询�? " + cachedUser1.getName());
+        System.out.println("   Query result: " + cachedUser1.getName());
         
-        System.out.println("\n2.4 查询所有用�?);
+        System.out.println("\n2.4 Query all users");
         List<User> allUsers = userService.getAllUsers();
-        System.out.println("   所有用户数: " + allUsers.size());
+        System.out.println("   Total users: " + allUsers.size());
     }
     
     private static void demonstrateOrderOperations(Container container) {
-        System.out.println("\n--- 步骤 3: 演示订单操作 ---");
+        System.out.println("\n--- Step 3: Demonstrate order operations ---");
         
         UserService userService = container.get(UserService.class);
         OrderService orderService = container.get(OrderService.class);
@@ -323,29 +323,29 @@ public class ModuleIntegrationExample {
         
         List<User> users = userService.getAllUsers();
         
-        System.out.println("\n3.1 创建订单（触发事�?+ 消息队列�?);
+        System.out.println("\n3.1 Create orders (triggers events + message queue)");
         Order order1 = orderService.createOrder(users.get(0).getId(), "iPhone 15", 5999.0);
         Order order2 = orderService.createOrder(users.get(1).getId(), "MacBook Pro", 12999.0);
         
-        System.out.println("\n3.2 查询所有订�?);
+        System.out.println("\n3.2 Query all orders");
         List<Order> allOrders = orderService.getAllOrders();
-        System.out.println("   所有订单数: " + allOrders.size());
+        System.out.println("   Total orders: " + allOrders.size());
         
-        System.out.println("\n3.3 查看统计数据");
-        System.out.println("   总用户数: " + statsService.getUserCount());
-        System.out.println("   总订单数: " + statsService.getOrderCount());
+        System.out.println("\n3.3 View statistics");
+        System.out.println("   Total users: " + statsService.getUserCount());
+        System.out.println("   Total orders: " + statsService.getOrderCount());
     }
     
     private static void demonstrateScheduledTasks(Container container) throws InterruptedException {
-        System.out.println("\n--- 步骤 4: 演示调度任务 ---");
+        System.out.println("\n--- Step 4: Demonstrate scheduled tasks ---");
         
         StatisticsService statsService = container.get(StatisticsService.class);
         
-        System.out.println("\n4.1 创建调度�?);
+        System.out.println("\n4.1 Create scheduler");
         Scheduler scheduler = FixedSchedulers.create();
         
         Task statsTask = FixedSchedulers.wrap(() -> {
-            logger.info("[定时任务] 当前统计 - 用户: {}, 订单: {}", 
+            logger.info("[Scheduled Task] Current stats - users: {}, orders: {}", 
                 statsService.getUserCount(), statsService.getOrderCount());
         });
         
@@ -359,34 +359,34 @@ public class ModuleIntegrationExample {
         scheduler.schedule(statsTask, config);
         scheduler.start();
         
-        System.out.println("   调度器已启动，观�?7 �?..");
+        System.out.println("   Scheduler started, observing for 7 seconds...");
         Thread.sleep(7000);
         
         scheduler.stop();
-        System.out.println("   调度器已停止");
+        System.out.println("   Scheduler stopped");
     }
     
     private static void demonstrateMonitoring(Container container) {
-        System.out.println("\n--- 步骤 5: 演示监控 ---");
+        System.out.println("\n--- Step 5: Demonstrate monitoring ---");
         
         JvmMonitor monitor = JvmMonitor.getInstance();
         
-        System.out.println("\n5.1 JVM 健康检�?);
+        System.out.println("\n5.1 JVM health check");
         HealthCheckResult health = monitor.checkHealth();
-        System.out.println("   健康状�? " + health.getHealthStatus());
-        System.out.println("   状态消�? " + health.getMessage());
+        System.out.println("   Health status: " + health.getHealthStatus());
+        System.out.println("   Status message: " + health.getMessage());
         
-        System.out.println("\n5.2 JVM 运行时间");
-        System.out.println("   JVM 已运�? " + monitor.getUptime() + "ms");
+        System.out.println("\n5.2 JVM uptime");
+        System.out.println("   JVM uptime: " + monitor.getUptime() + "ms");
         
         Map<String, Object> metrics = monitor.getAllMetrics();
-        System.out.println("\n5.3 JVM 指标（部分）:");
+        System.out.println("\n5.3 JVM metrics (partial):");
         int count = 0;
         for (Map.Entry<String, Object> entry : metrics.entrySet()) {
             if (count++ < 5) {
                 System.out.println("   " + entry.getKey() + ": " + entry.getValue());
             }
         }
-        System.out.println("   ... 更多指标省略");
+        System.out.println("   ... more metrics omitted");
     }
 }

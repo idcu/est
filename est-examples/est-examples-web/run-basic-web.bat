@@ -1,17 +1,17 @@
 
 @echo off
-chcp 65001 &gt;nul
+chcp 65001 >nul
 title EST Web Example - Basic
 
 echo ========================================
-echo   EST Web 示例 - 基础 Web 应用
+echo   EST Web Example - Basic Web App
 echo ========================================
 echo.
 
-echo 正在启动基础 Web 示例...
+echo Starting basic web example...
 echo.
-echo 应用将在 http://localhost:8080 启动
-echo �?Ctrl+C 可以停止应用
+echo Application will start at http://localhost:8080
+echo Press Ctrl+C to stop the application
 echo.
 echo ========================================
 echo.
@@ -21,9 +21,9 @@ call mvn exec:java -Dexec.mainClass="ltd.idcu.est.examples.web.BasicWebAppExampl
 if %errorlevel% neq 0 (
     echo.
     echo ========================================
-    echo   启动失败�?    echo   请确保已先运�? mvn clean install
+    echo   Startup failed!
+    echo   Please ensure you have run mvn clean install first
     echo ========================================
     echo.
     pause
 )
-

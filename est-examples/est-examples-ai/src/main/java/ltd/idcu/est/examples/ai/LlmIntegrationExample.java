@@ -15,7 +15,7 @@ import java.util.Map;
 public class LlmIntegrationExample {
 
     public static void main(String[] args) {
-        System.out.println("=== EST AI - LLM集成示例 ===\n");
+        System.out.println("=== EST AI - LLM Integration Example ===\n");
 
         example1_basicUsage();
         System.out.println("\n" + "=".repeat(60) + "\n");
@@ -30,7 +30,7 @@ public class LlmIntegrationExample {
     }
 
     public static void example1_basicUsage() {
-        System.out.println("示例1: 基本LLM使用");
+        System.out.println("Example 1: Basic LLM Usage");
         System.out.println("-".repeat(40));
 
         LlmClient client = LlmClientFactory.create("zhipuai");
@@ -40,39 +40,39 @@ public class LlmIntegrationExample {
         String apiKey = System.getenv("ZHIPUAI_API_KEY");
         if (apiKey != null && !apiKey.isEmpty()) {
             client.setApiKey(apiKey);
-            System.out.println("API Key configured: �?);
+            System.out.println("API Key configured: [X]");
             
             if (client.isAvailable()) {
-                System.out.println("\n尝试发送请�?..");
-                String response = client.generate("你好，请用一句话介绍EST框架");
-                System.out.println("LLM响应: " + response);
+                System.out.println("\nAttempting to send request...");
+                String response = client.generate("Hello, please introduce EST Framework in one sentence");
+                System.out.println("LLM Response: " + response);
             }
         } else {
-            System.out.println("请设�?ZHIPUAI_API_KEY 环境变量来测试真实LLM调用");
-            System.out.println("示例仅演示API结构，不进行实际调用");
+            System.out.println("Please set ZHIPUAI_API_KEY environment variable to test real LLM calls");
+            System.out.println("Example only demonstrates API structure, no actual calls made");
         }
     }
 
     public static void example2_differentProviders() {
-        System.out.println("示例2: 切换不同的LLM提供�?);
+        System.out.println("Example 2: Switching Different LLM Providers");
         System.out.println("-".repeat(40));
 
-        System.out.println("可用的LLM提供�?");
+        System.out.println("Available LLM providers:");
         for (String provider : LlmClientFactory.getAvailableProviders()) {
             LlmClient client = LlmClientFactory.create(provider);
             System.out.println("  - " + provider + " (" + client.getName() + ")");
         }
 
-        System.out.println("\n切换默认提供�?");
+        System.out.println("\nSwitching default provider:");
         LlmClientFactory.setDefaultProvider("openai");
         LlmClient client = LlmClientFactory.create();
-        System.out.println("默认提供商现在是: " + client.getName());
+        System.out.println("Default provider is now: " + client.getName());
 
         LlmClientFactory.setDefaultProvider("zhipuai");
     }
 
     public static void example3_aiAssistantChat() {
-        System.out.println("示例3: AI助手对话");
+        System.out.println("Example 3: AI Assistant Chat");
         System.out.println("-".repeat(40));
 
         AiAssistant assistant = new DefaultAiAssistant();
@@ -82,30 +82,30 @@ public class LlmIntegrationExample {
             assistant.getLlmClient().setApiKey(apiKey);
         }
 
-        System.out.println("快速参�?(web):");
+        System.out.println("Quick Reference (web):");
         System.out.println(assistant.getQuickReference("web"));
 
-        System.out.println("\n最佳实�?(error-handling):");
+        System.out.println("\nBest Practice (error-handling):");
         System.out.println(assistant.getBestPractice("error-handling"));
 
-        System.out.println("\n代码建议:");
-        String suggestion = assistant.suggestCode("创建一个用户管理的REST API");
+        System.out.println("\nCode Suggestion:");
+        String suggestion = assistant.suggestCode("Create a user management REST API");
         System.out.println(suggestion);
 
         if (apiKey != null && !apiKey.isEmpty()) {
-            System.out.println("\n--- 开始对�?---");
-            String response1 = assistant.chat("你好，我想学习EST框架");
-            System.out.println("用户: 你好，我想学习EST框架");
+            System.out.println("\n--- Starting Chat ---");
+            String response1 = assistant.chat("Hello, I want to learn EST Framework");
+            System.out.println("User: Hello, I want to learn EST Framework");
             System.out.println("AI: " + response1);
 
-            String response2 = assistant.chat("它有哪些主要模块�?);
-            System.out.println("\n用户: 它有哪些主要模块�?);
+            String response2 = assistant.chat("What are its main modules?");
+            System.out.println("\nUser: What are its main modules?");
             System.out.println("AI: " + response2);
         }
     }
 
     public static void example4_codeGeneration() {
-        System.out.println("示例4: LLM驱动的代码生�?);
+        System.out.println("Example 4: LLM-driven Code Generation");
         System.out.println("-".repeat(40));
 
         CodeGenerator generator = new DefaultCodeGenerator();
@@ -115,27 +115,28 @@ public class LlmIntegrationExample {
             generator.getLlmClient().setApiKey(apiKey);
         }
 
-        System.out.println("基础模板生成 (Entity):");
+        System.out.println("Basic template generation (Entity):");
         String entityCode = generator.generateEntity("Product", "com.example.model", Map.of());
         System.out.println(entityCode);
 
-        System.out.println("\n基础模板生成 (Service):");
+        System.out.println("\nBasic template generation (Service):");
         String serviceCode = generator.generateService("ProductService", "com.example.service", Map.of());
         System.out.println(serviceCode);
 
-        System.out.println("\n--- LLM驱动生成 ---");
+        System.out.println("\n--- LLM-driven Generation ---");
         if (apiKey != null && !apiKey.isEmpty()) {
-            System.out.println("根据需求生成代�?");
+            System.out.println("Generating code from requirements:");
             String requirement = """
-                创建一个订单管理系统，包含�?                1. Order实体类，包含id、customerName、totalAmount、status字段
-                2. OrderRepository接口
-                3. OrderService服务类，包含CRUD操作
-                4. 使用EST框架的Data模块
+                Create an order management system containing:
+                1. Order entity class with id, customerName, totalAmount, status fields
+                2. OrderRepository interface
+                3. OrderService service class with CRUD operations
+                4. Using EST Framework's Data module
                 """;
             String generatedCode = generator.generateFromRequirement(requirement);
             System.out.println(generatedCode);
         } else {
-            System.out.println("请设置API密钥以测试LLM驱动的代码生�?);
+            System.out.println("Please set API key to test LLM-driven code generation");
         }
     }
 }

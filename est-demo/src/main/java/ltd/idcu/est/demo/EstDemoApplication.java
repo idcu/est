@@ -4,24 +4,26 @@ import ltd.idcu.est.web.Web;
 import ltd.idcu.est.web.api.WebApplication;
 import ltd.idcu.est.web.api.Request;
 import ltd.idcu.est.web.api.Response;
+import ltd.idcu.est.web.api.Middleware;
 import ltd.idcu.est.logging.api.Logger;
 import ltd.idcu.est.logging.console.ConsoleLogs;
 import ltd.idcu.est.logging.file.FileLogs;
 import ltd.idcu.est.cache.api.Cache;
 import ltd.idcu.est.cache.memory.MemoryCache;
 import ltd.idcu.est.cache.file.FileCache;
-import ltd.idcu.est.event.api.Event;
 import ltd.idcu.est.event.api.EventBus;
 import ltd.idcu.est.event.local.LocalEventBus;
 import ltd.idcu.est.event.async.AsyncEventBus;
 import ltd.idcu.est.scheduler.api.Scheduler;
-import ltd.idcu.est.scheduler.fixed.FixedScheduler;
-import ltd.idcu.est.monitor.api.Monitor;
+import ltd.idcu.est.scheduler.api.Task;
+import ltd.idcu.est.scheduler.fixed.FixedRateScheduler;
+import ltd.idcu.est.scheduler.fixed.FixedRateSchedulers;
 import ltd.idcu.est.monitor.jvm.JvmMonitor;
 import ltd.idcu.est.monitor.system.SystemMonitor;
 import ltd.idcu.est.data.api.Repository;
 import ltd.idcu.est.data.memory.MemoryRepository;
 
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -32,20 +34,22 @@ import java.util.stream.Collectors;
 public class EstDemoApplication {
 
     private static final Logger consoleLogger = ConsoleLogs.getLogger(EstDemoApplication.class);
-    private static final Logger fileLogger = FileLogs.getLogger("est-demo.log");
+    private static final Logger fileLogger = FileLogs.getLogger("est-demo.log", new File("est-demo.log"));
     
-    private static final Cache<String, Object> memoryCache = new MemoryCache<>();
-    private static final Cache<String, Object> fileCache = new FileCache<>("est-demo-cache");
+    private static final MemoryCache<String, Object> memoryCache = new MemoryCache<>();
+    private static final FileCache fileCache = new FileCache("est-demo-cache");
     
     private static final EventBus localEventBus = new LocalEventBus();
     private static final EventBus asyncEventBus = new AsyncEventBus();
     
-    private static final Scheduler scheduler = new FixedScheduler();
+    private static final Scheduler scheduler = FixedRateSchedulers.create();
     
-    private static final Monitor jvmMonitor = new JvmMonitor();
-    private static final Monitor systemMonitor = new SystemMonitor();
+    private static final JvmMonitor jvmMonitor = JvmMonitor.getInstance();
+    private static final SystemMonitor systemMonitor = SystemMonitor.getInstance();
     
-    private static final Repository<String, User> userRepository = new MemoryRepository<>();
+    private static final Repository<User, String> userRepository = MemoryRepository.<User, String>builder()
+        .idExtractor(User::getId)
+        .build();
     
     private static final Map<String, Todo> todos = new ConcurrentHashMap<>();
     private static final Map<String, Product> products = new ConcurrentHashMap<>();
@@ -55,44 +59,51 @@ public class EstDemoApplication {
     private static final AtomicLong totalRequestTime = new AtomicLong(0);
 
     static {
-        userRepository.save("1", new User("1", "Alice", "alice@example.com", "admin"));
-        userRepository.save("2", new User("2", "Bob", "bob@example.com", "user"));
-        userRepository.save("3", new User("3", "Charlie", "charlie@example.com", "user"));
+        userRepository.save(new User("1", "Alice", "alice@example.com", "admin"));
+        userRepository.save(new User("2", "Bob", "bob@example.com", "user"));
+        userRepository.save(new User("3", "Charlie", "charlie@example.com", "user"));
         
-        todos.put("1", new Todo("1", "学习EST框架", "了解EST框架的核心功�?, false, "high"));
+        todos.put("1", new Todo("1", "学习EST框架", "了解EST框架的核心功能", false, "high"));
         todos.put("2", new Todo("2", "创建第一个Web应用", "使用EST创建一个简单的Web应用", true, "medium"));
-        todos.put("3", new Todo("3", "探索更多功能", "了解EST的其他功能模�?, false, "low"));
+        todos.put("3", new Todo("3", "探索更多功能", "了解EST的其他功能模块", false, "low"));
         
-        products.put("1", new Product("1", "EST Framework Pro", "企业级框架授�?, 999.0, 100));
+        products.put("1", new Product("1", "EST Framework Pro", "企业级框架授权", 999.0, 100));
         products.put("2", new Product("2", "EST AI Suite", "AI工具套件", 499.0, 50));
         products.put("3", new Product("3", "EST Training", "培训课程", 199.0, 200));
         
-        localEventBus.subscribe(UserCreatedEvent.class, event -> {
-            consoleLogger.info("收到用户创建事件: {}", event.getUsername());
-            fileLogger.info("用户 {} 创建成功", event.getUsername());
-            addLogEntry("USER_CREATED", "User created: " + event.getUsername());
-        });
-        
-        localEventBus.subscribe(ProductEvent.class, event -> {
-            consoleLogger.info("收到产品事件: {} - {}", event.getAction(), event.getProductName());
-            addLogEntry("PRODUCT_" + event.getAction().toUpperCase(), "Product " + event.getAction() + ": " + event.getProductName());
-        });
-        
-        asyncEventBus.subscribe(TaskEvent.class, event -> {
-            consoleLogger.info("异步处理任务: {}", event.getTaskName());
-            addLogEntry("TASK_STARTED", "Task started: " + event.getTaskName());
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+        localEventBus.subscribe("user.created", (event, data) -> {
+            if (data instanceof UserCreatedEvent userEvent) {
+                consoleLogger.info("收到用户创建事件: {}", userEvent.getUsername());
+                fileLogger.info("用户 {} 创建成功", userEvent.getUsername());
+                addLogEntry("USER_CREATED", "User created: " + userEvent.getUsername());
             }
-            consoleLogger.info("任务 {} 处理完成", event.getTaskName());
-            addLogEntry("TASK_COMPLETED", "Task completed: " + event.getTaskName());
         });
         
-        scheduler.scheduleAtFixedRate(() -> {
-            consoleLogger.debug("定时任务执行 - 当前请求�? {}", requestCount.get());
-        }, 10, 30, TimeUnit.SECONDS);
+        localEventBus.subscribe("product.event", (event, data) -> {
+            if (data instanceof ProductEvent productEvent) {
+                consoleLogger.info("收到产品事件: {} - {}", productEvent.getAction(), productEvent.getProductName());
+                addLogEntry("PRODUCT_" + productEvent.getAction().toUpperCase(), "Product " + productEvent.getAction() + ": " + productEvent.getProductName());
+            }
+        });
+        
+        asyncEventBus.subscribe("task.event", (event, data) -> {
+            if (data instanceof TaskEvent taskEvent) {
+                consoleLogger.info("异步处理任务: {}", taskEvent.getTaskName());
+                addLogEntry("TASK_STARTED", "Task started: " + taskEvent.getTaskName());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                consoleLogger.info("任务 {} 处理完成", taskEvent.getTaskName());
+                addLogEntry("TASK_COMPLETED", "Task completed: " + taskEvent.getTaskName());
+            }
+        });
+        
+        Task logTask = FixedRateSchedulers.wrap(() -> {
+            consoleLogger.debug("定时任务执行 - 当前请求数: {}", requestCount.get());
+        });
+        scheduler.scheduleAtFixedRate(logTask, 10, 30, TimeUnit.SECONDS);
         
         memoryCache.put("system:startup", System.currentTimeMillis());
         addLogEntry("SYSTEM_STARTUP", "EST Demo Application started");
@@ -115,14 +126,40 @@ public class EstDemoApplication {
 
         WebApplication app = Web.create("EST Demo", "2.1.0");
 
-        app.use((req, res, next) -> {
-            requestCount.incrementAndGet();
-            long startTime = System.currentTimeMillis();
-            consoleLogger.info("Request: {} {}", req.getMethod(), req.getPath());
-            next.handle();
-            long duration = System.currentTimeMillis() - startTime;
-            totalRequestTime.addAndGet(duration);
-            consoleLogger.info("Response: {} {} - {}ms", req.getMethod(), req.getPath(), duration);
+        app.use(new Middleware() {
+            @Override
+            public String getName() {
+                return "request-logger";
+            }
+
+            @Override
+            public int getPriority() {
+                return 0;
+            }
+
+            @Override
+            public boolean before(Request req, Response res) {
+                requestCount.incrementAndGet();
+                long startTime = System.currentTimeMillis();
+                req.setAttribute("startTime", startTime);
+                consoleLogger.info("Request: {} {}", req.getMethod(), req.getPath());
+                return true;
+            }
+
+            @Override
+            public void after(Request req, Response res) {
+                Long startTime = (Long) req.getAttribute("startTime");
+                if (startTime != null) {
+                    long duration = System.currentTimeMillis() - startTime;
+                    totalRequestTime.addAndGet(duration);
+                    consoleLogger.info("Response: {} {} - {}ms", req.getMethod(), req.getPath(), duration);
+                }
+            }
+
+            @Override
+            public boolean isGlobal() {
+                return true;
+            }
         });
 
         app.routes(router -> {
@@ -812,9 +849,9 @@ public class EstDemoApplication {
 
         String id = UUID.randomUUID().toString();
         User user = new User(id, name, email, role);
-        userRepository.save(id, user);
+        userRepository.save(user);
 
-        localEventBus.publish(new UserCreatedEvent(name, email));
+        localEventBus.publish("user.created", new UserCreatedEvent(name, email));
 
         res.setStatus(201);
         res.json(Map.of(
@@ -842,7 +879,7 @@ public class EstDemoApplication {
         if (email != null) user.email = email;
         if (role != null) user.role = role;
 
-        userRepository.save(id, user);
+        userRepository.save(user);
 
         res.json(Map.of(
             "success", true,
@@ -853,7 +890,8 @@ public class EstDemoApplication {
 
     private static void deleteUser(Request req, Response res) {
         String id = req.getPathVariable("id");
-        if (userRepository.delete(id)) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
             res.json(Map.of("success", true, "message", "User deleted successfully"));
         } else {
             res.setStatus(404);
@@ -1030,7 +1068,7 @@ public class EstDemoApplication {
 
     private static void publishLocalEvent(Request req, Response res) {
         String name = req.getParameterOrDefault("name", "test-event");
-        localEventBus.publish(new UserCreatedEvent(name, name + "@example.com"));
+        localEventBus.publish("user.created", new UserCreatedEvent(name, name + "@example.com"));
         res.json(Map.of(
             "success", true,
             "message", "Local event published"
@@ -1039,7 +1077,7 @@ public class EstDemoApplication {
 
     private static void publishAsyncEvent(Request req, Response res) {
         String name = req.getParameterOrDefault("name", "async-task");
-        asyncEventBus.publish(new TaskEvent(name));
+        asyncEventBus.publish("task.event", new TaskEvent(name));
         res.json(Map.of(
             "success", true,
             "message", "Async event published"
@@ -1077,7 +1115,7 @@ public class EstDemoApplication {
         stats.put("productCount", products.size());
         stats.put("cacheSize", memoryCache.size());
         stats.put("logCount", logEntries.size());
-        stats.put("uptime", System.currentTimeMillis() - (Long) memoryCache.get("system:startup"));
+        stats.put("uptime", System.currentTimeMillis() - (Long) memoryCache.get("system:startup").orElse(0L));
         long avgTime = requestCount.get() > 0 ? totalRequestTime.get() / requestCount.get() : 0;
         stats.put("avgRequestTimeMs", avgTime);
         res.json(stats);
@@ -1131,7 +1169,7 @@ public class EstDemoApplication {
             Product product = new Product(id, name, description, price, stock);
             products.put(id, product);
             
-            localEventBus.publish(new ProductEvent("created", name));
+            localEventBus.publish("product.event", new ProductEvent("created", name));
             
             res.setStatus(201);
             res.json(Map.of(
@@ -1173,7 +1211,7 @@ public class EstDemoApplication {
             } catch (NumberFormatException ignored) {}
         }
         
-        localEventBus.publish(new ProductEvent("updated", product.name));
+        localEventBus.publish("product.event", new ProductEvent("updated", product.name));
         
         res.json(Map.of(
             "success", true,
@@ -1186,7 +1224,7 @@ public class EstDemoApplication {
         String id = req.getPathVariable("id");
         Product product = products.remove(id);
         if (product != null) {
-            localEventBus.publish(new ProductEvent("deleted", product.name));
+            localEventBus.publish("product.event", new ProductEvent("deleted", product.name));
             res.json(Map.of("success", true, "message", "Product deleted successfully"));
         } else {
             res.setStatus(404);
@@ -1227,6 +1265,10 @@ public class EstDemoApplication {
             this.email = email;
             this.role = role;
             this.createdAt = System.currentTimeMillis();
+        }
+
+        public String getId() {
+            return id;
         }
     }
 
@@ -1280,7 +1322,7 @@ public class EstDemoApplication {
         }
     }
 
-    static class UserCreatedEvent implements Event {
+    static class UserCreatedEvent {
         private final String username;
         private final String email;
 
@@ -1293,7 +1335,7 @@ public class EstDemoApplication {
         public String getEmail() { return email; }
     }
     
-    static class ProductEvent implements Event {
+    static class ProductEvent {
         private final String action;
         private final String productName;
 
@@ -1306,7 +1348,7 @@ public class EstDemoApplication {
         public String getProductName() { return productName; }
     }
 
-    static class TaskEvent implements Event {
+    static class TaskEvent {
         private final String taskName;
 
         public TaskEvent(String taskName) {

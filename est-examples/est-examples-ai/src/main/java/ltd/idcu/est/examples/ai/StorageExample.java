@@ -19,39 +19,39 @@ public class StorageExample {
 
     public static void main(String[] args) {
         System.out.println("=".repeat(60));
-        System.out.println("EST AI 存储系统示例");
+        System.out.println("EST AI Storage System Example");
         System.out.println("=".repeat(60));
         System.out.println();
-        System.out.println("本示例展�?EST AI 的存储系统：");
-        System.out.println("  - 内存存储 (MemoryStorageProvider)");
-        System.out.println("  - JSON 文件存储 (JsonFileStorageProvider)");
-        System.out.println("  - 提示词模板持久化");
-        System.out.println("  - Skill 持久�?);
+        System.out.println("This example demonstrates EST AI's storage system:");
+        System.out.println("  - Memory storage (MemoryStorageProvider)");
+        System.out.println("  - JSON file storage (JsonFileStorageProvider)");
+        System.out.println("  - Prompt template persistence");
+        System.out.println("  - Skill persistence");
         System.out.println();
 
         System.out.println("=".repeat(60));
-        System.out.println("第一部分：存储提供�?);
+        System.out.println("Part 1: Storage Providers");
         System.out.println("=".repeat(60));
 
         storageProviderExample();
 
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("第二部分：提示词模板存储");
+        System.out.println("Part 2: Prompt Template Storage");
         System.out.println("=".repeat(60));
 
         promptTemplateStorageExample();
 
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("第三部分：Skill 存储");
+        System.out.println("Part 3: Skill Storage");
         System.out.println("=".repeat(60));
 
         skillStorageExample();
 
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("存储系统示例运行完成�?);
+        System.out.println("Storage system example run complete");
         System.out.println("=".repeat(60));
     }
 
@@ -60,16 +60,16 @@ public class StorageExample {
     }
 
     private static void storageProviderExample() {
-        System.out.println("\n--- 存储提供者示�?---");
-        System.out.println("EST AI 支持多种存储方式，可根据需求选择\n");
+        System.out.println("\n--- Storage Provider Example ---");
+        System.out.println("EST AI supports multiple storage methods, choose according to needs\n");
 
-        System.out.println("【方式一】内存存�?(MemoryStorageProvider)");
-        System.out.println("数据存储在内存中，读写速度极快");
-        System.out.println("适合临时数据、缓存场景\n");
+        System.out.println("[Method 1] Memory storage (MemoryStorageProvider)");
+        System.out.println("Data stored in memory, extremely fast read/write speed");
+        System.out.println("Suitable for temporary data, cache scenarios\n");
 
         StorageProvider memoryStorage = new MemoryStorageProvider();
 
-        System.out.println("1. 基本存储操作�?);
+        System.out.println("1. Basic storage operations:");
         memoryStorage.save("key1", "value1");
         memoryStorage.save("key2", "value2");
         memoryStorage.save("key3", "value3");
@@ -77,68 +77,68 @@ public class StorageExample {
         System.out.println("   - key1 = " + memoryStorage.load("key1"));
         System.out.println("   - key2 = " + memoryStorage.load("key2"));
 
-        System.out.println("\n2. 检查键是否存在�?);
-        System.out.println("   - key1 存在吗？ " + memoryStorage.exists("key1"));
-        System.out.println("   - key99 存在吗？ " + memoryStorage.exists("key99"));
+        System.out.println("\n2. Check if key exists:");
+        System.out.println("   - Does key1 exist? " + memoryStorage.exists("key1"));
+        System.out.println("   - Does key99 exist? " + memoryStorage.exists("key99"));
 
-        System.out.println("\n3. 删除键：");
+        System.out.println("\n3. Delete key:");
         memoryStorage.delete("key3");
-        System.out.println("   - 删除 key3 后，键数量：" + memoryStorage.keys().size());
+        System.out.println("   - After deleting key3, key count: " + memoryStorage.keys().size());
 
-        System.out.println("\n4. 获取所有键�?);
-        System.out.println("   - 所有键�? + memoryStorage.keys());
+        System.out.println("\n4. Get all keys:");
+        System.out.println("   - All keys: " + memoryStorage.keys());
 
-        System.out.println("\n5. 清空存储�?);
+        System.out.println("\n5. Clear storage:");
         memoryStorage.clear();
-        System.out.println("   - 清空后键数量�? + memoryStorage.keys().size());
+        System.out.println("   - After clearing, key count: " + memoryStorage.keys().size());
 
-        System.out.println("\n【方式二】JSON 文件存储 (JsonFileStorageProvider)");
-        System.out.println("数据持久化到 JSON 文件，重启后依然存在");
-        System.out.println("适合存储需要持久化的配置、数据等\n");
+        System.out.println("\n[Method 2] JSON file storage (JsonFileStorageProvider)");
+        System.out.println("Data persisted to JSON file, survives restarts");
+        System.out.println("Suitable for storing configuration, data that needs persistence\n");
 
         Path storageDir = Paths.get("ai-storage");
         StorageProvider jsonStorage = new JsonFileStorageProvider(storageDir);
 
-        System.out.println("1. 写入 JSON 存储�?);
+        System.out.println("1. Write to JSON storage:");
         jsonStorage.save("config:theme", "dark");
         jsonStorage.save("config:language", "zh-CN");
         jsonStorage.save("config:fontSize", "14px");
 
-        System.out.println("   - 主题�? + jsonStorage.load("config:theme"));
-        System.out.println("   - 语言�? + jsonStorage.load("config:language"));
+        System.out.println("   - Theme: " + jsonStorage.load("config:theme"));
+        System.out.println("   - Language: " + jsonStorage.load("config:language"));
 
-        System.out.println("\n2. 存储目录�? + storageDir.toAbsolutePath());
-        System.out.println("   - 数据已持久化到文�?);
+        System.out.println("\n2. Storage directory: " + storageDir.toAbsolutePath());
+        System.out.println("   - Data persisted to file");
 
-        System.out.println("\n【方式三】存储统计和高级功能");
-        System.out.println("存储系统提供统一的接口\n");
+        System.out.println("\n[Method 3] Storage statistics and advanced features");
+        System.out.println("Storage system provides unified interface\n");
 
-        System.out.println("   - 支持的操作：save, load, delete, exists, keys, clear");
-        System.out.println("   - 可扩展：可以实现自定�?StorageProvider");
-        System.out.println("   - 灵活：根据场景选择合适的存储方式");
+        System.out.println("   - Supported operations: save, load, delete, exists, keys, clear");
+        System.out.println("   - Extensible: can implement custom StorageProvider");
+        System.out.println("   - Flexible: choose appropriate storage method according to scenario");
 
-        System.out.println("\n�?存储提供者示例完成\n");
+        System.out.println("\n[X] Storage provider example complete\n");
     }
 
     private static void promptTemplateStorageExample() {
-        System.out.println("\n--- 提示词模板存储示�?---");
-        System.out.println("提示词模板可以持久化存储，便于复用和分享\n");
+        System.out.println("\n--- Prompt Template Storage Example ---");
+        System.out.println("Prompt templates can be persisted for reuse and sharing\n");
 
-        System.out.println("【方式一】使用内存存�?);
-        System.out.println("适合开发调试，临时模板\n");
+        System.out.println("[Method 1] Using memory storage");
+        System.out.println("Suitable for development debugging, temporary templates\n");
 
         DefaultPromptTemplateRepository memoryRepo = new DefaultPromptTemplateRepository(new MemoryStorageProvider());
 
-        System.out.println("1. 创建并保存提示词模板�?);
+        System.out.println("1. Create and save prompt template:");
         PromptTemplate template1 = new DefaultPromptTemplate(
                 "web-app-basic",
                 "web",
-                "基础 Web 应用模板",
+                "Basic Web application template",
                 """
-                请创建一个基础�?Web 应用，要求：
-                1. 类名：{className}
-                2. 应用名称：{appName}
-                3. 欢迎消息：{welcomeMessage}
+                Please create a basic Web application with requirements:
+                1. Class name: {className}
+                2. Application name: {appName}
+                3. Welcome message: {welcomeMessage}
                 """,
                 List.of("className", "appName", "welcomeMessage")
         );
@@ -147,112 +147,112 @@ public class StorageExample {
         PromptTemplate template2 = new DefaultPromptTemplate(
                 "entity-basic",
                 "code-generation",
-                "基础 Entity 模板",
+                "Basic Entity template",
                 """
-                请创建一�?Entity 类：
-                1. 类名：{entityName}
-                2. 包名：{packageName}
-                3. 字段：{fields}
+                Please create an Entity class:
+                1. Class name: {entityName}
+                2. Package name: {packageName}
+                3. Fields: {fields}
                 """,
                 List.of("entityName", "packageName", "fields")
         );
         memoryRepo.save(template2);
 
-        System.out.println("   - 已保�?2 个模�?);
+        System.out.println("   - Saved 2 templates");
 
-        System.out.println("\n2. 加载模板�?);
+        System.out.println("\n2. Load template:");
         PromptTemplate loadedTemplate = memoryRepo.load("web-app-basic");
-        System.out.println("   - 模板名称�? + loadedTemplate.getName());
-        System.out.println("   - 模板分类�? + loadedTemplate.getCategory());
-        System.out.println("   - 模板描述�? + loadedTemplate.getDescription());
+        System.out.println("   - Template name: " + loadedTemplate.getName());
+        System.out.println("   - Template category: " + loadedTemplate.getCategory());
+        System.out.println("   - Template description: " + loadedTemplate.getDescription());
 
-        System.out.println("\n3. 列出所有模板：");
+        System.out.println("\n3. List all templates:");
         List<PromptTemplate> allTemplates = memoryRepo.loadAll();
         for (PromptTemplate template : allTemplates) {
             System.out.println("   - " + template.getName() + " (" + template.getCategory() + ")");
         }
 
-        System.out.println("\n4. 按分类列出模板：");
+        System.out.println("\n4. List templates by category:");
         List<PromptTemplate> webTemplates = memoryRepo.loadByCategory("web");
-        System.out.println("   - Web 分类模板数量�? + webTemplates.size());
+        System.out.println("   - Web category template count: " + webTemplates.size());
 
-        System.out.println("\n5. 删除模板�?);
+        System.out.println("\n5. Delete template:");
         memoryRepo.delete("entity-basic");
-        System.out.println("   - 删除后剩余模板数量：" + memoryRepo.loadAll().size());
+        System.out.println("   - Remaining template count after deletion: " + memoryRepo.loadAll().size());
 
-        System.out.println("\n【方式二】使�?JSON 文件存储");
-        System.out.println("适合生产环境，持久化保存\n");
+        System.out.println("\n[Method 2] Using JSON file storage");
+        System.out.println("Suitable for production environment, persistent storage\n");
 
         Path templateDir = Paths.get("ai-templates");
         DefaultPromptTemplateRepository jsonRepo = new DefaultPromptTemplateRepository(
                 new JsonFileStorageProvider(templateDir)
         );
 
-        System.out.println("1. 保存模板到文件：");
+        System.out.println("1. Save template to file:");
         jsonRepo.save(template1);
-        System.out.println("   - 模板已保存到�? + templateDir.toAbsolutePath());
+        System.out.println("   - Template saved to: " + templateDir.toAbsolutePath());
 
-        System.out.println("\n2. 从文件加载模板：");
+        System.out.println("\n2. Load template from file:");
         PromptTemplate fromFile = jsonRepo.load("web-app-basic");
-        System.out.println("   - 从文件加载成功：" + fromFile.getName());
+        System.out.println("   - Loaded from file successfully: " + fromFile.getName());
 
-        System.out.println("\n�?提示词模板存储示例完成\n");
+        System.out.println("\n[X] Prompt template storage example complete\n");
     }
 
     private static void skillStorageExample() {
-        System.out.println("\n--- Skill 存储示例 ---");
-        System.out.println("Skill 可以持久化存储，便于复用和自定义\n");
+        System.out.println("\n--- Skill Storage Example ---");
+        System.out.println("Skills can be persisted for reuse and customization\n");
 
-        System.out.println("【方式一】使用内存存�?);
-        System.out.println("适合开发调试\n");
+        System.out.println("[Method 1] Using memory storage");
+        System.out.println("Suitable for development debugging\n");
 
         DefaultSkillRepository memoryRepo = new DefaultSkillRepository(new MemoryStorageProvider());
 
-        System.out.println("1. 创建并保�?Skill�?);
+        System.out.println("1. Create and save Skill:");
         Skill entitySkill = new GenerateEntitySkill();
         memoryRepo.save(entitySkill);
 
-        System.out.println("   - 已保�?Skill�? + entitySkill.getName());
+        System.out.println("   - Saved Skill: " + entitySkill.getName());
 
-        System.out.println("\n2. 加载 Skill�?);
+        System.out.println("\n2. Load Skill:");
         Skill loadedSkill = memoryRepo.load(entitySkill.getId());
-        System.out.println("   - Skill 名称�? + loadedSkill.getName());
-        System.out.println("   - Skill 描述�? + loadedSkill.getDescription());
+        System.out.println("   - Skill name: " + loadedSkill.getName());
+        System.out.println("   - Skill description: " + loadedSkill.getDescription());
 
-        System.out.println("\n3. 执行 Skill�?);
+        System.out.println("\n3. Execute Skill:");
         Map<String, Object> inputs = Map.of(
                 "className", "Product",
                 "packageName", "com.example.entity",
                 "fields", List.of("id:Long", "name:String", "price:Double")
         );
         var result = loadedSkill.execute(inputs);
-        System.out.println("   - Skill 执行成功�? + result.isSuccess());
+        System.out.println("   - Skill executed successfully: " + result.isSuccess());
         if (result.isSuccess()) {
-            System.out.println("   - 生成的代码：\n" + result.getOutputs().get("code"));
+            System.out.println("   - Generated code:\n" + result.getOutputs().get("code"));
         }
 
-        System.out.println("\n4. 列出所�?Skill�?);
+        System.out.println("\n4. List all Skills:");
         List<Skill> allSkills = memoryRepo.loadAll();
         for (Skill skill : allSkills) {
             System.out.println("   - " + skill.getName() + " (" + skill.getCategory() + ")");
         }
 
-        System.out.println("\n【方式二】使�?JSON 文件存储");
-        System.out.println("适合生产环境，持久化保存\n");
+        System.out.println("\n[Method 2] Using JSON file storage");
+        System.out.println("Suitable for production environment, persistent storage\n");
 
         Path skillDir = Paths.get("ai-skills");
         DefaultSkillRepository jsonRepo = new DefaultSkillRepository(
                 new JsonFileStorageProvider(skillDir)
         );
 
-        System.out.println("1. 保存 Skill 到文件：");
+        System.out.println("1. Save Skill to file:");
         jsonRepo.save(entitySkill);
-        System.out.println("   - Skill 已保存到�? + skillDir.toAbsolutePath());
+        System.out.println("   - Skill saved to: " + skillDir.toAbsolutePath());
 
-        System.out.println("\n2. 从文件加�?Skill�?);
+        System.out.println("\n2. Load Skill from file:");
         Skill fromFile = jsonRepo.load(entitySkill.getId());
-        System.out.println("   - 从文件加载成功：" + fromFile.getName());
+        System.out.println("   - Loaded from file successfully: " + fromFile.getName());
 
-        System.out.println("\n�?Skill 存储示例完成\n");
+        System.out.println("\n[X] Skill storage example complete\n");
     }
 }

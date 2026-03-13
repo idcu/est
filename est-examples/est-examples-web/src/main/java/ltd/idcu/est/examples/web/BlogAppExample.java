@@ -19,21 +19,21 @@ public class BlogAppExample {
     static {
         posts.put(1, new Post(
             1,
-            "欢迎来到EST博客",
-            "这是一个使用EST框架构建的简单博客系�?,
-            "EST是一个零依赖的现代Java开发框架，专为快速开发高性能Web应用而设计。\n\n主要特性：\n- 零依赖，轻量级\n- 简洁的API设计\n- 高性能HTTP服务器\n- RESTful路由支持\n- 模板引擎\n- 中间件支�?,
-            "EST开发团�?,
-            Arrays.asList("EST", "框架", "Java"),
+            "Welcome to EST Blog",
+            "This is a simple blog system built with EST framework",
+            "EST is a zero-dependency modern Java development framework designed for rapid development of high-performance web applications.\n\nKey Features:\n- Zero-dependency, lightweight\n- Clean API design\n- High-performance HTTP server\n- RESTful routing support\n- Template engine\n- Middleware support",
+            "EST Development Team",
+            Arrays.asList("EST", "Framework", "Java"),
             System.currentTimeMillis()
         ));
         
         posts.put(2, new Post(
             2,
-            "RESTful API设计最佳实�?,
-            "学习如何设计优雅的RESTful API",
-            "在本文中，我们将探讨RESTful API设计的最佳实践。\n\n核心原则：\n1. 使用正确的HTTP方法\n2. 合理的资源命名\n3. 版本控制\n4. 错误处理\n5. 认证和授�?,
-            "技术小�?,
-            Arrays.asList("REST", "API", "最佳实�?),
+            "RESTful API Design Best Practices",
+            "Learn how to design elegant RESTful APIs",
+            "In this article, we will explore best practices for RESTful API design.\n\nCore Principles:\n1. Use correct HTTP methods\n2. Proper resource naming\n3. Version control\n4. Error handling\n5. Authentication and authorization",
+            "Tech Team",
+            Arrays.asList("REST", "API", "Best Practices"),
             System.currentTimeMillis() - 86400000
         ));
     }
@@ -41,7 +41,7 @@ public class BlogAppExample {
     public static void run() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(80));
-        System.out.println("博客系统 - Blog App");
+        System.out.println("Blog System - Blog App");
         System.out.println("=".repeat(80));
         
         WebApplication app = Web.create("Blog App", "1.0.0");
@@ -71,20 +71,20 @@ public class BlogAppExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n�?博客系统服务器启动成功！");
-            System.out.println("\n访问地址�?);
-            System.out.println("  - http://localhost:8080          (博客首页)");
-            System.out.println("  - http://localhost:8080/admin    (管理后台)");
-            System.out.println("\nAPI 端点�?);
-            System.out.println("  - GET    /api/posts              - 获取文章列表");
-            System.out.println("  - GET    /api/posts/:id          - 获取单个文章");
-            System.out.println("  - POST   /api/posts              - 创建文章");
-            System.out.println("  - PUT    /api/posts/:id          - 更新文章");
-            System.out.println("  - DELETE /api/posts/:id          - 删除文章");
-            System.out.println("  - GET    /api/comments           - 获取评论");
-            System.out.println("  - POST   /api/comments           - 发表评论");
-            System.out.println("  - DELETE /api/comments/:id       - 删除评论");
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n[X] Blog system server started successfully!");
+            System.out.println("\nAccess URLs:");
+            System.out.println("  - http://localhost:8080          (Blog Homepage)");
+            System.out.println("  - http://localhost:8080/admin    (Admin Dashboard)");
+            System.out.println("\nAPI Endpoints:");
+            System.out.println("  - GET    /api/posts              - Get post list");
+            System.out.println("  - GET    /api/posts/:id          - Get single post");
+            System.out.println("  - POST   /api/posts              - Create post");
+            System.out.println("  - PUT    /api/posts/:id          - Update post");
+            System.out.println("  - DELETE /api/posts/:id          - Delete post");
+            System.out.println("  - GET    /api/comments           - Get comments");
+            System.out.println("  - POST   /api/comments           - Post comment");
+            System.out.println("  - DELETE /api/comments/:id       - Delete comment");
+            System.out.println("\n[X] Press Ctrl+C to stop server");
             System.out.println("=".repeat(80));
         });
         
@@ -100,7 +100,7 @@ public class BlogAppExample {
             <!DOCTYPE html>
             <html>
             <head>
-                <title>EST博客</title>
+                <title>EST Blog</title>
                 <meta charset="UTF-8">
                 <style>
                     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -128,14 +128,14 @@ public class BlogAppExample {
             </head>
             <body>
                 <div class="header">
-                    <h1>📚 EST博客</h1>
-                    <p>探索技术世界，分享知识与经�?/p>
+                    <h1>📚 EST Blog</h1>
+                    <p>Explore the tech world, share knowledge and experience</p>
                 </div>
                 
                 <div class="nav">
                     <div class="nav-container">
-                        <a href="/">🏠 首页</a>
-                        <a href="/admin">⚙️ 管理后台</a>
+                        <a href="/">🏠 Home</a>
+                        <a href="/admin">⚙️ Admin Dashboard</a>
                     </div>
                 </div>
                 
@@ -144,7 +144,7 @@ public class BlogAppExample {
                 </div>
                 
                 <div class="footer">
-                    <p>© 2024 EST博客 - 由EST框架驱动</p>
+                    <p>© 2024 EST Blog - Powered by EST Framework</p>
                 </div>
                 
                 <script>
@@ -181,7 +181,7 @@ public class BlogAppExample {
                     }
                     
                     function formatDate(timestamp) {
-                        return new Date(timestamp).toLocaleDateString('zh-CN');
+                        return new Date(timestamp).toLocaleDateString('en-US');
                     }
                     
                     function escapeHtml(text) {
@@ -202,7 +202,7 @@ public class BlogAppExample {
             <!DOCTYPE html>
             <html>
             <head>
-                <title>文章详情</title>
+                <title>Post Detail</title>
                 <meta charset="UTF-8">
                 <style>
                     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -233,18 +233,18 @@ public class BlogAppExample {
             </head>
             <body>
                 <div class="header">
-                    <a href="/">�?返回首页</a>
+                    <a href="/">← Back to Home</a>
                 </div>
                 
                 <div class="container">
                     <div class="post" id="postContent"></div>
                     
                     <div class="comments-section">
-                        <h2>💬 评论</h2>
+                        <h2>💬 Comments</h2>
                         <div class="comment-form">
-                            <input type="text" id="commentAuthor" placeholder="你的名字..." />
-                            <textarea id="commentContent" placeholder="写下你的评论..."></textarea>
-                            <button onclick="submitComment()">发表评论</button>
+                            <input type="text" id="commentAuthor" placeholder="Your name..." />
+                            <textarea id="commentContent" placeholder="Write your comment..."></textarea>
+                            <button onclick="submitComment()">Post Comment</button>
                         </div>
                         <div class="comment-list" id="commentList"></div>
                     </div>
@@ -302,7 +302,7 @@ public class BlogAppExample {
                         const content = document.getElementById('commentContent').value.trim();
                         
                         if (!author || !content) {
-                            alert('请填写名字和评论内容�?);
+                            alert('Please fill in name and comment!');
                             return;
                         }
                         
@@ -318,7 +318,7 @@ public class BlogAppExample {
                     }
                     
                     function formatDate(timestamp) {
-                        return new Date(timestamp).toLocaleDateString('zh-CN');
+                        return new Date(timestamp).toLocaleDateString('en-US');
                     }
                     
                     function escapeHtml(text) {
@@ -340,7 +340,7 @@ public class BlogAppExample {
             <!DOCTYPE html>
             <html>
             <head>
-                <title>博客管理后台</title>
+                <title>Blog Admin Dashboard</title>
                 <meta charset="UTF-8">
                 <style>
                     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -375,8 +375,8 @@ public class BlogAppExample {
             </head>
             <body>
                 <div class="header">
-                    <h1>⚙️ 博客管理后台</h1>
-                    <a href="/">�?返回首页</a>
+                    <h1>⚙️ Blog Admin Dashboard</h1>
+                    <a href="/">← Back to Home</a>
                 </div>
                 
                 <div class="container">
@@ -384,32 +384,32 @@ public class BlogAppExample {
                     
                     <div class="dashboard">
                         <div class="panel">
-                            <h2>✏️ 写文�?/h2>
+                            <h2>✏️ Write Post</h2>
                             <div class="form-group">
-                                <label>标题</label>
-                                <input type="text" id="title" placeholder="文章标题..." />
+                                <label>Title</label>
+                                <input type="text" id="title" placeholder="Post title..." />
                             </div>
                             <div class="form-group">
-                                <label>摘要</label>
-                                <input type="text" id="excerpt" placeholder="文章摘要..." />
+                                <label>Excerpt</label>
+                                <input type="text" id="excerpt" placeholder="Post excerpt..." />
                             </div>
                             <div class="form-group">
-                                <label>内容</label>
-                                <textarea id="content" placeholder="文章内容..."></textarea>
+                                <label>Content</label>
+                                <textarea id="content" placeholder="Post content..."></textarea>
                             </div>
                             <div class="form-group">
-                                <label>作�?/label>
-                                <input type="text" id="author" placeholder="作者名�?.." />
+                                <label>Author</label>
+                                <input type="text" id="author" placeholder="Author name..." />
                             </div>
                             <div class="form-group">
-                                <label>标签（用逗号分隔�?/label>
-                                <input type="text" id="tags" placeholder="标签1, 标签2, 标签3..." />
+                                <label>Tags (comma separated)</label>
+                                <input type="text" id="tags" placeholder="tag1, tag2, tag3..." />
                             </div>
-                            <button class="btn btn-primary" onclick="createPost()">发布文章</button>
+                            <button class="btn btn-primary" onclick="createPost()">Publish Post</button>
                         </div>
                         
                         <div class="panel">
-                            <h2>📚 文章管理</h2>
+                            <h2>📚 Post Management</h2>
                             <div class="posts-list" id="postsList"></div>
                         </div>
                     </div>
@@ -428,15 +428,15 @@ public class BlogAppExample {
                             document.getElementById('stats').innerHTML = \`
                                 <div class="stat-card">
                                     <div class="stat-number">\${posts.length}</div>
-                                    <div class="stat-label">篇文�?/div>
+                                    <div class="stat-label">Posts</div>
                                 </div>
                                 <div class="stat-card">
                                     <div class="stat-number">\${comments.length}</div>
-                                    <div class="stat-label">条评�?/div>
+                                    <div class="stat-label">Comments</div>
                                 </div>
                                 <div class="stat-card">
                                     <div class="stat-number">\${new Set(posts.flatMap(p => p.tags)).size}</div>
-                                    <div class="stat-label">个标�?/div>
+                                    <div class="stat-label">Tags</div>
                                 </div>
                             \`;
                         }
@@ -459,7 +459,7 @@ public class BlogAppExample {
                                     <p>👤 \${escapeHtml(post.author)} · \${formatDate(post.createdAt)}</p>
                                 </div>
                                 <div class="post-actions">
-                                    <button class="btn btn-danger" onclick="deletePost(\${post.id})">删除</button>
+                                    <button class="btn btn-danger" onclick="deletePost(\${post.id})">Delete</button>
                                 </div>
                             </div>
                         \`).join('');
@@ -473,7 +473,7 @@ public class BlogAppExample {
                         const tags = document.getElementById('tags').value.trim();
                         
                         if (!title || !content || !author) {
-                            alert('请填写完整的文章信息�?);
+                            alert('Please fill in complete post information!');
                             return;
                         }
                         
@@ -497,7 +497,7 @@ public class BlogAppExample {
                     }
                     
                     async function deletePost(id) {
-                        if (confirm('确定要删除这篇文章吗�?)) {
+                        if (confirm('Are you sure you want to delete this post?')) {
                             await fetch('/api/posts/' + id, { method: 'DELETE' });
                             loadPosts();
                             loadStats();
@@ -505,7 +505,7 @@ public class BlogAppExample {
                     }
                     
                     function formatDate(timestamp) {
-                        return new Date(timestamp).toLocaleDateString('zh-CN');
+                        return new Date(timestamp).toLocaleDateString('en-US');
                     }
                     
                     function escapeHtml(text) {
@@ -537,7 +537,7 @@ public class BlogAppExample {
         if (post != null) {
             res.json(Map.of("success", true, "data", post));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "文章不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Post not found"));
         }
     }
     
@@ -549,7 +549,7 @@ public class BlogAppExample {
         String tagsStr = req.formParam("tags", "");
         
         if (title == null || title.isBlank() || content == null || content.isBlank() || author == null || author.isBlank()) {
-            res.status(400).json(Map.of("success", false, "message", "标题、内容和作者不能为�?));
+            res.status(400).json(Map.of("success", false, "message", "Title, content and author cannot be empty"));
             return;
         }
         
@@ -565,7 +565,7 @@ public class BlogAppExample {
         
         res.status(201).json(Map.of(
             "success", true,
-            "message", "文章创建成功",
+            "message", "Post created successfully",
             "data", post
         ));
     }
@@ -575,7 +575,7 @@ public class BlogAppExample {
         Post post = posts.get(id);
         
         if (post == null) {
-            res.status(404).json(Map.of("success", false, "message", "文章不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Post not found"));
             return;
         }
         
@@ -599,7 +599,7 @@ public class BlogAppExample {
         
         res.json(Map.of(
             "success", true,
-            "message", "文章更新成功",
+            "message", "Post updated successfully",
             "data", post
         ));
     }
@@ -607,9 +607,9 @@ public class BlogAppExample {
     private static void deletePost(Request req, Response res) {
         int id = Integer.parseInt(req.param("id"));
         if (posts.remove(id) != null) {
-            res.json(Map.of("success", true, "message", "文章删除成功"));
+            res.json(Map.of("success", true, "message", "Post deleted successfully"));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "文章不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Post not found"));
         }
     }
     
@@ -636,13 +636,13 @@ public class BlogAppExample {
         String content = req.formParam("content");
         
         if (postIdStr == null || author == null || content == null || content.isBlank()) {
-            res.status(400).json(Map.of("success", false, "message", "文章ID、作者和内容不能为空"));
+            res.status(400).json(Map.of("success", false, "message", "Post ID, author and content cannot be empty"));
             return;
         }
         
         int postId = Integer.parseInt(postIdStr);
         if (!posts.containsKey(postId)) {
-            res.status(404).json(Map.of("success", false, "message", "文章不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Post not found"));
             return;
         }
         
@@ -652,7 +652,7 @@ public class BlogAppExample {
         
         res.status(201).json(Map.of(
             "success", true,
-            "message", "评论发表成功",
+            "message", "Comment posted successfully",
             "data", comment
         ));
     }
@@ -660,9 +660,9 @@ public class BlogAppExample {
     private static void deleteComment(Request req, Response res) {
         int id = Integer.parseInt(req.param("id"));
         if (comments.remove(id) != null) {
-            res.json(Map.of("success", true, "message", "评论删除成功"));
+            res.json(Map.of("success", true, "message", "Comment deleted successfully"));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "评论不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Comment not found"));
         }
     }
     

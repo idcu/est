@@ -16,20 +16,20 @@ public class SimpleSchedulerExample {
     private static final Logger logger = ConsoleLogs.getLogger(SimpleSchedulerExample.class);
     
     public static void main(String[] args) throws InterruptedException {
-        System.out.println("=== EST 调度系统示例 ===");
+        System.out.println("=== EST Scheduler Example ===");
         
         fixedRateExample();
         
-        System.out.println("\n�?所有示例完成！");
+        System.out.println("\n[X] All examples complete!");
     }
     
     private static void fixedRateExample() throws InterruptedException {
-        System.out.println("\n--- 固定间隔调度 ---");
+        System.out.println("\n--- Fixed Rate Scheduling ---");
         
         Scheduler scheduler = FixedSchedulers.create();
         
         Task task = FixedSchedulers.wrap(() -> {
-            System.out.println("  任务执行: " + new Date());
+            System.out.println("  Task executed: " + new Date());
         });
         
         ScheduleConfig config = ScheduleConfig.builder()
@@ -42,12 +42,12 @@ public class SimpleSchedulerExample {
         scheduler.schedule(task, config);
         scheduler.start();
         
-        System.out.println("  调度器已启动，观�?5 �?..");
+        System.out.println("  Scheduler started, observing for 5 seconds...");
         Thread.sleep(5000);
         
         scheduler.stop();
-        System.out.println("  调度器已停止");
+        System.out.println("  Scheduler stopped");
         
-        logger.info("固定间隔调度示例完成");
+        logger.info("Fixed rate scheduling example complete");
     }
 }

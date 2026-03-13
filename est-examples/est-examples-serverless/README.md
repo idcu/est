@@ -1,51 +1,51 @@
-# EST Serverless 示例
+# EST Serverless Examples
 
-本示例展示了如何使用 EST Framework 的 Serverless 功能。
+This example demonstrates how to use EST Framework Serverless features.
 
-## 支持的云平台
+## Supported Cloud Platforms
 
-- **AWS Lambda** - Amazon Web Services 无服务器计算
-- **Azure Functions** - Microsoft Azure 无服务器计算
-- **阿里云函数计算** - 阿里云 Serverless 计算服务
-- **Google Cloud Functions** - Google Cloud Platform 无服务器计算
+- **AWS Lambda** - Amazon Web Services serverless computing
+- **Azure Functions** - Microsoft Azure serverless computing
+- **Alibaba Cloud Function Compute** - Alibaba Cloud Serverless computing service
+- **Google Cloud Functions** - Google Cloud Platform serverless computing
 
-## 项目结构
+## Project Structure
 
 ```
 est-examples-serverless/
 ├── src/main/java/ltd/idcu/est/examples/serverless/
-│   ├── HelloWorldFunction.java          # Hello World 示例函数
-│   ├── CalculatorFunction.java          # 计算器示例函数
-│   ├── OptimizedFunction.java           # 冷启动优化示例函数
-│   ├── ServerlessLocalRunnerExample.java # 本地运行器示例
-│   ├── aws/                              # AWS Lambda 处理器
+│   ├── HelloWorldFunction.java          # Hello World Example Function
+│   ├── CalculatorFunction.java          # Calculator Example Function
+│   ├── OptimizedFunction.java           # Cold Start Optimization Example Function
+│   ├── ServerlessLocalRunnerExample.java # Local Runner Example
+│   ├── aws/                              # AWS Lambda Handlers
 │   │   ├── HelloWorldLambdaHandler.java
 │   │   └── CalculatorLambdaHandler.java
-│   ├── azure/                            # Azure Functions 处理器
+│   ├── azure/                            # Azure Functions Handlers
 │   │   ├── HelloWorldAzureHandler.java
 │   │   └── CalculatorAzureHandler.java
-│   ├── alibaba/                          # 阿里云函数计算处理器
+│   ├── alibaba/                          # Alibaba Cloud Function Compute Handlers
 │   │   ├── HelloWorldFcHandler.java
 │   │   └── CalculatorFcHandler.java
-│   └── google/                           # Google Cloud Functions 处理器
+│   └── google/                           # Google Cloud Functions Handlers
 │       ├── HelloWorldGoogleHandler.java
 │       └── CalculatorGoogleHandler.java
 ├── pom.xml
 └── README.md
 ```
 
-## 快速开始
+## Quick Start
 
-### Hello World 函数
+### Hello World Function
 
-一个简单的问候函数，接受 `name` 参数并返回问候语。
+A simple greeting function that accepts a `name` parameter and returns a greeting.
 
-**请求示例：**
+**Request Example:**
 ```
 GET /hello?name=EST
 ```
 
-**响应示例：**
+**Response Example:**
 ```json
 {
   "message": "Hello, EST!",
@@ -53,23 +53,23 @@ GET /hello?name=EST
 }
 ```
 
-### 计算器函数
+### Calculator Function
 
-支持加、减、乘、除运算的计算器函数。
+A calculator function supporting add, subtract, multiply, and divide operations.
 
-**请求参数：**
-- `op`: 操作类型（add/sub/mul/div）
-- `a`: 第一个数字
-- `b`: 第二个数字
+**Request Parameters:**
+- `op`: Operation type (add/sub/mul/div)
+- `a`: First number
+- `b`: Second number
 
-**请求示例：**
+**Request Example:**
 ```
 GET /calculator?op=add&a=10&b=5
 GET /calculator?op=mul&a=3&b=4
 GET /calculator?op=div&a=15&b=3
 ```
 
-**响应示例：**
+**Response Example:**
 ```json
 {
   "operation": "addition",
@@ -79,14 +79,14 @@ GET /calculator?op=div&a=15&b=3
 }
 ```
 
-### 优化函数
+### Optimized Function
 
-使用 ColdStartOptimizer 的优化函数示例，展示冷启动优化、缓存和统计功能。
+Optimized function example using ColdStartOptimizer, demonstrating cold start optimization, caching, and statistics features.
 
-**请求参数：**
-- `action`: 操作类型（status/cache/stats/reset）
+**Request Parameters:**
+- `action`: Action type (status/cache/stats/reset)
 
-**请求示例：**
+**Request Example:**
 ```
 GET /optimized?action=status
 GET /optimized?action=cache
@@ -94,7 +94,7 @@ GET /optimized?action=stats
 GET /optimized?action=reset
 ```
 
-**响应示例（status）：**
+**Response Example (status):**
 ```json
 {
   "status": "ok",
@@ -104,7 +104,7 @@ GET /optimized?action=reset
 }
 ```
 
-**响应示例（stats）：**
+**Response Example (stats):**
 ```json
 {
   "totalColdStarts": 1,
@@ -114,71 +114,71 @@ GET /optimized?action=reset
 }
 ```
 
-## 各平台使用指南
+## Platform Usage Guides
 
 ### AWS Lambda
 
-1. 构建项目
+1. Build project
 ```bash
 mvn clean package
 ```
 
-2. 部署到 AWS Lambda
-   - 使用 AWS SAM 模板：参考 `deploy/serverless/aws/template.yaml`
-   - 或通过 AWS Console 手动上传 JAR 包
+2. Deploy to AWS Lambda
+   - Use AWS SAM template: Reference `deploy/serverless/aws/template.yaml`
+   - Or manually upload JAR package through AWS Console
 
-3. Handler 配置
+3. Handler configuration
    - HelloWorld: `ltd.idcu.est.examples.serverless.aws.HelloWorldLambdaHandler`
    - Calculator: `ltd.idcu.est.examples.serverless.aws.CalculatorLambdaHandler`
 
 ### Azure Functions
 
-1. 构建项目
+1. Build project
 ```bash
 mvn clean package
 ```
 
-2. 部署到 Azure Functions
-   - 参考 `deploy/serverless/azure/` 目录下的配置文件
-   - 使用 Azure Functions Core Tools 进行部署
+2. Deploy to Azure Functions
+   - Reference configuration files in `deploy/serverless/azure/` directory
+   - Use Azure Functions Core Tools for deployment
 
-3. Handler 配置
+3. Handler configuration
    - HelloWorld: `ltd.idcu.est.examples.serverless.azure.HelloWorldAzureHandler`
    - Calculator: `ltd.idcu.est.examples.serverless.azure.CalculatorAzureHandler`
 
-### 阿里云函数计算
+### Alibaba Cloud Function Compute
 
-1. 构建项目
+1. Build project
 ```bash
 mvn clean package
 ```
 
-2. 部署到阿里云函数计算
-   - 使用 Serverless Devs：参考 `deploy/serverless/alibaba/template.yml`
-   - 或通过阿里云控制台部署
+2. Deploy to Alibaba Cloud Function Compute
+   - Use Serverless Devs: Reference `deploy/serverless/alibaba/template.yml`
+   - Or deploy through Alibaba Cloud console
 
-3. Handler 配置
+3. Handler configuration
    - HelloWorld: `ltd.idcu.est.examples.serverless.alibaba.HelloWorldFcHandler`
    - Calculator: `ltd.idcu.est.examples.serverless.alibaba.CalculatorFcHandler`
 
 ### Google Cloud Functions
 
-1. 构建项目
+1. Build project
 ```bash
 mvn clean package
 ```
 
-2. 部署到 Google Cloud Functions
-   - 使用 gcloud CLI 进行部署
-   - 参考 `deploy/serverless/google/README.md`
+2. Deploy to Google Cloud Functions
+   - Use gcloud CLI for deployment
+   - Reference `deploy/serverless/google/README.md`
 
-3. Handler 配置
+3. Handler configuration
    - HelloWorld: `ltd.idcu.est.examples.serverless.google.HelloWorldGoogleHandler`
    - Calculator: `ltd.idcu.est.examples.serverless.google.CalculatorGoogleHandler`
 
-## 创建自己的 Serverless 函数
+## Create Your Own Serverless Function
 
-### 1. 实现 HttpServerlessFunction
+### 1. Implement HttpServerlessFunction
 
 ```java
 public class MyFunction implements HttpServerlessFunction {
@@ -193,7 +193,7 @@ public class MyFunction implements HttpServerlessFunction {
 }
 ```
 
-### 2. 创建平台特定的 Handler
+### 2. Create Platform-Specific Handler
 
 **AWS Lambda:**
 ```java
@@ -213,7 +213,7 @@ public class MyAzureHandler extends AzureFunctionHandler {
 }
 ```
 
-**阿里云函数计算:**
+**Alibaba Cloud Function Compute:**
 ```java
 public class MyFcHandler extends AlibabaFcHandler {
     public MyFcHandler() {
@@ -236,28 +236,28 @@ public class MyGoogleHandler extends GoogleCloudFunctionHandler {
 ```java
 ServerlessRequest request = ...;
 
-// 获取 HTTP 方法
+// Get HTTP method
 String method = request.getMethod();
 
-// 获取路径
+// Get path
 String path = request.getPath();
 
-// 获取查询参数
+// Get query parameters
 Map<String, String> queryParams = request.getQueryParameters();
 String value = request.getQueryParameters().get("key");
 
-// 获取请求头
+// Get request headers
 Map<String, String> headers = request.getHeaders();
 String header = request.getHeaders().get("Content-Type");
 
-// 获取请求体
+// Get request body
 String body = request.getBody();
 ```
 
 ## ServerlessResponse API
 
 ```java
-// 200 OK 响应
+// 200 OK response
 ServerlessResponse.ok("{\"status\":\"ok\"}");
 
 // 400 Bad Request
@@ -266,53 +266,53 @@ ServerlessResponse.badRequest("{\"error\":\"Invalid input\"}");
 // 500 Internal Server Error
 ServerlessResponse.serverError("{\"error\":\"Something went wrong\"}");
 
-// 自定义状态码
+// Custom status code
 ServerlessResponse.create(201, "{\"created\":true}");
 
-// 添加响应头
+// Add response headers
 ServerlessResponse response = ServerlessResponse.ok(body);
 response.addHeader("Content-Type", "application/json");
 response.addHeader("X-Custom-Header", "value");
 ```
 
-## 本地运行和测试
+## Local Running and Testing
 
-### 使用 ServerlessLocalRunner
+### Using ServerlessLocalRunner
 
-EST Framework 提供了 ServerlessLocalRunner，可以在本地测试和调试 Serverless 函数，无需部署到云平台。
+EST Framework provides ServerlessLocalRunner to test and debug Serverless functions locally without deploying to cloud platforms.
 
-**运行本地示例：**
+**Run local example:**
 ```bash
 mvn compile exec:java -Dexec.mainClass="ltd.idcu.est.examples.serverless.ServerlessLocalRunnerExample"
 ```
 
-**本地运行器功能：**
-- 注册多个函数
-- 编程方式调用函数
-- 交互式命令行模式
-- 完整的上下文支持
+**Local runner features:**
+- Register multiple functions
+- Programmatically call functions
+- Interactive command line mode
+- Complete context support
 
-**交互式命令：**
+**Interactive commands:**
 ```
-> list              - 列出所有注册的函数
-> invoke <name> [input] - 调用函数
-> help              - 显示帮助
-> exit/quit         - 退出
+> list              - List all registered functions
+> invoke <name> [input] - Invoke function
+> help              - Show help
+> exit/quit         - Exit
 ```
 
-## 冷启动优化
+## Cold Start Optimization
 
-### 使用 ColdStartOptimizer
+### Using ColdStartOptimizer
 
-EST Framework 提供了 ColdStartOptimizer 来帮助优化 Serverless 函数的冷启动性能。
+EST Framework provides ColdStartOptimizer to help optimize cold start performance of Serverless functions.
 
-**核心功能：**
-- 冷启动/热启动统计
-- 预热判断
-- 资源预热
-- 性能统计
+**Core features:**
+- Cold start/warm start statistics
+- Pre-warm determination
+- Resource pre-warming
+- Performance statistics
 
-**使用示例：**
+**Usage example:**
 ```java
 public class OptimizedFunction implements HttpServerlessFunction {
     
@@ -333,47 +333,47 @@ public class OptimizedFunction implements HttpServerlessFunction {
         optimizer.recordWarmStart("my-function");
         
         Map<String, Object> stats = optimizer.getStatistics();
-        // 使用统计信息...
+        // Use statistics...
     }
 }
 ```
 
-## 最佳实践
+## Best Practices
 
-### 1. 冷启动优化
-- 保持 `initialize()` 方法精简
-- 使用 ColdStartOptimizer 进行预热
-- 延迟加载非必要资源
-- 使用连接池和缓存
-- 考虑使用预配置并发（AWS Lambda）
+### 1. Cold Start Optimization
+- Keep `initialize()` method concise
+- Use ColdStartOptimizer for pre-warming
+- Lazy load non-essential resources
+- Use connection pools and caching
+- Consider using provisioned concurrency (AWS Lambda)
 
-### 2. 错误处理
-- 捕获所有异常
-- 返回适当的 HTTP 状态码
-- 记录详细的错误日志
-- 提供有意义的错误消息
+### 2. Error Handling
+- Catch all exceptions
+- Return appropriate HTTP status codes
+- Log detailed error logs
+- Provide meaningful error messages
 
-### 3. 安全
-- 使用环境变量存储敏感信息
-- 验证所有输入
-- 实施适当的认证和授权
-- 避免在日志中记录敏感数据
+### 3. Security
+- Use environment variables for sensitive information
+- Validate all inputs
+- Implement proper authentication and authorization
+- Avoid logging sensitive data
 
-### 4. 性能
-- 最小化依赖
-- 使用高效的数据结构
-- 考虑使用 GraalVM 原生镜像
-- 监控性能指标
+### 4. Performance
+- Minimize dependencies
+- Use efficient data structures
+- Consider using GraalVM native images
+- Monitor performance metrics
 
-## 更多信息
+## More Information
 
-- 查看 `deploy/serverless/` 目录下的平台特定部署文档
-- 参考 EST Framework 官方文档
-- 查看各云平台的 Serverless 官方文档
+- Check platform-specific deployment documentation in `deploy/serverless/` directory
+- Reference EST Framework official documentation
+- Check Serverless official documentation of each cloud platform
 
-## 相关资源
+## Related Resources
 
-- [AWS Lambda 文档](https://docs.aws.amazon.com/lambda/)
-- [Azure Functions 文档](https://learn.microsoft.com/azure/azure-functions/)
-- [阿里云函数计算文档](https://help.aliyun.com/product/50980.html)
-- [Google Cloud Functions 文档](https://cloud.google.com/functions)
+- [AWS Lambda Documentation](https://docs.aws.amazon.com/lambda/)
+- [Azure Functions Documentation](https://learn.microsoft.com/azure/azure-functions/)
+- [Alibaba Cloud Function Compute Documentation](https://help.aliyun.com/product/50980.html)
+- [Google Cloud Functions Documentation](https://cloud.google.com/functions)

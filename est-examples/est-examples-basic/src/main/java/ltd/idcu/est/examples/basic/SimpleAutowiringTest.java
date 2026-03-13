@@ -66,25 +66,25 @@ public class SimpleAutowiringTest {
     }
 
     public static void main(String[] args) {
-        System.out.println("=== 开始测试自动装配机�?===\n");
+        System.out.println("=== Starting Autowiring Test ===\n");
         
         Container container = new DefaultContainer();
 
-        System.out.println("=== 注册组件 ===");
+        System.out.println("=== Registering Components ===");
         container.register(GreetingService.class, DefaultGreetingService.class);
         container.register(Logger.class, ConsoleLogger.class);
         container.register(FieldInjectionDemo.class, FieldInjectionDemo.class);
         container.register(MethodInjectionDemo.class, MethodInjectionDemo.class);
 
-        System.out.println("\n=== 测试字段注入 ===");
+        System.out.println("\n=== Testing Field Injection ===");
         FieldInjectionDemo fieldDemo = container.get(FieldInjectionDemo.class);
         fieldDemo.run();
 
-        System.out.println("\n=== 测试方法注入 ===");
+        System.out.println("\n=== Testing Method Injection ===");
         MethodInjectionDemo methodDemo = container.get(MethodInjectionDemo.class);
         methodDemo.run();
 
-        System.out.println("\n=== 自动装配机制测试完成 ===");
+        System.out.println("\n=== Autowiring Test Complete ===");
         
         container.close();
     }

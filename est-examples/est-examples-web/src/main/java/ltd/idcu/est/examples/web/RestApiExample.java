@@ -16,22 +16,22 @@ public class RestApiExample {
     private static final Map<String, Order> orders = new ConcurrentHashMap<>();
     
     static {
-        users.put("1", new User("1", "张三", "zhangsan@example.com", "admin"));
-        users.put("2", new User("2", "李四", "lisi@example.com", "user"));
-        users.put("3", new User("3", "王五", "wangwu@example.com", "user"));
+        users.put("1", new User("1", "Zhang San", "zhangsan@example.com", "admin"));
+        users.put("2", new User("2", "Li Si", "lisi@example.com", "user"));
+        users.put("3", new User("3", "Wang Wu", "wangwu@example.com", "user"));
         
-        products.put("101", new Product("101", "笔记本电�?, 5999.00, 100));
-        products.put("102", new Product("102", "无线鼠标", 199.00, 500));
-        products.put("103", new Product("103", "机械键盘", 399.00, 300));
+        products.put("101", new Product("101", "Laptop", 5999.00, 100));
+        products.put("102", new Product("102", "Wireless Mouse", 199.00, 500));
+        products.put("103", new Product("103", "Mechanical Keyboard", 399.00, 300));
     }
     
     public static void run() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(80));
-        System.out.println("REST API 完整示例 - 电商后台管理系统");
+        System.out.println("Complete REST API Example - E-commerce Backend Management System");
         System.out.println("=".repeat(80));
         
-        WebApplication app = Web.create("电商后台 API", "1.0.0");
+        WebApplication app = Web.create("E-commerce Backend API", "1.0.0");
         
         app.enableCors();
         
@@ -66,28 +66,28 @@ public class RestApiExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n�?REST API 服务器启动成功！");
-            System.out.println("\n可用�?API 端点�?);
-            System.out.println("\n【用户管理�?);
-            System.out.println("  GET    /api/v1/users          - 获取所有用�?);
-            System.out.println("  GET    /api/v1/users/:id      - 获取单个用户");
-            System.out.println("  POST   /api/v1/users          - 创建用户");
-            System.out.println("  PUT    /api/v1/users/:id      - 更新用户");
-            System.out.println("  DELETE /api/v1/users/:id      - 删除用户");
-            System.out.println("\n【商品管理�?);
-            System.out.println("  GET    /api/v1/products       - 获取所有商�?);
-            System.out.println("  GET    /api/v1/products/:id   - 获取单个商品");
-            System.out.println("  POST   /api/v1/products       - 创建商品");
-            System.out.println("  PUT    /api/v1/products/:id   - 更新商品");
-            System.out.println("  DELETE /api/v1/products/:id   - 删除商品");
-            System.out.println("\n【订单管理�?);
-            System.out.println("  GET    /api/v1/orders         - 获取所有订�?);
-            System.out.println("  GET    /api/v1/orders/:id     - 获取单个订单");
-            System.out.println("  POST   /api/v1/orders         - 创建订单");
-            System.out.println("  PUT    /api/v1/orders/:id/status - 更新订单状�?);
-            System.out.println("\n【统计数据�?);
-            System.out.println("  GET    /api/v1/stats          - 获取系统统计数据");
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n[OK] REST API server started successfully!");
+            System.out.println("\nAvailable API Endpoints:");
+            System.out.println("\n[User Management]");
+            System.out.println("  GET    /api/v1/users          - Get all users");
+            System.out.println("  GET    /api/v1/users/:id      - Get single user");
+            System.out.println("  POST   /api/v1/users          - Create user");
+            System.out.println("  PUT    /api/v1/users/:id      - Update user");
+            System.out.println("  DELETE /api/v1/users/:id      - Delete user");
+            System.out.println("\n[Product Management]");
+            System.out.println("  GET    /api/v1/products       - Get all products");
+            System.out.println("  GET    /api/v1/products/:id   - Get single product");
+            System.out.println("  POST   /api/v1/products       - Create product");
+            System.out.println("  PUT    /api/v1/products/:id   - Update product");
+            System.out.println("  DELETE /api/v1/products/:id   - Delete product");
+            System.out.println("\n[Order Management]");
+            System.out.println("  GET    /api/v1/orders         - Get all orders");
+            System.out.println("  GET    /api/v1/orders/:id     - Get single order");
+            System.out.println("  POST   /api/v1/orders         - Create order");
+            System.out.println("  PUT    /api/v1/orders/:id/status - Update order status");
+            System.out.println("\n[Statistics]");
+            System.out.println("  GET    /api/v1/stats          - Get system statistics");
+            System.out.println("\n[X] Ctrl+C to stop server");
             System.out.println("=".repeat(80));
         });
         
@@ -112,7 +112,7 @@ public class RestApiExample {
         if (user != null) {
             res.json(Map.of("success", true, "data", user));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "用户不存�?));
+            res.status(404).json(Map.of("success", false, "message", "User not found"));
         }
     }
     
@@ -122,7 +122,7 @@ public class RestApiExample {
         String role = req.formParam("role", "user");
         
         if (name == null || email == null) {
-            res.status(400).json(Map.of("success", false, "message", "姓名和邮箱不能为�?));
+            res.status(400).json(Map.of("success", false, "message", "Name and email cannot be empty"));
             return;
         }
         
@@ -132,7 +132,7 @@ public class RestApiExample {
         
         res.status(201).json(Map.of(
             "success", true,
-            "message", "用户创建成功",
+            "message", "User created successfully",
             "data", user
         ));
     }
@@ -142,7 +142,7 @@ public class RestApiExample {
         User user = users.get(id);
         
         if (user == null) {
-            res.status(404).json(Map.of("success", false, "message", "用户不存�?));
+            res.status(404).json(Map.of("success", false, "message", "User not found"));
             return;
         }
         
@@ -156,7 +156,7 @@ public class RestApiExample {
         
         res.json(Map.of(
             "success", true,
-            "message", "用户更新成功",
+            "message", "User updated successfully",
             "data", user
         ));
     }
@@ -164,9 +164,9 @@ public class RestApiExample {
     private static void deleteUser(Request req, Response res) {
         String id = req.param("id");
         if (users.remove(id) != null) {
-            res.json(Map.of("success", true, "message", "用户删除成功", "deletedId", id));
+            res.json(Map.of("success", true, "message", "User deleted successfully", "deletedId", id));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "用户不存�?));
+            res.status(404).json(Map.of("success", false, "message", "User not found"));
         }
     }
     
@@ -184,7 +184,7 @@ public class RestApiExample {
         if (product != null) {
             res.json(Map.of("success", true, "data", product));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "商品不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Product not found"));
         }
     }
     
@@ -194,7 +194,7 @@ public class RestApiExample {
         String stockStr = req.formParam("stock");
         
         if (name == null || priceStr == null) {
-            res.status(400).json(Map.of("success", false, "message", "商品名称和价格不能为�?));
+            res.status(400).json(Map.of("success", false, "message", "Product name and price cannot be empty"));
             return;
         }
         
@@ -207,7 +207,7 @@ public class RestApiExample {
         
         res.status(201).json(Map.of(
             "success", true,
-            "message", "商品创建成功",
+            "message", "Product created successfully",
             "data", product
         ));
     }
@@ -217,7 +217,7 @@ public class RestApiExample {
         Product product = products.get(id);
         
         if (product == null) {
-            res.status(404).json(Map.of("success", false, "message", "商品不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Product not found"));
             return;
         }
         
@@ -231,7 +231,7 @@ public class RestApiExample {
         
         res.json(Map.of(
             "success", true,
-            "message", "商品更新成功",
+            "message", "Product updated successfully",
             "data", product
         ));
     }
@@ -239,9 +239,9 @@ public class RestApiExample {
     private static void deleteProduct(Request req, Response res) {
         String id = req.param("id");
         if (products.remove(id) != null) {
-            res.json(Map.of("success", true, "message", "商品删除成功", "deletedId", id));
+            res.json(Map.of("success", true, "message", "Product deleted successfully", "deletedId", id));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "商品不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Product not found"));
         }
     }
     
@@ -259,7 +259,7 @@ public class RestApiExample {
         if (order != null) {
             res.json(Map.of("success", true, "data", order));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "订单不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Order not found"));
         }
     }
     
@@ -269,7 +269,7 @@ public class RestApiExample {
         String quantityStr = req.formParam("quantity");
         
         if (userId == null || productId == null) {
-            res.status(400).json(Map.of("success", false, "message", "用户ID和商品ID不能为空"));
+            res.status(400).json(Map.of("success", false, "message", "User ID and product ID cannot be empty"));
             return;
         }
         
@@ -277,12 +277,12 @@ public class RestApiExample {
         Product product = products.get(productId);
         
         if (user == null) {
-            res.status(404).json(Map.of("success", false, "message", "用户不存�?));
+            res.status(404).json(Map.of("success", false, "message", "User not found"));
             return;
         }
         
         if (product == null) {
-            res.status(404).json(Map.of("success", false, "message", "商品不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Product not found"));
             return;
         }
         
@@ -294,7 +294,7 @@ public class RestApiExample {
         
         res.status(201).json(Map.of(
             "success", true,
-            "message", "订单创建成功",
+            "message", "Order created successfully",
             "data", order
         ));
     }
@@ -304,7 +304,7 @@ public class RestApiExample {
         Order order = orders.get(id);
         
         if (order == null) {
-            res.status(404).json(Map.of("success", false, "message", "订单不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Order not found"));
             return;
         }
         
@@ -315,7 +315,7 @@ public class RestApiExample {
         
         res.json(Map.of(
             "success", true,
-            "message", "订单状态更新成�?,
+            "message", "Order status updated successfully",
             "data", order
         ));
     }
@@ -385,4 +385,3 @@ public class RestApiExample {
         }
     }
 }
-

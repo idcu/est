@@ -26,13 +26,13 @@ public class CompleteApplicationExample {
     
     public static void main(String[] args) {
         System.out.println("=".repeat(70));
-        System.out.println("EST 完整应用示例 - 电商订单系统（核心功能）");
+        System.out.println("EST Complete Application Example - E-commerce Order System (Core Features)");
         System.out.println("=".repeat(70));
-        System.out.println("\n本示例展示了如何使用 EST 框架的核心企业级功能�?);
-        System.out.println("  - 依赖注入容器管理服务");
-        System.out.println("  - 缓存系统提升性能");
-        System.out.println("  - 事件总线实现组件解�?);
-        System.out.println("  - 日志系统记录应用行为");
+        System.out.println("\nThis example demonstrates how to use EST Framework's core enterprise features:");
+        System.out.println("  - Dependency injection container for service management");
+        System.out.println("  - Cache system for performance improvement");
+        System.out.println("  - Event bus for component decoupling");
+        System.out.println("  - Logging system for application behavior tracking");
         System.out.println();
         
         initializeApplication();
@@ -44,9 +44,9 @@ public class CompleteApplicationExample {
     }
     
     private static void initializeApplication() {
-        logger.info("正在初始化应�?..");
+        logger.info("Initializing application...");
         
-        System.out.println("\n--- 步骤 1: 注册服务到容�?---");
+        System.out.println("\n--- Step 1: Register services to container ---");
         
         UserService userService = new UserService(userCache, eventBus);
         OrderService orderService = new OrderService(orderDatabase, eventBus, userCache);
@@ -56,79 +56,79 @@ public class CompleteApplicationExample {
         container.registerSingleton(UserService.class, userService);
         container.registerSingleton(OrderService.class, orderService);
         
-        System.out.println("   �?UserService 已注�?);
-        System.out.println("   �?OrderService 已注�?);
+        System.out.println("   [OK] UserService registered");
+        System.out.println("   [OK] OrderService registered");
         
-        System.out.println("\n--- 步骤 2: 注册事件监听�?---");
+        System.out.println("\n--- Step 2: Register event listeners ---");
         
         eventBus.subscribe("user.registered", notificationService::onUserRegistered);
         eventBus.subscribe("user.registered", analyticsService::onUserRegistered);
         eventBus.subscribe("order.created", notificationService::onOrderCreated);
         eventBus.subscribe("order.created", analyticsService::onOrderCreated);
         
-        System.out.println("   �?用户注册监听器已注册");
-        System.out.println("   �?订单创建监听器已注册");
+        System.out.println("   [OK] User registration listeners registered");
+        System.out.println("   [OK] Order creation listeners registered");
         
-        System.out.println("\n--- 步骤 3: 初始化示例数�?---");
+        System.out.println("\n--- Step 3: Initialize sample data ---");
         
-        userService.createUser("张三", "zhangsan@example.com");
-        userService.createUser("李四", "lisi@example.com");
+        userService.createUser("ZhangSan", "zhangsan@example.com");
+        userService.createUser("LiSi", "lisi@example.com");
         
-        System.out.println("   �?示例用户已创�?);
+        System.out.println("   [OK] Sample users created");
         
-        logger.info("应用初始化完成！");
+        logger.info("Application initialization complete!");
     }
     
     private static void demonstrateUsage() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(70));
-        System.out.println("开始演示应用功�?);
+        System.out.println("Starting application feature demonstration");
         System.out.println("=".repeat(70));
         
         UserService userService = container.get(UserService.class);
         OrderService orderService = container.get(OrderService.class);
         
-        System.out.println("\n--- 场景 1: 创建新用�?---");
-        User newUser = userService.createUser("王五", "wangwu@example.com");
-        System.out.println("   新用户创建成�? " + newUser.getName() + " (" + newUser.getEmail() + ")");
+        System.out.println("\n--- Scenario 1: Create new user ---");
+        User newUser = userService.createUser("WangWu", "wangwu@example.com");
+        System.out.println("   New user created: " + newUser.getName() + " (" + newUser.getEmail() + ")");
         
-        System.out.println("\n--- 场景 2: 查询用户 ---");
+        System.out.println("\n--- Scenario 2: Query user ---");
         User user = userService.getUserById(newUser.getId());
         if (user != null) {
-            System.out.println("   查询到用�? " + user.getName());
+            System.out.println("   User found: " + user.getName());
         }
         
-        System.out.println("\n--- 场景 3: 获取所有用�?---");
+        System.out.println("\n--- Scenario 3: Get all users ---");
         List<User> allUsers = userService.getAllUsers();
-        System.out.println("   所有用户数�? " + allUsers.size());
+        System.out.println("   Total users: " + allUsers.size());
         for (User u : allUsers) {
             System.out.println("     - " + u.getName());
         }
         
-        System.out.println("\n--- 场景 4: 创建订单 ---");
-        Order order = orderService.createOrder(newUser.getId(), "EST 框架教程", 99);
-        System.out.println("   订单创建成功: " + order.getId());
-        System.out.println("   商品: " + order.getProduct());
-        System.out.println("   金额: " + order.getAmount());
+        System.out.println("\n--- Scenario 4: Create order ---");
+        Order order = orderService.createOrder(newUser.getId(), "EST Framework Tutorial", 99);
+        System.out.println("   Order created successfully: " + order.getId());
+        System.out.println("   Product: " + order.getProduct());
+        System.out.println("   Amount: " + order.getAmount());
         
-        System.out.println("\n--- 场景 5: 查询订单 ---");
+        System.out.println("\n--- Scenario 5: Query order ---");
         Order queriedOrder = orderService.getOrderById(order.getId());
         if (queriedOrder != null) {
-            System.out.println("   查询到订�? " + queriedOrder.getProduct());
+            System.out.println("   Order found: " + queriedOrder.getProduct());
         }
         
-        System.out.println("\n--- 场景 6: 获取所有订�?---");
+        System.out.println("\n--- Scenario 6: Get all orders ---");
         List<Order> allOrders = orderService.getAllOrders();
-        System.out.println("   所有订单数�? " + allOrders.size());
+        System.out.println("   Total orders: " + allOrders.size());
         
-        System.out.println("\n--- 场景 7: 显示统计信息 ---");
-        System.out.println("   总用户数: " + userService.getUserCount());
-        System.out.println("   总订单数: " + orderService.getOrderCount());
-        System.out.println("   缓存大小: " + userCache.size());
+        System.out.println("\n--- Scenario 7: Display statistics ---");
+        System.out.println("   Total users: " + userService.getUserCount());
+        System.out.println("   Total orders: " + orderService.getOrderCount());
+        System.out.println("   Cache size: " + userCache.size());
         
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(70));
-        System.out.println("�?所有功能演示完成！");
+        System.out.println("[OK] All feature demonstrations completed!");
         System.out.println("=".repeat(70));
     }
 }
@@ -191,7 +191,7 @@ class UserService {
         String id = UUID.randomUUID().toString();
         User user = new User(id, name, email);
         userCache.put(id, user);
-        logger.info("创建新用�? {} ({})", name, id);
+        logger.info("Creating new user: {} ({})", name, id);
         eventBus.publish("user.registered", user);
         return user;
     }
@@ -228,7 +228,7 @@ class OrderService {
         orderDatabase.put(id, order);
         
         User user = userCache.get(userId).orElse(null);
-        logger.info("创建新订�? {} - 用户: {} - 商品: {} - 金额: {}", 
+        logger.info("Creating new order: {} - User: {} - Product: {} - Amount: {}", 
             id, user != null ? user.getName() : userId, product, amount);
         
         eventBus.publish("order.created", order);
@@ -252,11 +252,11 @@ class NotificationService {
     private static final Logger logger = ConsoleLogs.getLogger(NotificationService.class);
     
     public void onUserRegistered(User user) {
-        logger.info("[通知服务] �?{} 发送欢迎邮件到 {}", user.getName(), user.getEmail());
+        logger.info("[Notification Service] Sending welcome email to {} at {}", user.getName(), user.getEmail());
     }
     
     public void onOrderCreated(Order order) {
-        logger.info("[通知服务] 向用�?{} 发送订单确认通知，订单号: {}", 
+        logger.info("[Notification Service] Sending order confirmation to user {}, order ID: {}", 
             order.getUserId(), order.getId());
     }
 }
@@ -268,11 +268,11 @@ class AnalyticsService {
     
     public void onUserRegistered(User user) {
         userCount++;
-        logger.info("[分析服务] 记录用户注册事件，累计用�? {}", userCount);
+        logger.info("[Analytics Service] Recording user registration event, total users: {}", userCount);
     }
     
     public void onOrderCreated(Order order) {
         orderCount++;
-        logger.info("[分析服务] 记录订单创建事件，累计订�? {}", orderCount);
+        logger.info("[Analytics Service] Recording order creation event, total orders: {}", orderCount);
     }
 }

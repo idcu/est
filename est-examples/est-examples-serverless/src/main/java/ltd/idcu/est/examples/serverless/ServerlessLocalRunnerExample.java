@@ -14,7 +14,7 @@ public class ServerlessLocalRunnerExample {
 
         ServerlessLocalRunner runner = new ServerlessLocalRunner();
 
-        System.out.println("--- 步骤 1: 注册函数 ---");
+        System.out.println("--- Step 1: Register Functions ---");
         
         HelloWorldFunction helloFunction = new HelloWorldFunction();
         CalculatorFunction calculatorFunction = new CalculatorFunction();
@@ -23,39 +23,39 @@ public class ServerlessLocalRunnerExample {
         Map<String, Object> helloConfig = new HashMap<>();
         helloConfig.put("greeting", "Hello from local runner!");
         runner.registerFunction("hello", helloFunction, helloConfig);
-        System.out.println("✓ 注册了 'hello' 函数");
+        System.out.println("[OK] Registered 'hello' function");
 
         runner.registerFunction("calculator", calculatorFunction);
-        System.out.println("✓ 注册了 'calculator' 函数");
+        System.out.println("[OK] Registered 'calculator' function");
 
         Map<String, Object> optimizedConfig = new HashMap<>();
         optimizedConfig.put("cacheSize", 100);
         runner.registerFunction("optimized", optimizedFunction, optimizedConfig);
-        System.out.println("✓ 注册了 'optimized' 函数\n");
+        System.out.println("[OK] Registered 'optimized' function\n");
 
-        System.out.println("--- 步骤 2: 测试调用函数 ---");
+        System.out.println("--- Step 2: Test Function Invocation ---");
 
-        System.out.println("\n2.1 测试 HelloWorld 函数:");
+        System.out.println("\n2.1 Test HelloWorld Function:");
         testHelloFunction(runner);
 
-        System.out.println("\n2.2 测试 Calculator 函数:");
+        System.out.println("\n2.2 Test Calculator Function:");
         testCalculatorFunction(runner);
 
-        System.out.println("\n2.3 测试 Optimized 函数:");
+        System.out.println("\n2.3 Test Optimized Function:");
         testOptimizedFunction(runner);
 
-        System.out.println("\n--- 步骤 3: 交互模式 ---");
-        System.out.println("现在启动交互模式，你可以手动调用函数...");
-        System.out.println("输入 'help' 查看可用命令\n");
+        System.out.println("\n--- Step 3: Interactive Mode ---");
+        System.out.println("Starting interactive mode, you can manually invoke functions...");
+        System.out.println("Type 'help' to see available commands\n");
 
         runner.startInteractiveMode();
 
-        System.out.println("\n--- 步骤 4: 清理资源 ---");
+        System.out.println("\n--- Step 4: Cleanup Resources ---");
         runner.shutdown();
-        System.out.println("✓ 所有资源已清理");
+        System.out.println("[OK] All resources cleaned up");
 
         System.out.println("\n========================================");
-        System.out.println("示例执行完成!");
+        System.out.println("Example execution completed!");
         System.out.println("========================================");
     }
 
@@ -72,10 +72,10 @@ public class ServerlessLocalRunnerExample {
             ltd.idcu.est.serverless.api.ServerlessResponse response = 
                 runner.invoke("hello", request);
             
-            System.out.println("  请求: GET /hello?name=Local User");
-            System.out.println("  响应: " + response.getBody());
+            System.out.println("  Request: GET /hello?name=Local User");
+            System.out.println("  Response: " + response.getBody());
         } catch (Exception e) {
-            System.err.println("  错误: " + e.getMessage());
+            System.err.println("  Error: " + e.getMessage());
         }
     }
 
@@ -92,8 +92,8 @@ public class ServerlessLocalRunnerExample {
             ltd.idcu.est.serverless.api.ServerlessResponse addResponse = 
                 runner.invoke("calculator", addRequest);
             
-            System.out.println("  请求: GET /calculator?op=add&a=15&b=25");
-            System.out.println("  响应: " + addResponse.getBody());
+            System.out.println("  Request: GET /calculator?op=add&a=15&b=25");
+            System.out.println("  Response: " + addResponse.getBody());
 
             ltd.idcu.est.serverless.api.ServerlessRequest mulRequest = 
                 new ltd.idcu.est.serverless.api.ServerlessRequest(
@@ -106,10 +106,10 @@ public class ServerlessLocalRunnerExample {
             ltd.idcu.est.serverless.api.ServerlessResponse mulResponse = 
                 runner.invoke("calculator", mulRequest);
             
-            System.out.println("  请求: GET /calculator?op=mul&a=7&b=8");
-            System.out.println("  响应: " + mulResponse.getBody());
+            System.out.println("  Request: GET /calculator?op=mul&a=7&b=8");
+            System.out.println("  Response: " + mulResponse.getBody());
         } catch (Exception e) {
-            System.err.println("  错误: " + e.getMessage());
+            System.err.println("  Error: " + e.getMessage());
         }
     }
 
@@ -126,8 +126,8 @@ public class ServerlessLocalRunnerExample {
             ltd.idcu.est.serverless.api.ServerlessResponse statusResponse = 
                 runner.invoke("optimized", statusRequest);
             
-            System.out.println("  请求: GET /optimized?action=status");
-            System.out.println("  响应: " + statusResponse.getBody());
+            System.out.println("  Request: GET /optimized?action=status");
+            System.out.println("  Response: " + statusResponse.getBody());
 
             ltd.idcu.est.serverless.api.ServerlessRequest statsRequest = 
                 new ltd.idcu.est.serverless.api.ServerlessRequest(
@@ -140,10 +140,10 @@ public class ServerlessLocalRunnerExample {
             ltd.idcu.est.serverless.api.ServerlessResponse statsResponse = 
                 runner.invoke("optimized", statsRequest);
             
-            System.out.println("  请求: GET /optimized?action=stats");
-            System.out.println("  响应: " + statsResponse.getBody());
+            System.out.println("  Request: GET /optimized?action=stats");
+            System.out.println("  Response: " + statsResponse.getBody());
         } catch (Exception e) {
-            System.err.println("  错误: " + e.getMessage());
+            System.err.println("  Error: " + e.getMessage());
         }
     }
 }

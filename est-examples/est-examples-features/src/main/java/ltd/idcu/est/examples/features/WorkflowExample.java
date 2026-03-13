@@ -8,31 +8,31 @@ import ltd.idcu.est.workflow.core.Workflows;
 public class WorkflowExample {
     
     public static void main(String[] args) {
-        System.out.println("=== EST Workflow 示例 ===\n");
+        System.out.println("=== EST Workflow Example ===\n");
         
         WorkflowEngine engine = Workflows.newWorkflowEngine();
         
-        var startNode = Workflows.newTaskNode("start", "开�?, ctx -> {
-            System.out.println("[开始节点执�?);
+        var startNode = Workflows.newTaskNode("start", "Start", ctx -> {
+            System.out.println("[Start node executed]");
             ctx.setVariable("message", "Hello from Workflow!");
         });
         
-        var processNode = Workflows.newTaskNode("process", "处理", ctx -> {
-            System.out.println("[处理节点执行");
+        var processNode = Workflows.newTaskNode("process", "Process", ctx -> {
+            System.out.println("[Process node executed]");
             String message = ctx.getVariable("message", String.class).orElse("");
             ctx.setVariable("result", message.toUpperCase());
         });
         
-        var endNode = Workflows.newTaskNode("end", "结束", ctx -> {
-            System.out.println("[结束节点执行");
+        var endNode = Workflows.newTaskNode("end", "End", ctx -> {
+            System.out.println("[End node executed]");
             String result = ctx.getVariable("result", String.class).orElse("");
-            System.out.println("最终结�? " + result);
+            System.out.println("Final result: " + result);
         });
         
         WorkflowDefinition workflow = Workflows.newWorkflowBuilder()
                 .id("simple-workflow")
-                .name("简单工作流示例")
-                .description("一个简单的工作流示�?)
+                .name("Simple Workflow Example")
+                .description("A simple workflow example")
                 .startNode(startNode)
                 .addNode(processNode)
                 .endNode(endNode)
@@ -41,9 +41,9 @@ public class WorkflowExample {
         engine.registerWorkflow(workflow);
         WorkflowInstance instance = engine.startWorkflow("simple-workflow");
         
-        System.out.println("\n工作流执行完成！");
-        System.out.println("状�? " + instance.getStatus());
-        System.out.println("耗时: " + instance.getDuration() + "ms");
+        System.out.println("\nWorkflow execution completed!");
+        System.out.println("Status: " + instance.getStatus());
+        System.out.println("Duration: " + instance.getDuration() + "ms");
         
         engine.shutdown();
     }

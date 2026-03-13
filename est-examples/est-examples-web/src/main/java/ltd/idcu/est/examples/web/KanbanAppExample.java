@@ -15,18 +15,18 @@ public class KanbanAppExample {
     private static final AtomicInteger taskIdGenerator = new AtomicInteger(1);
     
     static {
-        tasks.put(1, new Task(1, "设计数据库架�?, "设计用户表、订单表、商品表�?, "todo", "high", "张三"));
-        tasks.put(2, new Task(2, "开发用户认证模�?, "实现登录注册功能", "in-progress", "high", "李四"));
-        tasks.put(3, new Task(3, "编写API文档", "为所有接口编写详细文�?, "todo", "medium", "王五"));
-        tasks.put(4, new Task(4, "前端页面开�?, "开发主页面和详情页", "in-progress", "medium", "赵六"));
-        tasks.put(5, new Task(5, "单元测试", "为核心模块编写单元测�?, "done", "low", "张三"));
-        tasks.put(6, new Task(6, "性能优化", "优化数据库查询性能", "review", "high", "李四"));
+        tasks.put(1, new Task(1, "Design database schema", "Design user, order, and product tables", "todo", "high", "Zhang San"));
+        tasks.put(2, new Task(2, "Develop user auth module", "Implement login and registration", "in-progress", "high", "Li Si"));
+        tasks.put(3, new Task(3, "Write API documentation", "Write detailed docs for all endpoints", "todo", "medium", "Wang Wu"));
+        tasks.put(4, new Task(4, "Frontend page development", "Develop main and detail pages", "in-progress", "medium", "Zhao Liu"));
+        tasks.put(5, new Task(5, "Unit testing", "Write unit tests for core modules", "done", "low", "Zhang San"));
+        tasks.put(6, new Task(6, "Performance optimization", "Optimize database query performance", "review", "high", "Li Si"));
     }
     
     public static void run() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(80));
-        System.out.println("任务看板应用 - Kanban App");
+        System.out.println("Task Board Application - Kanban App");
         System.out.println("=".repeat(80));
         
         WebApplication app = Web.create("Kanban App", "1.0.0");
@@ -49,17 +49,17 @@ public class KanbanAppExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n�?任务看板服务器启动成功！");
-            System.out.println("\n访问地址�?);
-            System.out.println("  - http://localhost:8080          (看板界面)");
-            System.out.println("\nAPI 端点�?);
-            System.out.println("  - GET    /api/tasks              - 获取所有任�?);
-            System.out.println("  - GET    /api/tasks/:id          - 获取单个任务");
-            System.out.println("  - POST   /api/tasks              - 创建任务");
-            System.out.println("  - PUT    /api/tasks/:id          - 更新任务");
-            System.out.println("  - PATCH  /api/tasks/:id/status   - 更新任务状�?);
-            System.out.println("  - DELETE /api/tasks/:id          - 删除任务");
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n[OK] Kanban server started successfully!");
+            System.out.println("\nAccess URLs:");
+            System.out.println("  - http://localhost:8080          (Board Interface)");
+            System.out.println("\nAPI Endpoints:");
+            System.out.println("  - GET    /api/tasks              - Get all tasks");
+            System.out.println("  - GET    /api/tasks/:id          - Get single task");
+            System.out.println("  - POST   /api/tasks              - Create task");
+            System.out.println("  - PUT    /api/tasks/:id          - Update task");
+            System.out.println("  - PATCH  /api/tasks/:id/status   - Update task status");
+            System.out.println("  - DELETE /api/tasks/:id          - Delete task");
+            System.out.println("\n[X] Ctrl+C to stop server");
             System.out.println("=".repeat(80));
         });
         
@@ -75,7 +75,7 @@ public class KanbanAppExample {
             <!DOCTYPE html>
             <html>
             <head>
-                <title>任务看板</title>
+                <title>Task Board</title>
                 <meta charset="UTF-8">
                 <style>
                     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -125,8 +125,8 @@ public class KanbanAppExample {
             </head>
             <body>
                 <div class="header">
-                    <h1>📋 任务看板</h1>
-                    <button onclick="openCreateModal()">+ 添加任务</button>
+                    <h1>📋 Task Board</h1>
+                    <button onclick="openCreateModal()">+ Add Task</button>
                 </div>
                 
                 <div class="container">
@@ -135,7 +135,7 @@ public class KanbanAppExample {
                     <div class="kanban-board">
                         <div class="column">
                             <div class="column-header">
-                                <span class="column-title">📝 待办</span>
+                                <span class="column-title">📝 Todo</span>
                                 <span class="column-count" id="todo-count">0</span>
                             </div>
                             <div class="task-list" id="todo"></div>
@@ -143,7 +143,7 @@ public class KanbanAppExample {
                         
                         <div class="column">
                             <div class="column-header">
-                                <span class="column-title">🚀 进行�?/span>
+                                <span class="column-title">🚀 In Progress</span>
                                 <span class="column-count" id="in-progress-count">0</span>
                             </div>
                             <div class="task-list" id="in-progress"></div>
@@ -151,7 +151,7 @@ public class KanbanAppExample {
                         
                         <div class="column">
                             <div class="column-header">
-                                <span class="column-title">👀 审核�?/span>
+                                <span class="column-title">👀 Review</span>
                                 <span class="column-count" id="review-count">0</span>
                             </div>
                             <div class="task-list" id="review"></div>
@@ -159,7 +159,7 @@ public class KanbanAppExample {
                         
                         <div class="column">
                             <div class="column-header">
-                                <span class="column-title">�?已完�?/span>
+                                <span class="column-title">✅ Done</span>
                                 <span class="column-count" id="done-count">0</span>
                             </div>
                             <div class="task-list" id="done"></div>
@@ -169,71 +169,71 @@ public class KanbanAppExample {
                 
                 <div class="modal-overlay" id="createModal">
                     <div class="modal">
-                        <h2>�?创建新任�?/h2>
+                        <h2>➕ Create New Task</h2>
                         <div class="form-group">
-                            <label>任务标题</label>
-                            <input type="text" id="create-title" placeholder="输入任务标题..." />
+                            <label>Task Title</label>
+                            <input type="text" id="create-title" placeholder="Enter task title..." />
                         </div>
                         <div class="form-group">
-                            <label>任务描述</label>
-                            <textarea id="create-description" placeholder="输入任务描述..."></textarea>
+                            <label>Task Description</label>
+                            <textarea id="create-description" placeholder="Enter task description..."></textarea>
                         </div>
                         <div class="form-group">
-                            <label>优先�?/label>
+                            <label>Priority</label>
                             <select id="create-priority">
-                                <option value="low">�?/option>
-                                <option value="medium" selected>�?/option>
-                                <option value="high">�?/option>
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>负责�?/label>
-                            <input type="text" id="create-assignee" placeholder="输入负责�?.." />
+                            <label>Assignee</label>
+                            <input type="text" id="create-assignee" placeholder="Enter assignee..." />
                         </div>
                         <div class="modal-actions">
-                            <button class="btn btn-secondary" onclick="closeCreateModal()">取消</button>
-                            <button class="btn btn-primary" onclick="createTask()">创建</button>
+                            <button class="btn btn-secondary" onclick="closeCreateModal()">Cancel</button>
+                            <button class="btn btn-primary" onclick="createTask()">Create</button>
                         </div>
                     </div>
                 </div>
                 
                 <div class="modal-overlay" id="editModal">
                     <div class="modal">
-                        <h2>✏️ 编辑任务</h2>
+                        <h2>✏️ Edit Task</h2>
                         <input type="hidden" id="edit-id" />
                         <div class="form-group">
-                            <label>任务标题</label>
+                            <label>Task Title</label>
                             <input type="text" id="edit-title" />
                         </div>
                         <div class="form-group">
-                            <label>任务描述</label>
+                            <label>Task Description</label>
                             <textarea id="edit-description"></textarea>
                         </div>
                         <div class="form-group">
-                            <label>状�?/label>
+                            <label>Status</label>
                             <select id="edit-status">
-                                <option value="todo">待办</option>
-                                <option value="in-progress">进行�?/option>
-                                <option value="review">审核�?/option>
-                                <option value="done">已完�?/option>
+                                <option value="todo">Todo</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="review">Review</option>
+                                <option value="done">Done</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>优先�?/label>
+                            <label>Priority</label>
                             <select id="edit-priority">
-                                <option value="low">�?/option>
-                                <option value="medium">�?/option>
-                                <option value="high">�?/option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>负责�?/label>
+                            <label>Assignee</label>
                             <input type="text" id="edit-assignee" />
                         </div>
                         <div class="modal-actions">
-                            <button class="btn btn-danger" onclick="deleteTask()" style="margin-right: auto;">删除</button>
-                            <button class="btn btn-secondary" onclick="closeEditModal()">取消</button>
-                            <button class="btn btn-primary" onclick="updateTask()">保存</button>
+                            <button class="btn btn-danger" onclick="deleteTask()" style="margin-right: auto;">Delete</button>
+                            <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                            <button class="btn btn-primary" onclick="updateTask()">Save</button>
                         </div>
                     </div>
                 </div>
@@ -266,7 +266,7 @@ public class KanbanAppExample {
                                     \${task.description ? '<div class="task-description">' + escapeHtml(task.description) + '</div>' : ''}
                                     <div class="task-footer">
                                         <span class="task-priority priority-\${task.priority}">\${getPriorityText(task.priority)}</span>
-                                        <span class="task-assignee">👤 \${escapeHtml(task.assignee || '未分�?)}</span>
+                                        <span class="task-assignee">👤 \${escapeHtml(task.assignee || 'Unassigned')}</span>
                                     </div>
                                 </div>
                             \`).join('');
@@ -283,29 +283,29 @@ public class KanbanAppExample {
                         document.getElementById('statsBar').innerHTML = \`
                             <div class="stat-item">
                                 <div class="stat-number">\${total}</div>
-                                <div class="stat-label">总任�?/div>
+                                <div class="stat-label">Total Tasks</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number">\${todo}</div>
-                                <div class="stat-label">待办</div>
+                                <div class="stat-label">Todo</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number">\${inProgress}</div>
-                                <div class="stat-label">进行�?/div>
+                                <div class="stat-label">In Progress</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number">\${review}</div>
-                                <div class="stat-label">审核�?/div>
+                                <div class="stat-label">Review</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number">\${done}</div>
-                                <div class="stat-label">已完�?/div>
+                                <div class="stat-label">Done</div>
                             </div>
                         \`;
                     }
                     
                     function getPriorityText(priority) {
-                        const map = { high: '�?, medium: '�?, low: '�? };
+                        const map = { high: 'High', medium: 'Medium', low: 'Low' };
                         return map[priority] || priority;
                     }
                     
@@ -328,7 +328,7 @@ public class KanbanAppExample {
                         const assignee = document.getElementById('create-assignee').value.trim();
                         
                         if (!title) {
-                            alert('请输入任务标题！');
+                            alert('Please enter task title!');
                             return;
                         }
                         
@@ -370,7 +370,7 @@ public class KanbanAppExample {
                         const assignee = document.getElementById('edit-assignee').value.trim();
                         
                         if (!title) {
-                            alert('请输入任务标题！');
+                            alert('Please enter task title!');
                             return;
                         }
                         
@@ -388,7 +388,7 @@ public class KanbanAppExample {
                     
                     async function deleteTask() {
                         const id = document.getElementById('edit-id').value;
-                        if (confirm('确定要删除这个任务吗�?)) {
+                        if (confirm('Are you sure you want to delete this task?')) {
                             await fetch('/api/tasks/' + id, { method: 'DELETE' });
                             closeEditModal();
                             loadTasks();
@@ -421,7 +421,7 @@ public class KanbanAppExample {
         if (task != null) {
             res.json(Map.of("success", true, "data", task));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "任务不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Task not found"));
         }
     }
     
@@ -432,7 +432,7 @@ public class KanbanAppExample {
         String assignee = req.formParam("assignee", "");
         
         if (title == null || title.isBlank()) {
-            res.status(400).json(Map.of("success", false, "message", "任务标题不能为空"));
+            res.status(400).json(Map.of("success", false, "message", "Task title cannot be empty"));
             return;
         }
         
@@ -442,7 +442,7 @@ public class KanbanAppExample {
         
         res.status(201).json(Map.of(
             "success", true,
-            "message", "任务创建成功",
+            "message", "Task created successfully",
             "data", task
         ));
     }
@@ -452,7 +452,7 @@ public class KanbanAppExample {
         Task task = tasks.get(id);
         
         if (task == null) {
-            res.status(404).json(Map.of("success", false, "message", "任务不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Task not found"));
             return;
         }
         
@@ -470,7 +470,7 @@ public class KanbanAppExample {
         
         res.json(Map.of(
             "success", true,
-            "message", "任务更新成功",
+            "message", "Task updated successfully",
             "data", task
         ));
     }
@@ -480,7 +480,7 @@ public class KanbanAppExample {
         Task task = tasks.get(id);
         
         if (task == null) {
-            res.status(404).json(Map.of("success", false, "message", "任务不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Task not found"));
             return;
         }
         
@@ -491,7 +491,7 @@ public class KanbanAppExample {
         
         res.json(Map.of(
             "success", true,
-            "message", "任务状态更新成�?,
+            "message", "Task status updated successfully",
             "data", task
         ));
     }
@@ -499,9 +499,9 @@ public class KanbanAppExample {
     private static void deleteTask(Request req, Response res) {
         int id = Integer.parseInt(req.param("id"));
         if (tasks.remove(id) != null) {
-            res.json(Map.of("success", true, "message", "任务删除成功"));
+            res.json(Map.of("success", true, "message", "Task deleted successfully"));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "任务不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Task not found"));
         }
     }
     

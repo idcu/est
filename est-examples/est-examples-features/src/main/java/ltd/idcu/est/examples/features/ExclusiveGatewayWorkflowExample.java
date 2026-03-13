@@ -8,45 +8,45 @@ import ltd.idcu.est.workflow.core.Workflows;
 public class ExclusiveGatewayWorkflowExample {
     
     public static void main(String[] args) {
-        System.out.println("=== EST Workflow 排他网关示例 ===\n");
+        System.out.println("=== EST Workflow Exclusive Gateway Example ===\n");
         
         WorkflowEngine engine = Workflows.newWorkflowEngine();
         
-        var startNode = Workflows.newTaskNode("start", "开�?, ctx -> {
-            System.out.println("[开始] 准备数据");
+        var startNode = Workflows.newTaskNode("start", "Start", ctx -> {
+            System.out.println("[Start] Preparing data");
             ctx.setVariable("amount", 800);
         });
         
-        var gateway = Workflows.newExclusiveGateway("gateway", "判断金额");
+        var gateway = Workflows.newExclusiveGateway("gateway", "Check Amount");
         
-        var highAmountNode = Workflows.newTaskNode("high", "高额处理", ctx -> {
-            System.out.println("[高额处理] 处理金额 > 500");
+        var highAmountNode = Workflows.newTaskNode("high", "High Amount Process", ctx -> {
+            System.out.println("[High Amount Process] Processing amount > 500");
             Integer amount = ctx.getVariable("amount", Integer.class).orElse(0);
-            System.out.println("金额: " + amount);
+            System.out.println("Amount: " + amount);
         });
         
-        var lowAmountNode = Workflows.newTaskNode("low", "低额处理", ctx -> {
-            System.out.println("[低额处理] 处理金额 <= 500");
+        var lowAmountNode = Workflows.newTaskNode("low", "Low Amount Process", ctx -> {
+            System.out.println("[Low Amount Process] Processing amount <= 500");
             Integer amount = ctx.getVariable("amount", Integer.class).orElse(0);
-            System.out.println("金额: " + amount);
+            System.out.println("Amount: " + amount);
         });
         
-        var endNode = Workflows.newTaskNode("end", "结束", ctx -> {
-            System.out.println("[结束] 工作流结�?);
+        var endNode = Workflows.newTaskNode("end", "End", ctx -> {
+            System.out.println("[End] Workflow finished");
         });
         
         WorkflowDefinition workflow = Workflows.newWorkflowBuilder()
                 .id("gateway-workflow")
-                .name("排他网关示例")
+                .name("Exclusive Gateway Example")
                 .startNode(startNode)
                 .addNode(gateway)
                 .addNode(highAmountNode)
                 .addNode(lowAmountNode)
                 .endNode(endNode)
                 .connect("start", "gateway")
-                .connect("gateway", "high", "高额", ctx -> 
+                .connect("gateway", "high", "High", ctx -> 
                     ctx.getVariable("amount", Integer.class).orElse(0) > 500)
-                .connect("gateway", "low", "低额", ctx -> 
+                .connect("gateway", "low", "Low", ctx -> 
                     ctx.getVariable("amount", Integer.class).orElse(0) <= 500)
                 .connect("high", "end")
                 .connect("low", "end")
@@ -55,8 +55,8 @@ public class ExclusiveGatewayWorkflowExample {
         engine.registerWorkflow(workflow);
         WorkflowInstance instance = engine.startWorkflow("gateway-workflow");
         
-        System.out.println("\n工作流执行完成！");
-        System.out.println("状�? " + instance.getStatus());
+        System.out.println("\nWorkflow execution complete!");
+        System.out.println("Status: " + instance.getStatus());
         
         engine.shutdown();
     }

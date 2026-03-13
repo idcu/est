@@ -11,16 +11,16 @@ public class UtilsExample {
     public static void run() {
         System.out.println("\n=== Utils Example ===");
         
-        // 字符串处理示�?
+        // String utils example
         stringUtilsExample();
         
-        // 日期处理示例
+        // Date utils example
         dateUtilsExample();
         
-        // 断言工具示例
+        // Assert utils example
         assertUtilsExample();
         
-        // 类处理示�?
+        // Class utils example
         classUtilsExample();
     }
     

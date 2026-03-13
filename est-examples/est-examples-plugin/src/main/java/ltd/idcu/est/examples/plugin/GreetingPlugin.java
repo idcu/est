@@ -9,11 +9,11 @@ public class GreetingPlugin extends AbstractPlugin {
         super(PluginInfo.builder()
                 .name("greeting-plugin")
                 .version("1.0.0")
-                .description("一个依赖 HelloPlugin 的问候插件，展示插件依赖关系")
+                .description("A greeting plugin that depends on HelloPlugin, demonstrating plugin dependencies")
                 .author("EST Team")
                 .mainClass(GreetingPlugin.class.getName())
                 .dependencies("hello-plugin")
-                .category("示例")
+                .category("Example")
                 .tags("greeting", "dependency", "example")
                 .minFrameworkVersion("2.3.0")
                 .build());
@@ -23,12 +23,12 @@ public class GreetingPlugin extends AbstractPlugin {
 
     @Override
     public void onLoad() {
-        System.out.println("[GreetingPlugin] 插件已加载");
+        System.out.println("[GreetingPlugin] Plugin loaded");
     }
 
     @Override
     public void onEnable() {
-        System.out.println("[GreetingPlugin] 插件已启用");
+        System.out.println("[GreetingPlugin] Plugin enabled");
         if (getContext() != null) {
             helloPlugin = (HelloPlugin) getContext().getAttribute("hello-plugin");
         }
@@ -36,12 +36,12 @@ public class GreetingPlugin extends AbstractPlugin {
 
     @Override
     public void onDisable() {
-        System.out.println("[GreetingPlugin] 插件已禁用");
+        System.out.println("[GreetingPlugin] Plugin disabled");
     }
 
     @Override
     public void onUnload() {
-        System.out.println("[GreetingPlugin] 插件已卸载");
+        System.out.println("[GreetingPlugin] Plugin unloaded");
     }
 
     public String friendlyGreet(String name) {

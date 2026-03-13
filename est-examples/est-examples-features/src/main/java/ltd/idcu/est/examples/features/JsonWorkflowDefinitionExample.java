@@ -9,40 +9,40 @@ import ltd.idcu.est.workflow.core.Workflows;
 public class JsonWorkflowDefinitionExample {
     
     public static void main(String[] args) {
-        System.out.println("=== EST Workflow JSON 定义示例 ===\n");
+        System.out.println("=== EST Workflow JSON Definition Example ===\n");
         
         WorkflowDefinitionParser parser = Workflows.newJsonParser();
         
         String json = "{\n" +
                 "  \"id\": \"json-workflow\",\n" +
-                "  \"name\": \"JSON 工作流\",\n" +
-                "  \"description\": \"�?JSON 定义的工作流\",\n" +
+                "  \"name\": \"JSON Workflow\",\n" +
+                "  \"description\": \"Workflow defined in JSON\",\n" +
                 "  \"nodes\": [\n" +
-                "    {\"id\": \"task1\", \"name\": \"任务1\", \"type\": \"TASK\"},\n" +
-                "    {\"id\": \"task2\", \"name\": \"任务2\", \"type\": \"TASK\"}\n" +
+                "    {\"id\": \"task1\", \"name\": \"Task 1\", \"type\": \"TASK\"},\n" +
+                "    {\"id\": \"task2\", \"name\": \"Task 2\", \"type\": \"TASK\"}\n" +
                 "  ],\n" +
                 "  \"startNode\": \"task1\",\n" +
                 "  \"endNode\": \"task2\"\n" +
                 "}";
         
-        System.out.println("解析 JSON 工作流定�?..");
+        System.out.println("Parsing JSON workflow definition...");
         WorkflowDefinition workflow = parser.parse(json);
-        System.out.println("工作�?ID: " + workflow.getId());
-        System.out.println("工作流名�? " + workflow.getName());
-        System.out.println("节点数量: " + workflow.getNodes().size());
+        System.out.println("Workflow ID: " + workflow.getId());
+        System.out.println("Workflow Name: " + workflow.getName());
+        System.out.println("Node count: " + workflow.getNodes().size());
         
-        System.out.println("\n将工作流定义序列化回 JSON...");
+        System.out.println("\nSerializing workflow definition back to JSON...");
         String serialized = parser.serialize(workflow);
         System.out.println(serialized);
         
         WorkflowRepository repository = Workflows.newMemoryRepository();
         WorkflowEngine engine = Workflows.newWorkflowEngine(repository);
         
-        System.out.println("\n注册并执行工作流...");
+        System.out.println("\nRegistering and executing workflow...");
         engine.registerWorkflow(workflow);
         engine.startWorkflow("json-workflow");
         
-        System.out.println("\n工作流执行完成！");
+        System.out.println("\nWorkflow execution complete!");
         
         engine.shutdown();
     }

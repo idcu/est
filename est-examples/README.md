@@ -1,135 +1,135 @@
-# EST Examples 示例模块
+# EST Examples Module
 
-包含EST框架的各种使用示例。
+Contains various usage examples of the EST Framework.
 
-## 模块结构
+## Module Structure
 
 ```
 est-examples/
-├── est-examples-basic/          # 基础示例
-├── est-examples-web/            # Web示例
-├── est-examples-features/       # 功能示例
-├── est-examples-advanced/       # 高级示例
-├── est-examples-ai/             # AI助手示例
-├── est-examples-graalvm/        # GraalVM示例
-├── est-examples-microservices/  # 微服务示例
+├── est-examples-basic/          # Basic Examples
+├── est-examples-web/            # Web Examples
+├── est-examples-features/       # Features Examples
+├── est-examples-advanced/       # Advanced Examples
+├── est-examples-ai/             # AI Assistant Examples
+├── est-examples-graalvm/        # GraalVM Examples
+├── est-examples-microservices/  # Microservices Examples
 └── pom.xml
 ```
 
-## 示例列表
+## Example List
 
-### 基础示例 (est-examples-basic)
+### Basic Examples (est-examples-basic)
 
-- 依赖注入容器使用
-- 配置管理
-- 集合操作
-- 设计模式使用
-- 工具类使用
+- Dependency injection container usage
+- Configuration management
+- Collection operations
+- Design pattern usage
+- Utility class usage
 
-### Web示例 (est-examples-web)
+### Web Examples (est-examples-web)
 
-- Hello World Web应用
+- Hello World Web application
 - RESTful API
-- 路由和过滤器
-- 中间件使用
-- 会话管理
-- 模板引擎
-- Todo应用
-- 聊天室应用
-- 看板应用
-- 日历应用
-- 文件上传
-- Admin管理系统示例
+- Routing and filters
+- Middleware usage
+- Session management
+- Template engine
+- Todo application
+- Chat room application
+- Kanban application
+- Calendar application
+- File upload
+- Admin management system example
 
-### 功能示例 (est-examples-features)
+### Features Examples (est-examples-features)
 
-- 缓存系统
-- 事件总线
-- 日志系统
-- 数据访问（JDBC、内存、MongoDB、Redis）
-- 安全认证
-- 调度系统
-- 监控系统
-- 消息系统（ActiveMQ、Kafka、RabbitMQ、Redis等）
-- 断路器
-- 工作流引擎
+- Cache system
+- Event bus
+- Logging system
+- Data access (JDBC, in-memory, MongoDB, Redis)
+- Security authentication
+- Scheduler system
+- Monitor system
+- Message system (ActiveMQ, Kafka, RabbitMQ, Redis, etc.)
+- Circuit breaker
+- Workflow engine
 
-### 高级示例 (est-examples-advanced)
+### Advanced Examples (est-examples-advanced)
 
-- 插件系统
-- 完整应用
-- 性能优化
-- 测试实践
-- 模块集成
-- 多模块集成
-- 新架构示例
+- Plugin system
+- Complete applications
+- Performance optimization
+- Testing practices
+- Module integration
+- Multi-module integration
+- New architecture examples
 
-### AI助手示例 (est-examples-ai)
+### AI Assistant Examples (est-examples-ai)
 
-- AI快速开发
-- AI辅助Web应用
-- 代码生成示例
-- 提示词模板示例
-- LLM集成示例
+- AI rapid development
+- AI-assisted Web application
+- Code generation examples
+- Prompt template examples
+- LLM integration examples
 
-### GraalVM示例 (est-examples-graalvm)
+### GraalVM Examples (est-examples-graalvm)
 
-- Hello World原生应用
-- Web应用原生镜像
+- Hello World native application
+- Web application native image
 
-### 微服务示例 (est-examples-microservices)
+### Microservices Examples (est-examples-microservices)
 
-- 微服务网格
-- 用户服务
-- 订单服务
+- Microservices mesh
+- User service
+- Order service
 
-### Admin管理系统示例 (est-app/est-admin + est-admin-ui)
+### Admin Management System Examples (est-app/est-admin + est-admin-ui)
 
-一个完整的前后端分离管理系统，包含：
-- 后端 RESTful API
-- JWT Token 认证
-- Vue 3 + Element Plus 前端
-- 用户、角色、菜单、部门、租户管理
+A complete frontend-backend separated management system, including:
+- Backend RESTful API
+- JWT Token authentication
+- Vue 3 + Element Plus frontend
+- User, role, menu, department, tenant management
 
-详细文档请参考：[EST Admin 前后端集成指南](../docs/guides/admin-integration.md)
+For detailed documentation, please refer to: [EST Admin Frontend-Backend Integration Guide](../docs/guides/admin-integration.md)
 
-## 运行示例
+## Run Examples
 
 ```bash
-# 运行基础示例
+# Run basic examples
 cd est-examples-basic
 mvn exec:java
 
-# 运行Web示例
+# Run Web examples
 cd est-examples-web
 mvn exec:java
 
-# 运行功能示例
+# Run features examples
 cd est-examples-features
 ./run-examples.bat
 
-# 运行AI示例
+# Run AI examples
 cd est-examples-ai
 mvn exec:java
 
-# 运行Admin示例
-# 1. 启动后端
+# Run Admin examples
+# 1. Start backend
 cd ../est-app/est-admin/est-admin-impl
 mvn compile exec:java -Dexec.mainClass="ltd.idcu.est.admin.DefaultAdminApplication"
 
-# 2. 启动前端（新终端）
+# 2. Start frontend (new terminal)
 cd ../../../est-admin-ui
 npm install
 npm run dev
 ```
 
-## 依赖
+## Dependencies
 
-示例模块依赖EST框架的其他模块。
+The examples module depends on other modules of the EST Framework.
 
-## 文档
+## Documentation
 
-更多详细文档请查看：
-- [示例代码文档](../docs/examples/README.md)
-- [快速开始](../docs/getting-started/README.md)
-- [Admin配置指南](../docs/guides/admin-integration.md)
+For more detailed documentation, please check:
+- [Example Code Documentation](../docs/examples/README.md)
+- [Quick Start](../docs/getting-started/README.md)
+- [Admin Configuration Guide](../docs/guides/admin-integration.md)

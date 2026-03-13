@@ -6,7 +6,7 @@ import ltd.idcu.est.collection.api.Map as EstMap
 
 fun main() {
     println("=".repeat(80))
-    println("  EST Framework Kotlin 扩展函数示例")
+    println("  EST Framework Kotlin Extension Functions Example")
     println("=".repeat(80))
     
     example1_CollectionExtensions()
@@ -16,106 +16,106 @@ fun main() {
     example3_TypeConversions()
     println()
     println("=".repeat(80))
-    println("  所有示例运行完成！")
+    println("  All examples completed!")
     println("=".repeat(80))
 }
 
 fun example1_CollectionExtensions() {
-    println("\n【示例 1】集合扩展函数")
+    println("\n[Example 1] Collection Extension Functions")
     println("-".repeat(80))
     
     val list = listOf(1, 2, 3, 4, 5)
     
-    println("原始列表: $list")
+    println("Original list: $list")
     
     val evenNumbers = list.filter { it % 2 == 0 }
-    println("偶数过滤: $evenNumbers")
+    println("Even numbers filter: $evenNumbers")
     
     val doubled = list.map { it * 2 }
-    println("双倍映射: $doubled")
+    println("Doubled mapping: $doubled")
     
     val sum = list.reduce { acc, i -> acc + i }
-    println("求和: $sum")
+    println("Sum: $sum")
     
     val first = list.firstOrNull()
-    println("第一个元素: $first")
+    println("First element: $first")
     
     val last = list.lastOrNull()
-    println("最后一个元素: $last")
+    println("Last element: $last")
     
     println()
-    println("链式调用示例:")
+    println("Chaining example:")
     val result = list
         .filter { it > 2 }
         .map { it * 3 }
         .sum()
-    println("  结果: $result")
+    println("  Result: $result")
 }
 
 fun example2_StringExtensions() {
-    println("\n【示例 2】字符串扩展函数")
+    println("\n[Example 2] String Extension Functions")
     println("-".repeat(80))
     
     val str = "Hello, EST Framework!"
     
-    println("原始字符串: \"$str\"")
+    println("Original string: \"$str\"")
     
     val reversed = str.reversed()
-    println("反转: \"$reversed\"")
+    println("Reversed: \"$reversed\"")
     
     val uppercase = str.uppercase()
-    println("大写: \"$uppercase\"")
+    println("Uppercase: \"$uppercase\"")
     
     val lowercase = str.lowercase()
-    println("小写: \"$lowercase\"")
+    println("Lowercase: \"$lowercase\"")
     
     val trimmed = "  Hello  ".trim()
-    println("去除空白: \"$trimmed\"")
+    println("Trimmed whitespace: \"$trimmed\"")
     
     val contains = str.contains("EST")
-    println("包含 'EST': $contains")
+    println("Contains 'EST': $contains")
     
     val startsWith = str.startsWith("Hello")
-    println("以 'Hello' 开头: $startsWith")
+    println("Starts with 'Hello': $startsWith")
     
     val endsWith = str.endsWith("!")
-    println("以 '!' 结尾: $endsWith")
+    println("Ends with '!': $endsWith")
     
     val split = str.split(", ")
-    println("分割: $split")
+    println("Split: $split")
     
     val substring = str.substring(7, 10)
-    println("子串 (7-10): \"$substring\"")
+    println("Substring (7-10): \"$substring\"")
 }
 
 fun example3_TypeConversions() {
-    println("\n【示例 3】类型转换")
+    println("\n[Example 3] Type Conversions")
     println("-".repeat(80))
     
     val strNum = "123"
     val intNum = strNum.toIntOrNull()
-    println("字符串 '$strNum' 转整数: $intNum")
+    println("String '$strNum' to integer: $intNum")
     
     val strDouble = "3.14"
     val doubleNum = strDouble.toDoubleOrNull()
-    println("字符串 '$strDouble' 转双精度: $doubleNum")
+    println("String '$strDouble' to double: $doubleNum")
     
     val boolStr = "true"
     val bool = boolStr.toBooleanStrictOrNull()
-    println("字符串 '$boolStr' 转布尔: $bool")
+    println("String '$boolStr' to boolean: $bool")
     
     val intToStr = 456.toString()
-    println("整数 456 转字符串: \"$intToStr\"")
+    println("Integer 456 to string: \"$intToStr\"")
     
     val doubleToStr = 2.718.toString()
-    println("双精度 2.718 转字符串: \"$doubleToStr\"")
+    println("Double 2.718 to string: \"$doubleToStr\"")
     
     val boolToStr = false.toString()
-    println("布尔 false 转字符串: \"$boolToStr\"")
+    println("Boolean false to string: \"$boolToStr\"")
     
     println()
-    println("安全转换示例:")
+    println("Safe conversion example:")
     val invalidNum = "abc"
     val safeInt = invalidNum.toIntOrNull() ?: 0
-    println("  无效字符串 '$invalidNum' 安全转换: $safeInt")
+    println("  Invalid string '$invalidNum' safe conversion: $safeInt")
 }

@@ -1,46 +1,46 @@
-# EST 插件系统示例
+# EST Plugin System Examples
 
-本示例展示了如何使用 EST Framework 的插件系统。
+This example demonstrates how to use the EST Framework Plugin System.
 
-## 功能特性
+## Features
 
-- **插件生命周期管理**: 加载、初始化、启动、停止、卸载
-- **插件依赖管理**: 支持插件之间的依赖关系
-- **事件监听**: 监听插件的各种生命周期事件
-- **插件统计**: 获取插件系统的运行统计信息
-- **属性管理**: 插件之间可以共享属性
+- **Plugin Lifecycle Management**: Load, initialize, start, stop, uninstall
+- **Plugin Dependency Management**: Support for dependency relationships between plugins
+- **Event Listening**: Listen to various lifecycle events of plugins
+- **Plugin Statistics**: Get runtime statistics of the plugin system
+- **Attribute Management**: Plugins can share attributes with each other
 
-## 项目结构
+## Project Structure
 
 ```
 est-examples-plugin/
 ├── src/main/java/ltd/idcu/est/examples/plugin/
-│   ├── HelloPlugin.java          # 基础 Hello 插件
-│   ├── GreetingPlugin.java       # 依赖 HelloPlugin 的问候插件
-│   ├── LoggingPlugin.java        # 日志记录插件
-│   └── PluginSystemExample.java  # 插件系统主示例
+│   ├── HelloPlugin.java          # Basic Hello Plugin
+│   ├── GreetingPlugin.java       # Greeting Plugin depending on HelloPlugin
+│   ├── LoggingPlugin.java        # Logging Plugin
+│   └── PluginSystemExample.java  # Plugin System Main Example
 ├── pom.xml
 └── README.md
 ```
 
-## 快速开始
+## Quick Start
 
-### 运行示例
+### Run Example
 
 ```bash
 cd est-examples-plugin
 mvn compile exec:java -Dexec.mainClass="ltd.idcu.est.examples.plugin.PluginSystemExample"
 ```
 
-### 或在 IDE 中运行
+### Or Run in IDE
 
-直接运行 `PluginSystemExample.java` 的 `main` 方法。
+Directly run the `main` method of `PluginSystemExample.java`.
 
-## 示例说明
+## Example Description
 
 ### 1. HelloPlugin
 
-最简单的插件示例，展示了插件的基本结构和生命周期方法。
+The simplest plugin example, demonstrating the basic structure and lifecycle methods of a plugin.
 
 ```java
 public class HelloPlugin extends AbstractPlugin {
@@ -48,14 +48,14 @@ public class HelloPlugin extends AbstractPlugin {
         super(PluginInfo.builder()
                 .name("hello-plugin")
                 .version("1.0.0")
-                .description("一个简单的 Hello 插件")
+                .description("A simple Hello plugin")
                 .author("EST Team")
                 .build());
     }
 
     @Override
     public void onLoad() {
-        System.out.println("[HelloPlugin] 插件已加载");
+        System.out.println("[HelloPlugin] Plugin loaded");
     }
 
     public String sayHello() {
@@ -66,7 +66,7 @@ public class HelloPlugin extends AbstractPlugin {
 
 ### 2. LoggingPlugin
 
-展示了插件的属性管理和状态管理功能。
+Demonstrates attribute management and state management features of plugins.
 
 ```java
 public class LoggingPlugin extends AbstractPlugin {
@@ -76,95 +76,95 @@ public class LoggingPlugin extends AbstractPlugin {
     }
 
     public void log(String message) {
-        // 记录日志
+        // Log message
     }
 }
 ```
 
 ### 3. GreetingPlugin
 
-展示了插件之间的依赖关系。
+Demonstrates dependency relationships between plugins.
 
 ```java
 public class GreetingPlugin extends AbstractPlugin {
     public GreetingPlugin() {
         super(PluginInfo.builder()
                 .name("greeting-plugin")
-                .dependencies("hello-plugin")  // 依赖 HelloPlugin
+                .dependencies("hello-plugin")  // Depends on HelloPlugin
                 .build());
     }
 }
 ```
 
-## 插件系统 API
+## Plugin System API
 
 ### PluginManager
 
-核心插件管理器接口，提供以下功能：
+Core plugin manager interface, providing the following features:
 
 ```java
 PluginManager pluginManager = new DefaultPluginManager();
 
-// 从类加载插件
+// Load plugin from class
 Plugin plugin = pluginManager.loadPluginFromClass(MyPlugin.class);
 
-// 从路径加载插件
+// Load plugin from path
 Plugin plugin = pluginManager.loadPlugin("/path/to/plugin.jar");
 
-// 启动插件
+// Start plugin
 pluginManager.startPlugin("plugin-name");
 
-// 停止插件
+// Stop plugin
 pluginManager.stopPlugin("plugin-name");
 
-// 卸载插件
+// Uninstall plugin
 pluginManager.unloadPlugin("plugin-name");
 
-// 获取所有插件
+// Get all plugins
 List<Plugin> plugins = pluginManager.getPlugins();
 
-// 获取统计信息
+// Get statistics
 PluginStats stats = pluginManager.getStats();
 ```
 
 ### PluginListener
 
-插件事件监听器：
+Plugin event listener:
 
 ```java
 pluginManager.addListener(new PluginListener() {
     @Override
     public void onPluginLoaded(Plugin plugin) {
-        System.out.println("插件已加载: " + plugin.getName());
+        System.out.println("Plugin loaded: " + plugin.getName());
     }
 
     @Override
     public void onPluginStarted(Plugin plugin) {
-        System.out.println("插件已启动: " + plugin.getName());
+        System.out.println("Plugin started: " + plugin.getName());
     }
 
-    // 其他生命周期方法...
+    // Other lifecycle methods...
 });
 ```
 
-### Plugin 生命周期
+### Plugin Lifecycle
 
-插件有以下状态：
+Plugins have the following states:
 
-- `LOADED` - 已加载
-- `INITIALIZED` - 已初始化
-- `STARTING` - 启动中
-- `RUNNING` - 运行中
-- `STOPPING` - 停止中
-- `STOPPED` - 已停止
-- `ERROR` - 错误状态
+- `LOADED` - Loaded
+- `INITIALIZED` - Initialized
+- `STARTING` - Starting
+- `RUNNING` - Running
+- `STOPPING` - Stopping
+- `STOPPED` - Stopped
+- `ERROR` - Error state
 
-## 创建自己的插件
+## Create Your Own Plugin
 
-1. 继承 `AbstractPlugin` 类
-2. 在构造函数中提供 `PluginInfo`
-3. 重写需要的生命周期方法
-4. 实现自己的业务逻辑
+1. Extend `AbstractPlugin` class
+2. Provide `PluginInfo` in constructor
+3. Override needed lifecycle methods
+4. Implement your own business logic
 
 ```java
 public class MyPlugin extends AbstractPlugin {
@@ -172,10 +172,10 @@ public class MyPlugin extends AbstractPlugin {
         super(PluginInfo.builder()
                 .name("my-plugin")
                 .version("1.0.0")
-                .description("我的插件")
+                .description("My plugin")
                 .author("My Name")
                 .mainClass(MyPlugin.class.getName())
-                .category("工具")
+                .category("Tool")
                 .tags("my", "plugin")
                 .minFrameworkVersion("2.3.0")
                 .build());
@@ -183,16 +183,16 @@ public class MyPlugin extends AbstractPlugin {
 
     @Override
     public void onEnable() {
-        System.out.println("我的插件已启用!");
+        System.out.println("My plugin enabled!");
     }
 
     public void doSomething() {
-        System.out.println("做一些事情...");
+        System.out.println("Doing something...");
     }
 }
 ```
 
-## 更多信息
+## More Information
 
-- 查看 EST Framework 文档了解更多插件系统功能
-- 参考 `est-tools/est-code-cli` 中的插件实现
+- Check EST Framework documentation for more plugin system features
+- Reference plugin implementations in `est-tools/est-code-cli`

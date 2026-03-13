@@ -14,28 +14,28 @@ import java.util.Random;
 public class VectorStoreExample {
     
     public static void main(String[] args) {
-        System.out.println("=== EST AI Vector Store 示例 ===\n");
+        System.out.println("=== EST AI Vector Store Example ===\n");
         
         AiAssistant assistant = Ai.create();
         VectorStore vectorStore = assistant.getVectorStore();
         
         vectorStore.connect(new HashMap<>());
         
-        System.out.println("1. 创建集合...");
+        System.out.println("1. Creating collection...");
         String collectionName = "knowledge-base";
         int dimension = 128;
         vectorStore.createCollection(collectionName, dimension);
-        System.out.println("�?集合 '" + collectionName + "' 创建成功，维�? " + dimension + "\n");
+        System.out.println("[X] Collection '" + collectionName + "' created, dimension: " + dimension + "\n");
         
-        System.out.println("2. 插入示例向量...");
+        System.out.println("2. Inserting sample vectors...");
         Random random = new Random(42);
         
         String[] docs = {
-            "EST框架是一个零依赖的Java框架",
-            "EST AI模块支持多种LLM提供�?,
-            "EST提供向量数据库功�?,
-            "EST支持RAG（检索增强生成）",
-            "EST具有优秀的性能表现"
+            "EST Framework is a zero-dependency Java framework",
+            "EST AI module supports multiple LLM providers",
+            "EST provides vector database functionality",
+            "EST supports RAG (Retrieval-Augmented Generation)",
+            "EST has excellent performance characteristics"
         };
         
         for (int i = 0; i < docs.length; i++) {
@@ -46,53 +46,53 @@ public class VectorStoreExample {
             
             Vector vec = new DefaultVector("doc-" + i, vector, metadata);
             vectorStore.upsert(collectionName, vec);
-            System.out.println("  插入文档 " + i + ": " + docs[i]);
+            System.out.println("  Inserted document " + i + ": " + docs[i]);
         }
-        System.out.println("�?共插�?" + vectorStore.count(collectionName) + " 个向量\n");
+        System.out.println("[X] Total inserted: " + vectorStore.count(collectionName) + " vectors\n");
         
-        System.out.println("3. 执行相似性搜�?..");
+        System.out.println("3. Performing similarity search...");
         float[] queryVector = generateRandomVector(dimension, random);
         int topK = 3;
         
         List<Vector> results = vectorStore.search(collectionName, queryVector, topK);
-        System.out.println("🔍 搜索结果 (Top " + topK + "):");
+        System.out.println("[Search] Results (Top " + topK + "):");
         for (int i = 0; i < results.size(); i++) {
             Vector result = results.get(i);
             String content = (String) result.getMetadata().get("content");
-            System.out.printf("  %d. [得分: %.4f] %s%n", 
+            System.out.printf("  %d. [Score: %.4f] %s%n", 
                 i + 1, result.getScore(), content);
         }
         System.out.println();
         
-        System.out.println("4. 获取单个向量...");
+        System.out.println("4. Getting single vector...");
         Vector retrieved = vectorStore.get(collectionName, "doc-0");
         if (retrieved != null) {
-            System.out.println("�?获取成功: " + retrieved.getMetadata().get("content"));
+            System.out.println("[X] Retrieved: " + retrieved.getMetadata().get("content"));
         }
         System.out.println();
         
-        System.out.println("5. 删除向量...");
+        System.out.println("5. Deleting vector...");
         vectorStore.delete(collectionName, "doc-4");
-        System.out.println("�?删除后剩�? " + vectorStore.count(collectionName) + " 个向量\n");
+        System.out.println("[X] Remaining after delete: " + vectorStore.count(collectionName) + " vectors\n");
         
-        System.out.println("6. 清空集合...");
+        System.out.println("6. Clearing collection...");
         vectorStore.clear(collectionName);
-        System.out.println("�?清空后剩�? " + vectorStore.count(collectionName) + " 个向量\n");
+        System.out.println("[X] Remaining after clear: " + vectorStore.count(collectionName) + " vectors\n");
         
-        System.out.println("7. 列出所有集�?..");
+        System.out.println("7. Listing all collections...");
         List<String> collections = vectorStore.listCollections();
-        System.out.println("📋 集合列表:");
+        System.out.println("[List] Collection list:");
         for (String col : collections) {
             System.out.println("  - " + col);
         }
         System.out.println();
         
-        System.out.println("8. 删除集合...");
+        System.out.println("8. Deleting collection...");
         vectorStore.deleteCollection(collectionName);
-        System.out.println("�?集合 '" + collectionName + "' 已删除\n");
+        System.out.println("[X] Collection '" + collectionName + "' deleted\n");
         
         vectorStore.disconnect();
-        System.out.println("🎉 示例完成�?);
+        System.out.println("[X] Example complete!");
     }
     
     private static float[] generateRandomVector(int dimension, Random random) {

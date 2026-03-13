@@ -13,20 +13,20 @@ public class UserController {
     private final Map<String, User> users = new ConcurrentHashMap<>();
 
     public UserController() {
-        users.put("1", new User("1", "张三", "zhangsan@example.com", 28));
-        users.put("2", new User("2", "李四", "lisi@example.com", 32));
-        users.put("3", new User("3", "王五", "wangwu@example.com", 25));
+        users.put("1", new User("1", "ZhangSan", "zhangsan@example.com", 28));
+        users.put("2", new User("2", "LiSi", "lisi@example.com", 32));
+        users.put("3", new User("3", "WangWu", "wangwu@example.com", 25));
     }
 
     @Get("/users")
     public List<User> getAllUsers() {
-        System.out.println("[UserService] GET /users - 返回所有用�?);
+        System.out.println("[UserService] GET /users - Return all users");
         return new ArrayList<>(users.values());
     }
 
     @Get("/users/{id}")
     public User getUserById(String id) {
-        System.out.println("[UserService] GET /users/" + id + " - 获取用户");
+        System.out.println("[UserService] GET /users/" + id + " - Get user");
         User user = users.get(id);
         if (user == null) {
             throw new RuntimeException("User not found: " + id);
@@ -39,7 +39,7 @@ public class UserController {
         String id = String.valueOf(users.size() + 1);
         user.setId(id);
         users.put(id, user);
-        System.out.println("[UserService] POST /users - 创建用户: " + user);
+        System.out.println("[UserService] POST /users - Create user: " + user);
         return user;
     }
 }

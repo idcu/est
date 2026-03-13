@@ -15,72 +15,72 @@ public class ComprehensiveAiExample {
 
     public static void main(String[] args) {
         System.out.println("=".repeat(60));
-        System.out.println("EST AI 综合示例");
+        System.out.println("EST AI Comprehensive Example");
         System.out.println("=".repeat(60));
         System.out.println();
-        System.out.println("本示例展�?EST AI 的所有核心功能：");
-        System.out.println("  1. AI 助手基础功能");
-        System.out.println("  2. 代码生成�?);
-        System.out.println("  3. 提示词模�?);
-        System.out.println("  4. Skill 系统");
-        System.out.println("  5. 知识查询");
-        System.out.println("  6. 代码操作");
+        System.out.println("This example demonstrates all core features of EST AI:");
+        System.out.println("  1. AI Assistant basic functionality");
+        System.out.println("  2. Code generation");
+        System.out.println("  3. Prompt templates");
+        System.out.println("  4. Skill system");
+        System.out.println("  5. Knowledge query");
+        System.out.println("  6. Code operations");
         System.out.println();
 
         System.out.println("=".repeat(60));
-        System.out.println("第一部分：AI 助手初始�?);
+        System.out.println("Part 1: AI Assistant Initialization");
         System.out.println("=".repeat(60));
 
         AiAssistant aiAssistant = new DefaultAiAssistant();
-        System.out.println("�?AI 助手已创�?);
+        System.out.println("[X] AI Assistant created");
         System.out.println();
 
         System.out.println("=".repeat(60));
-        System.out.println("第二部分：知识查�?);
+        System.out.println("Part 2: Knowledge Query");
         System.out.println("=".repeat(60));
 
         knowledgeQueryExample(aiAssistant);
 
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("第三部分：代码操�?);
+        System.out.println("Part 3: Code Operations");
         System.out.println("=".repeat(60));
 
         codeOperationExample(aiAssistant);
 
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("第四部分：代码生成器");
+        System.out.println("Part 4: Code Generator");
         System.out.println("=".repeat(60));
 
         codeGeneratorExample(aiAssistant);
 
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("第五部分：提示词模板");
+        System.out.println("Part 5: Prompt Templates");
         System.out.println("=".repeat(60));
 
         promptTemplateExample(aiAssistant);
 
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("第六部分：Skill 系统");
+        System.out.println("Part 6: Skill System");
         System.out.println("=".repeat(60));
 
         skillSystemExample(aiAssistant);
 
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(60));
-        System.out.println("综合示例运行完成�?);
+        System.out.println("Comprehensive example run complete");
         System.out.println("=".repeat(60));
         System.out.println();
-        System.out.println("更多示例�?);
-        System.out.println("  - StorageExample: 存储系统");
-        System.out.println("  - ConfigExample: 配置管理");
-        System.out.println("  - LlmIntegrationExample: LLM 集成");
-        System.out.println("  - MidTermFeaturesExample: 中期功能");
-        System.out.println("  - LongTermFeaturesExample: 长期功能");
-        System.out.println("  - AiAssistantWebExample: Web 助手");
+        System.out.println("More examples:");
+        System.out.println("  - StorageExample: Storage system");
+        System.out.println("  - ConfigExample: Configuration management");
+        System.out.println("  - LlmIntegrationExample: LLM integration");
+        System.out.println("  - MidTermFeaturesExample: Mid-term features");
+        System.out.println("  - LongTermFeaturesExample: Long-term features");
+        System.out.println("  - AiAssistantWebExample: Web assistant");
     }
 
     public static void run() {
@@ -88,51 +88,51 @@ public class ComprehensiveAiExample {
     }
 
     private static void knowledgeQueryExample(AiAssistant aiAssistant) {
-        System.out.println("\n--- 知识查询示例 ---");
-        System.out.println("AI 助手提供丰富的知识查询功能\n");
+        System.out.println("\n--- Knowledge Query Example ---");
+        System.out.println("AI Assistant provides rich knowledge query functionality\n");
 
-        System.out.println("1. 获取快速参�?(Quick Reference)");
-        System.out.println("   主题：web 开�?);
+        System.out.println("1. Get Quick Reference");
+        System.out.println("   Topic: web development");
         String webRef = aiAssistant.getQuickReference("web");
         System.out.println("   " + webRef.substring(0, Math.min(150, webRef.length())) + "...");
         System.out.println();
 
-        System.out.println("2. 获取最佳实�?(Best Practice)");
-        System.out.println("   类别：代码风�?);
+        System.out.println("2. Get Best Practice");
+        System.out.println("   Category: code style");
         String bestPractice = aiAssistant.getBestPractice("code-style");
         System.out.println("   " + bestPractice.substring(0, Math.min(150, bestPractice.length())) + "...");
         System.out.println();
 
-        System.out.println("3. 获取教程 (Tutorial)");
-        System.out.println("   主题：第一个应�?);
+        System.out.println("3. Get Tutorial");
+        System.out.println("   Topic: first application");
         String tutorial = aiAssistant.getTutorial("first-app");
         System.out.println("   " + tutorial.substring(0, Math.min(150, tutorial.length())) + "...");
         System.out.println();
 
-        System.out.println("可用的快速参考主题：");
+        System.out.println("Available quick reference topics:");
         System.out.println("  - web, cache, data, event, logging, security");
         System.out.println("  - config, monitor, scheduler, messaging, workflow");
         System.out.println();
 
-        System.out.println("可用的最佳实践类别：");
+        System.out.println("Available best practice categories:");
         System.out.println("  - code-style, error-handling, performance");
         System.out.println("  - security, testing, architecture");
         System.out.println();
 
-        System.out.println("�?知识查询示例完成\n");
+        System.out.println("[X] Knowledge query example complete\n");
     }
 
     private static void codeOperationExample(AiAssistant aiAssistant) {
-        System.out.println("\n--- 代码操作示例 ---");
-        System.out.println("AI 助手提供强大的代码操作功能\n");
+        System.out.println("\n--- Code Operation Example ---");
+        System.out.println("AI Assistant provides powerful code operation functionality\n");
 
-        System.out.println("1. 代码建议 (Suggest Code)");
-        System.out.println("   需求：创建一个用户管理的 Service");
-        String suggestion = aiAssistant.suggestCode("创建一个用户管理的 Service，包�?CRUD 操作");
-        System.out.println("   建议的代码：\n" + suggestion);
+        System.out.println("1. Code Suggestion");
+        System.out.println("   Requirement: Create a user management Service");
+        String suggestion = aiAssistant.suggestCode("Create a user management Service with CRUD operations");
+        System.out.println("   Suggested code:\n" + suggestion);
         System.out.println();
 
-        System.out.println("2. 代码解释 (Explain Code)");
+        System.out.println("2. Code Explanation");
         String codeToExplain = """
                 public class UserService {
                     private UserRepository repository;
@@ -142,12 +142,12 @@ public class ComprehensiveAiExample {
                     }
                 }
                 """;
-        System.out.println("   待解释的代码：\n" + codeToExplain);
+        System.out.println("   Code to explain:\n" + codeToExplain);
         String explanation = aiAssistant.explainCode(codeToExplain);
-        System.out.println("   解释：\n" + explanation);
+        System.out.println("   Explanation:\n" + explanation);
         System.out.println();
 
-        System.out.println("3. 代码优化 (Optimize Code)");
+        System.out.println("3. Code Optimization");
         String codeToOptimize = """
                 public List<User> getUsers() {
                     List<User> users = new ArrayList<>();
@@ -157,21 +157,21 @@ public class ComprehensiveAiExample {
                     return users;
                 }
                 """;
-        System.out.println("   待优化的代码：\n" + codeToOptimize);
+        System.out.println("   Code to optimize:\n" + codeToOptimize);
         String optimized = aiAssistant.optimizeCode(codeToOptimize);
-        System.out.println("   优化后的代码：\n" + optimized);
+        System.out.println("   Optimized code:\n" + optimized);
         System.out.println();
 
-        System.out.println("�?代码操作示例完成\n");
+        System.out.println("[X] Code operation example complete\n");
     }
 
     private static void codeGeneratorExample(AiAssistant aiAssistant) {
-        System.out.println("\n--- 代码生成器示�?---");
-        System.out.println("使用 CodeGenerator 生成各种代码\n");
+        System.out.println("\n--- Code Generator Example ---");
+        System.out.println("Use CodeGenerator to generate various code\n");
 
         CodeGenerator generator = aiAssistant.getCodeGenerator();
 
-        System.out.println("1. 生成 Entity �?);
+        System.out.println("1. Generate Entity class");
         String entityCode = generator.generateEntity(
                 "Product",
                 "com.example.entity",
@@ -180,7 +180,7 @@ public class ComprehensiveAiExample {
         System.out.println(entityCode);
         System.out.println();
 
-        System.out.println("2. 生成 Repository 接口");
+        System.out.println("2. Generate Repository interface");
         String repoCode = generator.generateRepository(
                 "ProductRepository",
                 "com.example.repository",
@@ -189,7 +189,7 @@ public class ComprehensiveAiExample {
         System.out.println(repoCode);
         System.out.println();
 
-        System.out.println("3. 生成 Service �?);
+        System.out.println("3. Generate Service class");
         String serviceCode = generator.generateService(
                 "ProductService",
                 "com.example.service",
@@ -198,7 +198,7 @@ public class ComprehensiveAiExample {
         System.out.println(serviceCode);
         System.out.println();
 
-        System.out.println("4. 生成 Controller �?);
+        System.out.println("4. Generate Controller class");
         String controllerCode = generator.generateController(
                 "ProductController",
                 "com.example.controller",
@@ -207,7 +207,7 @@ public class ComprehensiveAiExample {
         System.out.println(controllerCode);
         System.out.println();
 
-        System.out.println("5. 生成 POM.xml");
+        System.out.println("5. Generate POM.xml");
         String pomXml = generator.generatePomXml(
                 "ProductService",
                 "com.example",
@@ -217,7 +217,7 @@ public class ComprehensiveAiExample {
         System.out.println(pomXml);
         System.out.println();
 
-        System.out.println("6. 生成完整 Web 应用");
+        System.out.println("6. Generate complete Web application");
         String webAppCode = generator.generateWebApp(
                 "ProductApp",
                 "com.example",
@@ -226,52 +226,54 @@ public class ComprehensiveAiExample {
         System.out.println(webAppCode.substring(0, Math.min(300, webAppCode.length())) + "...");
         System.out.println();
 
-        System.out.println("�?代码生成器示例完成\n");
+        System.out.println("[X] Code generator example complete\n");
     }
 
     private static void promptTemplateExample(AiAssistant aiAssistant) {
-        System.out.println("\n--- 提示词模板示�?---");
-        System.out.println("使用提示词模板生成标准化的提示词\n");
+        System.out.println("\n--- Prompt Template Example ---");
+        System.out.println("Use prompt templates to generate standardized prompts\n");
 
-        System.out.println("1. 查看可用的模板分�?);
+        System.out.println("1. View available template categories");
         List<String> categories = aiAssistant.getTemplateRegistry().getCategories();
-        System.out.println("   分类列表�?);
+        System.out.println("   Category list:");
         for (String category : categories) {
             System.out.println("   - " + category);
         }
         System.out.println();
 
-        System.out.println("2. 查看某个分类的模�?);
+        System.out.println("2. View templates in a category");
         String targetCategory = categories.isEmpty() ? "general" : categories.get(0);
         List<PromptTemplate> templates = aiAssistant.getTemplateRegistry().getTemplatesByCategory(targetCategory);
-        System.out.println("   分类 \"" + targetCategory + "\" 的模板：");
+        System.out.println("   Category \"" + targetCategory + "\" templates:");
         for (PromptTemplate template : templates) {
             System.out.println("   - " + template.getName() + ": " + template.getDescription());
         }
         System.out.println();
 
-        System.out.println("3. 创建自定义模�?);
+        System.out.println("3. Create custom template");
         PromptTemplate customTemplate = new DefaultPromptTemplate(
                 "custom-code-review",
                 "code-review",
-                "自定义代码审查模�?,
+                "Custom code review template",
                 """
-                请作为资�?Java 代码审查专家，审查以下代码：
+                Please act as a senior Java code review expert and review the following code:
                 
-                代码�?                ${code}
+                Code:
+                ${code}
                 
-                请按以下格式输出�?                1. 代码质量评分 (0-100)
-                2. 主要问题列表
-                3. 改进建议
-                4. 优化后的代码
+                Please output in the following format:
+                1. Code quality score (0-100)
+                2. Main issue list
+                3. Improvement suggestions
+                4. Optimized code
                 """,
                 List.of("code")
         );
         aiAssistant.getTemplateRegistry().register(customTemplate);
-        System.out.println("   自定义模板已注册�? + customTemplate.getName());
+        System.out.println("   Custom template registered: " + customTemplate.getName());
         System.out.println();
 
-        System.out.println("4. 使用模板生成提示�?);
+        System.out.println("4. Use template to generate prompt");
         String sampleCode = """
                 public class BadExample {
                     public void doSomething() {
@@ -280,19 +282,19 @@ public class ComprehensiveAiExample {
                 }
                 """;
         String prompt = aiAssistant.generatePrompt("custom-code-review", Map.of("code", sampleCode));
-        System.out.println("   生成的提示词：\n" + prompt);
+        System.out.println("   Generated prompt:\n" + prompt);
         System.out.println();
 
-        System.out.println("�?提示词模板示例完成\n");
+        System.out.println("[X] Prompt template example complete\n");
     }
 
     private static void skillSystemExample(AiAssistant aiAssistant) {
-        System.out.println("\n--- Skill 系统示例 ---");
-        System.out.println("使用 Skill 系统执行可组合的 AI 能力\n");
+        System.out.println("\n--- Skill System Example ---");
+        System.out.println("Use Skill system to execute composable AI capabilities\n");
 
-        System.out.println("1. 查看可用�?Skills");
+        System.out.println("1. View available Skills");
         List<Skill> skills = aiAssistant.getSkillRegistry().listAll();
-        System.out.println("   可用�?Skills�?);
+        System.out.println("   Available Skills:");
         for (Skill skill : skills) {
             System.out.println("   - " + skill.getName() + " (" + skill.getCategory() + ")");
             System.out.println("     " + skill.getDescription());
@@ -300,9 +302,9 @@ public class ComprehensiveAiExample {
         System.out.println();
 
         if (!skills.isEmpty()) {
-            System.out.println("2. 执行 Skill");
+            System.out.println("2. Execute Skill");
             Skill firstSkill = skills.get(0);
-            System.out.println("   执行 Skill�? + firstSkill.getName());
+            System.out.println("   Executing Skill: " + firstSkill.getName());
 
             Map<String, Object> inputs = Map.of(
                     "className", "Order",
@@ -313,8 +315,8 @@ public class ComprehensiveAiExample {
             SkillResult result = aiAssistant.getSkillRegistry().execute(firstSkill.getId(), inputs);
 
             if (result.isSuccess()) {
-                System.out.println("   �?Skill 执行成功�?);
-                System.out.println("   输出�?);
+                System.out.println("   [X] Skill executed successfully");
+                System.out.println("   Outputs:");
                 for (Map.Entry<String, Object> entry : result.getOutputs().entrySet()) {
                     System.out.println("   - " + entry.getKey() + ": " + 
                             (entry.getValue().toString().length() > 100 ? 
@@ -322,18 +324,18 @@ public class ComprehensiveAiExample {
                                     entry.getValue()));
                 }
             } else {
-                System.out.println("   �?Skill 执行失败�? + result.getErrorMessage());
+                System.out.println("   [ ] Skill execution failed: " + result.getErrorMessage());
             }
         }
         System.out.println();
 
-        System.out.println("Skill 系统特点�?);
-        System.out.println("  - 可组合的 AI 能力单元");
-        System.out.println("  - 标准化的输入输出");
-        System.out.println("  - 可扩展的注册机制");
-        System.out.println("  - 支持自定�?Skill");
+        System.out.println("Skill system features:");
+        System.out.println("  - Composable AI capability units");
+        System.out.println("  - Standardized input/output");
+        System.out.println("  - Extensible registration mechanism");
+        System.out.println("  - Supports custom Skills");
         System.out.println();
 
-        System.out.println("�?Skill 系统示例完成\n");
+        System.out.println("[X] Skill system example complete\n");
     }
 }

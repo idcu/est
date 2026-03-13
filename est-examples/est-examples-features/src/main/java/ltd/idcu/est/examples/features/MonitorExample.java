@@ -14,30 +14,30 @@ public class MonitorExample {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("=== EST Framework Monitor Example ===\n");
 
-        System.out.println("--- 1. JVM Monitor 示例 ---\n");
+        System.out.println("--- 1. JVM Monitor Example ---\n");
         JvmMonitor jvmMonitor = JvmMonitor.getInstance();
         JvmMetrics jvmMetrics = jvmMonitor.getJvmMetrics();
         
-        System.out.println("JVM 信息: " + jvmMonitor.getJvmInfo());
-        System.out.println("JVM 运行时间: " + jvmMonitor.getUptime() + "ms");
-        System.out.println("堆内存使�? " + jvmMetrics.getHeapMemoryUsed() + " / " + jvmMetrics.getHeapMemoryMax());
-        System.out.println("非堆内存使用: " + jvmMetrics.getNonHeapMemoryUsed());
-        System.out.println("活动线程�? " + jvmMetrics.getThreadCount());
-        System.out.println("GC 次数: " + jvmMetrics.getGcCount());
+        System.out.println("JVM Info: " + jvmMonitor.getJvmInfo());
+        System.out.println("JVM Uptime: " + jvmMonitor.getUptime() + "ms");
+        System.out.println("Heap Memory Used: " + jvmMetrics.getHeapMemoryUsed() + " / " + jvmMetrics.getHeapMemoryMax());
+        System.out.println("Non-Heap Memory Used: " + jvmMetrics.getNonHeapMemoryUsed());
+        System.out.println("Active Threads: " + jvmMetrics.getThreadCount());
+        System.out.println("GC Count: " + jvmMetrics.getGcCount());
         System.out.println();
 
-        System.out.println("--- 2. System Monitor 示例 ---\n");
+        System.out.println("--- 2. System Monitor Example ---\n");
         SystemMonitor systemMonitor = SystemMonitor.getInstance();
         SystemMetrics systemMetrics = systemMonitor.getSystemMetrics();
         
-        System.out.println("操作系统信息: " + systemMonitor.getOsInfo());
-        System.out.println("CPU 核心�? " + systemMetrics.getAvailableProcessors());
-        System.out.println("系统负载: " + systemMetrics.getSystemLoadAverage());
-        System.out.println("可用内存: " + systemMetrics.getFreeMemory());
-        System.out.println("总内�? " + systemMetrics.getTotalMemory());
+        System.out.println("OS Info: " + systemMonitor.getOsInfo());
+        System.out.println("CPU Cores: " + systemMetrics.getAvailableProcessors());
+        System.out.println("System Load: " + systemMetrics.getSystemLoadAverage());
+        System.out.println("Free Memory: " + systemMetrics.getFreeMemory());
+        System.out.println("Total Memory: " + systemMetrics.getTotalMemory());
         System.out.println();
 
-        System.out.println("--- 3. Health Check Registry 示例 ---\n");
+        System.out.println("--- 3. Health Check Registry Example ---\n");
         HealthCheckRegistry healthCheckRegistry = new HealthCheckRegistry();
         
         healthCheckRegistry.register(new JvmHealthCheck());
@@ -46,12 +46,12 @@ public class MonitorExample {
         healthCheckRegistry.register(new HealthCheck() {
             @Override
             public HealthStatus check() {
-                return HealthStatus.healthy("自定义检查通过");
+                return HealthStatus.healthy("Custom check passed");
             }
             
             @Override
             public HealthStatus getStatus() {
-                return HealthStatus.healthy("状态正�?);
+                return HealthStatus.healthy("Status OK");
             }
             
             @Override
@@ -61,14 +61,14 @@ public class MonitorExample {
             
             @Override
             public String getDescription() {
-                return "自定义健康检�?;
+                return "Custom health check";
             }
         });
         
-        System.out.println("已注册的健康检�? " + healthCheckRegistry.getNames());
+        System.out.println("Registered health checks: " + healthCheckRegistry.getNames());
         System.out.println();
 
-        System.out.println("--- 4. 执行健康检�?---\n");
+        System.out.println("--- 4. Execute Health Checks ---\n");
         Map<String, HealthCheckResult> results = healthCheckRegistry.checkAll();
         for (Map.Entry<String, HealthCheckResult> entry : results.entrySet()) {
             HealthCheckResult result = entry.getValue();
@@ -79,27 +79,27 @@ public class MonitorExample {
         }
         System.out.println();
 
-        System.out.println("--- 5. 聚合健康状�?---\n");
+        System.out.println("--- 5. Aggregate Health Status ---\n");
         HealthStatus aggregateStatus = healthCheckRegistry.getAggregateStatus();
-        System.out.println("整体状�? " + aggregateStatus.getName());
-        System.out.println("状态消�? " + aggregateStatus.getMessage());
+        System.out.println("Overall status: " + aggregateStatus.getName());
+        System.out.println("Status message: " + aggregateStatus.getMessage());
         System.out.println();
 
-        System.out.println("--- 6. 健康检�?JSON 格式 ---\n");
+        System.out.println("--- 6. Health Check JSON Format ---\n");
         Map<String, Object> healthMap = healthCheckRegistry.toMap();
         System.out.println(healthMap);
         System.out.println();
 
-        System.out.println("--- 7. JVM 健康检�?---\n");
+        System.out.println("--- 7. JVM Health Check ---\n");
         HealthCheckResult jvmHealthResult = jvmMonitor.checkHealth();
-        System.out.println("JVM 健康状�? " + jvmHealthResult.getStatus().getName());
-        System.out.println("JVM 健康消息: " + jvmHealthResult.getMessage());
+        System.out.println("JVM Health Status: " + jvmHealthResult.getStatus().getName());
+        System.out.println("JVM Health Message: " + jvmHealthResult.getMessage());
         System.out.println();
 
-        System.out.println("--- 8. 系统健康检�?---\n");
+        System.out.println("--- 8. System Health Check ---\n");
         HealthCheckResult systemHealthResult = systemMonitor.checkHealth();
-        System.out.println("系统健康状�? " + systemHealthResult.getStatus().getName());
-        System.out.println("系统健康消息: " + systemHealthResult.getMessage());
+        System.out.println("System Health Status: " + systemHealthResult.getStatus().getName());
+        System.out.println("System Health Message: " + systemHealthResult.getMessage());
         System.out.println();
 
         System.out.println("=== Example Complete ===");

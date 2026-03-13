@@ -13,51 +13,51 @@ public class AiShortTermFeaturesTest {
     private static final Logger logger = LoggerFactory.getLogger(AiShortTermFeaturesTest.class);
     
     public static void main(String[] args) {
-        logger.info("=== EST AI 短期目标功能验证测试");
+        logger.info("=== EST AI Short-Term Features Validation Test");
         logger.info("===================================");
         
         AiAssistant aiAssistant = new DefaultAiAssistant();
         
-        logger.info("\n--- 1. 需求解析器测试");
+        logger.info("\n--- 1. Requirement Parser Test");
         testRequirementParser(aiAssistant);
         
-        logger.info("\n--- 2. 架构设计器测试");
+        logger.info("\n--- 2. Architecture Designer Test");
         testArchitectureDesigner(aiAssistant);
         
-        logger.info("\n--- 3. 测试和部署管理器测试");
+        logger.info("\n--- 3. Test and Deploy Manager Test");
         testTestAndDeployManager(aiAssistant);
         
-        logger.info("\n=== 短期目标功能验证测试完成");
+        logger.info("\n=== Short-Term Features Validation Test Complete");
     }
     
     private static void testRequirementParser(AiAssistant aiAssistant) {
-        logger.info("测试需求解析器...");
+        logger.info("Testing requirement parser...");
         
         RequirementParser parser = aiAssistant.getRequirementParser();
         
-        String requirement = "我需要一个电商平台，包含用户管理、商品管理、订单管理和支付功能。需要支持用户注册登录、商品CRUD操作、订单创建和支付集成。";
+        String requirement = "I need an e-commerce platform with user management, product management, order management, and payment functionality. Should support user registration/login, product CRUD operations, order creation, and payment integration.";
         
-        logger.info("输入需求: {}", requirement);
+        logger.info("Input requirement: {}", requirement);
         
         ParsedRequirement parsed = parser.parse(requirement);
         
-        logger.info("解析结果:");
-        logger.info("  项目名称: {}", parsed.getProjectName());
-        logger.info("  项目类型: {}", parsed.getProjectType());
-        logger.info("  原始需求: {}", parsed.getOriginalRequirement());
-        logger.info("  组件数量: {}", parsed.getComponents().size());
+        logger.info("Parse result:");
+        logger.info("  Project Name: {}", parsed.getProjectName());
+        logger.info("  Project Type: {}", parsed.getProjectType());
+        logger.info("  Original Requirement: {}", parsed.getOriginalRequirement());
+        logger.info("  Component Count: {}", parsed.getComponents().size());
         
         for (ParsedRequirement.RequirementComponent component : parsed.getComponents()) {
             logger.info("    - {}: {} ({})", component.getName(), component.getDescription(), component.getType());
         }
         
-        logger.info("  功能列表: {}", parsed.getFeatures());
-        logger.info("  技术需求: {}", parsed.getTechnicalRequirements());
-        logger.info("  复杂度评分: {}", parsed.getComplexityScore());
+        logger.info("  Feature List: {}", parsed.getFeatures());
+        logger.info("  Technical Requirements: {}", parsed.getTechnicalRequirements());
+        logger.info("  Complexity Score: {}", parsed.getComplexityScore());
         
         ParsedRequirement.EstimatedTimeline timeline = parsed.getEstimatedTimeline();
         if (timeline != null) {
-            logger.info("  预估时间: 总计={}小时, 设计={}小时, 编码={}小时, 测试={}小时, 部署={}小时",
+            logger.info("  Estimated Time: Total={}h, Design={}h, Coding={}h, Testing={}h, Deployment={}h",
                 timeline.getTotalHours(),
                 timeline.getDesignHours(),
                 timeline.getCodingHours(),
@@ -66,85 +66,85 @@ public class AiShortTermFeaturesTest {
         }
         
         List<String> componentNames = parser.extractComponents(requirement);
-        logger.info("  提取的组件名称: {}", componentNames);
+        logger.info("  Extracted component names: {}", componentNames);
         
         Map<String, Object> metadata = parser.getRequirementsMetadata(requirement);
-        logger.info("  需求元数据: {}", metadata);
+        logger.info("  Requirement metadata: {}", metadata);
         
-        logger.info("✅ 需求解析器测试完成");
+        logger.info("[X] Requirement parser test complete");
     }
     
     private static void testArchitectureDesigner(AiAssistant aiAssistant) {
-        logger.info("测试架构设计器...");
+        logger.info("Testing architecture designer...");
         
         ArchitectureDesigner designer = aiAssistant.getArchitectureDesigner();
         
-        String requirementText = "电商平台系统";
+        String requirementText = "E-commerce platform system";
         ParsedRequirement requirement = aiAssistant.getRequirementParser().parse(requirementText);
         
         ArchitectureDesign design = designer.designArchitecture(requirement);
         
-        logger.info("架构设计结果:");
-        logger.info("  名称: {}", design.getDesignName());
-        logger.info("  描述: {}", design.getDescription());
-        logger.info("  模块数量: {}", design.getModules().size());
+        logger.info("Architecture design result:");
+        logger.info("  Name: {}", design.getDesignName());
+        logger.info("  Description: {}", design.getDescription());
+        logger.info("  Module count: {}", design.getModules().size());
         
         for (ArchitectureDesign.ModuleDesign module : design.getModules()) {
             logger.info("    - {}: {}", module.getName(), module.getDescription());
-            logger.info("      职责: {}", module.getResponsibility());
+            logger.info("      Responsibility: {}", module.getResponsibility());
         }
         
-        logger.info("  组件数量: {}", design.getComponents().size());
+        logger.info("  Component count: {}", design.getComponents().size());
         for (ArchitectureDesign.ComponentDesign component : design.getComponents()) {
             logger.info("    - {}: {} ({})", component.getName(), component.getDescription(), component.getType());
         }
         
-        logger.info("  架构模式数量: {}", design.getPatterns().size());
+        logger.info("  Architecture pattern count: {}", design.getPatterns().size());
         for (ArchitecturePattern pattern : design.getPatterns()) {
             logger.info("    - {}: {} ({})", pattern.getName(), pattern.getDescription(), pattern.getCategory());
         }
         
         List<ArchitecturePattern> recommendedPatterns = designer.recommendPatterns(requirement);
-        logger.info("  推荐的模式: {}", recommendedPatterns.size());
+        logger.info("  Recommended patterns: {}", recommendedPatterns.size());
         
         Map<String, Object> validation = designer.validateArchitecture(design);
-        logger.info("  架构验证: {}", validation);
+        logger.info("  Architecture validation: {}", validation);
         
-        logger.info("  评分: 可扩展性={}, 可维护性={}, 性能={}",
+        logger.info("  Scores: Scalability={}, Maintainability={}, Performance={}",
             design.getScalabilityScore(),
             design.getMaintainabilityScore(),
             design.getPerformanceScore());
         
-        logger.info("✅ 架构设计器测试完成");
+        logger.info("[X] Architecture designer test complete");
     }
     
     private static void testTestAndDeployManager(AiAssistant aiAssistant) {
-        logger.info("测试测试和部署管理器...");
+        logger.info("Testing test and deploy manager...");
         
         TestAndDeployManager manager = aiAssistant.getTestAndDeployManager();
         
         String code = "public class UserService { ... }";
         String context = "Service";
         
-        logger.info("生成测试套件...");
+        logger.info("Generating test suite...");
         TestSuite testSuite = manager.generateTests(code, context);
         
-        logger.info("测试套件:");
-        logger.info("  名称: {}", testSuite.getName());
-        logger.info("  目标类: {}", testSuite.getTargetClass());
-        logger.info("  测试用例数量: {}", testSuite.getTestCases().size());
+        logger.info("Test suite:");
+        logger.info("  Name: {}", testSuite.getName());
+        logger.info("  Target class: {}", testSuite.getTargetClass());
+        logger.info("  Test case count: {}", testSuite.getTestCases().size());
         
         for (TestSuite.TestCase testCase : testSuite.getTestCases()) {
             logger.info("    - [{}] {} ({})", testCase.getType(), testCase.getName(), testCase.getDescription());
         }
         
-        logger.info("运行测试...");
+        logger.info("Running tests...");
         boolean testResult = manager.runTests(testSuite);
-        logger.info("  测试运行结果: {}", testResult);
+        logger.info("  Test run result: {}", testResult);
         
         TestReport report = manager.getTestReport();
         if (report != null) {
-            logger.info("  测试报告: 总数={}, 通过={}, 失败={}, 跳过={}, 通过率={}%",
+            logger.info("  Test report: Total={}, Passed={}, Failed={}, Skipped={}, Pass Rate={}%",
                 report.getTotalTests(),
                 report.getPassedTests(),
                 report.getFailedTests(),
@@ -152,36 +152,36 @@ public class AiShortTermFeaturesTest {
                 String.format("%.1f", report.getPassRate()));
         }
         
-        logger.info("创建部署计划...");
+        logger.info("Creating deployment plan...");
         Map<String, Object> config = Map.of(
             "version", "1.0.0",
             "environment", "DEVELOPMENT"
         );
-        DeploymentPlan plan = manager.createDeploymentPlan("电商平台", config);
+        DeploymentPlan plan = manager.createDeploymentPlan("E-commerce Platform", config);
         
-        logger.info("部署计划:");
-        logger.info("  项目名称: {}", plan.getProjectName());
-        logger.info("  版本: {}", plan.getVersion());
-        logger.info("  环境: {}", plan.getEnvironment());
-        logger.info("  部署步骤数量: {}", plan.getSteps().size());
+        logger.info("Deployment plan:");
+        logger.info("  Project name: {}", plan.getProjectName());
+        logger.info("  Version: {}", plan.getVersion());
+        logger.info("  Environment: {}", plan.getEnvironment());
+        logger.info("  Deployment step count: {}", plan.getSteps().size());
         
         for (DeploymentPlan.DeploymentStep step : plan.getSteps()) {
             logger.info("    - [{}] {}: {}", step.getOrder(), step.getName(), step.getDescription());
         }
         
-        logger.info("  预估时间: {}分钟", plan.getEstimatedTimeMinutes());
-        logger.info("  依赖项: {}", plan.getDependencies());
+        logger.info("  Estimated time: {} minutes", plan.getEstimatedTimeMinutes());
+        logger.info("  Dependencies: {}", plan.getDependencies());
         
-        logger.info("执行部署...");
+        logger.info("Executing deployment...");
         boolean deployResult = manager.deploy(plan);
-        logger.info("  部署结果: {}", deployResult);
+        logger.info("  Deployment result: {}", deployResult);
         
         DeploymentStatus status = manager.getDeploymentStatus();
         if (status != null) {
-            logger.info("  部署状态: {}", status.getState());
-            logger.info("  部署ID: {}", status.getDeploymentId());
+            logger.info("  Deployment status: {}", status.getState());
+            logger.info("  Deployment ID: {}", status.getDeploymentId());
         }
         
-        logger.info("✅ 测试和部署管理器测试完成");
+        logger.info("[X] Test and deploy manager test complete");
     }
 }

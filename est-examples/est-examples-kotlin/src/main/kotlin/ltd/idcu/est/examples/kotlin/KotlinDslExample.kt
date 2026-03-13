@@ -8,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 
 fun main() {
     println("=".repeat(80))
-    println("  EST Framework Kotlin 示例")
+    println("  EST Framework Kotlin Example")
     println("=".repeat(80))
     
     example1_DslApplication()
@@ -18,16 +18,16 @@ fun main() {
     example3_WebApplication()
     println()
     println("=".repeat(80))
-    println("  所有示例运行完成！")
+    println("  All examples completed!")
     println("=".repeat(80))
 }
 
 fun example1_DslApplication() {
-    println("\n【示例 1】Kotlin DSL 创建应用")
+    println("\n[Example 1] Kotlin DSL Create Application")
     println("-".repeat(80))
     
     val app = estApplication("MyKotlinApp", "1.0.0") {
-        description = "这是一个使用 Kotlin DSL 创建的 EST 应用"
+        description = "This is an EST application created with Kotlin DSL"
         author = "EST Team"
         
         web {
@@ -51,41 +51,41 @@ fun example1_DslApplication() {
         }
     }
     
-    println("应用名称: ${app.name}")
-    println("应用版本: ${app.version}")
-    println("应用描述: ${app.description}")
-    println("作者: ${app.author}")
+    println("Application name: ${app.name}")
+    println("Application version: ${app.version}")
+    println("Application description: ${app.description}")
+    println("Author: ${app.author}")
     
     app.webConfig?.let { webConfig ->
-        println("Web 服务端口: ${webConfig.port}")
-        println("Web 服务主机: ${webConfig.host}")
-        println("路由配置:")
+        println("Web service port: ${webConfig.port}")
+        println("Web service host: ${webConfig.host}")
+        println("Route configuration:")
         webConfig.buildRoutes().forEach { route ->
             println("  ${route.method} ${route.path}")
         }
     }
     
     println()
-    println("运行应用...")
+    println("Running application...")
     app.run()
 }
 
 fun example2_Coroutines() {
-    println("\n【示例 2】Kotlin 协程集成")
+    println("\n[Example 2] Kotlin Coroutines Integration")
     println("-".repeat(80))
     
     runBlocking {
-        println("使用 estCoroutineScope 启动协程...")
+        println("Starting coroutines with estCoroutineScope...")
         
         val job = estCoroutineScope {
-            println("协程 1 开始执行")
+            println("Coroutine 1 started")
             delay(500)
-            println("协程 1 执行完成")
+            println("Coroutine 1 completed")
         }
         
         val result1 = estAsync {
             delay(300)
-            "协程 2 的结果"
+            "Coroutine 2 result"
         }
         
         val result2 = estAsync {
@@ -93,23 +93,23 @@ fun example2_Coroutines() {
             42
         }
         
-        println("等待协程完成...")
+        println("Waiting for coroutines to complete...")
         job.join()
         
-        println("协程 2 结果: ${result1.await()}")
-        println("协程 3 结果: ${result2.await()}")
+        println("Coroutine 2 result: ${result1.await()}")
+        println("Coroutine 3 result: ${result2.await()}")
         
         println()
-        println("所有协程执行完成！")
+        println("All coroutines completed!")
     }
 }
 
 fun example3_WebApplication() {
-    println("\n【示例 3】Web 应用完整示例")
+    println("\n[Example 3] Web Application Complete Example")
     println("-".repeat(80))
     
     val webApp = estApplication("KotlinWebApp", "2.0.0") {
-        description = "完整的 Kotlin Web 应用示例"
+        description = "Complete Kotlin Web Application Example"
         author = "EST Team"
         
         web {
@@ -121,11 +121,11 @@ fun example3_WebApplication() {
                         <html>
                         <head><title>EST Kotlin Web App</title></head>
                         <body>
-                            <h1>欢迎使用 EST Framework Kotlin!</h1>
+                            <h1>Welcome to EST Framework Kotlin!</h1>
                             <ul>
                                 <li><a href="/hello">Hello</a></li>
-                                <li><a href="/api/users">用户列表</a></li>
-                                <li><a href="/api/status">状态</a></li>
+                                <li><a href="/api/users">User List</a></li>
+                                <li><a href="/api/status">Status</a></li>
                             </ul>
                         </body>
                         </html>
@@ -158,19 +158,19 @@ fun example3_WebApplication() {
         }
     }
     
-    println("Web 应用配置:")
-    println("  名称: ${webApp.name}")
-    println("  版本: ${webApp.version}")
+    println("Web Application Configuration:")
+    println("  Name: ${webApp.name}")
+    println("  Version: ${webApp.version}")
     
     webApp.webConfig?.let { webConfig ->
-        println("  端口: ${webConfig.port}")
-        println("  路由数量: ${webConfig.buildRoutes().size}")
-        println("  路由列表:")
+        println("  Port: ${webConfig.port}")
+        println("  Route count: ${webConfig.buildRoutes().size}")
+        println("  Route list:")
         webConfig.buildRoutes().forEachIndexed { index, route ->
             println("    ${index + 1}. ${route.method} ${route.path}")
         }
     }
     
     println()
-    println("Web 应用已配置完成！")
+    println("Web application configured!")
 }

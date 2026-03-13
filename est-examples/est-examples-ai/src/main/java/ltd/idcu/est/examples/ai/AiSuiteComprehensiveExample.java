@@ -17,31 +17,31 @@ public class AiSuiteComprehensiveExample {
     private static final Logger logger = LoggerFactory.getLogger(AiSuiteComprehensiveExample.class);
     
     public static void main(String[] args) {
-        logger.info("=== EST AI Suite 综合示例");
+        logger.info("=== EST AI Suite Comprehensive Example");
         logger.info("==============================");
         
         try {
-            logger.info("\n--- 1. RAG 检索增强生成演示");
+            logger.info("\n--- 1. RAG Retrieval-Augmented Generation Demo");
             demonstrateRag();
             
-            logger.info("\n--- 2. MCP 协议演示");
+            logger.info("\n--- 2. MCP Protocol Demo");
             demonstrateMcp();
             
-            logger.info("\n--- 3. AI Agent 智能体演示");
+            logger.info("\n--- 3. AI Agent Demo");
             demonstrateAgent();
             
-            logger.info("\n--- 4. Agent + MCP + RAG 集成演示");
+            logger.info("\n--- 4. Agent + MCP + RAG Integrated Demo");
             demonstrateIntegratedSystem();
             
         } catch (Exception e) {
-            logger.error("演示过程中出现错误", e);
+            logger.error("Error during demo", e);
         }
         
-        logger.info("\n=== AI Suite 综合示例完成");
+        logger.info("\n=== AI Suite Comprehensive Example Complete");
     }
     
     private static void demonstrateRag() {
-        logger.info("初始化 RAG 引擎...");
+        logger.info("Initializing RAG engine...");
         
         RagEngine ragEngine = new DefaultRagEngine();
         
@@ -54,59 +54,59 @@ public class AiSuiteComprehensiveExample {
         EmbeddingModel embeddingModel = new SimpleEmbeddingModel();
         ragEngine.setEmbeddingModel(embeddingModel);
         
-        logger.info("添加文档到知识库...");
+        logger.info("Adding documents to knowledge base...");
         List<Document> documents = Arrays.asList(
-            new Document("doc1", "EST Framework 是一个企业级 Java 开发框架。它提供了模块化设计、零依赖核心架构等特性。EST Framework 支持多种数据库、消息队列和安全机制。"),
-            new Document("doc2", "EST AI Suite 是 EST Framework 的 AI 模块，包含 Agent、MCP、RAG、LLM 等功能。它提供了统一的 API 来访问各种 AI 服务。"),
-            new Document("doc3", "RAG（Retrieval-Augmented Generation）是检索增强生成技术，通过检索相关文档来增强大语言模型的生成能力。EST RAG 支持多种分块策略和向量存储。"),
-            new Document("doc4", "MCP（Model Context Protocol）是 AI 模型上下文协议，用于在 AI 助手和工具之间建立标准化的通信方式。EST MCP 支持 Server 和 Client 两种模式。"),
-            new Document("doc5", "AI Agent 是具备自主决策能力的智能体，可以规划任务、调用工具、记忆对话。EST Agent 支持 Skills 技能体系和 Memory 记忆系统。")
+            new Document("doc1", "EST Framework is an enterprise-grade Java development framework. It provides modular design, zero-dependency core architecture, and other features. EST Framework supports multiple databases, message queues, and security mechanisms."),
+            new Document("doc2", "EST AI Suite is the AI module of EST Framework, including Agent, MCP, RAG, LLM and other features. It provides a unified API to access various AI services."),
+            new Document("doc3", "RAG (Retrieval-Augmented Generation) is a retrieval-augmented generation technology that enhances the generation capabilities of large language models by retrieving relevant documents. EST RAG supports multiple chunking strategies and vector storage."),
+            new Document("doc4", "MCP (Model Context Protocol) is an AI model context protocol for establishing standardized communication between AI assistants and tools. EST MCP supports both Server and Client modes."),
+            new Document("doc5", "AI Agent is an intelligent agent with autonomous decision-making capabilities that can plan tasks, call tools, and remember conversations. EST Agent supports Skills system and Memory system.")
         );
         
         for (Document doc : documents) {
             ragEngine.addDocument(doc);
         }
         
-        logger.info("文档添加完成，共 {} 个文档", documents.size());
+        logger.info("Documents added, total {} documents", documents.size());
         
-        String query1 = "EST Framework 是什么？";
-        logger.info("查询 1: {}", query1);
+        String query1 = "What is EST Framework?";
+        logger.info("Query 1: {}", query1);
         String answer1 = ragEngine.retrieveAndGenerate(query1, 3);
-        logger.info("回答: {}", answer1);
+        logger.info("Answer: {}", answer1);
         
-        String query2 = "什么是 RAG？";
-        logger.info("查询 2: {}", query2);
+        String query2 = "What is RAG?";
+        logger.info("Query 2: {}", query2);
         String answer2 = ragEngine.retrieveAndGenerate(query2, 3);
-        logger.info("回答: {}", answer2);
+        logger.info("Answer: {}", answer2);
         
-        String query3 = "AI Agent 有什么功能？";
-        logger.info("查询 3: {}", query3);
+        String query3 = "What features does AI Agent have?";
+        logger.info("Query 3: {}", query3);
         String answer3 = ragEngine.retrieveAndGenerate(query3, 3);
-        logger.info("回答: {}", answer3);
+        logger.info("Answer: {}", answer3);
         
-        logger.info("RAG 演示完成");
+        logger.info("RAG demo complete");
     }
     
     private static void demonstrateMcp() {
-        logger.info("初始化 MCP Server...");
+        logger.info("Initializing MCP Server...");
         
         DefaultMcpServer server = new DefaultMcpServer("EST AI Suite Server", "1.0.0");
         
-        logger.info("注册 MCP 工具...");
+        logger.info("Registering MCP tools...");
         
-        McpTool weatherTool = new McpTool("getWeather", "获取指定城市的天气");
+        McpTool weatherTool = new McpTool("getWeather", "Get weather for specified city");
         server.registerTool(weatherTool, arguments -> {
             Map<String, Object> args = (Map<String, Object>) arguments;
-            String city = (String) args.getOrDefault("city", "北京");
+            String city = (String) args.getOrDefault("city", "Beijing");
             
             McpToolResult result = new McpToolResult(true);
             result.setContent(Arrays.asList(
-                new McpToolResult.Content("text", city + " 的天气：晴朗，25°C，湿度 60%")
+                new McpToolResult.Content("text", city + " weather: Sunny, 25°C, humidity 60%")
             ));
             return result;
         });
         
-        McpTool calculatorTool = new McpTool("calculator", "执行数学计算");
+        McpTool calculatorTool = new McpTool("calculator", "Perform mathematical calculations");
         server.registerTool(calculatorTool, arguments -> {
             Map<String, Object> args = (Map<String, Object>) arguments;
             String expression = (String) args.getOrDefault("expression", "0");
@@ -115,86 +115,86 @@ public class AiSuiteComprehensiveExample {
                 double result = evaluateExpression(expression);
                 McpToolResult toolResult = new McpToolResult(true);
                 toolResult.setContent(Arrays.asList(
-                    new McpToolResult.Content("text", "计算结果: " + expression + " = " + result)
+                    new McpToolResult.Content("text", "Calculation result: " + expression + " = " + result)
                 ));
                 return toolResult;
             } catch (Exception e) {
                 McpToolResult toolResult = new McpToolResult(false);
                 toolResult.setContent(Arrays.asList(
-                    new McpToolResult.Content("text", "计算错误: " + e.getMessage())
+                    new McpToolResult.Content("text", "Calculation error: " + e.getMessage())
                 ));
                 return toolResult;
             }
         });
         
-        McpTool timeTool = new McpTool("getCurrentTime", "获取当前时间");
+        McpTool timeTool = new McpTool("getCurrentTime", "Get current time");
         server.registerTool(timeTool, arguments -> {
             McpToolResult result = new McpToolResult(true);
             result.setContent(Arrays.asList(
-                new McpToolResult.Content("text", "当前时间: " + new Date())
+                new McpToolResult.Content("text", "Current time: " + new Date())
             ));
             return result;
         });
         
-        logger.info("MCP 工具注册完成，共 {} 个工具", 3);
+        logger.info("MCP tools registered, total {} tools", 3);
         
-        logger.info("测试 MCP 工具调用...");
+        logger.info("Testing MCP tool calls...");
         
         Map<String, Object> weatherArgs = new HashMap<>();
-        weatherArgs.put("city", "上海");
+        weatherArgs.put("city", "Shanghai");
         McpToolResult weatherResult = server.callTool("getWeather", weatherArgs);
-        logger.info("天气工具调用结果: {}", weatherResult.getContent().get(0).getValue());
+        logger.info("Weather tool result: {}", weatherResult.getContent().get(0).getValue());
         
         Map<String, Object> calcArgs = new HashMap<>();
         calcArgs.put("expression", "25 * 4 + 10");
         McpToolResult calcResult = server.callTool("calculator", calcArgs);
-        logger.info("计算器工具调用结果: {}", calcResult.getContent().get(0).getValue());
+        logger.info("Calculator tool result: {}", calcResult.getContent().get(0).getValue());
         
         McpToolResult timeResult = server.callTool("getCurrentTime", new HashMap<>());
-        logger.info("时间工具调用结果: {}", timeResult.getContent().get(0).getValue());
+        logger.info("Time tool result: {}", timeResult.getContent().get(0).getValue());
         
-        logger.info("MCP 演示完成");
+        logger.info("MCP demo complete");
     }
     
     private static void demonstrateAgent() {
-        logger.info("初始化 AI Agent...");
+        logger.info("Initializing AI Agent...");
         
         Agent agent = new DefaultAgent();
         
         Memory memory = new InMemoryMemory();
         agent.setMemory(memory);
         
-        logger.info("注册 Agent Skills...");
+        logger.info("Registering Agent Skills...");
         
         agent.registerSkill(new CalculatorSkill());
         agent.registerSkill(new WebSearchSkill());
         
-        logger.info("Skills 注册完成，共 2 个技能");
+        logger.info("Skills registered, total 2 skills");
         
-        logger.info("测试 Agent 单步任务...");
+        logger.info("Testing Agent single-step task...");
         
         AgentRequest request1 = new AgentRequest();
-        request1.setQuery("计算 100 的平方根，然后加上 25");
+        request1.setQuery("Calculate the square root of 100, then add 25");
         
-        logger.info("Agent 请求 1: {}", request1.getQuery());
+        logger.info("Agent request 1: {}", request1.getQuery());
         AgentResponse response1 = agent.process(request1);
-        logger.info("Agent 响应 1: {}", response1.getFinalAnswer());
-        logger.info("执行步骤数: {}", response1.getSteps().size());
+        logger.info("Agent response 1: {}", response1.getFinalAnswer());
+        logger.info("Execution steps: {}", response1.getSteps().size());
         
-        logger.info("测试 Agent 记忆功能...");
+        logger.info("Testing Agent memory function...");
         
         AgentRequest request2 = new AgentRequest();
-        request2.setQuery("我刚才问了什么问题？");
+        request2.setQuery("What question did I just ask?");
         
-        logger.info("Agent 请求 2: {}", request2.getQuery());
+        logger.info("Agent request 2: {}", request2.getQuery());
         AgentResponse response2 = agent.process(request2);
-        logger.info("Agent 响应 2: {}", response2.getFinalAnswer());
+        logger.info("Agent response 2: {}", response2.getFinalAnswer());
         
-        logger.info("AI Agent 演示完成");
+        logger.info("AI Agent demo complete");
     }
     
     private static void demonstrateIntegratedSystem() {
-        logger.info("初始化集成系统（Agent + MCP + RAG）...");
+        logger.info("Initializing integrated system (Agent + MCP + RAG)...");
         
         Agent agent = new DefaultAgent();
         Memory memory = new InMemoryMemory();
@@ -206,9 +206,9 @@ public class AiSuiteComprehensiveExample {
         ragEngine.setEmbeddingModel(new SimpleEmbeddingModel());
         
         List<Document> docs = Arrays.asList(
-            new Document("est-doc1", "EST Agent 可以调用 MCP 工具来扩展功能。"),
-            new Document("est-doc2", "EST RAG 可以为 Agent 提供知识库检索能力。"),
-            new Document("est-doc3", "集成的 AI 系统可以完成更复杂的任务。")
+            new Document("est-doc1", "EST Agent can call MCP tools to extend functionality."),
+            new Document("est-doc2", "EST RAG can provide knowledge base retrieval capabilities for Agent."),
+            new Document("est-doc3", "Integrated AI system can complete more complex tasks.")
         );
         for (Document doc : docs) {
             ragEngine.addDocument(doc);
@@ -216,7 +216,7 @@ public class AiSuiteComprehensiveExample {
         
         DefaultMcpServer mcpServer = new DefaultMcpServer("Integrated Server", "1.0.0");
         
-        McpTool ragTool = new McpTool("queryKnowledgeBase", "查询知识库");
+        McpTool ragTool = new McpTool("queryKnowledgeBase", "Query knowledge base");
         mcpServer.registerTool(ragTool, arguments -> {
             Map<String, Object> args = (Map<String, Object>) arguments;
             String query = (String) args.getOrDefault("query", "");
@@ -229,16 +229,16 @@ public class AiSuiteComprehensiveExample {
             return result;
         });
         
-        logger.info("集成系统初始化完成");
+        logger.info("Integrated system initialized");
         
         AgentRequest request = new AgentRequest();
-        request.setQuery("请查询知识库，告诉我 EST Agent 有什么特点？");
+        request.setQuery("Please query the knowledge base and tell me what features does EST Agent have?");
         
-        logger.info("集成系统请求: {}", request.getQuery());
+        logger.info("Integrated system request: {}", request.getQuery());
         AgentResponse response = agent.process(request);
-        logger.info("集成系统响应: {}", response.getFinalAnswer());
+        logger.info("Integrated system response: {}", response.getFinalAnswer());
         
-        logger.info("集成系统演示完成");
+        logger.info("Integrated system demo complete");
     }
     
     private static double evaluateExpression(String expression) {
@@ -248,7 +248,7 @@ public class AiSuiteComprehensiveExample {
             Object result = engine.eval(expression);
             return ((Number) result).doubleValue();
         } catch (Exception e) {
-            throw new RuntimeException("表达式计算失败: " + expression, e);
+            throw new RuntimeException("Expression evaluation failed: " + expression, e);
         }
     }
 }

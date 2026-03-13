@@ -14,7 +14,7 @@ public class AnnotationDrivenMcpExample {
     private static final Logger logger = LoggerFactory.getLogger(AnnotationDrivenMcpExample.class);
     
     public static void main(String[] args) {
-        logger.info("=== 注解驱动的 MCP 工具示例");
+        logger.info("=== Annotation-Driven MCP Tools Example");
         logger.info("==================================");
         
         try {
@@ -22,143 +22,143 @@ public class AnnotationDrivenMcpExample {
             
             AnnotationMcpToolRegistry registry = new AnnotationMcpToolRegistry(server);
             
-            logger.info("\n--- 注册注解驱动的工具类");
+            logger.info("\n--- Registering annotation-driven tool classes");
             registry.registerTools(
                 new WeatherTools(),
                 new CalculatorTools(),
                 new StringTools()
             );
             
-            logger.info("\n--- 测试注解驱动的工具");
+            logger.info("\n--- Testing annotation-driven tools");
             
             testWeatherTools(server);
             testCalculatorTools(server);
             testStringTools(server);
             
         } catch (Exception e) {
-            logger.error("示例执行出错", e);
+            logger.error("Example execution error", e);
         }
         
-        logger.info("\n=== 注解驱动 MCP 示例完成");
+        logger.info("\n=== Annotation-Driven MCP Example Complete");
     }
     
-    @McpTool(name = "WeatherTools", description = "天气相关工具")
+    @McpTool(name = "WeatherTools", description = "Weather-related tools")
     public static class WeatherTools {
         
-        @McpToolMethod(name = "getWeather", description = "获取指定城市的天气")
+        @McpToolMethod(name = "getWeather", description = "Get weather for specified city")
         public String getWeather(
-            @McpParam(name = "city", description = "城市名称", required = true) String city
+            @McpParam(name = "city", description = "City name", required = true) String city
         ) {
             Map<String, String> weatherData = new HashMap<>();
-            weatherData.put("北京", "晴朗，25°C，湿度 60%");
-            weatherData.put("上海", "多云，22°C，湿度 70%");
-            weatherData.put("广州", "小雨，28°C，湿度 85%");
-            weatherData.put("深圳", "晴朗，30°C，湿度 75%");
+            weatherData.put("Beijing", "Sunny, 25°C, Humidity 60%");
+            weatherData.put("Shanghai", "Cloudy, 22°C, Humidity 70%");
+            weatherData.put("Guangzhou", "Light rain, 28°C, Humidity 85%");
+            weatherData.put("Shenzhen", "Sunny, 30°C, Humidity 75%");
             
-            return city + " 的天气：" + weatherData.getOrDefault(city, "未知城市");
+            return city + " weather: " + weatherData.getOrDefault(city, "Unknown city");
         }
         
-        @McpToolMethod(name = "getTemperature", description = "获取指定城市的温度")
+        @McpToolMethod(name = "getTemperature", description = "Get temperature for specified city")
         public int getTemperature(
-            @McpParam(name = "city", description = "城市名称", required = true) String city
+            @McpParam(name = "city", description = "City name", required = true) String city
         ) {
             Map<String, Integer> tempData = new HashMap<>();
-            tempData.put("北京", 25);
-            tempData.put("上海", 22);
-            tempData.put("广州", 28);
-            tempData.put("深圳", 30);
+            tempData.put("Beijing", 25);
+            tempData.put("Shanghai", 22);
+            tempData.put("Guangzhou", 28);
+            tempData.put("Shenzhen", 30);
             
             return tempData.getOrDefault(city, 20);
         }
     }
     
-    @McpTool(name = "CalculatorTools", description = "计算器工具")
+    @McpTool(name = "CalculatorTools", description = "Calculator tools")
     public static class CalculatorTools {
         
-        @McpToolMethod(name = "add", description = "加法运算")
+        @McpToolMethod(name = "add", description = "Addition operation")
         public double add(
-            @McpParam(name = "a", description = "第一个数", required = true) double a,
-            @McpParam(name = "b", description = "第二个数", required = true) double b
+            @McpParam(name = "a", description = "First number", required = true) double a,
+            @McpParam(name = "b", description = "Second number", required = true) double b
         ) {
             return a + b;
         }
         
-        @McpToolMethod(name = "subtract", description = "减法运算")
+        @McpToolMethod(name = "subtract", description = "Subtraction operation")
         public double subtract(
-            @McpParam(name = "a", description = "被减数", required = true) double a,
-            @McpParam(name = "b", description = "减数", required = true) double b
+            @McpParam(name = "a", description = "Minuend", required = true) double a,
+            @McpParam(name = "b", description = "Subtrahend", required = true) double b
         ) {
             return a - b;
         }
         
-        @McpToolMethod(name = "multiply", description = "乘法运算")
+        @McpToolMethod(name = "multiply", description = "Multiplication operation")
         public double multiply(
-            @McpParam(name = "a", description = "第一个数", required = true) double a,
-            @McpParam(name = "b", description = "第二个数", required = true) double b
+            @McpParam(name = "a", description = "First number", required = true) double a,
+            @McpParam(name = "b", description = "Second number", required = true) double b
         ) {
             return a * b;
         }
         
-        @McpToolMethod(name = "divide", description = "除法运算")
+        @McpToolMethod(name = "divide", description = "Division operation")
         public double divide(
-            @McpParam(name = "a", description = "被除数", required = true) double a,
-            @McpParam(name = "b", description = "除数", required = true) double b
+            @McpParam(name = "a", description = "Dividend", required = true) double a,
+            @McpParam(name = "b", description = "Divisor", required = true) double b
         ) {
             if (b == 0) {
-                throw new IllegalArgumentException("除数不能为零");
+                throw new IllegalArgumentException("Divisor cannot be zero");
             }
             return a / b;
         }
     }
     
-    @McpTool(name = "StringTools", description = "字符串处理工具")
+    @McpTool(name = "StringTools", description = "String processing tools")
     public static class StringTools {
         
-        @McpToolMethod(name = "toUpperCase", description = "字符串转大写")
+        @McpToolMethod(name = "toUpperCase", description = "Convert string to uppercase")
         public String toUpperCase(
-            @McpParam(name = "text", description = "输入文本", required = true) String text
+            @McpParam(name = "text", description = "Input text", required = true) String text
         ) {
             return text.toUpperCase();
         }
         
-        @McpToolMethod(name = "toLowerCase", description = "字符串转小写")
+        @McpToolMethod(name = "toLowerCase", description = "Convert string to lowercase")
         public String toLowerCase(
-            @McpParam(name = "text", description = "输入文本", required = true) String text
+            @McpParam(name = "text", description = "Input text", required = true) String text
         ) {
             return text.toLowerCase();
         }
         
-        @McpToolMethod(name = "reverse", description = "字符串反转")
+        @McpToolMethod(name = "reverse", description = "Reverse string")
         public String reverse(
-            @McpParam(name = "text", description = "输入文本", required = true) String text
+            @McpParam(name = "text", description = "Input text", required = true) String text
         ) {
             return new StringBuilder(text).reverse().toString();
         }
         
-        @McpToolMethod(name = "countLength", description = "计算字符串长度")
+        @McpToolMethod(name = "countLength", description = "Calculate string length")
         public int countLength(
-            @McpParam(name = "text", description = "输入文本", required = true) String text
+            @McpParam(name = "text", description = "Input text", required = true) String text
         ) {
             return text.length();
         }
     }
     
     private static void testWeatherTools(DefaultMcpServer server) {
-        logger.info("\n测试天气工具...");
+        logger.info("\nTesting weather tools...");
         
         Map<String, Object> args = new HashMap<>();
-        args.put("city", "北京");
+        args.put("city", "Beijing");
         McpToolResult result = server.callTool("WeatherTools_getWeather", args);
         logger.info("  WeatherTools_getWeather: {}", result.getContent().get(0).getValue());
         
         Map<String, Object> tempArgs = new HashMap<>();
-        tempArgs.put("city", "上海");
+        tempArgs.put("city", "Shanghai");
         McpToolResult tempResult = server.callTool("WeatherTools_getTemperature", tempArgs);
         logger.info("  WeatherTools_getTemperature: {}", tempResult.getContent().get(0).getValue());
     }
     
     private static void testCalculatorTools(DefaultMcpServer server) {
-        logger.info("\n测试计算器工具...");
+        logger.info("\nTesting calculator tools...");
         
         Map<String, Object> addArgs = new HashMap<>();
         addArgs.put("a", 10.0);
@@ -174,7 +174,7 @@ public class AnnotationDrivenMcpExample {
     }
     
     private static void testStringTools(DefaultMcpServer server) {
-        logger.info("\n测试字符串工具...");
+        logger.info("\nTesting string tools...");
         
         Map<String, Object> upperArgs = new HashMap<>();
         upperArgs.put("text", "hello world");

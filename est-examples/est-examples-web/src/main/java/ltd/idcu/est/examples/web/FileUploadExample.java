@@ -16,7 +16,7 @@ public class FileUploadExample {
     public static void run() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(80));
-        System.out.println("文件上传示例 - File Upload");
+        System.out.println("File Upload Example");
         System.out.println("=".repeat(80));
         
         WebApplication app = Web.create("File Upload Example", "1.0.0");
@@ -35,15 +35,15 @@ public class FileUploadExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n�?文件上传服务器启动成功！");
-            System.out.println("\n访问地址�?);
-            System.out.println("  - http://localhost:8080          (文件管理界面)");
-            System.out.println("\nAPI 端点�?);
-            System.out.println("  - GET    /api/files             - 获取文件列表");
-            System.out.println("  - POST   /api/upload            - 上传文件");
-            System.out.println("  - GET    /api/download/:id     - 下载文件");
-            System.out.println("  - DELETE /api/files/:id        - 删除文件");
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n[OK] File upload server started successfully!");
+            System.out.println("\nAccess URLs:");
+            System.out.println("  - http://localhost:8080          (File Management Interface)");
+            System.out.println("\nAPI Endpoints:");
+            System.out.println("  - GET    /api/files             - Get file list");
+            System.out.println("  - POST   /api/upload            - Upload file");
+            System.out.println("  - GET    /api/download/:id     - Download file");
+            System.out.println("  - DELETE /api/files/:id        - Delete file");
+            System.out.println("\n[X] Ctrl+C to stop server");
             System.out.println("=".repeat(80));
         });
         
@@ -59,7 +59,7 @@ public class FileUploadExample {
             <!DOCTYPE html>
             <html>
             <head>
-                <title>文件管理</title>
+                <title>File Management</title>
                 <meta charset="UTF-8">
                 <style>
                     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -102,25 +102,25 @@ public class FileUploadExample {
             </head>
             <body>
                 <div class="header">
-                    <h1>📁 文件管理系统</h1>
-                    <p>上传、下载和管理您的文件</p>
+                    <h1>📁 File Management System</h1>
+                    <p>Upload, download, and manage your files</p>
                 </div>
                 
                 <div class="container">
                     <div class="stats" id="stats"></div>
                     
                     <div class="upload-area" id="uploadArea">
-                        <h2>⬆️ 上传文件</h2>
-                        <p>拖放文件到此处，或点击选择文件</p>
+                        <h2>⬆️ Upload Files</h2>
+                        <p>Drag and drop files here, or click to select files</p>
                         <input type="file" id="fileInput" class="file-input" multiple />
-                        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">选择文件</button>
+                        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Select Files</button>
                         <div class="progress-bar" id="progressBar">
                             <div class="progress-fill" id="progressFill"></div>
                         </div>
                     </div>
                     
                     <div class="file-list">
-                        <h2>📂 文件列表</h2>
+                        <h2>📂 File List</h2>
                         <div class="file-grid" id="fileGrid"></div>
                     </div>
                 </div>
@@ -145,7 +145,7 @@ public class FileUploadExample {
                             container.innerHTML = \`
                                 <div class="empty-state">
                                     <div class="icon">📭</div>
-                                    <p>暂无文件，快去上传吧�?/p>
+                                    <p>No files yet, go upload some!</p>
                                 </div>
                             \`;
                             return;
@@ -157,8 +157,8 @@ public class FileUploadExample {
                                 <div class="file-name">\${escapeHtml(file.name)}</div>
                                 <div class="file-info">\${formatSize(file.size)} · \${formatDate(file.uploadedAt)}</div>
                                 <div class="file-actions">
-                                    <button class="btn-download" onclick="downloadFile('\${file.id}')">下载</button>
-                                    <button class="btn-delete" onclick="deleteFile('\${file.id}')">删除</button>
+                                    <button class="btn-download" onclick="downloadFile('\${file.id}')">Download</button>
+                                    <button class="btn-delete" onclick="deleteFile('\${file.id}')">Delete</button>
                                 </div>
                             </div>
                         \`).join('');
@@ -171,17 +171,17 @@ public class FileUploadExample {
                         document.getElementById('stats').innerHTML = \`
                             <div class="stat-card">
                                 <div class="stat-number">\${totalFiles}</div>
-                                <div class="stat-label">文件数量</div>
+                                <div class="stat-label">Files</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-number">\${formatSize(totalSize)}</div>
-                                <div class="stat-label">总大�?/div>
+                                <div class="stat-label">Total Size</div>
                             </div>
                         \`;
                     }
                     
                     function getFileIcon(type) {
-                        if (type.startsWith('image/')) return '🖼�?;
+                        if (type.startsWith('image/')) return '🖼️';
                         if (type.startsWith('video/')) return '🎬';
                         if (type.startsWith('audio/')) return '🎵';
                         if (type.includes('pdf')) return '📄';
@@ -199,7 +199,7 @@ public class FileUploadExample {
                     }
                     
                     function formatDate(timestamp) {
-                        return new Date(timestamp).toLocaleString('zh-CN');
+                        return new Date(timestamp).toLocaleString('en-US');
                     }
                     
                     async function uploadFile(file) {
@@ -227,7 +227,7 @@ public class FileUploadExample {
                             
                             loadFiles();
                         } catch (error) {
-                            alert('上传失败�? + error.message);
+                            alert('Upload failed: ' + error.message);
                             progressBar.classList.remove('active');
                         }
                     }
@@ -237,7 +237,7 @@ public class FileUploadExample {
                     }
                     
                     async function deleteFile(id) {
-                        if (confirm('确定要删除这个文件吗�?)) {
+                        if (confirm('Are you sure you want to delete this file?')) {
                             await fetch('/api/files/' + id, { method: 'DELETE' });
                             loadFiles();
                         }
@@ -294,7 +294,7 @@ public class FileUploadExample {
         try {
             MultipartFile file = req.file("file");
             if (file == null) {
-                res.status(400).json(Map.of("success", false, "message", "请选择文件"));
+                res.status(400).json(Map.of("success", false, "message", "Please select a file"));
                 return;
             }
             
@@ -311,11 +311,11 @@ public class FileUploadExample {
             
             res.status(201).json(Map.of(
                 "success", true,
-                "message", "文件上传成功",
+                "message", "File uploaded successfully",
                 "data", uploadedFile
             ));
         } catch (Exception e) {
-            res.status(500).json(Map.of("success", false, "message", "上传失败�? + e.getMessage()));
+            res.status(500).json(Map.of("success", false, "message", "Upload failed: " + e.getMessage()));
         }
     }
     
@@ -323,7 +323,7 @@ public class FileUploadExample {
         String id = req.param("id");
         UploadedFile file = files.get(id);
         if (file == null) {
-            res.status(404).json(Map.of("success", false, "message", "文件不存�?));
+            res.status(404).json(Map.of("success", false, "message", "File not found"));
             return;
         }
         
@@ -335,9 +335,9 @@ public class FileUploadExample {
     private static void deleteFile(Request req, Response res) {
         String id = req.param("id");
         if (files.remove(id) != null) {
-            res.json(Map.of("success", true, "message", "文件删除成功"));
+            res.json(Map.of("success", true, "message", "File deleted successfully"));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "文件不存�?));
+            res.status(404).json(Map.of("success", false, "message", "File not found"));
         }
     }
     

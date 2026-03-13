@@ -12,7 +12,7 @@ public class CompleteAdminExample {
     public static void main(String[] args) {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(80));
-        System.out.println("EST Admin Console - 完整管理后台示例");
+        System.out.println("EST Admin Console - Complete Admin Example");
         System.out.println("=".repeat(80));
         
         WebApplication app = Web.create("EST Complete Admin", "2.1.0");
@@ -22,7 +22,7 @@ public class CompleteAdminExample {
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>EST Admin - 管理后台</title>
+                    <title>EST Admin - Admin Console</title>
                     <style>
                         body {
                             font-family: Arial, sans-serif;
@@ -70,23 +70,23 @@ public class CompleteAdminExample {
                 </head>
                 <body>
                     <div class="container">
-                        <h1>🚀 EST Admin 管理后台</h1>
+                        <h1>🚀 EST Admin Console</h1>
                         
-                        <h2>�?功能特�?/h2>
-                        <div class="feature">👤 用户管理 - 完整的用户CRUD操作</div>
-                        <div class="feature">🎭 角色管理 - 角色创建和权限分�?/div>
-                        <div class="feature">📋 菜单管理 - 树形菜单结构</div>
-                        <div class="feature">🏢 部门管理 - 组织架构管理</div>
-                        <div class="feature">🏪 租户管理 - 多租户支�?/div>
-                        <div class="feature">📝 日志管理 - 操作日志和登录日�?/div>
-                        <div class="feature">📊 系统监控 - JVM和系统指�?/div>
-                        <div class="feature">🔌 第三方集�?- 邮件、短信、OSS</div>
-                        <div class="feature">🤖 AI助手 - 代码生成和对�?/div>
+                        <h2>✨ Features</h2>
+                        <div class="feature">👤 User Management - Complete user CRUD operations</div>
+                        <div class="feature">🎭 Role Management - Role creation and permission assignment</div>
+                        <div class="feature">📋 Menu Management - Tree menu structure</div>
+                        <div class="feature">🏢 Department Management - Organization structure</div>
+                        <div class="feature">🏪 Tenant Management - Multi-tenant support</div>
+                        <div class="feature">📝 Log Management - Operation logs and login logs</div>
+                        <div class="feature">📊 System Monitoring - JVM and system metrics</div>
+                        <div class="feature">🔌 Third-party Integration - Email, SMS, OSS</div>
+                        <div class="feature">🤖 AI Assistant - Code generation and chat</div>
                         
                         <div class="links">
-                            <a href="/admin">进入管理后台</a>
-                            <a href="/health">健康检�?/a>
-                            <a href="/api-docs">API文档</a>
+                            <a href="/admin">Enter Admin Console</a>
+                            <a href="/health">Health Check</a>
+                            <a href="/api-docs">API Documentation</a>
                         </div>
                     </div>
                 </body>
@@ -108,7 +108,7 @@ public class CompleteAdminExample {
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>EST Admin API 文档</title>
+                    <title>EST Admin API Documentation</title>
                     <style>
                         body { font-family: Arial, sans-serif; max-width: 1000px; margin: 50px auto; padding: 20px; }
                         h1 { color: #333; }
@@ -121,49 +121,49 @@ public class CompleteAdminExample {
                     </style>
                 </head>
                 <body>
-                    <h1>📚 EST Admin API 文档</h1>
+                    <h1>📚 EST Admin API Documentation</h1>
                     
-                    <h2>认证接口</h2>
-                    <div class="endpoint"><span class="method post">POST</span> /admin/api/auth/login - 用户登录</div>
-                    <div class="endpoint"><span class="method post">POST</span> /admin/api/auth/logout - 用户登出</div>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/auth/current - 获取当前用户</div>
-                    <div class="endpoint"><span class="method post">POST</span> /admin/api/auth/refresh-token - 刷新Token</div>
+                    <h2>Authentication APIs</h2>
+                    <div class="endpoint"><span class="method post">POST</span> /admin/api/auth/login - User login</div>
+                    <div class="endpoint"><span class="method post">POST</span> /admin/api/auth/logout - User logout</div>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/auth/current - Get current user</div>
+                    <div class="endpoint"><span class="method post">POST</span> /admin/api/auth/refresh-token - Refresh Token</div>
                     
-                    <h2>用户管理</h2>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/users - 获取用户列表</div>
-                    <div class="endpoint"><span class="method post">POST</span> /admin/api/users - 创建用户</div>
-                    <div class="endpoint"><span class="method put">PUT</span> /admin/api/users/:id - 更新用户</div>
-                    <div class="endpoint"><span class="method delete">DELETE</span> /admin/api/users/:id - 删除用户</div>
+                    <h2>User Management</h2>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/users - Get user list</div>
+                    <div class="endpoint"><span class="method post">POST</span> /admin/api/users - Create user</div>
+                    <div class="endpoint"><span class="method put">PUT</span> /admin/api/users/:id - Update user</div>
+                    <div class="endpoint"><span class="method delete">DELETE</span> /admin/api/users/:id - Delete user</div>
                     
-                    <h2>角色管理</h2>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/roles - 获取角色列表</div>
-                    <div class="endpoint"><span class="method post">POST</span> /admin/api/roles - 创建角色</div>
-                    <div class="endpoint"><span class="method put">PUT</span> /admin/api/roles/:id - 更新角色</div>
-                    <div class="endpoint"><span class="method delete">DELETE</span> /admin/api/roles/:id - 删除角色</div>
+                    <h2>Role Management</h2>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/roles - Get role list</div>
+                    <div class="endpoint"><span class="method post">POST</span> /admin/api/roles - Create role</div>
+                    <div class="endpoint"><span class="method put">PUT</span> /admin/api/roles/:id - Update role</div>
+                    <div class="endpoint"><span class="method delete">DELETE</span> /admin/api/roles/:id - Delete role</div>
                     
-                    <h2>菜单管理</h2>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/menus - 获取菜单列表</div>
-                    <div class="endpoint"><span class="method post">POST</span> /admin/api/menus - 创建菜单</div>
-                    <div class="endpoint"><span class="method put">PUT</span> /admin/api/menus/:id - 更新菜单</div>
-                    <div class="endpoint"><span class="method delete">DELETE</span> /admin/api/menus/:id - 删除菜单</div>
+                    <h2>Menu Management</h2>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/menus - Get menu list</div>
+                    <div class="endpoint"><span class="method post">POST</span> /admin/api/menus - Create menu</div>
+                    <div class="endpoint"><span class="method put">PUT</span> /admin/api/menus/:id - Update menu</div>
+                    <div class="endpoint"><span class="method delete">DELETE</span> /admin/api/menus/:id - Delete menu</div>
                     
-                    <h2>日志管理</h2>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/operation-logs - 操作日志</div>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/login-logs - 登录日志</div>
+                    <h2>Log Management</h2>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/operation-logs - Operation logs</div>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/login-logs - Login logs</div>
                     
-                    <h2>系统监控</h2>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/monitor/jvm - JVM监控</div>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/monitor/system - 系统监控</div>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/online-users - 在线用户</div>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/cache/statistics - 缓存统计</div>
+                    <h2>System Monitoring</h2>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/monitor/jvm - JVM monitoring</div>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/monitor/system - System monitoring</div>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/online-users - Online users</div>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/cache/statistics - Cache statistics</div>
                     
-                    <h2>AI助手</h2>
-                    <div class="endpoint"><span class="method post">POST</span> /admin/api/ai/chat - AI对话</div>
-                    <div class="endpoint"><span class="method post">POST</span> /admin/api/ai/code/generate - 代码生成</div>
-                    <div class="endpoint"><span class="method post">POST</span> /admin/api/ai/code/explain - 代码解释</div>
-                    <div class="endpoint"><span class="method post">POST</span> /admin/api/ai/code/optimize - 代码优化</div>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/ai/reference - 开发参�?/div>
-                    <div class="endpoint"><span class="method get">GET</span> /admin/api/ai/templates - 提示模板</div>
+                    <h2>AI Assistant</h2>
+                    <div class="endpoint"><span class="method post">POST</span> /admin/api/ai/chat - AI chat</div>
+                    <div class="endpoint"><span class="method post">POST</span> /admin/api/ai/code/generate - Code generation</div>
+                    <div class="endpoint"><span class="method post">POST</span> /admin/api/ai/code/explain - Code explanation</div>
+                    <div class="endpoint"><span class="method post">POST</span> /admin/api/ai/code/optimize - Code optimization</div>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/ai/reference - Development reference</div>
+                    <div class="endpoint"><span class="method get">GET</span> /admin/api/ai/templates - Prompt templates</div>
                     
                 </body>
                 </html>
@@ -172,9 +172,9 @@ public class CompleteAdminExample {
         
         AdminApplication adminApp = Admin.create("EST Complete Admin", "2.1.0");
         
-        System.out.println("\n�?Admin 管理后台已启动！");
-        System.out.println("📍 访问地址: http://localhost:8080");
-        System.out.println("👤 默认账号: admin / admin123");
+        System.out.println("\n[OK] Admin Console started!");
+        System.out.println("📍 Access URL: http://localhost:8080");
+        System.out.println("👤 Default account: admin / admin123");
         System.out.println("=".repeat(80));
         
         app.run(8080);

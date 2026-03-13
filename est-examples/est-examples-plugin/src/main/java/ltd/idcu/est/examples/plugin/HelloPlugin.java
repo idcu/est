@@ -9,10 +9,10 @@ public class HelloPlugin extends AbstractPlugin {
         super(PluginInfo.builder()
                 .name("hello-plugin")
                 .version("1.0.0")
-                .description("一个简单的 Hello 插件，展示 EST 插件系统的基本用法")
+                .description("A simple Hello plugin demonstrating basic usage of EST Plugin System")
                 .author("EST Team")
                 .mainClass(HelloPlugin.class.getName())
-                .category("示例")
+                .category("Example")
                 .tags("hello", "example", "basic")
                 .minFrameworkVersion("2.3.0")
                 .build());
@@ -20,22 +20,22 @@ public class HelloPlugin extends AbstractPlugin {
 
     @Override
     public void onLoad() {
-        System.out.println("[HelloPlugin] 插件已加载");
+        System.out.println("[HelloPlugin] Plugin loaded");
     }
 
     @Override
     public void onEnable() {
-        System.out.println("[HelloPlugin] 插件已启用");
+        System.out.println("[HelloPlugin] Plugin enabled");
     }
 
     @Override
     public void onDisable() {
-        System.out.println("[HelloPlugin] 插件已禁用");
+        System.out.println("[HelloPlugin] Plugin disabled");
     }
 
     @Override
     public void onUnload() {
-        System.out.println("[HelloPlugin] 插件已卸载");
+        System.out.println("[HelloPlugin] Plugin unloaded");
     }
 
     public String sayHello() {

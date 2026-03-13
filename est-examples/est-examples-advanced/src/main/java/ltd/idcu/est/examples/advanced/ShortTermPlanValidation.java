@@ -23,136 +23,136 @@ public class ShortTermPlanValidation {
     private static final Logger logger = LoggerFactory.getLogger(ShortTermPlanValidation.class);
     
     public static void main(String[] args) {
-        logger.info("=== EST Framework 2.0 短期计划验证 ===");
-        logger.info("==========================================");
+        logger.info("=== EST Framework 2.0 Short-Term Plan Validation ===");
+        logger.info("====================================================");
         
-        logger.info("\n--- 1. AI 增强功能验证 ---");
+        logger.info("\n--- 1. AI Enhancement Features Validation ---");
         validateAiFeatures();
         
-        logger.info("\n--- 2. 管理后台功能验证 ---");
+        logger.info("\n--- 2. Admin Dashboard Features Validation ---");
         validateAdminFeatures();
         
-        logger.info("\n--- 3. 工作流引擎验证 ---");
+        logger.info("\n--- 3. Workflow Engine Validation ---");
         validateWorkflowEngine();
         
-        logger.info("\n--- 4. 微服务模块验证 ---");
+        logger.info("\n--- 4. Microservices Module Validation ---");
         validateMicroservices();
         
-        logger.info("\n=== 短期计划验证完成 ===");
-        logger.info("✅ 所有核心功能已完整实现！");
+        logger.info("\n=== Short-Term Plan Validation Complete ===");
+        logger.info("[X] All core features are fully implemented!");
     }
     
     private static void validateAiFeatures() {
-        logger.info("验证 AI 增强功能...");
+        logger.info("Validating AI enhancement features...");
         
         AiAssistant aiAssistant = new DefaultAiAssistant();
         
-        logger.info("  ✅ AI 助手初始化成功");
+        logger.info("  [X] AI assistant initialized successfully");
         
         RequirementParser parser = aiAssistant.getRequirementParser();
-        logger.info("  ✅ 需求解析器可用");
+        logger.info("  [X] Requirement parser available");
         
-        String requirement = "开发一个在线学习平台，包含课程管理、用户学习、作业提交和成绩管理功能";
+        String requirement = "Develop an online learning platform with course management, user learning, assignment submission, and grade management features";
         ParsedRequirement parsed = parser.parse(requirement);
-        logger.info("  ✅ 需求解析完成: {}", parsed.getProjectName());
+        logger.info("  [X] Requirement parsing complete: {}", parsed.getProjectName());
         
         ArchitectureDesigner designer = aiAssistant.getArchitectureDesigner();
-        logger.info("  ✅ 架构设计器可用");
+        logger.info("  [X] Architecture designer available");
         
         ArchitectureDesign design = designer.designArchitecture(parsed);
-        logger.info("  ✅ 架构设计完成: {} 模块", design.getModules().size());
+        logger.info("  [X] Architecture design complete: {} modules", design.getModules().size());
         
         TestAndDeployManager manager = aiAssistant.getTestAndDeployManager();
-        logger.info("  ✅ 测试部署管理器可用");
+        logger.info("  [X] Test and deploy manager available");
         
         TestSuite testSuite = manager.generateTests("public class CourseService { ... }", "Service");
-        logger.info("  ✅ 测试套件生成: {} 测试用例", testSuite.getTestCases().size());
+        logger.info("  [X] Test suite generated: {} test cases", testSuite.getTestCases().size());
         
-        DeploymentPlan plan = manager.createDeploymentPlan("在线学习平台", 
+        DeploymentPlan plan = manager.createDeploymentPlan("Online Learning Platform", 
             Map.of("version", "1.0.0", "environment", "DEVELOPMENT"));
-        logger.info("  ✅ 部署计划创建: {} 步骤", plan.getSteps().size());
+        logger.info("  [X] Deployment plan created: {} steps", plan.getSteps().size());
         
-        logger.info("✅ AI 增强功能验证通过");
+        logger.info("[X] AI enhancement features validation passed");
     }
     
     private static void validateAdminFeatures() {
-        logger.info("验证管理后台功能...");
+        logger.info("Validating admin dashboard features...");
         
         AdminFacade adminFacade = new DefaultAdminFacade();
-        logger.info("  ✅ 管理后台门面初始化成功");
+        logger.info("  [X] Admin facade initialized successfully");
         
         UserService userService = adminFacade.getUserService();
-        logger.info("  ✅ 用户服务可用");
+        logger.info("  [X] User service available");
         
         RoleService roleService = adminFacade.getRoleService();
-        logger.info("  ✅ 角色服务可用");
+        logger.info("  [X] Role service available");
         
         MenuService menuService = adminFacade.getMenuService();
-        logger.info("  ✅ 菜单服务可用");
+        logger.info("  [X] Menu service available");
         
         DepartmentService departmentService = adminFacade.getDepartmentService();
-        logger.info("  ✅ 部门服务可用");
+        logger.info("  [X] Department service available");
         
         TenantService tenantService = adminFacade.getTenantService();
-        logger.info("  ✅ 租户服务可用");
+        logger.info("  [X] Tenant service available");
         
         AuthService authService = adminFacade.getAuthService();
-        logger.info("  ✅ 认证服务可用");
+        logger.info("  [X] Authentication service available");
         
         OperationLogService operationLogService = adminFacade.getOperationLogService();
-        logger.info("  ✅ 操作日志服务可用");
+        logger.info("  [X] Operation log service available");
         
         LoginLogService loginLogService = adminFacade.getLoginLogService();
-        logger.info("  ✅ 登录日志服务可用");
+        logger.info("  [X] Login log service available");
         
         MonitorService monitorService = adminFacade.getMonitorService();
-        logger.info("  ✅ 监控服务可用");
+        logger.info("  [X] Monitor service available");
         
         CacheMonitorService cacheMonitorService = adminFacade.getCacheMonitorService();
-        logger.info("  ✅ 缓存监控服务可用");
+        logger.info("  [X] Cache monitor service available");
         
         AiAssistantService aiAssistantService = adminFacade.getAiAssistantService();
-        logger.info("  ✅ AI 助手服务可用");
+        logger.info("  [X] AI assistant service available");
         
         EmailService emailService = adminFacade.getEmailService();
-        logger.info("  ✅ 邮件服务可用");
+        logger.info("  [X] Email service available");
         
         SmsService smsService = adminFacade.getSmsService();
-        logger.info("  ✅ 短信服务可用");
+        logger.info("  [X] SMS service available");
         
         OssService ossService = adminFacade.getOssService();
-        logger.info("  ✅ 对象存储服务可用");
+        logger.info("  [X] Object storage service available");
         
-        logger.info("✅ 管理后台功能验证通过");
+        logger.info("[X] Admin dashboard features validation passed");
     }
     
     private static void validateWorkflowEngine() {
-        logger.info("验证工作流引擎...");
+        logger.info("Validating workflow engine...");
         
         WorkflowEngine engine = Workflows.createEngine();
-        logger.info("  ✅ 工作流引擎创建成功");
+        logger.info("  [X] Workflow engine created successfully");
         
         WorkflowDefinition definition = Workflows.createDefinition("order-process")
-            .name("订单处理流程")
-            .description("处理电商订单的完整流程")
+            .name("Order Processing Workflow")
+            .description("Complete workflow for processing e-commerce orders")
             .build();
-        logger.info("  ✅ 工作流定义创建成功");
+        logger.info("  [X] Workflow definition created successfully");
         
         WorkflowRepository repository = Workflows.createMemoryRepository();
         repository.save(definition);
-        logger.info("  ✅ 工作流定义存储成功");
+        logger.info("  [X] Workflow definition stored successfully");
         
         WorkflowInstance instance = engine.start(definition, Map.of("orderId", "12345"));
-        logger.info("  ✅ 工作流实例启动成功: {}", instance.getInstanceId());
+        logger.info("  [X] Workflow instance started successfully: {}", instance.getInstanceId());
         
         WorkflowStatus status = instance.getStatus();
-        logger.info("  ✅ 工作流状态: {}", status);
+        logger.info("  [X] Workflow status: {}", status);
         
-        logger.info("✅ 工作流引擎验证通过");
+        logger.info("[X] Workflow engine validation passed");
     }
     
     private static void validateMicroservices() {
-        logger.info("验证微服务模块...");
+        logger.info("Validating microservices module...");
         
         CircuitBreakerConfig config = new CircuitBreakerConfig()
             .failureThreshold(5)
@@ -160,16 +160,16 @@ public class ShortTermPlanValidation {
             .successThreshold(3);
         
         CircuitBreaker circuitBreaker = new DefaultCircuitBreaker("user-service", config);
-        logger.info("  ✅ 断路器创建成功");
+        logger.info("  [X] Circuit breaker created successfully");
         
         circuitBreaker.execute(() -> {
-            logger.info("    断路器执行成功");
+            logger.info("    Circuit breaker executed successfully");
             return "success";
         });
-        logger.info("  ✅ 断路器执行测试通过");
+        logger.info("  [X] Circuit breaker execution test passed");
         
         ServiceRegistry registry = new DefaultServiceRegistry();
-        logger.info("  ✅ 服务注册中心创建成功");
+        logger.info("  [X] Service registry created successfully");
         
         ServiceInstance instance = ServiceInstance.builder()
             .serviceId("user-service")
@@ -177,11 +177,11 @@ public class ShortTermPlanValidation {
             .port(8080)
             .build();
         registry.register(instance);
-        logger.info("  ✅ 服务注册成功");
+        logger.info("  [X] Service registered successfully");
         
         List<ServiceInstance> instances = registry.getInstances("user-service");
-        logger.info("  ✅ 服务发现成功: {} 实例", instances.size());
+        logger.info("  [X] Service discovery successful: {} instances", instances.size());
         
-        logger.info("✅ 微服务模块验证通过");
+        logger.info("[X] Microservices module validation passed");
     }
 }

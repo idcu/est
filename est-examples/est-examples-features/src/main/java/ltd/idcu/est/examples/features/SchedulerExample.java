@@ -7,29 +7,29 @@ import ltd.idcu.est.scheduler.cron.CronSchedulers;
 
 public class SchedulerExample {
     public static void main(String[] args) throws InterruptedException {
-        // 创建Cron调度�?
+        // Create Cron scheduler
         var scheduler = CronSchedulers.create();
         
-        // 创建任务
+        // Create task
         Task task = CronSchedulers.wrap(() -> {
             System.out.println("Task executed at: " + new java.util.Date());
         });
         
-        // 调度任务（每5秒执行一次）
+        // Schedule task (execute every 5 seconds)
         var config = ScheduleConfig.builder()
                 .type(ScheduleType.CRON)
                 .cronExpression("*/5 * * * * *")
                 .build();
         scheduler.schedule(task, config);
         
-        // 启动调度�?
+        // Start scheduler
         scheduler.start();
         System.out.println("Scheduler started. Press Ctrl+C to stop.");
         
-        // 运行一段时�?
+        // Run for a while
         Thread.sleep(20000);
         
-        // 停止调度�?
+        // Stop scheduler
         scheduler.stop();
         System.out.println("Scheduler stopped.");
     }

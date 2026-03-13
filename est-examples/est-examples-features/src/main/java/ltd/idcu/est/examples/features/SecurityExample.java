@@ -9,28 +9,28 @@ import ltd.idcu.est.security.basic.DefaultAuthentication;
 
 public class SecurityExample {
     public static void main(String[] args) {
-        // 创建密码编码�?
+        // Create password encoder
         PasswordEncoder passwordEncoder = BasicSecurity.passwordEncoder();
         
-        // 编码密码
+        // Encode password
         String encodedPassword = passwordEncoder.encode("password123");
         System.out.println("Encoded password: " + encodedPassword);
         
-        // 验证密码
+        // Verify password
         boolean matches = passwordEncoder.matches("password123", encodedPassword);
         System.out.println("Password matches: " + matches);
         
-        // 创建用户详情服务
+        // Create user details service
         UserDetailsService userDetailsService = BasicSecurity.inMemoryUserDetailsService();
         
-        // 创建用户
+        // Create user
         User user = BasicSecurity.newUser("admin", encodedPassword);
         userDetailsService.save(user);
         
-        // 创建认证提供�?
+        // Create authentication provider
         var authenticationProvider = BasicSecurity.authenticationProvider(userDetailsService, passwordEncoder);
         
-        // 创建认证对象
+        // Create authentication object
         Authentication authRequest = new DefaultAuthentication(null, "password123") {
             @Override
             public User getUser() {
@@ -38,7 +38,7 @@ public class SecurityExample {
             }
         };
         
-        // 认证
+        // Authenticate
         Authentication authentication = authenticationProvider.authenticate(authRequest);
         
         System.out.println("Authentication successful: " + authentication.isAuthenticated());

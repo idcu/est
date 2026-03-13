@@ -14,13 +14,13 @@ public class ChatAppExample {
     private static final List<Message> messages = Collections.synchronizedList(new ArrayList<>());
     
     static {
-        users.put("system", new User("system", "系统", "#007bff"));
+        users.put("system", new User("system", "System", "#007bff"));
     }
     
     public static void run() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(80));
-        System.out.println("实时聊天应用 - Chat App");
+        System.out.println("Real-time Chat Application - Chat App");
         System.out.println("=".repeat(80));
         
         WebApplication app = Web.create("Chat App", "1.0.0");
@@ -41,17 +41,17 @@ public class ChatAppExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n�?聊天应用服务器启动成功！");
-            System.out.println("\n访问地址�?);
-            System.out.println("  - http://localhost:8080          (聊天界面)");
-            System.out.println("\nAPI 端点�?);
-            System.out.println("  - GET    /api/messages           - 获取消息历史");
-            System.out.println("  - POST   /api/messages           - 发送消�?);
-            System.out.println("  - GET    /api/users              - 获取在线用户");
-            System.out.println("  - POST   /api/users              - 用户加入");
-            System.out.println("  - DELETE /api/users/:id          - 用户离开");
-            System.out.println("  - GET    /api/poll               - 长轮询获取新消息");
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n[X] Chat application server started successfully!");
+            System.out.println("\nAccess URLs:");
+            System.out.println("  - http://localhost:8080          (Chat Interface)");
+            System.out.println("\nAPI Endpoints:");
+            System.out.println("  - GET    /api/messages           - Get message history");
+            System.out.println("  - POST   /api/messages           - Send message");
+            System.out.println("  - GET    /api/users              - Get online users");
+            System.out.println("  - POST   /api/users              - User join");
+            System.out.println("  - DELETE /api/users/:id          - User leave");
+            System.out.println("  - GET    /api/poll               - Long polling for new messages");
+            System.out.println("\n[X] Press Ctrl+C to stop server");
             System.out.println("=".repeat(80));
         });
         
@@ -67,7 +67,7 @@ public class ChatAppExample {
             <!DOCTYPE html>
             <html>
             <head>
-                <title>实时聊天</title>
+                <title>Real-time Chat</title>
                 <meta charset="UTF-8">
                 <style>
                     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -111,34 +111,34 @@ public class ChatAppExample {
             <body>
                 <div id="loginOverlay" class="login-overlay">
                     <div class="login-box">
-                        <h2>💬 加入聊天�?/h2>
-                        <input type="text" id="username" placeholder="输入你的昵称..." />
+                        <h2>💬 Join Chat</h2>
+                        <input type="text" id="username" placeholder="Enter your nickname..." />
                         <select id="color">
-                            <option value="#e74c3c">红色</option>
-                            <option value="#3498db">蓝色</option>
-                            <option value="#2ecc71">绿色</option>
-                            <option value="#f39c12">橙色</option>
-                            <option value="#9b59b6">紫色</option>
-                            <option value="#1abc9c">青色</option>
+                            <option value="#e74c3c">Red</option>
+                            <option value="#3498db">Blue</option>
+                            <option value="#2ecc71">Green</option>
+                            <option value="#f39c12">Orange</option>
+                            <option value="#9b59b6">Purple</option>
+                            <option value="#1abc9c">Cyan</option>
                         </select>
-                        <button onclick="joinChat()">加入</button>
+                        <button onclick="joinChat()">Join</button>
                     </div>
                 </div>
                 
                 <div class="sidebar">
-                    <h2>👥 在线用户</h2>
+                    <h2>👥 Online Users</h2>
                     <div class="user-list" id="userList"></div>
                 </div>
                 
                 <div class="main">
                     <div class="header">
-                        <h1>💬 EST 实时聊天�?/h1>
+                        <h1>💬 EST Real-time Chat</h1>
                     </div>
                     <div class="messages" id="messages"></div>
                     <div class="typing" id="typing"></div>
                     <div class="input-area">
-                        <input type="text" id="messageInput" placeholder="输入消息..." onkeypress="handleKeyPress(event)" />
-                        <button onclick="sendMessage()">发�?/button>
+                        <input type="text" id="messageInput" placeholder="Type a message..." onkeypress="handleKeyPress(event)" />
+                        <button onclick="sendMessage()">Send</button>
                     </div>
                 </div>
                 
@@ -155,7 +155,7 @@ public class ChatAppExample {
                         const color = document.getElementById('color').value;
                         
                         if (!name) {
-                            alert('请输入昵称！');
+                            alert('Please enter a nickname!');
                             return;
                         }
                         
@@ -212,7 +212,7 @@ public class ChatAppExample {
                     
                     function renderMessage(msg) {
                         const isOwn = currentUser && msg.userId === currentUser.id;
-                        const time = new Date(msg.timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+                        const time = new Date(msg.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                         return \`
                             <div class="message \${isOwn ? 'own' : ''}">
                                 <div class="message-header">
@@ -299,13 +299,13 @@ public class ChatAppExample {
         String content = req.formParam("content");
         
         if (userId == null || content == null || content.isBlank()) {
-            res.status(400).json(Map.of("success", false, "message", "用户ID和内容不能为�?));
+            res.status(400).json(Map.of("success", false, "message", "User ID and content cannot be empty"));
             return;
         }
         
         User user = users.get(userId);
         if (user == null) {
-            res.status(404).json(Map.of("success", false, "message", "用户不存�?));
+            res.status(404).json(Map.of("success", false, "message", "User not found"));
             return;
         }
         
@@ -339,7 +339,7 @@ public class ChatAppExample {
         String color = req.formParam("color", "#3498db");
         
         if (name == null || name.isBlank()) {
-            res.status(400).json(Map.of("success", false, "message", "用户名不能为�?));
+            res.status(400).json(Map.of("success", false, "message", "Username cannot be empty"));
             return;
         }
         
@@ -350,9 +350,9 @@ public class ChatAppExample {
         Message systemMsg = new Message(
             messages.size() + 1,
             "system",
-            "系统",
+            "System",
             "#007bff",
-            name + " 加入了聊天室",
+            name + " joined the chat room",
             System.currentTimeMillis()
         );
         messages.add(systemMsg);
@@ -371,16 +371,16 @@ public class ChatAppExample {
             Message systemMsg = new Message(
                 messages.size() + 1,
                 "system",
-                "系统",
+                "System",
                 "#007bff",
-                user.name + " 离开了聊天室",
+                user.name + " left the chat room",
                 System.currentTimeMillis()
             );
             messages.add(systemMsg);
             
-            res.json(Map.of("success", true, "message", "用户已离开"));
+            res.json(Map.of("success", true, "message", "User has left"));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "用户不存�?));
+            res.status(404).json(Map.of("success", false, "message", "User not found"));
         }
     }
     

@@ -32,20 +32,20 @@ public class AiAssistantWebExample {
         
         PromptTemplate codeReviewTemplate = Ai.createPromptTemplate(
             "code-review",
-            "请审查以下代码，分析潜在问题并提供改进建议：\\n\\n${code}",
-            Map.of("code", "要审查的代码")
+            "Please review the following code, analyze potential issues and provide improvement suggestions:\n\n${code}",
+            Map.of("code", "Code to review")
         );
         
         PromptTemplate bugFixTemplate = Ai.createPromptTemplate(
             "bug-fix",
-            "请分析以下错误并提供修复方案：\\n\\n错误信息�?{error}\\n\\n相关代码�?{code}",
-            Map.of("error", "错误信息", "code", "相关代码")
+            "Please analyze the following error and provide a fix:\n\nError: ${error}\n\nRelated code: ${code}",
+            Map.of("error", "Error message", "code", "Related code")
         );
         
         PromptTemplate explanationTemplate = Ai.createPromptTemplate(
             "explanation",
-            "请用通俗易懂的方式解释以下概念：${concept}",
-            Map.of("concept", "要解释的概念")
+            "Please explain the following concept in an easy-to-understand way: ${concept}",
+            Map.of("concept", "Concept to explain")
         );
         
         templateRegistry.register(codeReviewTemplate);
@@ -56,7 +56,7 @@ public class AiAssistantWebExample {
     public static void run() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(80));
-        System.out.println("AI助手Web应用 - AI Assistant Web");
+        System.out.println("AI Assistant Web Application - AI Assistant Web");
         System.out.println("=".repeat(80));
         
         WebApplication app = Web.create("AI Assistant", "1.0.0");
@@ -92,25 +92,25 @@ public class AiAssistantWebExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n�?AI助手Web应用启动成功�?);
-            System.out.println("\n访问地址�?);
-            System.out.println("  - http://localhost:8080          (AI助手界面)");
-            System.out.println("\nAPI 端点�?);
-            System.out.println("【聊天会话�?);
-            System.out.println("  - GET    /api/chat/sessions      - 获取会话列表");
-            System.out.println("  - POST   /api/chat/sessions      - 创建会话");
-            System.out.println("  - GET    /api/chat/sessions/:id  - 获取会话详情");
-            System.out.println("  - POST   /api/chat/sessions/:id/messages - 发送消�?);
-            System.out.println("  - DELETE /api/chat/sessions/:id  - 删除会话");
-            System.out.println("\n【提示词模板�?);
-            System.out.println("  - GET    /api/templates           - 获取模板列表");
-            System.out.println("  - POST   /api/templates/apply     - 应用模板");
-            System.out.println("\n【代码生成�?);
-            System.out.println("  - POST   /api/code/generate       - 生成代码");
-            System.out.println("  - POST   /api/code/review         - 代码审查");
-            System.out.println("\n【项目脚手架�?);
-            System.out.println("  - POST   /api/scaffold/generate   - 生成项目脚手�?);
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n[X] AI Assistant Web Application started successfully");
+            System.out.println("\nAccess URLs:");
+            System.out.println("  - http://localhost:8080          (AI Assistant UI)");
+            System.out.println("\nAPI Endpoints:");
+            System.out.println("[Chat Sessions]");
+            System.out.println("  - GET    /api/chat/sessions      - Get session list");
+            System.out.println("  - POST   /api/chat/sessions      - Create session");
+            System.out.println("  - GET    /api/chat/sessions/:id  - Get session details");
+            System.out.println("  - POST   /api/chat/sessions/:id/messages - Send message");
+            System.out.println("  - DELETE /api/chat/sessions/:id  - Delete session");
+            System.out.println("\n[Prompt Templates]");
+            System.out.println("  - GET    /api/templates           - Get template list");
+            System.out.println("  - POST   /api/templates/apply     - Apply template");
+            System.out.println("\n[Code Generation]");
+            System.out.println("  - POST   /api/code/generate       - Generate code");
+            System.out.println("  - POST   /api/code/review         - Code review");
+            System.out.println("\n[Project Scaffold]");
+            System.out.println("  - POST   /api/scaffold/generate   - Generate project scaffold");
+            System.out.println("\nPress Ctrl+C to stop server");
             System.out.println("=".repeat(80));
         });
         
@@ -126,7 +126,7 @@ public class AiAssistantWebExample {
             <!DOCTYPE html>
             <html>
             <head>
-                <title>AI助手</title>
+                <title>AI Assistant</title>
                 <meta charset="UTF-8">
                 <style>
                     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -184,19 +184,19 @@ public class AiAssistantWebExample {
             <body>
                 <div class="sidebar">
                     <div class="sidebar-header">
-                        <h1>🤖 AI助手</h1>
-                        <p>EST框架AI编程助手</p>
+                        <h1>🤖 AI Assistant</h1>
+                        <p>EST Framework AI Programming Assistant</p>
                     </div>
-                    <button class="new-chat-btn" onclick="createSession()">+ 新对�?/button>
+                    <button class="new-chat-btn" onclick="createSession()">+ New Chat</button>
                     <div class="sessions-list" id="sessionsList"></div>
                 </div>
                 
                 <div class="main">
                     <div class="tab-bar">
-                        <div class="tab active" onclick="switchTab('chat')">💬 聊天</div>
-                        <div class="tab" onclick="switchTab('templates')">📝 提示词模�?/div>
-                        <div class="tab" onclick="switchTab('code')">💻 代码生成</div>
-                        <div class="tab" onclick="switchTab('scaffold')">🏗�?项目脚手�?/div>
+                        <div class="tab active" onclick="switchTab('chat')">💬 Chat</div>
+                        <div class="tab" onclick="switchTab('templates')">📝 Prompt Templates</div>
+                        <div class="tab" onclick="switchTab('code')">💻 Code Generation</div>
+                        <div class="tab" onclick="switchTab('scaffold')">🏗️ Project Scaffold</div>
                     </div>
                     
                     <div class="content active" id="chat-content">
@@ -204,12 +204,12 @@ public class AiAssistantWebExample {
                             <div class="chat-messages" id="chatMessages">
                                 <div style="text-align: center; padding: 40px; color: #999;">
                                     <div style="font-size: 48px; margin-bottom: 15px;">👋</div>
-                                    <p>选择或创建一个会话开始聊�?/p>
+                                    <p>Select or create a session to start chatting</p>
                                 </div>
                             </div>
                             <div class="chat-input">
-                                <textarea id="messageInput" placeholder="输入你的消息..." rows="1"></textarea>
-                                <button onclick="sendMessage()">发�?/button>
+                                <textarea id="messageInput" placeholder="Enter your message..." rows="1"></textarea>
+                                <button onclick="sendMessage()">Send</button>
                             </div>
                         </div>
                     </div>
@@ -217,13 +217,13 @@ public class AiAssistantWebExample {
                     <div class="content" id="templates-content">
                         <div class="tools-panel">
                             <div class="tool-section">
-                                <h2>📝 可用模板</h2>
+                                <h2>📝 Available Templates</h2>
                                 <div class="template-list" id="templateList"></div>
                             </div>
                             <div class="tool-section" id="templateApplySection" style="display: none;">
-                                <h2>✏️ 应用模板</h2>
+                                <h2>✏️ Apply Template</h2>
                                 <div id="templateVars"></div>
-                                <button class="btn btn-primary" onclick="applyTemplate()">生成提示�?/button>
+                                <button class="btn btn-primary" onclick="applyTemplate()">Generate Prompt</button>
                                 <div class="result-box" id="templateResult" style="display: none;">
                                     <pre id="templateResultText"></pre>
                                 </div>
@@ -234,23 +234,23 @@ public class AiAssistantWebExample {
                     <div class="content" id="code-content">
                         <div class="tools-panel">
                             <div class="tool-section">
-                                <h2>🎯 代码生成</h2>
+                                <h2>🎯 Code Generation</h2>
                                 <div class="form-group">
-                                    <label>描述你想要的代码</label>
-                                    <textarea id="codeDescription" placeholder="例如：创建一个用户管理的Controller类，包含增删改查方法..."></textarea>
+                                    <label>Describe the code you want</label>
+                                    <textarea id="codeDescription" placeholder="For example: Create a user management Controller class with CRUD methods..."></textarea>
                                 </div>
-                                <button class="btn btn-primary" onclick="generateCode()">生成代码</button>
+                                <button class="btn btn-primary" onclick="generateCode()">Generate Code</button>
                                 <div class="result-box" id="codeResult" style="display: none;">
                                     <pre id="codeResultText"></pre>
                                 </div>
                             </div>
                             <div class="tool-section">
-                                <h2>🔍 代码审查</h2>
+                                <h2>🔍 Code Review</h2>
                                 <div class="form-group">
-                                    <label>粘贴要审查的代码</label>
-                                    <textarea id="codeToReview" placeholder="在这里粘贴你的代�?.."></textarea>
+                                    <label>Paste code to review</label>
+                                    <textarea id="codeToReview" placeholder="Paste your code here..."></textarea>
                                 </div>
-                                <button class="btn btn-primary" onclick="reviewCode()">审查代码</button>
+                                <button class="btn btn-primary" onclick="reviewCode()">Review Code</button>
                                 <div class="result-box" id="reviewResult" style="display: none;">
                                     <pre id="reviewResultText"></pre>
                                 </div>
@@ -261,24 +261,24 @@ public class AiAssistantWebExample {
                     <div class="content" id="scaffold-content">
                         <div class="tools-panel">
                             <div class="tool-section">
-                                <h2>🏗�?项目脚手架生�?/h2>
+                                <h2>🏗️ Project Scaffold Generation</h2>
                                 <div class="form-group">
-                                    <label>项目名称</label>
+                                    <label>Project Name</label>
                                     <input type="text" id="projectName" placeholder="my-project" />
                                 </div>
                                 <div class="form-group">
-                                    <label>项目类型</label>
+                                    <label>Project Type</label>
                                     <select id="projectType">
-                                        <option value="web">Web应用</option>
+                                        <option value="web">Web Application</option>
                                         <option value="rest-api">REST API</option>
-                                        <option value="microservice">微服�?/option>
+                                        <option value="microservice">Microservice</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>包名</label>
+                                    <label>Package Name</label>
                                     <input type="text" id="packageName" placeholder="com.example" />
                                 </div>
-                                <button class="btn btn-primary" onclick="generateScaffold()">生成脚手�?/button>
+                                <button class="btn btn-primary" onclick="generateScaffold()">Generate Scaffold</button>
                                 <div class="result-box" id="scaffoldResult" style="display: none;">
                                     <pre id="scaffoldResultText"></pre>
                                 </div>
@@ -304,13 +304,13 @@ public class AiAssistantWebExample {
                         container.innerHTML = sessions.map(session => \`
                             <div class="session-item \${session.id === currentSessionId ? 'active' : ''}" onclick="selectSession(\${session.id})">
                                 <h3>\${escapeHtml(session.title)}</h3>
-                                <p>\${session.messageCount} 条消�?/p>
+                                <p>\${session.messageCount} messages</p>
                             </div>
                         \`).join('');
                     }
                     
                     async function createSession() {
-                        const title = prompt('请输入会话标题：', '新对�?);
+                        const title = prompt('Please enter session title:', 'New Chat');
                         if (!title) return;
                         
                         const formData = new FormData();
@@ -345,7 +345,7 @@ public class AiAssistantWebExample {
                             container.innerHTML = \`
                                 <div style="text-align: center; padding: 40px; color: #999;">
                                     <div style="font-size: 48px; margin-bottom: 15px;">💬</div>
-                                    <p>开始发送消息吧�?/p>
+                                    <p>Start sending messages!</p>
                                 </div>
                             \`;
                             return;
@@ -363,7 +363,7 @@ public class AiAssistantWebExample {
                     
                     async function sendMessage() {
                         if (!currentSessionId) {
-                            alert('请先选择或创建一个会话！');
+                            alert('Please select or create a session first!');
                             return;
                         }
                         
@@ -394,9 +394,9 @@ public class AiAssistantWebExample {
                     function renderTemplates(templates) {
                         const container = document.getElementById('templateList');
                         container.innerHTML = templates.map(template => \`
-                            <div class="template-card" onclick="selectTemplate('\${template.name}')">
+                            <div class="template-card" onclick="selectTemplate('\\\${template.name}')">
                                 <h3>\${escapeHtml(template.name)}</h3>
-                                <p>变量：\${Object.keys(template.variables || {}).join(', ')}</p>
+                                <p>Variables: \${Object.keys(template.variables || {}).join(', ')}</p>
                             </div>
                         \`).join('');
                     }
@@ -414,7 +414,7 @@ public class AiAssistantWebExample {
                         varsContainer.innerHTML = Object.entries(template.variables || {}).map(([key, desc]) => \`
                             <div class="form-group">
                                 <label>\${escapeHtml(key)} - \${escapeHtml(desc)}</label>
-                                <input type="text" data-var="\${key}" placeholder="输入\${escapeHtml(key)}..." />
+                                <input type="text" data-var="\\\${key}" placeholder="Enter \${escapeHtml(key)}..." />
                             </div>
                         \`).join('');
                     }
@@ -444,7 +444,7 @@ public class AiAssistantWebExample {
                     async function generateCode() {
                         const description = document.getElementById('codeDescription').value.trim();
                         if (!description) {
-                            alert('请输入代码描述！');
+                            alert('Please enter code description!');
                             return;
                         }
                         
@@ -462,7 +462,7 @@ public class AiAssistantWebExample {
                     async function reviewCode() {
                         const code = document.getElementById('codeToReview').value.trim();
                         if (!code) {
-                            alert('请输入要审查的代码！');
+                            alert('Please enter code to review!');
                             return;
                         }
                         
@@ -483,7 +483,7 @@ public class AiAssistantWebExample {
                         const pkg = document.getElementById('packageName').value.trim();
                         
                         if (!name) {
-                            alert('请输入项目名称！');
+                            alert('Please enter project name!');
                             return;
                         }
                         
@@ -504,7 +504,7 @@ public class AiAssistantWebExample {
                         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                         document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
                         
-                        document.querySelector('[onclick="switchTab(\\'' + tab + '\\')"]').classList.add('active');
+                        document.querySelector('[onclick="switchTab(\\\\'' + tab + '\\\\'')"]').classList.add('active');
                         document.getElementById(tab + '-content').classList.add('active');
                     }
                     
@@ -543,7 +543,7 @@ public class AiAssistantWebExample {
     }
     
     private static void createSession(Request req, Response res) {
-        String title = req.formParam("title", "新对�?);
+        String title = req.formParam("title", "New Chat");
         int id = sessionIdGenerator.getAndIncrement();
         ChatSession session = new ChatSession(id, title);
         chatSessions.put(id, session);
@@ -560,7 +560,7 @@ public class AiAssistantWebExample {
         if (session != null) {
             res.json(Map.of("success", true, "data", session));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "会话不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Session not found"));
         }
     }
     
@@ -569,13 +569,13 @@ public class AiAssistantWebExample {
         ChatSession session = chatSessions.get(id);
         
         if (session == null) {
-            res.status(404).json(Map.of("success", false, "message", "会话不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Session not found"));
             return;
         }
         
         String content = req.formParam("content");
         if (content == null || content.isBlank()) {
-            res.status(400).json(Map.of("success", false, "message", "消息内容不能为空"));
+            res.status(400).json(Map.of("success", false, "message", "Message content cannot be empty"));
             return;
         }
         
@@ -593,9 +593,9 @@ public class AiAssistantWebExample {
     private static void deleteSession(Request req, Response res) {
         int id = Integer.parseInt(req.param("id"));
         if (chatSessions.remove(id) != null) {
-            res.json(Map.of("success", true, "message", "会话删除成功"));
+            res.json(Map.of("success", true, "message", "Session deleted successfully"));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "会话不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Session not found"));
         }
     }
     
@@ -617,7 +617,7 @@ public class AiAssistantWebExample {
         PromptTemplate template = templateRegistry.get(templateName);
         
         if (template == null) {
-            res.status(404).json(Map.of("success", false, "message", "模板不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Template not found"));
             return;
         }
         
@@ -638,7 +638,7 @@ public class AiAssistantWebExample {
     private static void generateCode(Request req, Response res) {
         String description = req.formParam("description");
         if (description == null || description.isBlank()) {
-            res.status(400).json(Map.of("success", false, "message", "描述不能为空"));
+            res.status(400).json(Map.of("success", false, "message", "Description cannot be empty"));
             return;
         }
         
@@ -653,7 +653,7 @@ public class AiAssistantWebExample {
     private static void reviewCode(Request req, Response res) {
         String code = req.formParam("code");
         if (code == null || code.isBlank()) {
-            res.status(400).json(Map.of("success", false, "message", "代码不能为空"));
+            res.status(400).json(Map.of("success", false, "message", "Code cannot be empty"));
             return;
         }
         
@@ -672,7 +672,7 @@ public class AiAssistantWebExample {
         String pkg = req.formParam("package", "com.example");
         
         if (name == null || name.isBlank()) {
-            res.status(400).json(Map.of("success", false, "message", "项目名称不能为空"));
+            res.status(400).json(Map.of("success", false, "message", "Project name cannot be empty"));
             return;
         }
         

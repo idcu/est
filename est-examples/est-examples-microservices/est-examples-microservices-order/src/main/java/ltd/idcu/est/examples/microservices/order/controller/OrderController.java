@@ -21,13 +21,13 @@ public class OrderController {
 
     @Get("/orders")
     public List<Order> getAllOrders() {
-        System.out.println("[OrderService] GET /orders - 返回所有订�?);
+        System.out.println("[OrderService] GET /orders - Return all orders");
         return new ArrayList<>(orders.values());
     }
 
     @Get("/orders/{id}")
     public Order getOrderById(String id) {
-        System.out.println("[OrderService] GET /orders/" + id + " - 获取订单");
+        System.out.println("[OrderService] GET /orders/" + id + " - Get order");
         Order order = orders.get(id);
         if (order == null) {
             throw new RuntimeException("Order not found: " + id);
@@ -37,7 +37,7 @@ public class OrderController {
 
     @Get("/orders/user/{userId}")
     public List<Order> getOrdersByUserId(String userId) {
-        System.out.println("[OrderService] GET /orders/user/" + userId + " - 获取用户订单");
+        System.out.println("[OrderService] GET /orders/user/" + userId + " - Get user orders");
         return orders.values().stream()
                 .filter(order -&gt; order.getUserId().equals(userId))
                 .toList();
@@ -51,7 +51,7 @@ public class OrderController {
         order.setStatus("CREATED");
         order.setCreatedAt(java.time.LocalDateTime.now());
         orders.put(id, order);
-        System.out.println("[OrderService] POST /orders - 创建订单: " + order);
+        System.out.println("[OrderService] POST /orders - Create order: " + order);
         return order;
     }
 }

@@ -15,15 +15,15 @@ public class TodoAppExample {
     private static final Map<String, Todo> todos = new ConcurrentHashMap<>();
     
     static {
-        todos.put("1", new Todo("1", "学习EST框架", "了解EST框架的核心功�?, false, "high"));
-        todos.put("2", new Todo("2", "创建第一个Web应用", "使用EST创建一个简单的Web应用", true, "medium"));
-        todos.put("3", new Todo("3", "探索更多功能", "了解EST的其他功能模�?, false, "low"));
+        todos.put("1", new Todo("1", "Learn EST Framework", "Understand core features of EST", false, "high"));
+        todos.put("2", new Todo("2", "Create first Web App", "Build a simple web app with EST", true, "medium"));
+        todos.put("3", new Todo("3", "Explore more features", "Discover other EST modules", false, "low"));
     }
     
     public static void run() {
         System.out.println("\n".repeat(2));
         System.out.println("=".repeat(80));
-        System.out.println("待办事项管理应用 - Todo App");
+        System.out.println("Todo Management Application - Todo App");
         System.out.println("=".repeat(80));
         
         WebApplication app = Web.create("Todo App", "1.0.0");
@@ -46,17 +46,17 @@ public class TodoAppExample {
         });
         
         app.onStartup(() -> {
-            System.out.println("\n�?Todo App 服务器启动成功！");
-            System.out.println("\n访问地址�?);
-            System.out.println("  - http://localhost:8080          (Web 界面)");
-            System.out.println("\nAPI 端点�?);
-            System.out.println("  - GET    /api/todos           - 获取所有待�?);
-            System.out.println("  - GET    /api/todos/:id       - 获取单个待办");
-            System.out.println("  - POST   /api/todos           - 创建待办");
-            System.out.println("  - PUT    /api/todos/:id       - 更新待办");
-            System.out.println("  - DELETE /api/todos/:id       - 删除待办");
-            System.out.println("  - PATCH  /api/todos/:id/complete - 切换完成状�?);
-            System.out.println("\n�?Ctrl+C 停止服务�?);
+            System.out.println("\n[OK] Todo App server started successfully!");
+            System.out.println("\nAccess URLs:");
+            System.out.println("  - http://localhost:8080          (Web Interface)");
+            System.out.println("\nAPI Endpoints:");
+            System.out.println("  - GET    /api/todos           - Get all todos");
+            System.out.println("  - GET    /api/todos/:id       - Get single todo");
+            System.out.println("  - POST   /api/todos           - Create todo");
+            System.out.println("  - PUT    /api/todos/:id       - Update todo");
+            System.out.println("  - DELETE /api/todos/:id       - Delete todo");
+            System.out.println("  - PATCH  /api/todos/:id/complete - Toggle completion status");
+            System.out.println("\n[X] Ctrl+C to stop server");
             System.out.println("=".repeat(80));
         });
         
@@ -72,7 +72,7 @@ public class TodoAppExample {
             <!DOCTYPE html>
             <html>
             <head>
-                <title>待办事项管理</title>
+                <title>Todo Management</title>
                 <meta charset="UTF-8">
                 <style>
                     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -109,17 +109,17 @@ public class TodoAppExample {
             </head>
             <body>
                 <div class="container">
-                    <h1>📝 待办事项管理</h1>
+                    <h1>📝 Todo Management</h1>
                     
                     <div class="form">
-                        <input type="text" id="title" placeholder="待办标题..." />
-                        <input type="text" id="desc" placeholder="描述（可选）..." />
+                        <input type="text" id="title" placeholder="Todo title..." />
+                        <input type="text" id="desc" placeholder="Description (optional)..." />
                         <select id="priority">
-                            <option value="low">低优先级</option>
-                            <option value="medium" selected>中优先级</option>
-                            <option value="high">高优先级</option>
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
                         </select>
-                        <button onclick="addTodo()">添加</button>
+                        <button onclick="addTodo()">Add</button>
                     </div>
                     
                     <ul class="todo-list" id="todoList"></ul>
@@ -127,15 +127,15 @@ public class TodoAppExample {
                     <div class="stats">
                         <div class="stat">
                             <div class="stat-number" id="totalCount">0</div>
-                            <div class="stat-label">总计</div>
+                            <div class="stat-label">Total</div>
                         </div>
                         <div class="stat">
                             <div class="stat-number" id="completedCount">0</div>
-                            <div class="stat-label">已完�?/div>
+                            <div class="stat-label">Completed</div>
                         </div>
                         <div class="stat">
                             <div class="stat-number" id="pendingCount">0</div>
-                            <div class="stat-label">待处�?/div>
+                            <div class="stat-label">Pending</div>
                         </div>
                     </div>
                 </div>
@@ -192,7 +192,7 @@ public class TodoAppExample {
                                 </div>
                                 <span class="todo-priority priority-\${todo.priority}">\${getPriorityText(todo.priority)}</span>
                                 <div class="todo-actions">
-                                    <button class="btn-delete" onclick="deleteTodo('\${todo.id}')">删除</button>
+                                    <button class="btn-delete" onclick="deleteTodo('\${todo.id}')">Delete</button>
                                 </div>
                             </li>
                         \`).join('');
@@ -209,7 +209,7 @@ public class TodoAppExample {
                     }
                     
                     function getPriorityText(priority) {
-                        const map = { high: '�?, medium: '�?, low: '�? };
+                        const map = { high: 'High', medium: 'Medium', low: 'Low' };
                         return map[priority] || priority;
                     }
                     
@@ -252,7 +252,7 @@ public class TodoAppExample {
         if (todo != null) {
             res.json(Map.of("success", true, "data", todo));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "待办不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Todo not found"));
         }
     }
     
@@ -262,7 +262,7 @@ public class TodoAppExample {
         String priority = req.formParam("priority", "medium");
         
         if (title == null || title.isBlank()) {
-            res.status(400).json(Map.of("success", false, "message", "标题不能为空"));
+            res.status(400).json(Map.of("success", false, "message", "Title cannot be empty"));
             return;
         }
         
@@ -272,7 +272,7 @@ public class TodoAppExample {
         
         res.status(201).json(Map.of(
             "success", true,
-            "message", "待办创建成功",
+            "message", "Todo created successfully",
             "data", todo
         ));
     }
@@ -282,7 +282,7 @@ public class TodoAppExample {
         Todo todo = todos.get(id);
         
         if (todo == null) {
-            res.status(404).json(Map.of("success", false, "message", "待办不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Todo not found"));
             return;
         }
         
@@ -296,7 +296,7 @@ public class TodoAppExample {
         
         res.json(Map.of(
             "success", true,
-            "message", "待办更新成功",
+            "message", "Todo updated successfully",
             "data", todo
         ));
     }
@@ -304,9 +304,9 @@ public class TodoAppExample {
     private static void deleteTodo(Request req, Response res) {
         String id = req.param("id");
         if (todos.remove(id) != null) {
-            res.json(Map.of("success", true, "message", "待办删除成功"));
+            res.json(Map.of("success", true, "message", "Todo deleted successfully"));
         } else {
-            res.status(404).json(Map.of("success", false, "message", "待办不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Todo not found"));
         }
     }
     
@@ -315,14 +315,14 @@ public class TodoAppExample {
         Todo todo = todos.get(id);
         
         if (todo == null) {
-            res.status(404).json(Map.of("success", false, "message", "待办不存�?));
+            res.status(404).json(Map.of("success", false, "message", "Todo not found"));
             return;
         }
         
         todo.completed = !todo.completed;
         res.json(Map.of(
             "success", true,
-            "message", "状态更新成�?,
+            "message", "Status updated successfully",
             "data", todo
         ));
     }
