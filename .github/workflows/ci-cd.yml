@@ -25,7 +25,7 @@ jobs:
       run: mvn clean package -DskipTests
 
     - name: Upload JAR artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: est-web-app-jar
         path: est-examples/est-examples-web/target/*.jar
