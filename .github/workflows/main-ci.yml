@@ -23,7 +23,7 @@ jobs:
       - name: 检出代�?        uses: actions/checkout@v4
 
       - name: 设置 JDK ${{ matrix.java }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
@@ -95,7 +95,7 @@ jobs:
           fetch-depth: 0
 
       - name: 设置 JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
@@ -115,7 +115,7 @@ jobs:
       - name: 检出代�?        uses: actions/checkout@v4
 
       - name: 设置 JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
